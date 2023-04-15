@@ -14,7 +14,7 @@ const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
   ],
   providers: [
     MovieClient,
-    PlatformClient
+    PlatformClient 
   ]
 })
 export class CoreModule { }
