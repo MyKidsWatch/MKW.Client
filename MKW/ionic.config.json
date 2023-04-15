@@ -1,0 +1,7 @@
+{
+  "name": "MKW",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
