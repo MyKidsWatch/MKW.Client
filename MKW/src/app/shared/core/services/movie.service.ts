@@ -8,8 +8,8 @@ export class MovieService {
 
   constructor(private movieClient: MovieClient) { }
 
-  getMovie()
+  getMovie(movieId: number)
   {
-    return this.movieClient.movie(100);
+    return this.movieClient.movie(movieId);
   }
 }

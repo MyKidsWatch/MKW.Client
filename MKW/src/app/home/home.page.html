@@ -9,11 +9,20 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Starting Commit</ion-title>
+      <ion-title size="large">MyKidsWatch</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div id="container">
-    <strong>MyKidsWatch</strong>
+    <div class="search" >
+      <input type="number" style="padding: 10px;" [formControl]='movieId'>
+      <button (click)="getMovie()" style="padding: 10px;">Search</button>
+    </div>
+
+    <div *ngIf="movieObject">
+      <h1>{{movieObject.original_title}}</h1>
+      <img style="width: 200px;" [src]="'https://image.tmdb.org/t/p/original' +  movieObject.poster_path">
+    </div>
+    
   </div>
 </ion-content>

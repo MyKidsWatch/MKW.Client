@@ -9,6 +9,7 @@ import { environment } from './environments/environment';
 import { API_BASE_URL, MovieClient } from './app/shared/core/proxies/mkw-api.proxy';
 import { HttpClientModule} from '@angular/common/http';
 import { CoreModule } from './app/shared/core/core.module';
+import { CommonModule } from '@angular/common';
 
 if (environment.production) {
   enableProdMode();
@@ -19,7 +20,7 @@ bootstrapApplication(AppComponent, {
   
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    importProvidersFrom(IonicModule.forRoot({}), HttpClientModule, CoreModule),
+    importProvidersFrom(IonicModule.forRoot({}), HttpClientModule, CoreModule, CommonModule),
     provideRouter(routes),
     {provide: API_BASE_URL, useValue: environment.apiBaseUrl},
     

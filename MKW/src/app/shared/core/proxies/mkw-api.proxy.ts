@@ -29,7 +29,7 @@ export class MovieClient {
     /**
      * @return Success
      */
-    movie(movieId: number): Observable<void> {
+    movie(movieId: number): Observable<any> {
         let url_ = this.baseUrl + "/v1/Movie/{movieId}";
         if (movieId === undefined || movieId === null)
             throw new Error("The parameter 'movieId' must be defined.");
@@ -53,11 +53,11 @@ export class MovieClient {
                     return _observableThrow(e) as any as Observable<void>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<any>;
         }));
     }
 
-    protected processMovie(response: HttpResponseBase): Observable<void> {
+    protected processMovie(response: HttpResponseBase): Observable<any> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -66,7 +66,7 @@ export class MovieClient {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+                return _observableOf(JSON.parse(_responseText) as any);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
