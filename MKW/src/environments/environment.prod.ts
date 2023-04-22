@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://localhost:7240'
+  apiBaseUrl: 'https://mykidswatch.azurewebsites.net/'
 };
