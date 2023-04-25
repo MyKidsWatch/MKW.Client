@@ -14,15 +14,16 @@
   </ion-header>
 
   <div id="container">
+    <button (click)="changeLanguage()" style="padding: 10px;margin-bottom: 90px;">{{ 'changeLanguage' | translate }}</button>
+
     <div class="search" >
       <input type="number" style="padding: 10px;" [formControl]='movieId'>
-      <button (click)="getMovie()" style="padding: 10px;">Search</button>
+      <button (click)="getMovie()" style="padding: 10px;">{{ 'search' | translate }}</button>
     </div>
 
     <div *ngIf="movieObject">
-      <h1>{{movieObject.original_title}}</h1>
+      <h1>{{ movieObject.original_title }}</h1>
       <img style="width: 200px;" [src]="'https://image.tmdb.org/t/p/original' +  movieObject.poster_path">
     </div>
-    
   </div>
 </ion-content>
