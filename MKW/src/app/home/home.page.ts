@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SplashScreenService } from '../shared/core/services/splash-screen.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -22,10 +24,17 @@ export class HomePage implements OnInit{
   
   constructor(
     private movieService: MovieService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private splashService: SplashScreenService,
+    private router: Router
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    setTimeout(() => {
+      this.splashService.stop();
+    }, 3000);
+
+  }
 
   getMovie() {
     if(this.movieId.value == null)
@@ -48,4 +57,8 @@ export class HomePage implements OnInit{
     this.translate.use(lang);
   }
 
+  loginPage()
+  {
+    this.router.navigate(['/auth'])
+  }
 }

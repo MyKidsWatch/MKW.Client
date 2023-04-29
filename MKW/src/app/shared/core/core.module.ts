@@ -6,6 +6,7 @@ import { InjectionToken } from '@angular/core';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { SplashScreenService } from './services/splash-screen.service';
 
 const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 @NgModule({
@@ -26,7 +27,8 @@ const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
   ],
   providers: [
     MovieClient,
-    PlatformClient 
+    PlatformClient,
+    SplashScreenService
   ]
 })
 export class CoreModule { }
