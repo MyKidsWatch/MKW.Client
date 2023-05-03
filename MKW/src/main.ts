@@ -6,10 +6,14 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
-import { API_BASE_URL, MovieClient } from './app/shared/core/proxies/mkw-api.proxy';
+import { API_BASE_URL, MovieClient } from './app/core/proxies/mkw-api.proxy';
 import { HttpClientModule} from '@angular/common/http';
-import { CoreModule } from './app/shared/core/core.module';
+import { CoreModule } from './app/core/core.module';
 import { CommonModule } from '@angular/common';
+import { NgxsModule } from '@ngxs/store';
+import { UserState } from './app/shared/store/state/user.state';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
 if (environment.production) {
   enableProdMode();
@@ -20,7 +24,16 @@ bootstrapApplication(AppComponent, {
   
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    importProvidersFrom(IonicModule.forRoot({}), HttpClientModule, CoreModule, CommonModule),
+    importProvidersFrom
+      (
+        IonicModule.forRoot({}), 
+        HttpClientModule, 
+        CoreModule, 
+        CommonModule,
+        NgxsModule.forRoot([UserState]),
+        NgxsStoragePluginModule.forRoot(),
+        NgxsLoggerPluginModule.forRoot()
+      ),
     provideRouter(routes),
     {provide: API_BASE_URL, useValue: environment.apiBaseUrl},
     

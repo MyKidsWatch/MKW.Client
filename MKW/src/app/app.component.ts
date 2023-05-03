@@ -13,6 +13,7 @@ import { SplashComponent } from './components/splash/splash.component';
     IonicModule,
     TranslateModule,
     SplashComponent
+    
   ],
 })
 export class AppComponent {

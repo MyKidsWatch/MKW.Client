@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { SplashScreenService } from 'src/app/shared/core/services/splash-screen.service';
+import { SplashScreenService } from 'src/app/core/services/splash-screen.service';
 
 @Component({
   standalone: true,
