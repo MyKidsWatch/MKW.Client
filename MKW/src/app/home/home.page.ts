@@ -94,14 +94,11 @@ export class HomePage implements OnInit{
     };
 
     this.store.dispatch(new SaveUser(payload));
-
-    this.syncData();
   }
 
   removeUser()
   {
     this.store.dispatch(new RemoveUser());
-    this.syncData();
   }
 }
 

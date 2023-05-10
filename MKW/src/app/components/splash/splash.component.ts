@@ -26,12 +26,12 @@ export class SplashComponent  implements OnInit {
  
   ngOnInit(): void {  
       this.splashScreenService.subscribe(() => {
-        this.hideSplashAnimation();
+        this.toggleSplashAnimation();
       });
   }
 
 
-  private hideSplashAnimation() {
+  private toggleSplashAnimation() {
     this.splashTransition = `opacity ${this.ANIMATION_DURATION}s`;
     this.opacityChange = 0;
  
