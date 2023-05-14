@@ -27,4 +27,11 @@
       <img style="width: 200px;" [src]="'https://image.tmdb.org/t/p/original' +  movieObject.poster_path">
     </div>
   </div>
+
+<div>
+  <label>{{user?.username}}</label>
+  <button (click)="setUser()">Set user</button>
+  <button (click)="removeUser()">Remove user</button>
+</div>
+
 </ion-content>

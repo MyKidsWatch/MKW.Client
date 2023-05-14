@@ -1,5 +1,5 @@
 .app-splash-screen {
-    background: #3a36d1;
+    background: #fff;
     position: fixed;
     top: 0;
     left: 0;
@@ -34,4 +34,13 @@
     0% {
        max-width: 0;
     }
+ }
+
+ .app-splash-content{
+   display: flex;
+   flex-direction: column;
+
+   img{
+      margin: 10px;
+   }
  }

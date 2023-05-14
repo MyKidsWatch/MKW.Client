@@ -6,9 +6,9 @@ import { Subscription, Subject } from 'rxjs';
 })
 export class SplashScreenService {
 
-  constructor() { }
+   constructor() { }
 
-  subject = new Subject();
+   subject = new Subject();
 
    subscribe(onNext: any): Subscription {
       return this.subject.subscribe(onNext);

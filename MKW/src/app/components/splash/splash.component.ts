@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { SplashScreenService } from 'src/app/shared/core/services/splash-screen.service';
+import { SplashScreenService } from 'src/app/core/services/splash-screen.service';
 
 @Component({
   standalone: true,
@@ -26,12 +26,12 @@ export class SplashComponent  implements OnInit {
  
   ngOnInit(): void {  
       this.splashScreenService.subscribe(() => {
-        this.hideSplashAnimation();
+        this.toggleSplashAnimation();
       });
   }
 
 
-  private hideSplashAnimation() {
+  private toggleSplashAnimation() {
     this.splashTransition = `opacity ${this.ANIMATION_DURATION}s`;
     this.opacityChange = 0;
  
