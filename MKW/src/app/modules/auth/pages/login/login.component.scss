@@ -1,0 +1,43 @@
+.logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 35%;
+    margin-top: 20px;
+    img{
+        margin: 5px;
+    }
+}
+
+
+
+div{
+
+    display: flex;
+    padding: 25px;
+    flex-direction: column;
+
+    button{
+        background-color: #016FB9;
+        color: white;
+        padding: 12px;
+        font-size: 1.2em;
+    }
+
+    label{
+        align-self: center;
+        margin-top: 10px;
+    }
+}
+
+div.login-form{
+
+    input{
+        margin: 10px 0 10px 0;
+        padding: 10px;
+    }
+    label{
+        margin: 0 !important;
+    }
+}
