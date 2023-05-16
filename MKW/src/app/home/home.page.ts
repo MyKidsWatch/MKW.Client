@@ -38,10 +38,6 @@ export class HomePage implements OnInit{
   ) { }
 
   ngOnInit(): void { 
-    setTimeout(() => {
-      this.splashService.stop();
-    }, 1);
-
     this.syncData();
   }
 

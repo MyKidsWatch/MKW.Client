@@ -12,11 +12,9 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       
-      // this.splashScreenService.subscribe(true);
 
-      setTimeout(() => {
-        this.splashScreenService.stop();
-      }, 1000)
+      this.splashScreenService.stop();
+   
       return true;
   }
   

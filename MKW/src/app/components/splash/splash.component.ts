@@ -36,7 +36,8 @@ export class SplashComponent  implements OnInit {
     this.opacityChange = 0;
  
     setTimeout(() => {
-       this.showSplash = !this.showSplash;
+       this.showSplash = false;
+
     }, 1000);
  }
 }
