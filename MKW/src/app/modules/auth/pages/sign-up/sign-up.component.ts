@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { relative } from 'path';
 import { Keyboard } from '@capacitor/keyboard';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-sign-up',
@@ -10,6 +11,7 @@ import { Keyboard } from '@capacitor/keyboard';
 })
 export class SignUpComponent  implements OnInit {
 
+  name = new FormControl('');
 
   public currentStep: number = 1;
   constructor(private router: Router) { }

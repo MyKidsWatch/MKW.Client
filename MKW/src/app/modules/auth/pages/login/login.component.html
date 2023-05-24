@@ -4,13 +4,13 @@
     <img src="assets/images/LOGO-TEXT.png">
   </div>
 
-  <div class="login-form">
-    <input type="text" placeholder="Nome de usuário ou e-mail">
-    <input type="text" placeholder="Senha">
+  <form class="login-form" [formGroup]="loginForm">
+    <ion-input type="text" formControlName="loginCredential" placeholder="Nome de usuário ou e-mail"></ion-input>
+    <ion-input type="password" formControlName="password" placeholder="Senha"></ion-input>
     <label>Esqueci minha senha</label>
-  </div>
+  </form>
 
-  <div>
+  <div class="button">
     <button>Entrar</button>
     <label>Não tem uma conta? <ion-router-link routerLink="sign-up">Cadastre-se</ion-router-link></label>
   </div>

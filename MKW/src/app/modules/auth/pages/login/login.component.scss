@@ -1,3 +1,6 @@
+ion-content{
+
+
 .logo{
     display: flex;
     align-items: center;
@@ -10,9 +13,25 @@
     }
 }
 
+form.login-form{
+    ion-input, ion-select{
+        border: 2px solid #0A0A0A;
+        width: 100%;
+        margin: 25px 0 0 0;
+        padding: 10px;
 
+        input{
+            padding: 10px !important;
+            --padding-start: 20px;
 
-div{
+        }
+    }
+    label{
+        margin: 10px !important;
+    }
+}
+
+div, form.login-form{
 
     display: flex;
     padding: 25px;
@@ -31,13 +50,6 @@ div{
     }
 }
 
-div.login-form{
 
-    input{
-        margin: 10px 0 10px 0;
-        padding: 10px;
-    }
-    label{
-        margin: 0 !important;
-    }
+
 }

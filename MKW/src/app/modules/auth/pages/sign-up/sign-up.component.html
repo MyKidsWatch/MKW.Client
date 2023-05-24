@@ -3,7 +3,7 @@
     <app-stepper [currentStep]="currentStep"></app-stepper>
 
   
-    <div *ngIf="currentStep === 1"  class="form-content">
+    <form *ngIf="currentStep === 1"  class="form-content">
       <div (click)="previousStep()" class="go-back">
         <i class="material-icons">arrow_back</i>
         <p>Voltar</p>
@@ -16,7 +16,7 @@
     
       <div class="sign-up-form">
         <label>* Campo obrigatório</label>
-        <ion-input type="text" placeholder="Nome*"></ion-input>
+        <ion-input type="text" placeholder="Nome*" [formControl]="name"></ion-input>
         <ion-input type="text" placeholder="Sobrenome*"></ion-input>
         <ion-input type="date" placeholder="Data de nascimento*"></ion-input>
         <ion-select placeholder="Gênero">
@@ -26,9 +26,9 @@
           <ion-select-option value="3">Não informar</ion-select-option>
         </ion-select>
       </div>
-    </div>
+    </form>
     
-    <div *ngIf="currentStep === 2"  class="form-content">
+    <form *ngIf="currentStep === 2"  class="form-content">
       <div (click)="previousStep()" class="go-back">
         <i class="material-icons">arrow_back</i>
         <p>Voltar</p>
@@ -46,7 +46,7 @@
         <ion-input type="password" placeholder="Senha*"></ion-input>
         <ion-input type="password" placeholder="Confirme sua senha*"></ion-input>    
       </div>
-    </div>
+    </form>
     
     <div *ngIf="currentStep === 3"  class="account-created">
       <div class="information">
