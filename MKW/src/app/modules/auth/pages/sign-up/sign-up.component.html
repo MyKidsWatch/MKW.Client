@@ -1,3 +1,67 @@
-<p>
-  sign-up works!
-</p>
+<ion-content>
+  <div class="page-content">
+    <app-stepper [currentStep]="currentStep"></app-stepper>
+
+  
+    <form [formGroup]="registrationForm" *ngIf="currentStep === 1"  class="form-content">
+      <div (click)="previousStep()" class="go-back">
+        <i class="material-icons">arrow_back</i>
+        <p>Voltar</p>
+      </div>
+    
+      <div class="form-information">
+        <h2>Crie sua conta</h2>
+        <label>Nos conte um pouco sobre você</label>
+      </div>
+    
+      <div class="sign-up-form">
+        <label>* Campo obrigatório</label>
+        <ion-input type="text" placeholder="Nome*" formControlName="firstName"></ion-input>
+        <ion-input type="text" placeholder="Sobrenome*" formControlName="lastName"></ion-input>
+        <ion-input type="date" placeholder="Data de nascimento*" formControlName="birthDate"></ion-input>
+        <ion-select placeholder="Gênero" formControlName="gender">
+          <ion-select-option value="1">Masculino</ion-select-option>
+          <ion-select-option value="2">Feminino</ion-select-option>
+          <ion-select-option value="3">Não binário</ion-select-option>
+        </ion-select>
+      </div>
+    </form>
+    
+    <form [formGroup]="registrationForm" *ngIf="currentStep === 2"  class="form-content">
+      <div (click)="previousStep()" class="go-back">
+        <i class="material-icons">arrow_back</i>
+        <p>Voltar</p>
+      </div>
+    
+      <div class="form-information">
+        <h2>Crie sua conta</h2>
+        <label>Nos conte um pouco sobre você</label>
+      </div>
+    
+      <div class="sign-up-form">
+        <label>* Campo obrigatório</label>
+        <ion-input type="text" placeholder="Nome de usuário*" formControlName="userName"></ion-input>
+        <ion-input type="text" placeholder="E-mail*" formControlName="email"></ion-input>
+        <ion-input type="password" placeholder="Senha*" formControlName="password"></ion-input>
+        <ion-input type="password" placeholder="Confirme sua senha*" formControlName="rePassword"></ion-input>    
+      </div>
+    </form>
+    
+    <div *ngIf="currentStep === 3"  class="account-created">
+      <div class="information">
+        <h2>Conta criada com sucesso</h2>
+        <img src="assets/images/approve-email.png">
+        <label>Agradecemos por se juntar a nós! Enviamos um email de confirmação para o endereço de email fornecido durante o cadastro. Verifique sua caixa de entrada e clique no link de confirmação para concluir o processo de registro.</label>
+      </div>
+    </div>
+    
+    <div class="button-div">
+      <button (click)="nextStep()">{{currentStep != 2 ? 'Continuar' : 'Criar Conta'}}</button>
+    </div>
+  </div>
+  
+</ion-content>
+
+<ion-footer>
+
+</ion-footer>
