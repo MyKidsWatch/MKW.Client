@@ -5,12 +5,12 @@
   </div>
 
   <form class="login-form" [formGroup]="loginForm">
-    <ion-input type="text" formControlName="loginCredential" placeholder="Nome de usuário ou e-mail"></ion-input>
+    <ion-input type="text" formControlName="credential" placeholder="Nome de usuário ou e-mail"></ion-input>
     <ion-input type="password" formControlName="password" placeholder="Senha"></ion-input>
     <label>Esqueci minha senha</label>
   </form>
 
-  <div class="button">
+  <div class="button" (click)="submit()">
     <button>Entrar</button>
     <label>Não tem uma conta? <ion-router-link routerLink="sign-up">Cadastre-se</ion-router-link></label>
   </div>

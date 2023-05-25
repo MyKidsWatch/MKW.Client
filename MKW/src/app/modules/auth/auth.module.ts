@@ -8,8 +8,9 @@ import { LoginComponent } from './pages/login/login.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { StepperComponent } from 'src/app/components/stepper/stepper.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AccountClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { AccountClient, AuthenticationClient, AuthorizationClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { AccountService } from 'src/app/core/services/account.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 
 
@@ -29,7 +30,9 @@ import { AccountService } from 'src/app/core/services/account.service';
   ],
   providers: [
     AccountClient,
-    AccountService
+    AccountService,
+    AuthenticationClient,
+    AuthService
   ]
 })
 export class AuthModule { }
