@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { SplashComponent } from './components/splash/splash.component';
+import { SplashComponent } from './shared/components/splash/splash.component';
 
 @Component({
   selector: 'app-root',
