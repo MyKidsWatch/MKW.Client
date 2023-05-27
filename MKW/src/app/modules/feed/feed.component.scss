@@ -1,0 +1,23 @@
+ion-header{
+    
+
+    div{
+        display: flex;
+        justify-content: space-around;
+        font-size: 1.2em;
+        font-weight: bold;
+        margin: 10px 0;
+        padding: 5px;
+
+        label.underlined{
+            text-decoration: solid 2px underline black;
+            text-underline-offset: 4px;
+        }
+
+
+    }
+}
+
+.header-md::after {
+    background-image: none;
+}
