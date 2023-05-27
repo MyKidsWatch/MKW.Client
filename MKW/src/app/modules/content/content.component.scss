@@ -1,0 +1,41 @@
+.movie-container {
+  margin: auto;
+  height: 100%;
+  max-width: 800px;
+  overflow: visible;
+  background: var(--mkw-color-light);
+  
+  .movie-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5rem 0;
+
+    .movie-title {
+      margin: unset;
+    }
+  }
+
+  .movie-poster {
+    position: relative;
+    width: 100%;
+    min-width: 100%;
+    height: 0;
+    padding-bottom: 151.11%; /* to keep aspect ratio of a movie poster */
+    background-size: 50% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .movie-info {
+    padding: 4.4%;
+  }
+
+  .genres ion-chip {
+    --color: var(--mkw-color-light);
+    background-color: var(--mkw-color-primary);
+    font-size: .6rem;
+    padding: .4rem .8rem;
+    height: unset;
+  }
+}
