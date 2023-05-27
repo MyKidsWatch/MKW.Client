@@ -3,6 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ILoginRequestDTO } from '../../models/login-request';
 import { error } from 'console';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent  implements OnInit {
       password: new FormControl('')
   });
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
 
@@ -28,11 +29,13 @@ export class LoginComponent  implements OnInit {
       let credentials: ILoginRequestDTO = {credential: this.loginForm.controls['credential'].value!, password: this.loginForm.controls['password'].value!}
       this.authService.authenticate(credentials).subscribe({
         next: () =>{
-          console.log("logou")
+
+          this.router.navigate(['home/feed'])
         },
         error: () =>{
-          console.log("Deu erro")
+          alert("Erro durante a realização do login");
         }
+        
       })
   }
 
