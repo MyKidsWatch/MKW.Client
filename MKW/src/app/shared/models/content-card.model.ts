@@ -1,5 +1,6 @@
 
 export interface ContentCard{
+    id: number;
     title: string;
     description: string;
     contentType: string;
