@@ -2,11 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SearchComponent } from './search.component';
+import { IonicModule } from '@ionic/angular';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    SearchComponent
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -14,7 +17,8 @@ import { SearchComponent } from './search.component';
         path: '',
         component: SearchComponent
       }
-    ])
+    ]),
+    IonicModule.forRoot()
   ]
 })
 export class SearchModule { }

@@ -13,7 +13,6 @@ import { Observable } from 'rxjs'
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent  implements OnInit {
-
   constructor(private router: Router, private formBuilder: FormBuilder, private accountService: AccountService) { }
   
   //TODO: REFACTOR FORM GROUP IMPLEMENTATION

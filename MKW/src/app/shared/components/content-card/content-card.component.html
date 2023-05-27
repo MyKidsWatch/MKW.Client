@@ -1,0 +1,27 @@
+<main *ngIf="this.contentData">
+  <img [src]="this.contentData.picturePath">
+
+  <article>
+    <header>
+      <h2>{{this.contentData.title}}</h2>
+      <label>{{this.contentData.contentType}}, {{this.contentData.releaseDate | date: 'yyyy'}}</label>
+    </header>
+    <span class="genre-span">
+      <label class="genre-label" *ngFor="let genre of this.contentData.genre">{{genre}}</label>
+    </span>
+    <label class="content-description">{{this.contentData.description.substring(0, 125) + '...'}}</label>
+    <footer>
+      <aside>
+        <label>Avaliação:</label>
+        <span>
+          <i class="material-icons">star</i>
+          <label>{{this.contentData.averageRating}}</label>
+        </span>
+      </aside>
+      <nav>
+        <label>Ver mais informações</label>
+        <i class="material-icons">arrow_forward_ios</i>
+      </nav>
+    </footer>
+  </article>
+</main>

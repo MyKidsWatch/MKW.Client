@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { routes } from './auth.routes';
 import { LoginComponent } from './pages/login/login.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
-import { StepperComponent } from 'src/app/components/stepper/stepper.component';
+import { StepperComponent } from 'src/app/shared/components/stepper/stepper.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AccountClient, AuthenticationClient, AuthorizationClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { AccountService } from 'src/app/core/services/account.service';
