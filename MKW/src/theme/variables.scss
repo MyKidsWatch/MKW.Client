@@ -74,6 +74,15 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  /** MKW CSS Variables **/
+  --mkw-color-light: #f5f5f5;
+  --mkw-color-dark: #0A0A0A;
+  --mkw-color-dark-medium: #2C2C2C;
+  --mkw-color-primary: #0816C7;
+  --mkw-color-secondary: #016FB9;
+  --mkw-color-warning: #FFBA08;
+  --mkw-color-danger: #C71E1C;
 }
 
 // @media (prefers-color-scheme: light) {
