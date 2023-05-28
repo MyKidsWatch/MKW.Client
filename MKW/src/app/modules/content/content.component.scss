@@ -1,9 +1,21 @@
 .movie-container {
   margin: auto;
-  height: 100%;
   max-width: 800px;
   overflow: visible;
   background: var(--mkw-color-light);
+
+  .go-back-button {
+    position: absolute;
+    top: 1rem;
+    left: 4.4%;
+    z-index: 1;
+    background: var(--mkw-color-light);
+    border-radius: 50%;
+    height: 1.5rem;
+    width: 1.5rem;
+    padding: .25rem;
+    filter: drop-shadow(0px 0px 10px #020632);
+  }
   
   .movie-title-container {
     display: flex;
@@ -13,6 +25,7 @@
 
     .movie-title {
       margin: unset;
+      max-width: 75%;
     }
   }
 
@@ -29,6 +42,15 @@
 
   .movie-info {
     padding: 4.4%;
+    position: relative;
+    top: -5rem;
+
+    .movie-additional-info {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 100%;
+    }
   }
 
   .genres ion-chip {
@@ -37,5 +59,22 @@
     font-size: .6rem;
     padding: .4rem .8rem;
     height: unset;
+  }
+
+  .content-type {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 40%;
+    line-height: .2rem;
+
+    .movie-icon {
+      margin-right: .4rem;;
+      height: 100%;
+    }
+
+    .content-type-additional-info {
+      font-size: .8rem;
+    }
   }
 }
