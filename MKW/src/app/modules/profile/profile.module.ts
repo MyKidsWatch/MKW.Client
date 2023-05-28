@@ -10,6 +10,7 @@ import { EditProfileComponent } from './pages/edit-profile/edit-profile.componen
 import { HeaderBackComponent } from 'src/app/shared/components/header-back/header-back.component';
 import { AddChildrenComponent } from './pages/add-children/add-children.component';
 import { EditChildrenComponent } from './pages/edit-children/edit-children.component';
+import { ChildrenCardComponent } from 'src/app/shared/components/children-card/children-card.component';
 
 const childrenRoutes: Routes = [
   {
@@ -19,7 +20,16 @@ const childrenRoutes: Routes = [
   },
   {
     path: 'children',
-    component: ViewChildrenComponent
+    component: ViewChildrenComponent,
+
+  },
+  {
+    path: 'add-children',
+    component: AddChildrenComponent
+  },
+  {
+    path: 'edit-children/:id',
+    component: EditChildrenComponent
   },
   {
     path: 'edit-profile',
@@ -38,6 +48,7 @@ export const routes: Routes = [
 @NgModule({
   declarations: [
     AddChildrenComponent,
+    
     EditChildrenComponent,
     EditProfileComponent,
     ProfileComponent,
@@ -50,7 +61,8 @@ export const routes: Routes = [
     ReactiveFormsModule,
     RouterModule,
     RouterModule.forChild(routes),
-    HeaderBackComponent
+    HeaderBackComponent,
+    ChildrenCardComponent
     
   ],
   providers: [
