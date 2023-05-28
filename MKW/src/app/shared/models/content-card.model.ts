@@ -7,5 +7,5 @@ export interface ContentCard{
     genre: string[];
     releaseDate: Date;
     averageRating: number;
-    picturePath: string;
+    picturePath?: string;
 }

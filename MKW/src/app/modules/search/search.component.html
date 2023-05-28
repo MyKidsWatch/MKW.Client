@@ -1,5 +1,6 @@
 
 <ion-content>
-  <ion-searchbar placeholder="Busque o título de um filme ou série"></ion-searchbar>
-
+  <ion-searchbar (ionInput)="searchBarInput($event)" placeholder="Busque o título de um filme ou série"></ion-searchbar>
+  <app-content-card *ngFor="let contentCard of contentCards" [contentData]="contentCard"></app-content-card>
 </ion-content>
+

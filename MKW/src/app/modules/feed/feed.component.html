@@ -4,9 +4,20 @@
     <label>Em alta</label>
   </div>
 </ion-header>
-<ion-content>
-  <app-content-card></app-content-card>
-  <app-content-card></app-content-card>
-  <app-content-card></app-content-card>
-  <app-content-card></app-content-card>
+<ion-content *ngIf="showContent" >
+  <app-content-card ></app-content-card>
+  
 </ion-content>
+
+<div class="no-content" *ngIf="!showContent">
+  <article class="">
+    <h2>Nenhuma recomendação por aqui!</h2>
+    <label>Associe crianças ao seu perfil para ter uma recomendação personalizada para cada uma delas!</label>
+    <button>Adicionar crianças</button>
+  </article>
+  
+  <footer>
+    <img src="assets/images/logging-off.png">
+
+  </footer>
+</div>

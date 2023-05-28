@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SearchComponent } from './search.component';
 import { IonicModule } from '@ionic/angular';
+import { MovieClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { MovieService } from 'src/app/core/services/movie.service';
+import { ContentCardComponent } from 'src/app/shared/components/content-card/content-card.component';
 
 
 
@@ -18,7 +21,12 @@ import { IonicModule } from '@ionic/angular';
         component: SearchComponent
       }
     ]),
-    IonicModule.forRoot()
+    IonicModule.forRoot(),
+    ContentCardComponent
+  ],
+  providers: [
+    MovieClient,
+    MovieService
   ]
 })
 export class SearchModule { }

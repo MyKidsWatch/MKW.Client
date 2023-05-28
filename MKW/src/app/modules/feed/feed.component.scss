@@ -18,6 +18,39 @@ ion-header{
     }
 }
 
+div.no-content{
+    height: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 10px;
+    article{
+
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        button{
+            background-color: #0816C7;
+            color: white;
+            font-size: 1.4em;
+            width: 70%;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+    }
+    footer{
+
+        img{
+            padding: 30px 20px 0 20px;
+        }
+    }
+
+}
+
 .header-md::after {
     background-image: none;
 }
