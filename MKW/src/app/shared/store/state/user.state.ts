@@ -53,6 +53,6 @@ export class UserState{
     @Action(RemoveUser)
     removeUser(ctx: StateContext<UserStateModel>)
     {
-        ctx.patchState(new UserStateModel())
+        ctx.setState(new UserStateModel());
     }
 }
