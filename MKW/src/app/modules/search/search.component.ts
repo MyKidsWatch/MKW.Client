@@ -34,6 +34,10 @@ export class SearchComponent  implements OnInit {
             }
           })
       }
+      else if(text.length == 0)
+      {
+          this.contentCards = [];
+      }
   }
 
   transformResponseIntoContentCards(response: ObjectBaseResponseDTO)

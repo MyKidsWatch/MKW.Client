@@ -1,0 +1,6 @@
+
+<div *ngIf="childrenCard" [ngClass]="childrenCard.style">
+  <i class="material-icons">child_care</i>
+  <label *ngIf="childrenCard.gender">{{childrenCard.gender}}</label>
+  <label>{{childrenCard.ageRange}}</label>
+</div>

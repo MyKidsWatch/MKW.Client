@@ -1,0 +1,17 @@
+<ion-header>
+  <app-header-back></app-header-back>
+</ion-header>
+
+<ion-content>
+  <h2>Minhas crianças</h2>
+  <label>Clique para editar ou remover</label>
+
+  <div>
+    <app-children-card *ngFor="let childrenCard of childrenCards" [routerLink]="'../edit-children/' + childrenCard.id"  [childrenCard]="childrenCard"></app-children-card>
+  </div>
+</ion-content>
+
+
+<ion-footer>
+  <button routerLink="../add-children"><i class="material-icons">add</i> Adicionar criança</button>
+</ion-footer>

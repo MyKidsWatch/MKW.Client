@@ -1,0 +1,32 @@
+<ion-header>
+  <app-header-back></app-header-back>
+</ion-header>
+
+<ion-content>
+  <h2>Adicionar criança</h2>
+
+  <form  class="form-content">
+  
+    <label>* Campo obrigatório</label>
+    <div class="sign-up-form">
+      <ion-select placeholder="Faixa etária" >
+        <ion-select-option value="0">0 a 3 anos</ion-select-option>
+        <ion-select-option value="1">4 a 7 anos</ion-select-option>
+        <ion-select-option value="2">7 a 9 anos</ion-select-option>
+        <ion-select-option value="3">10 a 12 anos</ion-select-option>
+        <ion-select-option value="4">13 a 16 anos</ion-select-option>
+      </ion-select>
+
+      <ion-select placeholder="Gênero" >
+        <ion-select-option value="1">Masculino</ion-select-option>
+        <ion-select-option value="2">Feminino</ion-select-option>
+        <ion-select-option value="3">Não binário</ion-select-option>
+      </ion-select>
+    </div>
+  </form>
+</ion-content>
+
+
+<ion-footer>
+  <button routerLink="../add-children"><i class="material-icons">save</i> Salvar alterações</button>
+</ion-footer>

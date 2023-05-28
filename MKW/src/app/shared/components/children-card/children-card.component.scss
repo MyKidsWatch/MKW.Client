@@ -1,0 +1,29 @@
+div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 130px;
+    width: 130px; 
+    margin: 10px;   
+    font-weight: bold;
+    i{
+        font-size: 3em;
+    }
+
+}
+
+div.boy{
+    background-color: #0816C7;
+    color: white;
+}
+
+div.girl{
+    background-color: #6812c7;
+    color: white;
+}
+
+div.undefined{
+    background-color: #FFBA08;
+    color: #2C2C2C;
+}
