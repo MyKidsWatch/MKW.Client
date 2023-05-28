@@ -4,7 +4,7 @@
   <article>
     <header>
       <h2>{{this.contentData.title}}</h2>
-      <label>{{this.contentData.contentType}}, {{this.contentData.releaseDate | date: 'yyyy'}}</label>
+      <label *ngIf="isValidDate()">{{this.contentData.contentType}}, {{this.contentData.releaseDate | date: 'yyyy'}}</label>
     </header>
     <span class="genre-span">
       <label class="genre-label" *ngFor="let genre of this.contentData.genre">{{genre}}</label>

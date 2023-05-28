@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs';
+import { AlgorithmService } from 'src/app/core/services/algorithm.service';
+import { MovieService } from 'src/app/core/services/movie.service';
 
 @Component({
   selector: 'app-feed',
@@ -7,8 +10,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FeedComponent  implements OnInit {
 
-  constructor() { }
+  public showContent: boolean = false
+  constructor(private algorithmService: AlgorithmService) { }
 
-  ngOnInit() {}
+  ngOnInit() {      
+  } 
 
+  ionViewDidEnter(){
+    this.searchAlgorithm();
+  }
+
+  searchAlgorithm()
+  {
+    this.algorithmService.getUserFeed().pipe(take(1)).subscribe({
+      next: (response) =>{
+          console.log(response)
+      },
+      error: (err) =>{
+          console.log(err);
+      }
+    });
+  }
 }
