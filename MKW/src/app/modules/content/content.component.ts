@@ -8,10 +8,14 @@ import { Component, OnInit } from '@angular/core';
 export class ContentComponent implements OnInit {
   constructor() {
 
-   }
+  }
 
   ngOnInit() {
     
-   }
+  }
+
+  goBack() {
+    window.history.back();
+  }
 
 }
