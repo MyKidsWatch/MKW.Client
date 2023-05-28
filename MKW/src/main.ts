@@ -7,13 +7,15 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { API_BASE_URL, MovieClient } from './app/core/proxies/mkw-api.proxy';
-import { HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { CoreModule } from './app/core/core.module';
 import { CommonModule } from '@angular/common';
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from './app/shared/store/state/user.state';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { AuthInterceptor } from './app/core/interceptors/auth.interceptor';
+import { TokenInterceptor } from './app/core/interceptors/token.interceptor';
 
 if (environment.production) {
   enableProdMode();
@@ -32,9 +34,20 @@ bootstrapApplication(AppComponent, {
         CommonModule,
         NgxsModule.forRoot([UserState]),
         NgxsStoragePluginModule.forRoot(),
-        NgxsLoggerPluginModule.forRoot()
+        NgxsLoggerPluginModule.forRoot(),
+        
       ),
     provideRouter(routes),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true   
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true   
+    },
     {provide: API_BASE_URL, useValue: environment.apiBaseUrl},
     
   ],

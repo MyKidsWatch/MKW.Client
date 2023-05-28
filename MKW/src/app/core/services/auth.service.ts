@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AccountClient, AuthenticationClient, LoginRequestByEmailDTO, LoginRequestByUserNameDTO } from '../proxies/mkw-api.proxy';
+import { AccountClient, AuthenticationClient, LoginRequestByEmailDTO, LoginRequestByUserNameDTO, TokenDTOBaseResponseDTO } from '../proxies/mkw-api.proxy';
 import { CreateUserDTO } from '../proxies/mkw-api.proxy';
 import { Observable } from 'rxjs';
 import { ReadUserDTOBaseResponseDTO } from '../proxies/mkw-api.proxy';
@@ -13,12 +13,13 @@ export class AuthService {
 
   constructor(private authClient: AuthenticationClient) { }
 
-  public authenticate(request: ILoginRequestDTO) : Observable<any>
+  public authenticate(request: ILoginRequestDTO) : Observable<TokenDTOBaseResponseDTO>
   {
       return EmailUtils.isEmail(request.credential) ? 
       this.authClient.email(new LoginRequestByEmailDTO({email: request.credential, password: request.password})) : 
       this.authClient.username(new LoginRequestByUserNameDTO({userName: request.credential, password: request.password})); 
   }
+
 
 
 }

@@ -1,12 +1,12 @@
-export interface UserData{
-    username: string;
-    token: TokenInfo;
-    isEmailVerified: boolean;
-    isPremium: boolean;
+export class UserData{
+
+    username?: string;
+    isEmailVerified?: boolean;
+    isPremium?: boolean;
 }
 
-export interface TokenInfo{
-    accessToken: string;
-    refreshToken: string;
-    expiresAt: Date;
+export class TokenInfo{
+    accessToken?: string;
+    refreshToken?: string;
+    expiresAt?: Date;
 }
