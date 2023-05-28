@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content *ngIf="!loading">
   <div class="movie-container">
       <ion-icon 
         name="arrow-back-outline" 
@@ -8,14 +8,14 @@
         (click)="goBack()"
       >
       </ion-icon>
-    <div 
+      <div 
       class="movie-poster" 
-      style="background: linear-gradient(180deg, #f5f5f500 0%, #f5f5f500 52.92%, #f5f5f5 90%), url('https://www.themoviedb.org/t/p/w600_and_h900_bestv2/kzYbNJ4JaQiRny0cDi8a6bNX5w3.jpg') no-repeat center center fixed; background-size: cover;"
-    >
+      style="background: linear-gradient(180deg, #f5f5f500 0%, #f5f5f500 52.92%, #f5f5f5 90%), url('https://image.tmdb.org/t/p/original/{{ movieObject.poster_path }}') no-repeat center center fixed; background-size: cover;"
+    >    
     </div>
     <div class="movie-info">
       <div class="movie-title-container">
-        <h1 class="movie-title">Movie Title title title really big title</h1>
+        <h1 class="movie-title">{{ movieObject.original_title }}</h1>
         <app-stars-rating 
         [rating]="2.4"
         />
@@ -29,26 +29,20 @@
         </ion-chip>
       </div>
       <p class="movie-description">
-        Lorem ipsum dolor sit amet, 
-        consectetur adipiscing elit. 
-        Sed euismod, sapien vel bibendum bibendum, 
-        lorem ipsum bibendum sapien, vel bibendum sapien lorem eget sapien. Sed euismod, 
+        {{ movieObject.description }} 
       </p>
       <div class="movie-additional-info">
         <div class="content-type">
           <img 
-          src="assets/icon/movie.svg" 
-          class="movie-icon"
-          alt="Movie icon"
+            src="assets/icon/movie.svg" 
+            class="movie-icon"
+            alt="Movie icon"
           >
           <div>
-            <p class="content-type-text">Filme</p>
-            <p class="content-type-additional-info">2023</p>
+            <p class="content-type-text"> {{ 'movie' | translate }}</p>
+            <p class="content-type-additional-info">{{ movieObject.release_date.slice(0, 4) }}</p>
           </div>
         </div>  
-      </div>
-      <div class="parental-rating">
-
       </div>
     </div>
   </div>
