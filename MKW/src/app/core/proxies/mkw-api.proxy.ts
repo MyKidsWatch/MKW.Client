@@ -227,6 +227,71 @@ export class AccountClient {
     /**
      * @return Success
      */
+    token(): Observable<ReadUserDTOBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Account/user/token";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processToken(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processToken(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReadUserDTOBaseResponseDTO>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReadUserDTOBaseResponseDTO>;
+        }));
+    }
+
+    protected processToken(response: HttpResponseBase): Observable<ReadUserDTOBaseResponseDTO> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReadUserDTOBaseResponseDTO.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+            return throwException("Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
     usernameGet(userName: string): Observable<ReadUserDTOBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Account/username/{userName}";
         if (userName === undefined || userName === null)
@@ -707,7 +772,7 @@ export class AccountClient {
 
     /**
      * @param body (optional) 
-     * @return Success
+     * @return Created
      */
     register(body: CreateUserDTO | undefined): Observable<ReadUserDTOBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Account/register";
@@ -748,10 +813,10 @@ export class AccountClient {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 201) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReadUserDTOBaseResponseDTO.fromJS(resultData200);
-            return _observableOf(result200);
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = ReadUserDTOBaseResponseDTO.fromJS(resultData201);
+            return _observableOf(result201);
             }));
         } else if (status === 404) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -1213,10 +1278,20 @@ export class AlgorithmClient {
     }
 
     /**
+     * @param page (optional) 
+     * @param count (optional) 
      * @return Success
      */
-    algorithm(): Observable<ReviewDtoBaseResponseDTO> {
-        let url_ = this.baseUrl + "/v1/Algorithm";
+    algorithm(page: number | undefined, count: number | undefined): Observable<ReviewDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Algorithm?";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (count === null)
+            throw new Error("The parameter 'count' cannot be null.");
+        else if (count !== undefined)
+            url_ += "count=" + encodeURIComponent("" + count) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2157,13 +2232,93 @@ export class MovieClient {
     }
 
     /**
+     * @param language (optional) 
      * @return Success
      */
-    movie(movieId: number): Observable<any> {
-        let url_ = this.baseUrl + "/v1/Movie/{movieId}";
+    id(movieId: number, language: string | undefined): Observable<ObjectBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Movie/id/{movieId}?";
         if (movieId === undefined || movieId === null)
             throw new Error("The parameter 'movieId' must be defined.");
         url_ = url_.replace("{movieId}", encodeURIComponent("" + movieId));
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ObjectBaseResponseDTO>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ObjectBaseResponseDTO>;
+        }));
+    }
+
+    protected processId(response: HttpResponseBase): Observable<ObjectBaseResponseDTO> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectBaseResponseDTO.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+            return throwException("Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param name (optional) 
+     * @param language (optional) 
+     * @return Success
+     */
+    movie(name: string | undefined, language: string | undefined): Observable<ObjectBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Movie?";
+        if (name === null)
+            throw new Error("The parameter 'name' cannot be null.");
+        else if (name !== undefined)
+            url_ += "name=" + encodeURIComponent("" + name) + "&";
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -2181,14 +2336,14 @@ export class MovieClient {
                 try {
                     return this.processMovie(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<any>;
+                    return _observableThrow(e) as any as Observable<ObjectBaseResponseDTO>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<any>;
+                return _observableThrow(response_) as any as Observable<ObjectBaseResponseDTO>;
         }));
     }
 
-    protected processMovie(response: HttpResponseBase): Observable<any> {
+    protected processMovie(response: HttpResponseBase): Observable<ObjectBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2199,8 +2354,7 @@ export class MovieClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 !== undefined ? resultData200 : <any>null;
-    
+            result200 = ObjectBaseResponseDTO.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status === 404) {
@@ -6219,6 +6373,8 @@ export interface ITimespan {
 export class TokenDTO implements ITokenDTO {
     accessToken?: string | null;
     refreshToken?: string | null;
+    accessTokenExpiration?: Date;
+    refreshTokenExpiration?: Date;
 
     constructor(data?: ITokenDTO) {
         if (data) {
@@ -6233,6 +6389,8 @@ export class TokenDTO implements ITokenDTO {
         if (_data) {
             this.accessToken = _data["accessToken"] !== undefined ? _data["accessToken"] : <any>null;
             this.refreshToken = _data["refreshToken"] !== undefined ? _data["refreshToken"] : <any>null;
+            this.accessTokenExpiration = _data["accessTokenExpiration"] ? new Date(_data["accessTokenExpiration"].toString()) : <any>null;
+            this.refreshTokenExpiration = _data["refreshTokenExpiration"] ? new Date(_data["refreshTokenExpiration"].toString()) : <any>null;
         }
     }
 
@@ -6247,6 +6405,8 @@ export class TokenDTO implements ITokenDTO {
         data = typeof data === 'object' ? data : {};
         data["accessToken"] = this.accessToken !== undefined ? this.accessToken : <any>null;
         data["refreshToken"] = this.refreshToken !== undefined ? this.refreshToken : <any>null;
+        data["accessTokenExpiration"] = this.accessTokenExpiration ? this.accessTokenExpiration.toISOString() : <any>null;
+        data["refreshTokenExpiration"] = this.refreshTokenExpiration ? this.refreshTokenExpiration.toISOString() : <any>null;
         return data;
     }
 }
@@ -6254,6 +6414,8 @@ export class TokenDTO implements ITokenDTO {
 export interface ITokenDTO {
     accessToken?: string | null;
     refreshToken?: string | null;
+    accessTokenExpiration?: Date;
+    refreshTokenExpiration?: Date;
 }
 
 export class TokenDTOBaseResponseDTO implements ITokenDTOBaseResponseDTO {
