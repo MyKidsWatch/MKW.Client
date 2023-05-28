@@ -60,7 +60,7 @@ export class SignUpComponent  implements OnInit {
       this.registerAccount().subscribe({
         next: (res) =>{
           console.log(res);
-            this.currentStep++;
+          this.currentStep++;
         },
         error: (err) =>{
           console.log(err)

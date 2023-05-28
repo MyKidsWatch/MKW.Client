@@ -1,17 +1,19 @@
-import { Action, Selector, State, StateContext } from "@ngxs/store";
-import { UserData } from "../models/user.model";
-import { RemoveUser, SaveUser } from "../actions/user.action";
+import { Action, Selector, State, StateContext, getStoreMetadata } from "@ngxs/store";
+import { TokenInfo, UserData } from "../models/user.model";
+import { RemoveUser, SetTokenInfo, SetUserData } from "../actions/user.action";
 import { Injectable } from '@angular/core';
 
 export class UserStateModel{
     user?: UserData;
+    token?: TokenInfo;
 }
 
 
 @State<UserStateModel>({
     name: 'userState',
     defaults: {
-        user: undefined
+        user: new UserData(),
+        token: new TokenInfo()
     }
 })
 
@@ -24,24 +26,33 @@ export class UserState{
         return state.user;
     }
 
-
-    @Action(SaveUser)
-    saveUser({getState, patchState} : StateContext<UserStateModel>, { payload } : SaveUser)
+    @Selector([UserState])
+    static getTokenInfo(state: UserStateModel)
     {
-        const state = getState();
-        patchState({
+        return state.token;
+    }
+
+
+    @Action(SetUserData)
+    setUserData(ctx: StateContext<UserStateModel>, { payload } : SetUserData)
+    {
+        ctx.patchState({
             user: payload
         })
 
     }
 
-    @Action(RemoveUser)
-    removeUser({getState, patchState} : StateContext<UserStateModel>)
+    @Action(SetTokenInfo)
+    setTokenInfo(ctx: StateContext<UserStateModel>, {payload} : SetTokenInfo)
     {
-        const state = getState();
-        patchState({
-            user: undefined
+        ctx.patchState({
+            token: payload
         })
+    }
 
+    @Action(RemoveUser)
+    removeUser(ctx: StateContext<UserStateModel>)
+    {
+        ctx.patchState(new UserStateModel())
     }
 }
