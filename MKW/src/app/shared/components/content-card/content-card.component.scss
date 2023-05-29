@@ -1,83 +1,86 @@
-main{
-    display: flex;
-    flex-wrap: nowrap;
+main {
+  display: flex;
+  flex-wrap: nowrap;
 
-    img{
-        width: 40%;
-        padding: 20px 5px 0 10px;
+  img {
+    width: 35vw;
+    height: 53.5vw;
+  }
+
+  article {
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    margin: 18px 0 10px 0;
+    padding: 0 5px;
+
+    header {
+      h2 {
+        margin: 0;
+      }
+
+      label {
+        color: #444444;
+      }
     }
-    article{
+
+    label.content-description {
+
+      margin: 10px 0;
+      font-size: 0.75em;
+    }
+
+    span.genre-span {
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin-top: 4px;
+
+      label.genre-label {
+        font-size: 0.8em;
+        padding: 5px 15px;
+        color: white;
+        background-color: var(--mkw-color-primary);
+        border: solid 1px var(--mkw-color-primary);
+        border-radius: 40px;
+        margin: 5px 5px 0 0;
+      }
+    }
+
+    footer {
+      width: 100%;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+
+      aside {
         display: flex;
         flex-direction: column;
-        width: 65%;
-        margin: 18px 0 10px 0;
-        padding: 0 5px;
-        header{
-            h2{
-                margin: 0;
-            }
-            label{
-                color: #444444;
-            }
+        width: 50%;
+
+        span {
+          display: flex;
+          flex-direction: row;
+          align-content: flex-start;
+          align-items: flex-end;
+          justify-content: flex-start;
+
+          i {
+            color: #FFBA08;
+            margin-right: 4px;
+          }
+
         }
+      }
 
-        label.content-description{
-            
-            margin: 10px 0;
-            font-size: 0.75em;
-        }
-    
-        span.genre-span{
-    
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            margin-top: 4px;
-    
-            label.genre-label{
-                font-size: 0.8em;
-                padding: 5px 15px;
-                color: white;
-                background-color: #0816c7;
-                border: solid 1px #0816c7;
-                border-radius: 40px;
-                margin: 5px 5px 0 0;
-            }
-        }
-
-        footer{
-            width: 100%;
-            margin-top: auto;
-            display: flex;
-            justify-content: space-between;
-
-            aside 
-            {
-                display: flex;
-                flex-direction: column;
-                width: 50%;
-
-                span{
-                    display: flex;
-                    flex-direction: row;
-                    align-content: flex-start;
-                    align-items: flex-end;
-                    justify-content: flex-start;
-                
-                    i{
-                        color: #FFBA08; 
-                        margin-right: 4px;
-                    }
-
-                }
-            }
-            nav{
-                display: flex;
-                align-self: flex-end;
-                font-size: 0.75em;
-                text-align: end;
-            }
-        }
+      nav {
+        display: flex;
+        align-self: flex-end;
+        font-size: 0.75em;
+        text-align: end;
+      }
     }
-    
+  }
+
 }
