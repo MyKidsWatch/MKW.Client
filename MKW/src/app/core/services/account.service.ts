@@ -17,4 +17,10 @@ export class AccountService {
       return res;
   }
 
+  public getUserInfo()
+  {
+    let res = this.accountClient.token();
+    return res;
+  }
+
 }
