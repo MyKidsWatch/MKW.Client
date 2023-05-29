@@ -11,10 +11,12 @@ import { HeaderBackComponent } from 'src/app/shared/components/header-back/heade
 import { AddChildrenComponent } from './pages/add-children/add-children.component';
 import { EditChildrenComponent } from './pages/edit-children/edit-children.component';
 import { ChildrenCardComponent } from 'src/app/shared/components/children-card/children-card.component';
-import { AgeRangeClient, ChildClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { AccountClient, AgeRangeClient, ChildClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { ChildService } from 'src/app/core/services/child.service';
 import { AgeRangeService } from 'src/app/core/services/age-range.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { ProfileResolver } from 'src/app/core/resolvers/profile.resolver';
+import { AccountService } from 'src/app/core/services/account.service';
 
 const childrenRoutes: Routes = [
   {
@@ -44,6 +46,7 @@ export const routes: Routes = [
   {
       path: '',
       component: ProfileComponent,
+      resolve: [ProfileResolver],
       children: childrenRoutes
   }
 ];
@@ -70,10 +73,13 @@ export const routes: Routes = [
     
   ],
   providers: [
-      ChildClient,
-      ChildService,
-      AgeRangeClient,
-      AgeRangeService
+    ProfileResolver,
+    AccountClient,
+    AccountService,
+    ChildClient,
+    ChildService,
+    AgeRangeClient,
+    AgeRangeService
   ]
 })
 export class ProfileModule { }
