@@ -70,6 +70,23 @@
       }
     }
 
+    .rating-text {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: .8rem;
+    }
+
+    .star-icon {
+      height: 1.6rem;
+      margin-right: .2rem;
+      filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
+    }
+
+    .rating-value {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
     footer {
       width: 100%;
       margin-top: auto;

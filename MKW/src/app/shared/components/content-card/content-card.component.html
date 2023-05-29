@@ -16,11 +16,15 @@
     </div>
     <label class="content-description">{{this.contentData.description}}</label>
     <footer>
-      <aside>
-        <label>Avaliação:</label>
+      <aside class="rating">
+        <label class="rating-text">Avaliação:</label>
         <span>
-          <i class="material-icons">star</i>
-          <label>{{this.contentData.averageRating }}</label>
+          <img 
+            src="assets/icon/star.svg" 
+            class="star-icon"
+            alt="Star icon"
+          >
+          <label class="rating-value">{{ this.contentData.averageRating }}</label>
         </span>
       </aside>
       <nav>
