@@ -20,6 +20,6 @@ export class ChildService {
   }
 
   deleteChild(id: number) {
-    return this.childClient.childDelete(id, `${id}`);
+    return this.childClient.childDelete(id);
   }
 }
