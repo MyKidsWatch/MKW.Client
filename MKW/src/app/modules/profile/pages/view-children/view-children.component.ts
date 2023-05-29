@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs';
+import { AccountUtils } from 'src/app/core/Util/AccountUtil';
+import { ChildDtoBaseResponseDTO } from 'src/app/core/proxies/mkw-api.proxy';
+import { AgeRangeService } from 'src/app/core/services/age-range.service';
+import { ChildService } from 'src/app/core/services/child.service';
 import { ChildrenCard } from 'src/app/shared/models/children-card.model';
 
 @Component({
@@ -9,16 +14,47 @@ import { ChildrenCard } from 'src/app/shared/models/children-card.model';
 export class ViewChildrenComponent  implements OnInit {
 
   public childrenCards: ChildrenCard[] = [];
-  constructor() { 
-    this.childrenCards.push({ageRange: '7 a 9 anos', id: 0, style: 'boy', gender: 'Menino'})
-    this.childrenCards.push({ageRange: '7 a 9 anos', id: 0, style: 'girl', gender: 'Menina'})
-    this.childrenCards.push({ageRange: '7 a 9 anos', id: 0, style: 'undefined'})
+  
+  constructor(private childService: ChildService) {   }
+
+  ngOnInit() {
+
+    
+      
   }
 
-  ngOnInit() {}
+  ionViewDidEnter(){
+    this.childrenCards = [];
+    this.childService.getChildren().pipe(take(1)).subscribe({
+      next: (response) =>{
+        this.buildChildrenCards(response)
+      },
+      error: (err) =>{
+        console.log(err);
+      }
+    })
+  }
 
-  showChildrenId(childrenCard: ChildrenCard)
+  buildChildrenCards(childrenResponse: ChildDtoBaseResponseDTO)
   {
-      console.log(childrenCard.id);
+      childrenResponse.content?.forEach(children =>{
+        let gender = AccountUtils.getGenderString(children.genderId);
+
+        this.childrenCards.push(
+          {
+            ageRange: AccountUtils.getAgeRangeString(children.ageRangeId), 
+            id: children.id!, 
+            style: gender ? gender : 'unassigned', 
+            gender
+          })
+      });
   }
+
+}
+
+
+export interface AgeRangeData{
+    id?: number;
+    initialAge?: number;
+    finalAge?: number;
 }
