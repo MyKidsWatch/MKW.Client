@@ -28,7 +28,7 @@ div.page-content{
                 font-size: 0.75em;
             }
             ion-input, ion-select{
-                border: 2px solid #0A0A0A;
+                border: 2px solid var(--mkw-color-dark);
                 width: 100%;
                 margin: 25px 0 0 0;
                 padding: 10px;

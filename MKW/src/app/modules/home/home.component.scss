@@ -1,0 +1,22 @@
+.bottom-tab-bar {
+  height: 10vh;
+  border-top: 2px solid #ddd;
+  ion-tab-button {
+    font-size: .8rem;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: .9px;
+
+    ion-icon {
+      margin-bottom: .2rem;
+      font-size: 1.8rem;
+    }
+
+    &.tab-selected {
+      border-top: 2px solid var(--mkw-color-primary);
+    }
+  }
+}
