@@ -5,7 +5,7 @@
   </div>
 </ion-header>
 <ion-content *ngIf="showContent" >
-  <app-content-card ></app-content-card>
+  <app-content-card *ngFor="let contentCard of contentCards" [contentData]="contentCard"></app-content-card>
   
 </ion-content>
 

@@ -40,7 +40,7 @@ export class AccountUtils {
             case 5:
                 ageRangeString = '12 a 14 anos'
                 break;
-            case 5:
+            case 6:
                 ageRangeString = '15 a 17 anos'
                 break;
         }

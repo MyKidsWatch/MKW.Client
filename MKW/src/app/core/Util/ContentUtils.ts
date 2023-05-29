@@ -15,12 +15,24 @@ export class ContentUtils {
             picturePath: tmdbResponse.poster_path ? 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + tmdbResponse.poster_path : undefined
         }
 
-        if(tmdbResponse.release_date == "")
-        {
-            console.log(contentCard)
-        }
         return contentCard;
 
+    }
+
+    static algorithmToContentCard(tmdbResponse: any) : ContentCard
+    {
+      let contentCard: ContentCard = {
+        title: tmdbResponse.title,
+        releaseDate: new Date(tmdbResponse.release_date),
+        averageRating: Math.round(tmdbResponse.vote_average * 10)/10,
+        contentType: 'Movie',
+        description: tmdbResponse.overview,
+        genre: tmdbResponse.genres.map((x: any) => x.name),
+        id: tmdbResponse.id,
+        picturePath: tmdbResponse.poster_path ? 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + tmdbResponse.poster_path : undefined
+    }
+
+    return contentCard;
     }
 
     static TMDBGenreToText(genreId: number): string {

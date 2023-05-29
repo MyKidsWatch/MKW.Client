@@ -842,6 +842,76 @@ export class AccountClient {
 
     /**
      * @param body (optional) 
+     * @return No Content
+     */
+    update(body: UpdateUserDTO | undefined): Observable<ObjectBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Account/user/update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ObjectBaseResponseDTO>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ObjectBaseResponseDTO>;
+        }));
+    }
+
+    protected processUpdate(response: HttpResponseBase): Observable<ObjectBaseResponseDTO> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result204: any = null;
+            let resultData204 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result204 = ObjectBaseResponseDTO.fromJS(resultData204);
+            return _observableOf(result204);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+            return throwException("Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
      * @return Success
      */
     passwordKeycodePost(body: RequestKeycodeDTO | undefined): Observable<ResponseGenerateKeycodeDTOBaseResponseDTO> {
@@ -1280,9 +1350,10 @@ export class AlgorithmClient {
     /**
      * @param page (optional) 
      * @param count (optional) 
+     * @param language (optional) 
      * @return Success
      */
-    algorithm(page: number | undefined, count: number | undefined): Observable<ReviewDtoBaseResponseDTO> {
+    algorithm(page: number | undefined, count: number | undefined, language: string | undefined): Observable<ObjectBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Algorithm?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
@@ -1292,6 +1363,10 @@ export class AlgorithmClient {
             throw new Error("The parameter 'count' cannot be null.");
         else if (count !== undefined)
             url_ += "count=" + encodeURIComponent("" + count) + "&";
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1309,14 +1384,14 @@ export class AlgorithmClient {
                 try {
                     return this.processAlgorithm(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ReviewDtoBaseResponseDTO>;
+                    return _observableThrow(e) as any as Observable<ObjectBaseResponseDTO>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ReviewDtoBaseResponseDTO>;
+                return _observableThrow(response_) as any as Observable<ObjectBaseResponseDTO>;
         }));
     }
 
-    protected processAlgorithm(response: HttpResponseBase): Observable<ReviewDtoBaseResponseDTO> {
+    protected processAlgorithm(response: HttpResponseBase): Observable<ObjectBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1327,7 +1402,7 @@ export class AlgorithmClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ReviewDtoBaseResponseDTO.fromJS(resultData200);
+            result200 = ObjectBaseResponseDTO.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status === 404) {
@@ -2074,11 +2149,8 @@ export class ChildClient {
     /**
      * @return Success
      */
-    childDelete(childId: number, id: string): Observable<ChildDtoBaseResponseDTO> {
+    childDelete(id: number): Observable<ChildDtoBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Child/{id}";
-        if (childId === undefined || childId === null)
-            throw new Error("The parameter 'childId' must be defined.");
-        url_ = url_.replace("{childId}", encodeURIComponent("" + childId));
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -5945,128 +6017,6 @@ export interface IReviewDetails {
     review?: Review;
 }
 
-export class ReviewDto implements IReviewDto {
-    id?: string | null;
-    title?: string | null;
-    text?: string | null;
-    userId?: string | null;
-    contentId?: string | null;
-    externalContentId?: string | null;
-
-    constructor(data?: IReviewDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
-            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
-            this.text = _data["text"] !== undefined ? _data["text"] : <any>null;
-            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
-            this.contentId = _data["contentId"] !== undefined ? _data["contentId"] : <any>null;
-            this.externalContentId = _data["externalContentId"] !== undefined ? _data["externalContentId"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): ReviewDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReviewDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id !== undefined ? this.id : <any>null;
-        data["title"] = this.title !== undefined ? this.title : <any>null;
-        data["text"] = this.text !== undefined ? this.text : <any>null;
-        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
-        data["contentId"] = this.contentId !== undefined ? this.contentId : <any>null;
-        data["externalContentId"] = this.externalContentId !== undefined ? this.externalContentId : <any>null;
-        return data;
-    }
-}
-
-export interface IReviewDto {
-    id?: string | null;
-    title?: string | null;
-    text?: string | null;
-    userId?: string | null;
-    contentId?: string | null;
-    externalContentId?: string | null;
-}
-
-export class ReviewDtoBaseResponseDTO implements IReviewDtoBaseResponseDTO {
-    readonly isSuccess?: boolean;
-    readonly content?: ReviewDto[] | null;
-    readonly errors?: string[] | null;
-
-    constructor(data?: IReviewDtoBaseResponseDTO) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            (<any>this).isSuccess = _data["isSuccess"] !== undefined ? _data["isSuccess"] : <any>null;
-            if (Array.isArray(_data["content"])) {
-                (<any>this).content = [] as any;
-                for (let item of _data["content"])
-                    (<any>this).content!.push(ReviewDto.fromJS(item));
-            }
-            else {
-                (<any>this).content = <any>null;
-            }
-            if (Array.isArray(_data["errors"])) {
-                (<any>this).errors = [] as any;
-                for (let item of _data["errors"])
-                    (<any>this).errors!.push(item);
-            }
-            else {
-                (<any>this).errors = <any>null;
-            }
-        }
-    }
-
-    static fromJS(data: any): ReviewDtoBaseResponseDTO {
-        data = typeof data === 'object' ? data : {};
-        let result = new ReviewDtoBaseResponseDTO();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["isSuccess"] = this.isSuccess !== undefined ? this.isSuccess : <any>null;
-        if (Array.isArray(this.content)) {
-            data["content"] = [];
-            for (let item of this.content)
-                data["content"].push(item.toJSON());
-        }
-        if (Array.isArray(this.errors)) {
-            data["errors"] = [];
-            for (let item of this.errors)
-                data["errors"].push(item);
-        }
-        return data;
-    }
-}
-
-export interface IReviewDtoBaseResponseDTO {
-    isSuccess?: boolean;
-    content?: ReviewDto[] | null;
-    errors?: string[] | null;
-}
-
 export class StringBaseResponseDTO implements IStringBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: string[] | null;
@@ -6482,6 +6432,65 @@ export interface ITokenDTOBaseResponseDTO {
     isSuccess?: boolean;
     content?: TokenDTO[] | null;
     errors?: string[] | null;
+}
+
+export class UpdateUserDTO implements IUpdateUserDTO {
+    userName?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
+    personDetails!: PersonOnCreateUserDTO;
+
+    constructor(data?: IUpdateUserDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.personDetails = new PersonOnCreateUserDTO();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userName = _data["userName"] !== undefined ? _data["userName"] : <any>null;
+            this.firstName = _data["firstName"] !== undefined ? _data["firstName"] : <any>null;
+            this.lastName = _data["lastName"] !== undefined ? _data["lastName"] : <any>null;
+            this.email = _data["email"] !== undefined ? _data["email"] : <any>null;
+            this.phoneNumber = _data["phoneNumber"] !== undefined ? _data["phoneNumber"] : <any>null;
+            this.personDetails = _data["personDetails"] ? PersonOnCreateUserDTO.fromJS(_data["personDetails"]) : new PersonOnCreateUserDTO();
+        }
+    }
+
+    static fromJS(data: any): UpdateUserDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateUserDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userName"] = this.userName !== undefined ? this.userName : <any>null;
+        data["firstName"] = this.firstName !== undefined ? this.firstName : <any>null;
+        data["lastName"] = this.lastName !== undefined ? this.lastName : <any>null;
+        data["email"] = this.email !== undefined ? this.email : <any>null;
+        data["phoneNumber"] = this.phoneNumber !== undefined ? this.phoneNumber : <any>null;
+        data["personDetails"] = this.personDetails ? this.personDetails.toJSON() : <any>null;
+        return data;
+    }
+}
+
+export interface IUpdateUserDTO {
+    userName?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
+    personDetails: PersonOnCreateUserDTO;
 }
 
 export class ApiException extends Error {

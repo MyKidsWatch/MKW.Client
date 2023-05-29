@@ -8,8 +8,8 @@ export class AlgorithmService {
 
   constructor(private algorithmClient: AlgorithmClient) { }
 
-  getUserFeed(page: number = 0, count: number = 10)
+  getUserFeed(page: number = 1, count: number = 10)
   {
-      return this.algorithmClient.algorithm(page, count);
+      return this.algorithmClient.algorithm(page, count, undefined);
   }
 }
