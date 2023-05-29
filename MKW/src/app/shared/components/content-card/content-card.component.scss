@@ -1,50 +1,72 @@
-main {
+.content-card {
   display: flex;
+  align-items: center;
+  padding: 1rem 4.4%;
   flex-wrap: nowrap;
+  border-bottom: 2px solid #e2e2e2;
+  font-family: 'Poppins', sans-serif;
 
-  img {
+  .content-poster {
     width: 35vw;
     height: 53.5vw;
+    margin-right: .5rem;
   }
 
   article {
     display: flex;
     flex-direction: column;
-    width: 65%;
-    margin: 18px 0 10px 0;
-    padding: 0 5px;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 53.5vw;
 
     header {
-      h2 {
-        margin: 0;
+      .content-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin: unset;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        line-height: 1.2;
       }
 
-      label {
-        color: #444444;
+      .content-type {
+        font-family: 'Poppins', sans-serif;
+        color: var(--mkw-color-dark-medium);
+        font-size: .8rem;
       }
     }
 
-    label.content-description {
-
+    .content-description {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
       margin: 10px 0;
-      font-size: 0.75em;
+      font-size: 0.75rem;
+      overflow: hidden;
+      white-space:  break-word;
+      text-overflow: ellipsis;
     }
 
-    span.genre-span {
-
+    .genres {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
       margin-top: 4px;
+      padding: unset;
 
-      label.genre-label {
-        font-size: 0.8em;
-        padding: 5px 15px;
-        color: white;
+      ion-chip {
+        --color: var(--mkw-color-light);
         background-color: var(--mkw-color-primary);
-        border: solid 1px var(--mkw-color-primary);
-        border-radius: 40px;
-        margin: 5px 5px 0 0;
+        font-size: .6rem;
+        padding: .2rem .6rem;
+        height: unset;
+        margin-left: unset;
+        margin-top: unset;
+        margin-right: .2rem;
+        margin-bottom: .2rem;
       }
     }
 
