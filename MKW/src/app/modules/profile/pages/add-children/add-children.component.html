@@ -1,28 +1,23 @@
-<ion-header>
-  <app-header-back></app-header-back>
-</ion-header>
+<ion-content >
+  <div class="add-children">
+    <app-header-back />
+    <h2>Adicionar criança</h2>
 
-<ion-content>
-  <h2>Adicionar criança</h2>
+    <form [formGroup]="registrationForm" class="form-content">
+      <label class="mandatory">* Campo obrigatório</label>
+      <div class="signup-form">
+        <ion-select placeholder="Faixa etária*" formControlName="ageRange">
+          <ion-select-option *ngFor="let ageRange of ageRanges" [value]="ageRange.id">{{ageRange.initialAge}} a
+            {{ageRange.finalAge}} anos</ion-select-option>
+        </ion-select>
 
-  <form [formGroup]="registrationForm" class="form-content">
-  
-    <label>* Campo obrigatório</label>
-    <div class="sign-up-form">
-      <ion-select placeholder="Faixa etária*" formControlName="ageRange">
-        <ion-select-option *ngFor="let ageRange of ageRanges" [value]="ageRange.id">{{ageRange.initialAge}} a {{ageRange.finalAge}} anos</ion-select-option>
-      </ion-select>
-
-      <ion-select placeholder="Gênero*" formControlName="gender">
-        <ion-select-option value="1">Masculino</ion-select-option>
-        <ion-select-option value="2">Feminino</ion-select-option>
-        <ion-select-option value="3">Não binário</ion-select-option>
-      </ion-select>
-    </div>
-  </form>
+        <ion-select placeholder="Gênero*" formControlName="gender">
+          <ion-select-option value="1">Masculino</ion-select-option>
+          <ion-select-option value="2">Feminino</ion-select-option>
+          <ion-select-option value="3">Não binário</ion-select-option>
+        </ion-select>
+      </div>
+    </form>
+    <button class="add-button" (click)="addChild()"><i class="material-icons">save</i>Salvar alterações</button>
+  </div>
 </ion-content>
-
-
-<ion-footer>
-  <button (click)="addChild()"><i class="material-icons">save</i> Salvar alterações</button>
-</ion-footer>

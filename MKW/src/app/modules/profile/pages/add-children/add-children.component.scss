@@ -1,66 +1,54 @@
-ion-content{
-    main{
+.add-children {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 90vh;
+  padding: 0 4.4%;
 
-        padding: 20px !important;
-    }
-    h2{
-        text-align: center;
-        margin: 20px 0 0 0;
-    }
-    div{
-        width: 90%;
-        margin: 20px 1.2em;
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-}
+  h2 {
+    text-align: center;
+  }
 
-ion-footer{
+  .mandatory {
+    display: flex;
+    width: 100%;
+    font-size: 0.75em;
+  }
+
+  .form-content {
+    margin-top: 2rem;
+    
+    ion-input,
+    ion-select {
+      width: 100%;
+      border: 2px solid var(--mkw-color-dark);
+      padding: .5rem;
+      margin: 1rem 0;
+
+      input {
+        padding: 10px !important;
+        --padding-start: 20px;
+      }
+    }
+  }
+
+  .add-button {
     display: flex;
     align-items: center;
-    padding: 20px;
-    button{
-        padding: 10px;
-        display: flex;
-        background: var(--mkw-color-primary);
-        align-items: center;
-        color: white;
-        width: 100%;
-        text-align: center;
-        justify-content: center;
-    }
-}
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: 1rem;
+    justify-self: flex-end;
+    width: 100%;
+    background-color: var(--mkw-color-primary);
+    color: var(--mkw-color-light);
+    padding: .75rem 0;
+    font-size: 1.2rem;
+    filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
 
-form.form-content{
-    margin: 0 10px 20px 10px;
-    label{
-        display: flex;
-        width: 100%;
-        font-size: 0.75em;
-        margin: 25px 20px 5px 20px;
+    i {
+      margin-right: .5rem;
     }
-    
-    div.sign-up-form{
-        display: flex;
-        flex-direction: column;
-        margin: 0 20px;
-        
-        ion-input, ion-select{
-            border: 2px solid var(--mkw-color-dark);
-            width: 100%;
-            margin: 0 0 25px 0;
-            padding: 10px;
-
-            input{
-                padding: 10px !important;
-                --padding-start: 20px;
-
-            }
-        }
-        label{
-            margin: 0 !important;
-        }
-    }
+  }
 }
