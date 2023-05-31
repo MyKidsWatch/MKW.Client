@@ -1,12 +1,14 @@
-div{
+div {
+  padding: 1rem;
+  padding-left: 0;
 
-    padding: 10px;
-    label{
-        i{
-            margin-right: 5px;
-        }
-        display: flex;
-        align-items: center;
-        color: #444444;
+  label {
+    i {
+      margin-right: 5px;
     }
+
+    display: flex;
+    align-items: center;
+    color: #444444;
+  }
 }

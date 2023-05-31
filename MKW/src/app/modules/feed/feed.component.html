@@ -1,7 +1,7 @@
 <ion-header>
-  <div>
-    <label class="underlined">Para suas crianças</label>
-    <label>Em alta</label>
+  <div class="header-items">
+    <label class="underlined header-item">Para suas crianças</label>
+    <label class="header-item">Em alta</label>
   </div>
 </ion-header>
 <ion-content *ngIf="showContent" >
@@ -12,7 +12,7 @@
 <div class="no-content" *ngIf="!showContent">
   <article class="">
     <h2>Nenhuma recomendação por aqui!</h2>
-    <label>Associe crianças ao seu perfil para ter uma recomendação personalizada para cada uma delas!</label>
+    <label class="paragraph">Associe crianças ao seu perfil para ter uma recomendação personalizada para cada uma delas!</label>
     <button routerLink='../profile/add-children'>Adicionar crianças</button>
   </article>
   

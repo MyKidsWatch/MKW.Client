@@ -1,56 +1,69 @@
-ion-header{
-    
+ion-header {
+  height: 8vh;
+  padding: 0 4.4%;
 
-    div{
-        display: flex;
-        justify-content: space-around;
-        font-size: 1.2em;
-        font-weight: bold;
-        margin: 10px 0;
-        padding: 5px;
+  .header-items {
+    display: flex;
+    justify-content: flex-start;
+    font-size: 1.2rem;
+    font-weight: bold;
+    height: 100%;
 
-        label.underlined{
-            text-decoration: solid 2px underline black;
-            text-underline-offset: 4px;
-        }
-
-
+    .header-item {
+      margin-top: 3vh;
+      margin-right: 1.5rem;
+      font-weight: bold;
     }
+
+    .underlined {
+      border-bottom: 3px solid var(--mkw-color-dark);
+    }
+  }
 }
 
-div.no-content{
-    height: 100%;
-    
+.no-content {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem 4.4% 0 4.4%;
+
+  article {
+    height: auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 0 10px;
-    article{
+    text-align: center;
+    align-items: center;
 
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-        button{
-            background-color: #0816C7;
-            color: white;
-            font-size: 1.4em;
-            width: 70%;
-            padding: 10px;
-            margin-top: 20px;
-        }
-
+    button {
+      width: 100%;
+      background-color: var(--mkw-color-primary);
+      color: var(--mkw-color-light);
+      padding: .75rem;
+      margin: 1rem 0;
+      font-size: 1rem;
+      filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
     }
-    footer{
 
-        img{
-            padding: 30px 20px 0 20px;
-        }
+    .paragraph {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      line-height: 1.2;
+      text-align: left;
+      margin: 1rem 0;
     }
+
+  }
+
+  footer {
+    img {
+      padding: 30px 20px 0 20px;
+    }
+  }
 
 }
 
 .header-md::after {
-    background-image: none;
+  background-image: none;
 }

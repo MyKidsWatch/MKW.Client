@@ -26,7 +26,7 @@ ion-footer{
         padding: 10px;
         margin: 5px;
         display: flex;
-        background: #0816C7;
+        background: var(--mkw-color-primary);
         align-items: center;
         color: white;
         width: 100%;
@@ -55,7 +55,7 @@ form.form-content{
         margin: 0 20px;
         
         ion-input, ion-select{
-            border: 2px solid #0A0A0A;
+            border: 2px solid var(--mkw-color-dark);
             width: 100%;
             margin: 0 0 25px 0;
             padding: 10px;

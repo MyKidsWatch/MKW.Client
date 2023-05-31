@@ -2,13 +2,14 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ContentCard } from '../../models/content-card.model';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-content-card',
   templateUrl: './content-card.component.html',
   styleUrls: ['./content-card.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule]
+  imports: [CommonModule, IonicModule, TranslateModule]
 })
 export class ContentCardComponent  implements OnInit {
 

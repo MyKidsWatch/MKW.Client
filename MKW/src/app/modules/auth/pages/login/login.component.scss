@@ -1,55 +1,59 @@
-ion-content{
-
-
-.logo{
+.login-container {
+  .logo {
+    position: relative;
+    top: 10%;
+    margin-bottom: 15%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     height: 35%;
-    margin-top: 20px;
-    img{
-        margin: 5px;
+
+    img {
+      margin: 5px;
     }
-}
+  }
 
-form.login-form{
-    ion-input, ion-select{
-        border: 2px solid #0A0A0A;
-        width: 100%;
-        margin: 25px 0 0 0;
-        padding: 10px;
-
-        input{
-            padding: 10px !important;
-            --padding-start: 20px;
-
-        }
+  form.login-form {
+    ion-input,
+    ion-select {
+      --padding-start: .5rem;
+      border: 2px solid var(--mkw-color-dark);
+      width: 100%;
+      margin-bottom: 1rem;
+      --placeholder-color: var(mkw-color-dark-medium);
+      --placeholder-opacity: 1;
     }
-    label{
-        margin: 10px !important;
+  }
+  
+  .login {
+    .login-button {
+      width: 100%;
+      background-color: var(--mkw-color-primary);
+      color: var(--mkw-color-light);
+      padding: .75rem;
+      margin: 1rem 0;
+      font-size: 1.2rem;
+      filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
     }
-}
 
-div, form.login-form{
+    .signup-link {
+      width: 100%;
+      text-align: center;
+      font-weight: 500;
+      font-size: 1.1rem;
+      
+      .bold {
+        font-weight: 700;
+      }
+    }
+  }
 
+  div,
+  form.login-form {
     display: flex;
-    padding: 25px;
+    padding: 0 8.8%;
     flex-direction: column;
-    
-    button{
-        background-color: #0816C7;
-        color: white;
-        padding: 12px;
-        font-size: 1.2em;
-    }
-
-    label{
-        align-self: center;
-        margin-top: 10px;
-    }
-}
-
-
-
+    align-items: center;
+  }
 }
