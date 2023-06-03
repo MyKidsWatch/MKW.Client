@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import { take } from 'rxjs';
 import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { ObjectBaseResponseDTO } from 'src/app/core/proxies/mkw-api.proxy';
@@ -14,6 +15,8 @@ import { ContentCard } from 'src/app/shared/models/content-card.model';
 export class FeedComponent  implements OnInit {
 
   public contentCards: ContentCard[] = [];
+  public page: number = 1;
+  public pageSize: number = 10;
 
   public showContent: boolean = this.contentCards.length > 0;
   constructor(private algorithmService: AlgorithmService) { }
@@ -22,12 +25,13 @@ export class FeedComponent  implements OnInit {
   } 
 
   ionViewDidEnter(){
-    this.searchAlgorithm();
+    if(this.contentCards.length == 0)
+      this.searchAlgorithm();
   }
 
   searchAlgorithm()
   {
-    this.algorithmService.getUserFeed().pipe(take(1)).subscribe({
+    this.algorithmService.getUserFeed(this.page, this.pageSize).pipe(take(1)).subscribe({
       next: (response) =>{
           this.transformResponseIntoContentCards(response)
       },
@@ -39,10 +43,28 @@ export class FeedComponent  implements OnInit {
 
   transformResponseIntoContentCards(response: ObjectBaseResponseDTO)
   { 
-      this.contentCards = [];
       response.content!.forEach((element: any) =>{
           this.contentCards.push(ContentUtils.algorithmToContentCard(element));
       })
       this.showContent = this.contentCards.length > 0
+  }
+
+  onIonInfinite(event: any)
+  {
+    if(this.page < 10)
+    {
+      this.page++;
+      this.searchAlgorithm();
+    }
+
+    (event as InfiniteScrollCustomEvent).target.complete();
+
+  }
+
+  handleRefresh(event: any)
+  {
+      this.page = 1;
+      this.searchAlgorithm();
+      event.target.complete();
   }
 }

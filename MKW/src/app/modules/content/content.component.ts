@@ -26,7 +26,7 @@ export class ContentComponent implements OnInit {
       .getMovieById(id)
       .subscribe({
         next: (res: any) => {
-          this.movieObject = ContentUtils.TMDBToContentCard(res);
+          this.movieObject = ContentUtils.algorithmToContentCard(res.content[0]);
           this.loading = false;
         },
         error: (err: any) => {

@@ -2342,6 +2342,7 @@ export class MovieClient {
 
     protected processId(response: HttpResponseBase): Observable<ObjectBaseResponseDTO> {
         const status = response.status;
+
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
@@ -2350,7 +2351,9 @@ export class MovieClient {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
+            
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            console.log(resultData200)
             result200 = ObjectBaseResponseDTO.fromJS(resultData200);
             return _observableOf(result200);
             }));
