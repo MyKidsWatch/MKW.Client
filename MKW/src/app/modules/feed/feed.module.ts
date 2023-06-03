@@ -7,6 +7,7 @@ import { ContentCardComponent } from '../../shared/components/content-card/conte
 import { AlgorithmClient, MovieClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { AlgorithmService } from 'src/app/core/services/algorithm.service';
+import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
 
 
 @NgModule({
