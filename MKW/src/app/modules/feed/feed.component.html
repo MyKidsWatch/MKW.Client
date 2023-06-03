@@ -1,7 +1,8 @@
 <ion-header>
+  <ion-progress-bar *ngIf="isLoadingContent" type="indeterminate"></ion-progress-bar>
   <div class="header-items">
     <label class="underlined header-item">Para suas crianças</label>
-    <label class="header-item">Em alta</label>
+    <!-- <label class="header-item">Em alta</label> -->
   </div>
 </ion-header>
 <ion-content *ngIf="showContent" >

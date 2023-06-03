@@ -16,6 +16,7 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { AuthInterceptor } from './app/core/interceptors/auth.interceptor';
 import { TokenInterceptor } from './app/core/interceptors/token.interceptor';
+import { LoadingInterceptor } from './app/core/interceptors/loading.interceptor';
 
 if (environment.production) {
   enableProdMode();
@@ -35,9 +36,13 @@ bootstrapApplication(AppComponent, {
         NgxsModule.forRoot([UserState]),
         NgxsStoragePluginModule.forRoot(),
         NgxsLoggerPluginModule.forRoot(),
-        
       ),
     provideRouter(routes),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor ,
+      multi: true   
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

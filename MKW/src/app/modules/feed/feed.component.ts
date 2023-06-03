@@ -4,6 +4,7 @@ import { take } from 'rxjs';
 import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { ObjectBaseResponseDTO } from 'src/app/core/proxies/mkw-api.proxy';
 import { AlgorithmService } from 'src/app/core/services/algorithm.service';
+import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
 
@@ -17,12 +18,20 @@ export class FeedComponent  implements OnInit {
   public contentCards: ContentCard[] = [];
   public page: number = 1;
   public pageSize: number = 10;
-
+  public isLoadingContent: boolean = false;
   public showContent: boolean = this.contentCards.length > 0;
-  constructor(private algorithmService: AlgorithmService) { }
+  constructor(private algorithmService: AlgorithmService, public loadingBarService: LoadingBarService) { }
 
-  ngOnInit() {      
+  ngOnInit() {   
+    this.setLoadingBar();       
   } 
+
+  setLoadingBar()
+  {
+    this.loadingBarService.getLoadingBar().subscribe((response) =>{
+      this.isLoadingContent = response as boolean;
+    })
+  }
 
   ionViewDidEnter(){
     if(this.contentCards.length == 0)
