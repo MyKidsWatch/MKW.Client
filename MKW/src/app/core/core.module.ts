@@ -16,7 +16,7 @@ const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
     HttpClientModule,
     TranslateModule.forRoot(
       {
-        defaultLanguage: 'pt',
+        defaultLanguage: navigator.language ?? 'pt-BR',
         loader: {
           provide: TranslateLoader,
           useFactory: (http: HttpClient) => new TranslateHttpLoader(http, './assets/i18n/', '.json'),
