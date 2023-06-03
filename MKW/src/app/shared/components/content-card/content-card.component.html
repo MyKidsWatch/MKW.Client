@@ -27,7 +27,7 @@
           <label class="rating-value">{{ this.contentData.averageRating }}</label>
         </span>
       </aside>
-      <nav>
+      <nav [routerLink]="['../content/' + this.contentData.id]"  >
         <label>Ver mais informações</label>
         <i class="material-icons">arrow_forward_ios</i>
       </nav>
