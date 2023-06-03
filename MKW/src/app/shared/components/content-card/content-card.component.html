@@ -11,7 +11,7 @@
     </header>
     <div class="genres">
       <ion-chip *ngFor="let genre of contentData?.genre">
-        <ion-label>{{ 'genres.' + genre | translate }}</ion-label>
+        <ion-label>{{ genre | translate }}</ion-label>
       </ion-chip>
     </div>
     <label class="content-description">{{this.contentData.description}}</label>
