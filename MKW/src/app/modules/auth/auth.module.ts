@@ -14,8 +14,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from 'src/app/core/interceptors/auth.interceptor';
 import { PlatformService } from 'src/app/core/services/platform.service';
-
-
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -27,6 +26,7 @@ import { PlatformService } from 'src/app/core/services/platform.service';
     StepperComponent,
     CommonModule,
     IonicModule,
+    TranslateModule,
     ReactiveFormsModule,
     RouterModule,
     RouterModule.forChild(routes)
