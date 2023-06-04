@@ -28,18 +28,15 @@ export class TokenInterceptor implements HttpInterceptor {
             { 
               return this.authService.refresh().pipe(switchMap(response =>{
                 const updatedTokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
-                console.log(updatedTokenInfo)
                   let headers = request.headers.append('Authorization', 'Bearer ' + updatedTokenInfo?.accessToken)
-                  headers.append('refresh', 'yes')
                   request = request.clone({headers});
                   return next.handle(request)
                 }))
             }
             else
             {
-              console.log(tokenInfo)
               let headers = request.headers.append('Authorization', 'Bearer ' + tokenInfo?.accessToken)
-              request = request.clone({headers, url: request.url + '&'});
+              request = request.clone({headers});
               return next.handle(request);
             }
         }));        
