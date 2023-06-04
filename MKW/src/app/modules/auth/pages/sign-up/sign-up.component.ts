@@ -19,7 +19,7 @@ export class SignUpComponent  implements OnInit {
   
   registrationForm: FormGroup = this.formBuilder.group({
     userName: ['', [Validators.required, Validators.minLength(6)], [unusedUserName(this.accountService)]],
-    password: ['', [Validators.required, Validators.minLength(8)], [numericValidator(), uppercaseValidator(), lowerCaseValidator()]],
+    password: ['', [Validators.required, Validators.minLength(8), numericValidator, uppercaseValidator, lowerCaseValidator]],
     rePassword: ['', [Validators.required]],
     firstName: ['', [Validators.required]],
     lastName: ['', Validators.required],
