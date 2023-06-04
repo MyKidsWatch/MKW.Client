@@ -30,10 +30,11 @@ div.page-content {
         font-size: 0.85em;
       }
 
-      label.invalid-label{
-        color: red;
+      label.invalid-label {
+        color: var(--mkw-color-danger);
       }
 
+      input,
       ion-input,
       ion-select {
         border: 2px solid var(--mkw-color-dark);
@@ -47,7 +48,7 @@ div.page-content {
           --padding-end: 20px;
         }
       }
-
+      
       label {
         margin: 0 !important;
       }
@@ -75,7 +76,6 @@ div.page-content {
   }
 
   div.button-div {
-
     display: flex;
     margin: auto 40px 30px 40px;
     flex-direction: column;
@@ -90,7 +90,7 @@ div.page-content {
       filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
     }
 
-    button.invalid{
+    button.invalid {
       background-color: var(--mkw-color-light);
       color: var(--mkw-color-primary);
       border: 1px solid var(--mkw-color-primary);

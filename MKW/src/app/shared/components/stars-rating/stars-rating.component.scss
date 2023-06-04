@@ -6,13 +6,14 @@
   line-height: 0px;
 
   .star-icon {
-    width: 35px;
-    margin-bottom: .8rem;
+    width: 2.5rem;
+    margin-bottom: 1rem;
     filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
   }
 
   .stars-rating-value {
     font-weight: 500;
+    font-size: 1.4rem;
     text-align: center;
     width: 100%;
     color: var(--mkw-color-dark);
