@@ -1,8 +1,6 @@
 <ion-content>
   <div class="page-content">
     <app-stepper [currentStep]="currentStep"></app-stepper>
-
-
     <form [formGroup]="registrationForm" *ngIf="currentStep === 1" class="form-content">
       <div (click)="previousStep()" class="go-back">
         <i class="material-icons">arrow_back</i>
@@ -16,8 +14,10 @@
 
       <div class="sign-up-form">
         <label>{{ 'requiredField' | translate }}</label>
+
         <ion-input type="text" placeholder="{{ 'signUpComponent.firstName' | translate }}*" formControlName="firstName"></ion-input>
         <label *ngIf="isFieldValid('firstName')" class="invalid-label">{{ 'signUpComponent.firstNameRequired' | translate }}</label>
+        
         <ion-input type="text" placeholder="{{ 'signUpComponent.lastName' | translate }}*" formControlName="lastName"></ion-input>
         <label *ngIf="isFieldValid('lastName')" class="invalid-label">{{ 'signUpComponent.lastNameRequired' | translate }}</label>
         
@@ -27,8 +27,8 @@
           placeholder="{{ 'signUpComponent.birthDate' | translate }}*"
           onfocus="(this.type='date')"
         >
-
         <label *ngIf="isFieldValid('birthDate')" class="invalid-label">{{ 'signUpComponent.birthDateRequired' | translate }}</label>
+        
         <ion-select placeholder="{{ 'signUpComponent.gender' | translate }}" formControlName="gender">
           <ion-select-option value="1">{{ 'signUpComponent.male' | translate }}</ion-select-option>
           <ion-select-option value="2">{{ 'signUpComponent.female' | translate }}</ion-select-option>
@@ -65,8 +65,12 @@
         </label>
 
         <ion-input type="text" placeholder="{{ 'signUpComponent.email' | translate }}*" formControlName="email"></ion-input>
-        <label *ngIf="isFieldValid('email') && (!this.registrationForm.controls['email'].hasError('emailTaken'))"
-          class="invalid-label">{{ 'signUpComponent.emailRequired' | translate }}</label>
+        <label 
+          *ngIf="isFieldValid('email') && (!this.registrationForm.controls['email'].hasError('emailTaken'))"
+          class="invalid-label"
+        >
+          {{ 'signUpComponent.emailRequired' | translate }}
+        </label>
         <label *ngIf="this.registrationForm.controls['email'].hasError('emailTaken')" class="invalid-label">{{
           'signUpComponent.emailTaken' | translate }}</label>
 
@@ -79,8 +83,10 @@
           formControlName="rePassword"
         >
         </ion-input>
-        <label *ngIf="isFieldValid('rePassword')" class="invalid-label">{{ 'signUpComponent.rePasswordRequired' | translate
-          }}<br></label>
+        <label *ngIf="isFieldValid('rePassword')" class="invalid-label">
+          {{ 'signUpComponent.rePasswordRequired' | translate }}
+          <br>
+        </label>
 
       </div>
     </form>
@@ -96,7 +102,7 @@
       <button 
         [ngClass]="isCurrentStepValid() ? '' : 'invalid'" 
         [disabled]="!isCurrentStepValid()"
-        (click)="nextStep()">{{currentStep != 2 ? ('signUpComponent.continue' | translate) : ('signUpComponent.createAccount' | translate)}}</button>
+        (click)="nextStep()">{{ currentStep != 2 ? ('signUpComponent.continue' | translate) : ('signUpComponent.createAccount' | translate) }}</button>
     </div>
   </div>
 

@@ -4,15 +4,15 @@ import { CreateChildDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { ChildService } from 'src/app/core/services/child.service';
 import { AgeRangeData } from '../view-children/view-children.component';
 import { AgeRangeService } from 'src/app/core/services/age-range.service';
-import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import {take} from 'rxjs';
+import { take } from 'rxjs';
+
 @Component({
   selector: 'app-add-children',
   templateUrl: './add-children.component.html',
   styleUrls: ['./add-children.component.scss'],
 })
-export class AddChildrenComponent  implements OnInit {
+export class AddChildrenComponent implements OnInit {
   public ageRanges: AgeRangeData[] = [];
 
   registrationForm: FormGroup = this.formBuilder.group({
@@ -20,14 +20,16 @@ export class AddChildrenComponent  implements OnInit {
     ageRange: ['', Validators.required]
   });
 
-
-  constructor(private location: Location, private childService: ChildService, private formBuilder: FormBuilder, private ageRangeService: AgeRangeService) { }
+  constructor(
+    private location: Location, 
+    private childService: ChildService, 
+    private formBuilder: FormBuilder, 
+    private ageRangeService: AgeRangeService
+  ) { }
 
   ngOnInit() {
-
     this.ageRangeService.getAgeRanges().subscribe({
       next: (res) =>{
-
         res.content?.forEach(ageRange =>{
             this.ageRanges.push({
               id: ageRange.id,
@@ -42,9 +44,7 @@ export class AddChildrenComponent  implements OnInit {
     })
   }
 
-
-  addChild()
-  {
+  addChild() {
     let createChild: CreateChildDto = new CreateChildDto();
     createChild.genderId = this.registrationForm.controls['gender'].value;
     createChild.ageRangeId = this.registrationForm.controls['ageRange'].value;
