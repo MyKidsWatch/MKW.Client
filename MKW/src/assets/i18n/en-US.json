@@ -67,7 +67,10 @@
     "years": "years",
     "myChildren": "My children",
     "clickToEditOrRemove": "Click to edit or remove",
-    "addChildren": "Add children"
+    "addChildren": "Add children",
+    "whatToDo": "What do you want to do?",
+    "editChildren": "Edit my children",
+    "logout": "Logout from my account"
   },
   "movie": "Movie",
   "boy": "Boy",

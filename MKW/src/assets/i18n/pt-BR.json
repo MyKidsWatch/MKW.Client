@@ -67,7 +67,10 @@
     "years": "anos",
     "myChildren": "Minhas crianças",
     "clickToEditOrRemove": "Clique para editar ou remover",
-    "addChildren": "Adicionar crianças"
+    "addChildren": "Adicionar crianças",
+    "whatToDo": "O que você deseja fazer?",
+    "editChildren": "Editar minhas crianças",
+    "logout": "Sair da minha conta"
   },
   "movie": "Filme",
   "boy": "Menino",

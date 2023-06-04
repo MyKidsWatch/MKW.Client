@@ -7,15 +7,15 @@
 </header>
 
 <main>
-  <label>O que deseja fazer?</label>
+  <label>{{ 'profile.whatToDo' | translate }}</label>
 
   <aside>
       <!-- <label routerLink="edit-profile">Editar Perfil <i class="material-icons">edit</i></label> -->
-      <label routerLink="children">Editar Minhas Crianças <i class="material-icons">supervisor_account</i></label>
+      <label routerLink="children">{{ 'profile.editChildren' | translate }} <i class="material-icons">supervisor_account</i></label>
   </aside>
 
 
 </main>
 <footer>
-  <label (click)="logOffUser()">Sair do aplicativo <i class="material-icons">logout</i></label>
+  <label (click)="logOffUser()">{{ 'profile.logout' | translate }} <i class="material-icons">logout</i></label>
 </footer>
