@@ -19,7 +19,7 @@ export class FeedComponent  implements OnInit {
   public page: number = 1;
   public pageSize: number = 10;
   public isLoadingContent: boolean = false;
-  public showContent: boolean = this.contentCards.length > 0;
+  public showContent: boolean = true;
   constructor(private algorithmService: AlgorithmService, public loadingBarService: LoadingBarService) { }
 
   ngOnInit() {   
@@ -34,6 +34,7 @@ export class FeedComponent  implements OnInit {
   }
 
   ionViewDidEnter(){
+    this.showContent = true;
     if(this.contentCards.length == 0)
       this.searchAlgorithm();
   }
@@ -42,7 +43,11 @@ export class FeedComponent  implements OnInit {
   {
     this.algorithmService.getUserFeed(this.page, this.pageSize).pipe(take(1)).subscribe({
       next: (response) =>{
-          this.transformResponseIntoContentCards(response)
+
+          if(!response.content || response.content!.length == 0)
+            this.showContent = false;
+          else
+            this.transformResponseIntoContentCards(response)
       },
       error: (err) =>{
           console.log(err);
@@ -72,6 +77,7 @@ export class FeedComponent  implements OnInit {
 
   handleRefresh(event: any)
   {
+      this.contentCards = [];
       this.page = 1;
       this.searchAlgorithm();
       event.target.complete();

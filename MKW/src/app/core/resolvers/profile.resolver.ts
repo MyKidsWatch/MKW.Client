@@ -21,7 +21,7 @@ export class ProfileResolver implements Resolve<boolean> {
     return this.accountService.getUserInfo().pipe(concatMap((data) =>{
 
           let userInformation = data.content![0];
-
+          
           let userData = new UserData();
           userData.isEmailVerified = userInformation.emailConfirmed;
           userData.isPremium = false;

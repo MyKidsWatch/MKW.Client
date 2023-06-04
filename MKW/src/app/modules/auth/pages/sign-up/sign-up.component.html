@@ -16,9 +16,12 @@
     
       <div class="sign-up-form">
         <label>* Campo obrigatório</label>
-        <ion-input type="text" placeholder="Nome*" formControlName="firstName"></ion-input>
+        <ion-input  type="text" placeholder="Nome*" formControlName="firstName"  ></ion-input>
+        <label *ngIf="isFieldValid('firstName')" class="invalid-label">Nome é obrigatório</label>
         <ion-input type="text" placeholder="Sobrenome*" formControlName="lastName"></ion-input>
+        <label *ngIf="isFieldValid('lastName')" class="invalid-label">Sobrenome é obrigatório</label>
         <ion-input type="date" placeholder="Data de nascimento*" formControlName="birthDate"></ion-input>
+        <label *ngIf="isFieldValid('birthDate')" class="invalid-label">Data de nascimento é obrigatória</label>
         <ion-select placeholder="Gênero" formControlName="gender">
           <ion-select-option value="1">Masculino</ion-select-option>
           <ion-select-option value="2">Feminino</ion-select-option>
@@ -40,10 +43,22 @@
     
       <div class="sign-up-form">
         <label>* Campo obrigatório</label>
+        
         <ion-input type="text" placeholder="Nome de usuário*" formControlName="userName"></ion-input>
+        <label *ngIf="isFieldValid('userName') && (!this.registrationForm.controls['userName'].hasError('userNameTaken'))" class="invalid-label">Nome de usuário é obrigatório</label>
+        <label *ngIf="this.registrationForm.controls['userName'].hasError('userNameTaken')" class="invalid-label">Nome de usuário está em uso</label>
+
         <ion-input type="text" placeholder="E-mail*" formControlName="email"></ion-input>
+        <label *ngIf="isFieldValid('email') && (!this.registrationForm.controls['email'].hasError('emailTaken'))" class="invalid-label">Email é obrigatório e deve estar em formado válido</label>
+        <label *ngIf="this.registrationForm.controls['email'].hasError('emailTaken')" class="invalid-label">Email já está em uso</label>
+        
         <ion-input type="password" placeholder="Senha*" formControlName="password"></ion-input>
-        <ion-input type="password" placeholder="Confirme sua senha*" formControlName="rePassword"></ion-input>    
+        <label *ngIf="isFieldValid('password')" class="invalid-label">Senha é obrigatória</label>
+        
+        
+        <ion-input type="password" placeholder="Confirme sua senha*" formControlName="rePassword"></ion-input> 
+        <label *ngIf="isFieldValid('rePassword')" class="invalid-label">Confirmação de senha é obrigatória e as senhas devem ser iguais<br></label>  
+
       </div>
     </form>
     
@@ -56,7 +71,7 @@
     </div>
     
     <div class="button-div">
-      <button (click)="nextStep()">{{currentStep != 2 ? 'Continuar' : 'Criar Conta'}}</button>
+      <button [ngClass]="isCurrentStepValid() ? '' : 'invalid'" [disabled]="!isCurrentStepValid()" (click)="nextStep()">{{currentStep != 2 ? 'Continuar' : 'Criar Conta'}}</button>
     </div>
   </div>
   
