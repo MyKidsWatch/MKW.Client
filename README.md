@@ -43,7 +43,7 @@ ionic cap sync
 Os arquivos gerados estarão na pasta `android` e `ios` na raiz do projeto.
 
 
-#### Gerar build apenas ara o Android
+#### Gerar build apenas para o Android
 ```bash
 ionic cap sync android
 ```
