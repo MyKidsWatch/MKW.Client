@@ -33,12 +33,27 @@ Após isso, o servidor de desenvolvimento web será iniciado, por padrão, no en
 
 <h3 align="left">Como fazer build para Android/IOS</h3>
 
-Android:
+
+Execute o seguinte comando para gerar o _build_ para as duas plataformas:
+
 ```bash
-ionic cordova build android
+ionic cap sync
 ```
 
-IOS:
+Os arquivos gerados estarão na pasta `android` e `ios` na raiz do projeto.
+
+
+#### Gerar build apenas ara o Android
 ```bash
-ionic cordova build ios
+ionic cap sync android
+```
+
+(Passo opcional) Para abrir o projeto no Android Studio, execute o seguinte comando:
+```bash
+ionic cap open android
+```
+
+#### Gerar build apenas para o IOS
+```bash
+ionic cap sync ios
 ```
