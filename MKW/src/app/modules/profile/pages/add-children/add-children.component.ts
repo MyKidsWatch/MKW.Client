@@ -6,7 +6,7 @@ import { AgeRangeData } from '../view-children/view-children.component';
 import { AgeRangeService } from 'src/app/core/services/age-range.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-
+import {take} from 'rxjs';
 @Component({
   selector: 'app-add-children',
   templateUrl: './add-children.component.html',
@@ -49,7 +49,7 @@ export class AddChildrenComponent  implements OnInit {
     createChild.genderId = this.registrationForm.controls['gender'].value;
     createChild.ageRangeId = this.registrationForm.controls['ageRange'].value;
 
-    this.childService.createChild(createChild).subscribe({
+    this.childService.createChild(createChild).pipe(take(1)).subscribe({
       next: (res) =>{
           this.location.back();
       },  

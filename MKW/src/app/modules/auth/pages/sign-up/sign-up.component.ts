@@ -7,6 +7,8 @@ import { CreateUserDTO, ICreateUserDTO, IPersonOnCreateUserDTO, PersonOnCreateUs
 import { userInfo } from 'os';
 import { AccountService } from 'src/app/core/services/account.service';
 import { Observable } from 'rxjs'
+import { matchFieldsValidator, unusedUserName  } from 'src/app/core/validators/sign-up.validators';
+import { unusedEmail } from 'src/app/core/validators/sign-up.validators';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -15,22 +17,27 @@ import { Observable } from 'rxjs'
 export class SignUpComponent  implements OnInit {
   constructor(private router: Router, private formBuilder: FormBuilder, private accountService: AccountService) { }
   
-  //TODO: REFACTOR FORM GROUP IMPLEMENTATION
   registrationForm: FormGroup = this.formBuilder.group({
-    userName: ['', Validators.required],
+    userName: ['', Validators.required, [unusedUserName(this.accountService)]],
     password: ['', Validators.required],
-    rePassword: ['', Validators.required],
-    firstName: ['', Validators.required],
+    rePassword: ['', [Validators.required]],
+    firstName: ['', [Validators.required]],
     lastName: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.email], [unusedEmail(this.accountService)]],
     birthDate: ['', [Validators.required]],
     gender: ['', [Validators.required]]
-  });
+  },
+  {
+
+    validator: [matchFieldsValidator('password', 'rePassword')],
+    
+  }
+  );
 
   public currentStep: number = 1;
 
   ngOnInit() {
-    this.currentStep = 1;
+    this.currentStep = 2;
   }
 
 
@@ -59,18 +66,16 @@ export class SignUpComponent  implements OnInit {
   {
       this.registerAccount().subscribe({
         next: (res) =>{
-          console.log(res);
           this.currentStep++;
         },
         error: (err) =>{
-          console.log(err)
           alert("Erro durante a realização do cadastro");
         }
       })
   }
+
   public nextStep()
   {
-
       switch(this.currentStep)
       {
           case 2:
@@ -93,6 +98,49 @@ export class SignUpComponent  implements OnInit {
         this.router.navigate(['auth'])
       else
         this.currentStep--;
-      
   }
+
+  isCurrentStepValid()
+  {
+      let isValid = false;
+      switch(this.currentStep)
+      {
+        case 1:
+          isValid = this.isFirstStepValid();
+          break;
+        case 2:
+          isValid = this.isSecnondStepValid();
+          break;
+        default:
+          isValid = true;
+      }
+
+      return isValid;
+  }
+
+  isFieldValid(fieldName: string)
+  {
+      let formField = this.registrationForm.controls[fieldName];
+      if(fieldName == 'rePassword')
+        console.log(formField);
+      return (formField.invalid && formField.touched)
+  }
+  public isFirstStepValid()
+  {
+      return (
+        this.registrationForm.controls['firstName'].valid &&
+        this.registrationForm.controls['lastName'].valid &&
+        this.registrationForm.controls['birthDate'].valid &&
+        this.registrationForm.controls['gender'].valid )
+  }
+
+  public isSecnondStepValid()
+  {
+      return (
+        this.registrationForm.controls['userName'].valid &&
+        this.registrationForm.controls['email'].valid &&
+        this.registrationForm.controls['password'].valid &&
+        this.registrationForm.controls['rePassword'].valid)
+  }
+
 }
