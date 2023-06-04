@@ -38,6 +38,17 @@
     "thanksForJoining": "Thank you for joining us! We have sent a confirmation email to the email address provided during registration. Please check your inbox and click the confirmation link to complete the registration process.",
     "continue ": "Continue"
   },
+  "navTabs" : {
+    "home": "Home",
+    "search": "Search",
+    "profile": "Profile"
+  },
+  "feedComponent": {
+    "forYourChildren": "For your children",
+    "noRecommendations": "No recommendations here!",
+    "addChildrenText": "Associate children to your profile to have a personalized recommendation for each one of them!",
+    "addChildren": "Add children"
+  },
   "searchComponent": {
     "placeholder": "Search for a movie or TV show title"
   },
