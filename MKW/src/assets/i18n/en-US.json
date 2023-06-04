@@ -2,6 +2,7 @@
   "search": "Search",
   "changeLanguage": "Change language",
   "return": "Return",
+  "requiredField": "* Required field",
   "login": {
     "header": "Login",
     "credentialPlaceholder": "Username or email",
@@ -13,7 +14,6 @@
   "signUpComponent": {
     "createAccount": "Create your account",
     "tellUsAboutYou": "Tell us a little about yourself",
-    "requiredField": "* Required field",
     "firstName": "First Name",
     "firstNameRequired": "First Name is required",
     "lastName": "Last Name",
@@ -52,7 +52,7 @@
   "searchComponent": {
     "placeholder": "Search for a movie or TV show title"
   },
-  "addChildrenComponent": {
+  "profile": {
     "ageRangePlaceholder": "Age range*",
     "genderPlaceholder": "Gender*",
     "maleOption": "Male",

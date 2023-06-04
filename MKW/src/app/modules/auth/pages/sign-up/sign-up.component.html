@@ -15,7 +15,7 @@
       </div>
 
       <div class="sign-up-form">
-        <label>{{ 'signUpComponent.requiredField' | translate }}</label>
+        <label>{{ 'requiredField' | translate }}</label>
         <ion-input type="text" placeholder="{{ 'signUpComponent.firstName' | translate }}*" formControlName="firstName"></ion-input>
         <label *ngIf="isFieldValid('firstName')" class="invalid-label">{{ 'signUpComponent.firstNameRequired' | translate }}</label>
         <ion-input type="text" placeholder="{{ 'signUpComponent.lastName' | translate }}*" formControlName="lastName"></ion-input>
@@ -42,7 +42,7 @@
       </div>
 
       <div class="sign-up-form">
-        <label>{{ 'signUpComponent.requiredField' | translate }}</label>
+        <label>{{ 'requiredField' | translate }}</label>
 
         <ion-input type="text" placeholder="{{ 'signUpComponent.userName' | translate }}*" formControlName="userName"></ion-input>
         <label

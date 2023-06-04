@@ -2,6 +2,7 @@
   "search": "Buscar",
   "changeLanguage": "Mudar idioma",
   "return": "Voltar",
+  "requiredField": "* Campo obrigatório",
   "login": {
     "header": "Login",
     "credentialPlaceholder": "Nome de usuário ou e-mail",
@@ -13,7 +14,6 @@
   "signUpComponent": {
     "createAccount": "Crie sua conta",
     "tellUsAboutYou": "Nos conte um pouco sobre você",
-    "requiredField": "* Campo obrigatório",
     "firstName": "Nome",
     "firstNameRequired": "Nome é obrigatório",
     "lastName": "Sobrenome",
@@ -52,7 +52,7 @@
   "searchComponent": {
     "placeholder": "Busque o título de um filme ou série"
   },
-  "addChildrenComponent": {
+  "profile": {
     "ageRangePlaceholder": "Faixa etária*",
     "genderPlaceholder": "Gênero*",
     "maleOption": "Masculino",
