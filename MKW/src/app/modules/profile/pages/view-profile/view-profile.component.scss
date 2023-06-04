@@ -1,14 +1,15 @@
-header {
+.profile-header {
   display: flex;
   flex-direction: row;
-  height: 25%;
+  min-height: 30%;
   background: var(--mkw-color-primary);
   color: var(--mkw-color-light);
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 0 4.4%;
 
   i {
-    font-size: 6em;
+    font-size: 8rem;  
   }
 
   div {
@@ -27,13 +28,16 @@ header {
 main {
   margin: 20px;
   display: flex;
-  height: 75%;
+  min-height: 75%;
   flex-direction: column;
-  font-size: 1.3em;
+  font-size: 1.3rem;
 
-  label {
-    text-align: center;
+  .what-to-do {
     color: var(--mkw-color-primary);
+    text-align: center;
+    width: 100%;
+    font-weight: bolder;
+    margin: .5rem 0;
   }
 
   aside {
@@ -51,6 +55,7 @@ main {
 
       i {
         margin-left: 10px;
+        font-size: 3rem;
       }
     }
   }
