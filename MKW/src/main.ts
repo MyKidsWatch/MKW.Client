@@ -52,14 +52,15 @@ bootstrapApplication(AppComponent, {
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
+      useClass: RefreshTokenInterceptor,
       multi: true   
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: RefreshTokenInterceptor,
+      useClass: TokenInterceptor,
       multi: true   
     },
+    
     {provide: API_BASE_URL, useValue: environment.apiBaseUrl},
     
   ],
