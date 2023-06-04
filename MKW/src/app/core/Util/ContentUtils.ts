@@ -7,7 +7,7 @@ export class ContentUtils {
         let contentCard: ContentCard = {
             title: tmdbResponse.title,
             releaseDate: new Date(tmdbResponse.release_date),
-            averageRating: Math.round(tmdbResponse.vote_average * 10)/10,
+            averageRating: Math.round(tmdbResponse.vote_average * 5)/10,
             contentType: 'Movie',
             description: tmdbResponse.overview,
             genre: tmdbResponse.genre_ids.map((x: number) => this.TMDBGenreToText(x)),
@@ -24,7 +24,7 @@ export class ContentUtils {
       let contentCard: ContentCard = {
         title: tmdbResponse.title,
         releaseDate: new Date(tmdbResponse.release_date),
-        averageRating: Math.round(tmdbResponse.vote_average * 10)/10,
+        averageRating: Math.round(tmdbResponse.vote_average * 5)/10,
         contentType: 'Movie',
         description: tmdbResponse.overview,
         genre: tmdbResponse.genres.map((x: any) => x.name),
