@@ -26,6 +26,10 @@
     .movie-title {
       margin: unset;
       max-width: 75%;
+      font-family: 'Poppins', 'sans-serif';
+      font-weight: 900;
+      font-size: 2rem;
+      line-height: 1;
     }
   }
 
@@ -45,6 +49,10 @@
     position: relative;
     top: -5rem;
 
+    .movie-description {
+      font-family: 'Poppins', sans-serif;
+    }
+
     .movie-additional-info {
       display: flex;
       justify-content: space-around;
@@ -56,9 +64,14 @@
   .genres ion-chip {
     --color: var(--mkw-color-light);
     background-color: var(--mkw-color-primary);
-    font-size: .6rem;
-    padding: .4rem .8rem;
+    margin-left: unset;
+    padding: .3rem .8rem;
     height: unset;
+
+    ion-label {
+      font-size: .8rem;
+      font-weight: 500;
+    }
   }
 
   .content-type {
@@ -67,14 +80,22 @@
     align-items: center;
     max-width: 40%;
     line-height: .2rem;
+    
 
     .movie-icon {
       margin-right: .4rem;;
       height: 100%;
     }
 
+    .content-type-text {
+      font-family: 'Poppins', sans-serif;
+      line-height: 0;
+    }
+
     .content-type-additional-info {
+      font-family: 'Poppins', sans-serif;
       font-size: .8rem;
+      line-height: 0;
     }
   }
 }
