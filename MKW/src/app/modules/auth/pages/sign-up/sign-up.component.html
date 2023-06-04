@@ -21,8 +21,13 @@
         <ion-input type="text" placeholder="{{ 'signUpComponent.lastName' | translate }}*" formControlName="lastName"></ion-input>
         <label *ngIf="isFieldValid('lastName')" class="invalid-label">{{ 'signUpComponent.lastNameRequired' | translate }}</label>
         
-        
-        <ion-input type="date"  formControlName="birthDate"><label>{{ 'signUpComponent.birthDate' | translate }}*:</label></ion-input>
+        <input 
+          type="text" 
+          formControlName="birthDate"
+          placeholder="{{ 'signUpComponent.birthDate' | translate }}*"
+          onfocus="(this.type='date')"
+        >
+
         <label *ngIf="isFieldValid('birthDate')" class="invalid-label">{{ 'signUpComponent.birthDateRequired' | translate }}</label>
         <ion-select placeholder="{{ 'signUpComponent.gender' | translate }}" formControlName="gender">
           <ion-select-option value="1">{{ 'signUpComponent.male' | translate }}</ion-select-option>
