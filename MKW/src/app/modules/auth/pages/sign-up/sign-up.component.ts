@@ -1,32 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateUserDTO, ICreateUserDTO, IPersonOnCreateUserDTO, PersonOnCreateUserDTO } from 'src/app/core/proxies/mkw-api.proxy';
 import { AccountService } from 'src/app/core/services/account.service';
-import { lowerCaseValidator, matchFieldsValidator, numericValidator, unusedUserName, uppercaseValidator } from 'src/app/core/validators/sign-up.validators';
+import { lowerCaseValidator, matchFieldsValidator, numericValidator, unusedUserName, uppercaseValidator, specialCharacterValidator } from 'src/app/core/validators/sign-up.validators';
 import { unusedEmail } from 'src/app/core/validators/sign-up.validators';
+
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent implements OnInit {
-  constructor(private router: Router, private formBuilder: FormBuilder, private accountService: AccountService) { }
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private accountService: AccountService
+  ) { }
 
   registrationForm: FormGroup = this.formBuilder.group({
     userName: ['', [Validators.required, Validators.minLength(6)], [unusedUserName(this.accountService)]],
-    password: ['', [Validators.required, Validators.minLength(8), numericValidator, uppercaseValidator, lowerCaseValidator]],
+    password: ['', [Validators.required, Validators.minLength(8), numericValidator, uppercaseValidator, lowerCaseValidator, specialCharacterValidator]],
     rePassword: ['', [Validators.required]],
     firstName: ['', [Validators.required]],
     lastName: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email], [unusedEmail(this.accountService)]],
+    email: ['', { validators: [Validators.required, Validators.email], asyncValidators: [unusedEmail(this.accountService)], updateOn: 'blur' }],
     birthDate: ['', [Validators.required]],
     gender: ['', [Validators.required]]
   },
     {
-
       validator: [matchFieldsValidator('password', 'rePassword')],
-
     }
   );
 
@@ -36,14 +39,13 @@ export class SignUpComponent implements OnInit {
     this.currentStep = 1;
   }
 
-
   public registerAccount() {
-    let personDetails: IPersonOnCreateUserDTO = {
+    const personDetails: IPersonOnCreateUserDTO = {
       birthDate: new Date(this.registrationForm.controls['birthDate'].value),
       genderId: this.registrationForm.controls['gender'].value
     };
 
-    let createUserInfo: ICreateUserDTO = {
+    const createUserInfo: ICreateUserDTO = {
       firstName: this.registrationForm.controls['firstName'].value,
       lastName: this.registrationForm.controls['lastName'].value,
       userName: this.registrationForm.controls['userName'].value,
@@ -54,7 +56,6 @@ export class SignUpComponent implements OnInit {
     }
 
     return this.accountService.registerAccount(new CreateUserDTO(createUserInfo));
-
   }
 
   submitForm() {
@@ -85,14 +86,17 @@ export class SignUpComponent implements OnInit {
   }
 
   public previousStep() {
-    if (this.currentStep == 1)
-      this.router.navigate(['auth'])
-    else
-      this.currentStep--;
+    if (this.currentStep == 1) {
+      this.router.navigate(['auth']);
+      return;
+    }
+
+    this.currentStep--;
   }
 
   isCurrentStepValid() {
     let isValid = false;
+
     switch (this.currentStep) {
       case 1:
         isValid = this.isFirstStepValid();
@@ -108,16 +112,17 @@ export class SignUpComponent implements OnInit {
   }
 
   isFieldValid(fieldName: string) {
-    let formField = this.registrationForm.controls[fieldName];
+    const formField = this.registrationForm.controls[fieldName];
     return (formField.invalid && formField.touched)
   }
-  
+
   public isFirstStepValid() {
     return (
       this.registrationForm.controls['firstName'].valid &&
       this.registrationForm.controls['lastName'].valid &&
       this.registrationForm.controls['birthDate'].valid &&
-      this.registrationForm.controls['gender'].valid)
+      this.registrationForm.controls['gender'].valid
+    )
   }
 
   public isSecondStepValid() {
@@ -125,7 +130,7 @@ export class SignUpComponent implements OnInit {
       this.registrationForm.controls['userName'].valid &&
       this.registrationForm.controls['email'].valid &&
       this.registrationForm.controls['password'].valid &&
-      this.registrationForm.controls['rePassword'].valid)
+      this.registrationForm.controls['rePassword'].valid
+    )
   }
-
 }

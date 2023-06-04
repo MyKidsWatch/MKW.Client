@@ -31,7 +31,7 @@
     "emailRequired": "Email is required and must be in a valid format",
     "emailTaken": "Email is already taken",
     "password": "Password",
-    "passwordRequired": "Password must have a minimum of 8 characters, including at least one uppercase letter, one lowercase letter, and one number.",
+    "passwordRequired": "Password must have a minimum of 8 characters, including at least one uppercase letter, one lowercase letter, one number and one special character",
     "rePassword": "Confirm your password",
     "rePasswordRequired": "Password confirmation is required and passwords must match",
     "accountCreated": "Account created successfully",
