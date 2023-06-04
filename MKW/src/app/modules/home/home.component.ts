@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Platform } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -7,8 +9,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent  implements OnInit {
 
-  constructor() { }
+  subscription = new Subscription();
 
-  ngOnInit() {}
+  constructor(private platform: Platform) { }
+
+  
+  ngOnInit() {
+    
+
+  }
+
+  ionViewDidEnter() {
+    console.log("Entrei");
+    this.subscription = this.platform.backButton.subscribeWithPriority(9999, (response) =>{
+      document.addEventListener('backbutton', (event) =>{
+        event.preventDefault();
+        event.stopPropagation();
+      }, false);
+    })
+  }
+  
+  ionViewWillLeave() {
+      console.log("Sai");
+      this.subscription.unsubscribe();
+  }
 
 }

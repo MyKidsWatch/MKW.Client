@@ -25,13 +25,13 @@
     "female": "Feminino",
     "nonBinary": "Não binário",
     "userName": "Nome de usuário",
-    "userNameRequired": "Nome de usuário é obrigatório",
+    "userNameRequired": "Nome de usuário é obrigatório e precisa ter no mínimo 6 caracteres",
     "userNameTaken": "Nome de usuário está em uso",
     "email": "E-mail",
     "emailRequired": "Email é obrigatório e deve estar em formado válido",
     "emailTaken": "Email já está em uso",
     "password": "Senha",
-    "passwordRequired": "Senha é obrigatória",
+    "passwordRequired": "Senha deve ter um mínimo de 8 caracteres, incluindo pelo menos uma letra maiúscula, uma letra minúscula e um número.",
     "rePassword": "Confirme sua senha",
     "rePasswordRequired": "Confirmação de senha é obrigatória e as senhas devem ser iguais",
     "accountCreated": "Conta criada com sucesso",
@@ -50,7 +50,7 @@
     "addChildren": "Adicionar crianças"
   },
   "searchComponent": {
-    "placeholder": "Busque o título de um filme ou série"
+    "placeholder": "Busque por um filme ou série"
   },
   "profile": {
     "ageRangePlaceholder": "Faixa etária*",
