@@ -9,6 +9,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { SplashScreenService } from './services/splash-screen.service';
 
 const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
+
 @NgModule({
   declarations: [],
   imports: [

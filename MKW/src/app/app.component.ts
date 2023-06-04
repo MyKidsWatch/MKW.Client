@@ -17,8 +17,8 @@ import { SplashComponent } from './shared/components/splash/splash.component';
   ],
 })
 export class AppComponent {
-  constructor(private translate: TranslateService) {
-    this.translate.setDefaultLang('pt');
-    this.translate.use('pt');
+  constructor(private translateService: TranslateService) {
+    const languageToUse = this.translateService.getDefaultLang();
+    this.translateService.use(languageToUse);
   }
 }
