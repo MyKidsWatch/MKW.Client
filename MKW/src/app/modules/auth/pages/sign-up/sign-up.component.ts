@@ -5,6 +5,7 @@ import { CreateUserDTO, ICreateUserDTO, IPersonOnCreateUserDTO, PersonOnCreateUs
 import { AccountService } from 'src/app/core/services/account.service';
 import { lowerCaseValidator, matchFieldsValidator, numericValidator, unusedUserName, uppercaseValidator, specialCharacterValidator } from 'src/app/core/validators/sign-up.validators';
 import { unusedEmail } from 'src/app/core/validators/sign-up.validators';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -59,7 +60,9 @@ export class SignUpComponent implements OnInit {
   }
 
   submitForm() {
-    this.registerAccount().subscribe({
+    this.registerAccount()
+    .pipe(take(1))
+    .subscribe({
       next: (res) => {
         this.currentStep++;
       },
