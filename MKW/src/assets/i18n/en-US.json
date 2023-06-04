@@ -59,9 +59,12 @@
     "femaleOption": "Female",
     "unspecifiedOption": "Unspecified",
     "mandatoryField": "* Mandatory field",
-    "addChildButton": "Save changes",
+    "saveChanges": "Save changes",
     "addChildTitle": "Add child",
-    "yearsOld": "years old"
+    "deleteChild": "Delete child",
+    "yearsOld": "years old",
+    "to": "to",
+    "years": "years"
   },
   "movie": "Movie",
   "boy": "Boy",

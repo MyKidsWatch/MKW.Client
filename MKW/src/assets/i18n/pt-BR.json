@@ -59,9 +59,12 @@
     "femaleOption": "Feminino",
     "unspecifiedOption": "Não especificado",
     "mandatoryField": "* Campo obrigatório",
-    "addChildButton": "Salvar alterações",
+    "saveChanges": "Salvar alterações",
     "addChildTitle": "Adicionar criança",
-    "yearsOld": "anos"
+    "deleteChild": "Excluir criança",
+    "yearsOld": "anos",
+    "to": "a",
+    "years": "anos"
   },
   "movie": "Filme",
   "boy": "Menino",
