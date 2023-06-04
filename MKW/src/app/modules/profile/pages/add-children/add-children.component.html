@@ -1,23 +1,24 @@
-<ion-content >
+<ion-content>
   <div class="add-children">
     <app-header-back />
-    <h2>Adicionar criança</h2>
+    <h2>{{ 'addChildrenComponent.addChildTitle' | translate }}</h2>
 
     <form [formGroup]="registrationForm" class="form-content">
-      <label class="mandatory">* Campo obrigatório</label>
+      <label class="mandatory">{{ 'addChildrenComponent.mandatoryField' | translate }}</label>
       <div class="signup-form">
-        <ion-select placeholder="Faixa etária*" formControlName="ageRange">
+        <ion-select [placeholder]="'addChildrenComponent.ageRangePlaceholder' | translate" formControlName="ageRange">
           <ion-select-option *ngFor="let ageRange of ageRanges" [value]="ageRange.id">{{ageRange.initialAge}} a
-            {{ageRange.finalAge}} anos</ion-select-option>
+            {{ageRange.finalAge}} {{ 'addChildrenComponent.yearsOld' | translate }}</ion-select-option>
         </ion-select>
 
-        <ion-select placeholder="Gênero*" formControlName="gender">
-          <ion-select-option value="1">Masculino</ion-select-option>
-          <ion-select-option value="2">Feminino</ion-select-option>
-          <ion-select-option value="3">Não especificado</ion-select-option>
+        <ion-select [placeholder]="'addChildrenComponent.genderPlaceholder' | translate" formControlName="gender">
+          <ion-select-option value="1">{{ 'addChildrenComponent.maleOption' | translate }}</ion-select-option>
+          <ion-select-option value="2">{{ 'addChildrenComponent.femaleOption' | translate }}</ion-select-option>
+          <ion-select-option value="3">{{ 'addChildrenComponent.unspecifiedOption' | translate }}</ion-select-option>
         </ion-select>
       </div>
     </form>
-    <button class="add-button" (click)="addChild()"><i class="material-icons">save</i>Salvar alterações</button>
+    <button class="add-button" (click)="addChild()"><i class="material-icons">save</i>{{ 'addChildrenComponent.addChildButton' |
+      translate }}</button>
   </div>
 </ion-content>

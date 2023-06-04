@@ -52,6 +52,17 @@
   "searchComponent": {
     "placeholder": "Busque o título de um filme ou série"
   },
+  "addChildrenComponent": {
+    "ageRangePlaceholder": "Faixa etária*",
+    "genderPlaceholder": "Gênero*",
+    "maleOption": "Masculino",
+    "femaleOption": "Feminino",
+    "unspecifiedOption": "Não especificado",
+    "mandatoryField": "* Campo obrigatório",
+    "addChildButton": "Salvar alterações",
+    "addChildTitle": "Adicionar criança",
+    "yearsOld": "anos"
+  },
   "movie": "Filme",
   "boy": "Menino",
   "girl": "Menina",

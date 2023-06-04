@@ -52,6 +52,17 @@
   "searchComponent": {
     "placeholder": "Search for a movie or TV show title"
   },
+  "addChildrenComponent": {
+    "ageRangePlaceholder": "Age range*",
+    "genderPlaceholder": "Gender*",
+    "maleOption": "Male",
+    "femaleOption": "Female",
+    "unspecifiedOption": "Unspecified",
+    "mandatoryField": "* Mandatory field",
+    "addChildButton": "Save changes",
+    "addChildTitle": "Add child",
+    "yearsOld": "years old"
+  },
   "movie": "Movie",
   "boy": "Boy",
   "girl": "Girl",
