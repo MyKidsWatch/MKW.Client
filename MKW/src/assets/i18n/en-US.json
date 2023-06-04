@@ -64,7 +64,10 @@
     "deleteChild": "Delete child",
     "yearsOld": "years old",
     "to": "to",
-    "years": "years"
+    "years": "years",
+    "myChildren": "My children",
+    "clickToEditOrRemove": "Click to edit or remove",
+    "addChildren": "Add children"
   },
   "movie": "Movie",
   "boy": "Boy",

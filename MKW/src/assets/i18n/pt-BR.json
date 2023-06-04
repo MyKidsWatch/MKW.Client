@@ -64,7 +64,10 @@
     "deleteChild": "Excluir criança",
     "yearsOld": "anos",
     "to": "a",
-    "years": "anos"
+    "years": "anos",
+    "myChildren": "Minhas crianças",
+    "clickToEditOrRemove": "Clique para editar ou remover",
+    "addChildren": "Adicionar crianças"
   },
   "movie": "Filme",
   "boy": "Menino",
