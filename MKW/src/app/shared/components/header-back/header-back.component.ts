@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header-back',
@@ -8,17 +9,16 @@ import { IonicModule } from '@ionic/angular';
   styleUrls: ['./header-back.component.scss'],
   standalone: true,
   imports: [
-    IonicModule
+    IonicModule,
+    TranslateModule
   ]
 })
-export class HeaderBackComponent  implements OnInit {
-
+export class HeaderBackComponent implements OnInit {
   constructor(private location: Location) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  goBack()
-  {
+  goBack() {
     this.location.back();
   }
 }

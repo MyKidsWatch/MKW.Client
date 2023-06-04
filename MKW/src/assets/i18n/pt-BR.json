@@ -1,6 +1,8 @@
 {
   "search": "Buscar",
   "changeLanguage": "Mudar idioma",
+  "return": "Voltar",
+  "requiredField": "* Campo obrigatório",
   "login": {
     "header": "Login",
     "credentialPlaceholder": "Nome de usuário ou e-mail",
@@ -8,6 +10,71 @@
     "button": "Entrar",
     "signupLink": "Não tem uma conta?",
     "signupLinkText": "Cadastre-se"
+  },
+  "signUpComponent": {
+    "createAccount": "Crie sua conta",
+    "tellUsAboutYou": "Nos conte um pouco sobre você",
+    "firstName": "Nome",
+    "firstNameRequired": "Nome é obrigatório",
+    "lastName": "Sobrenome",
+    "lastNameRequired": "Sobrenome é obrigatório",
+    "birthDate": "Data de nascimento",
+    "birthDateRequired": "Data de nascimento é obrigatória",
+    "gender": "Gênero",
+    "male": "Masculino",
+    "female": "Feminino",
+    "nonBinary": "Não binário",
+    "userName": "Nome de usuário",
+    "userNameRequired": "Nome de usuário é obrigatório",
+    "userNameTaken": "Nome de usuário está em uso",
+    "email": "E-mail",
+    "emailRequired": "Email é obrigatório e deve estar em formado válido",
+    "emailTaken": "Email já está em uso",
+    "password": "Senha",
+    "passwordRequired": "Senha é obrigatória",
+    "rePassword": "Confirme sua senha",
+    "rePasswordRequired": "Confirmação de senha é obrigatória e as senhas devem ser iguais",
+    "accountCreated": "Conta criada com sucesso",
+    "thanksForJoining": "Agradecemos por se juntar a nós! Enviamos um email de confirmação para o endereço de email fornecido durante o cadastro. Verifique sua caixa de entrada e clique no link de confirmação para concluir o processo de registro.",
+    "continue": "Continuar"
+  },
+  "navTabs" : {
+    "home": "Início",
+    "search": "Buscar",
+    "profile": "Perfil"
+  },
+  "feedComponent": {
+    "forYourChildren": "Para suas crianças",
+    "noRecommendations": "Nenhuma recomendação por aqui!",
+    "addChildrenText": "Associe crianças ao seu perfil para ter uma recomendação personalizada para cada uma delas!",
+    "addChildren": "Adicionar crianças"
+  },
+  "searchComponent": {
+    "placeholder": "Busque o título de um filme ou série"
+  },
+  "profile": {
+    "ageRangePlaceholder": "Faixa etária*",
+    "genderPlaceholder": "Gênero*",
+    "maleOption": "Masculino",
+    "femaleOption": "Feminino",
+    "unspecifiedOption": "Não especificado",
+    "mandatoryField": "* Campo obrigatório",
+    "saveChanges": "Salvar alterações",
+    "addChildTitle": "Adicionar criança",
+    "deleteChild": "Excluir criança",
+    "yearsOld": "anos",
+    "to": "a",
+    "years": "anos",
+    "myChildren": "Minhas crianças",
+    "clickToEditOrRemove": "Clique para editar ou remover",
+    "addChildren": "Adicionar crianças",
+    "whatToDo": "O que você deseja fazer?",
+    "editChildren": "Editar minhas crianças",
+    "logout": "Sair da minha conta"
+  },
+  "content": {
+    "rating": "Avaliação:",
+    "seeMore": "Ver mais informações"
   },
   "movie": "Filme",
   "boy": "Menino",

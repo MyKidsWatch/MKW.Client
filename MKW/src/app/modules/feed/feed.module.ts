@@ -4,10 +4,9 @@ import { RouterModule } from '@angular/router';
 import { FeedComponent } from './feed.component';
 import { IonicModule } from '@ionic/angular';
 import { ContentCardComponent } from '../../shared/components/content-card/content-card.component'
+import { TranslateModule } from '@ngx-translate/core';
 import { AlgorithmClient, MovieClient } from 'src/app/core/proxies/mkw-api.proxy';
-import { MovieService } from 'src/app/core/services/movie.service';
 import { AlgorithmService } from 'src/app/core/services/algorithm.service';
-import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
 
 
 @NgModule({
@@ -17,6 +16,7 @@ import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
   imports: [
     CommonModule,
     IonicModule.forRoot(),
+    TranslateModule,
     RouterModule.forChild([
       { 
         path: '',

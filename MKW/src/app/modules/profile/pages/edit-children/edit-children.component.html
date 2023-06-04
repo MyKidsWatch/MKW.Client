@@ -3,20 +3,20 @@
 </ion-header>
 
 <ion-content>
-  <h2>Editar criança</h2>
+  <h2>{{ 'profile.editChild' | translate }}</h2>
 
   <form [formGroup]="updateForm" class="form-content">
   
-    <label>* Campo obrigatório</label>
+    <label>{{ 'requiredField' | translate }}</label>
     <div class="sign-up-form">
-      <ion-select placeholder="Faixa etária" formControlName="ageRange">
-        <ion-select-option *ngFor="let ageRange of ageRanges" [value]="ageRange.id">{{ageRange.initialAge}} a {{ageRange.finalAge}} anos</ion-select-option>
+      <ion-select placeholder="{{ 'profile.ageRangePlaceholder' | translate }}" formControlName="ageRange">
+        <ion-select-option *ngFor="let ageRange of ageRanges" [value]="ageRange.id">{{ageRange.initialAge}} {{ 'profile.to' | translate }} {{ageRange.finalAge}} {{ 'profile.years' | translate }}</ion-select-option>
       </ion-select>
 
-      <ion-select placeholder="Gênero" formControlName="gender">
-        <ion-select-option [value]="1">Masculino</ion-select-option>
-        <ion-select-option [value]="2">Feminino</ion-select-option>
-        <ion-select-option [value]="3">Não especificado</ion-select-option>
+      <ion-select placeholder="{{ 'profile.genderPlaceholder' | translate }}" formControlName="gender">
+        <ion-select-option [value]="1">{{ 'profile.maleOption' | translate }}</ion-select-option>
+        <ion-select-option [value]="2">{{ 'profile.femaleOption' | translate }}</ion-select-option>
+        <ion-select-option [value]="3">{{ 'profile.unspecifiedOption' | translate }}</ion-select-option>
       </ion-select>
     </div>
   </form>
@@ -24,6 +24,6 @@
 
 
 <ion-footer>
-  <button (click)="updateChild()"><i class="material-icons">save</i> Salvar alterações</button>
-  <button class='warning' (click)="deleteChild()" ><i class="material-icons">delete</i> Deletar criança</button>
+  <button (click)="updateChild()"><i class="material-icons">save</i> {{ 'profile.saveChanges' | translate }}</button>
+  <button class='warning' (click)="deleteChild()" ><i class="material-icons">delete</i> {{ 'profile.deleteChild' | translate }}</button>
 </ion-footer>

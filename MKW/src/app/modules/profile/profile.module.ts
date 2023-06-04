@@ -55,7 +55,6 @@ export const routes: Routes = [
 @NgModule({
   declarations: [
     AddChildrenComponent,
-    
     EditChildrenComponent,
     EditProfileComponent,
     ProfileComponent,
@@ -65,6 +64,7 @@ export const routes: Routes = [
   imports: [
     CommonModule,
     IonicModule,
+    TranslateModule,
     ReactiveFormsModule,
     RouterModule,
     RouterModule.forChild(routes),
