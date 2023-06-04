@@ -20,7 +20,9 @@
         <label *ngIf="isFieldValid('firstName')" class="invalid-label">{{ 'signUpComponent.firstNameRequired' | translate }}</label>
         <ion-input type="text" placeholder="{{ 'signUpComponent.lastName' | translate }}*" formControlName="lastName"></ion-input>
         <label *ngIf="isFieldValid('lastName')" class="invalid-label">{{ 'signUpComponent.lastNameRequired' | translate }}</label>
-        <ion-input type="date" placeholder="{{ 'signUpComponent.birthDate' | translate }}*" formControlName="birthDate"></ion-input>
+        
+        
+        <ion-input type="date"  formControlName="birthDate"><label>{{ 'signUpComponent.birthDate' | translate }}*:</label></ion-input>
         <label *ngIf="isFieldValid('birthDate')" class="invalid-label">{{ 'signUpComponent.birthDateRequired' | translate }}</label>
         <ion-select placeholder="{{ 'signUpComponent.gender' | translate }}" formControlName="gender">
           <ion-select-option value="1">{{ 'signUpComponent.male' | translate }}</ion-select-option>
@@ -48,7 +50,6 @@
         <label
           *ngIf="isFieldValid('userName') && (!this.registrationForm.controls['userName'].hasError('userNameTaken'))"
           class="invalid-label">{{ 'signUpComponent.userNameRequired' | translate }}
-        >
         </label>
         
         <label 
@@ -83,7 +84,6 @@
       <div class="information">
         <h2>{{ 'signUpComponent.thanksForJoining' | translate }}</h2>
         <img src="assets/images/approve-email.png">
-        <label>{{ 'signUpComponent.thankYouForJoining' | translate }}</label>
       </div>
     </div>
 

@@ -7,7 +7,7 @@ import { CreateUserDTO, ICreateUserDTO, IPersonOnCreateUserDTO, PersonOnCreateUs
 import { userInfo } from 'os';
 import { AccountService } from 'src/app/core/services/account.service';
 import { Observable } from 'rxjs'
-import { matchFieldsValidator, unusedUserName  } from 'src/app/core/validators/sign-up.validators';
+import { lowerCaseValidator, matchFieldsValidator, numericValidator, unusedUserName, uppercaseValidator  } from 'src/app/core/validators/sign-up.validators';
 import { unusedEmail } from 'src/app/core/validators/sign-up.validators';
 @Component({
   selector: 'app-sign-up',
@@ -18,8 +18,8 @@ export class SignUpComponent  implements OnInit {
   constructor(private router: Router, private formBuilder: FormBuilder, private accountService: AccountService) { }
   
   registrationForm: FormGroup = this.formBuilder.group({
-    userName: ['', Validators.required, [unusedUserName(this.accountService)]],
-    password: ['', Validators.required],
+    userName: ['', [Validators.required, Validators.minLength(6)], [unusedUserName(this.accountService)]],
+    password: ['', [Validators.required, Validators.minLength(8)], [numericValidator(), uppercaseValidator(), lowerCaseValidator()]],
     rePassword: ['', [Validators.required]],
     firstName: ['', [Validators.required]],
     lastName: ['', Validators.required],
@@ -37,7 +37,7 @@ export class SignUpComponent  implements OnInit {
   public currentStep: number = 1;
 
   ngOnInit() {
-    this.currentStep = 2;
+    this.currentStep = 1;
   }
 
 
@@ -121,8 +121,6 @@ export class SignUpComponent  implements OnInit {
   isFieldValid(fieldName: string)
   {
       let formField = this.registrationForm.controls[fieldName];
-      if(fieldName == 'rePassword')
-        console.log(formField);
       return (formField.invalid && formField.touched)
   }
   public isFirstStepValid()

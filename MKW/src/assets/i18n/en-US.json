@@ -25,13 +25,13 @@
     "female": "Female",
     "nonBinary": "Non-binary",
     "userName": "Username",
-    "userNameRequired": "Username is required",
+    "userNameRequired": "Username is required and has a minimun length of 6 characters",
     "userNameTaken": "Username is already taken",
     "email": "Email",
     "emailRequired": "Email is required and must be in a valid format",
     "emailTaken": "Email is already taken",
     "password": "Password",
-    "passwordRequired": "Password is required",
+    "passwordRequired": "Password must have a minimum of 8 characters, including at least one uppercase letter, one lowercase letter, and one number.",
     "rePassword": "Confirm your password",
     "rePasswordRequired": "Password confirmation is required and passwords must match",
     "accountCreated": "Account created successfully",
@@ -50,7 +50,7 @@
     "addChildren": "Add children"
   },
   "searchComponent": {
-    "placeholder": "Search for a movie or TV show title"
+    "placeholder": "Search for a movie or TV show"
   },
   "profile": {
     "ageRangePlaceholder": "Age range*",

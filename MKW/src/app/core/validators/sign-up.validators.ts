@@ -49,3 +49,58 @@ export function unusedUserName(accountService: AccountService): ValidatorFn{
 }
 
 
+export function numericValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (Validators.required(control)) {
+        // Return null if the control is empty and required validation fails
+        return null;
+      }
+  
+      const value = control.value;
+      const pattern = /^[0-9]*$/;
+  
+      if (value && !pattern.test(value)) {
+        return { numericRequired: true };
+      }
+  
+      return null;
+    };
+}
+
+
+
+export function uppercaseValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (Validators.required(control)) {
+        // Return null if the control is empty and required validation fails
+        return null;
+      }
+  
+      const value = control.value;
+      const pattern = /[A-Z]/;
+  
+      if (value && !pattern.test(value)) {
+        return { upperCaseRequired: true };
+      }
+  
+      return null;
+    };
+  }
+
+  export function lowerCaseValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (Validators.required(control)) {
+        // Return null if the control is empty and required validation fails
+        return null;
+      }
+  
+      const value = control.value;
+      const pattern = /[a-z]/;
+  
+      if (value && !pattern.test(value)) {
+        return { lowerCaseRequired: true };
+      }
+  
+      return null;
+    };
+  }

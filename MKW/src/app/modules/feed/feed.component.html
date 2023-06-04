@@ -17,9 +17,9 @@
 
 <div class="no-content" *ngIf="!showContent">
   <article class="">
-    <h2>{{ 'feedComponent.noRecommendations' }}</h2>
-    <label class="paragraph">{{ 'feedComponent.addChildrenText' }}</label>
-    <button routerLink='../profile/add-children'>{{ 'feedComponent.addChildren' }}</button>
+    <h2>{{ 'feedComponent.noRecommendations' | translate }}</h2>
+    <label class="paragraph">{{ 'feedComponent.addChildrenText' | translate }}</label>
+    <button routerLink='../profile/add-children'>{{ 'feedComponent.addChildren' | translate }}</button>
   </article>
   
   <footer>
