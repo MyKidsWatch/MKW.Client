@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable, concatMap, map, of, switchMap } from 'rxjs';
+import { Observable, concatMap, map, of, switchMap, take } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { UserState } from 'src/app/shared/store/state/user.state';
 import { AuthService } from '../services/auth.service';
@@ -22,21 +22,24 @@ export class TokenInterceptor implements HttpInterceptor {
 
     if(!request.url.includes('Authentication') && !request.url.includes('register'))
     {
-        return this.store.select(UserState.getTokenInfo).pipe(concatMap(tokenInfo =>{
+        return this.store.select(UserState.getTokenInfo).pipe(take(1)).pipe(concatMap(tokenInfo =>{
             
             if(tokenInfo && tokenInfo.expiresAt && new Date(tokenInfo.expiresAt).getTime() <= Date.now())
             { 
-                return this.authService.refresh().pipe(switchMap(response =>{
-                  const updatedTokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
+              return this.authService.refresh().pipe(switchMap(response =>{
+                const updatedTokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
+                console.log(updatedTokenInfo)
                   let headers = request.headers.append('Authorization', 'Bearer ' + updatedTokenInfo?.accessToken)
+                  headers.append('refresh', 'yes')
                   request = request.clone({headers});
                   return next.handle(request)
                 }))
             }
             else
             {
+              console.log(tokenInfo)
               let headers = request.headers.append('Authorization', 'Bearer ' + tokenInfo?.accessToken)
-              request = request.clone({headers});
+              request = request.clone({headers, url: request.url + '&'});
               return next.handle(request);
             }
         }));        
