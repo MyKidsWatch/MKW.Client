@@ -1,6 +1,7 @@
 {
   "search": "Search",
   "changeLanguage": "Change language",
+  "return": "Return",
   "login": {
     "header": "Login",
     "credentialPlaceholder": "Username or email",
@@ -8,6 +9,37 @@
     "button": "Login",
     "signupLink": "Don't have an account?",
     "signupLinkText": "Sign up"
+  },
+  "signUpComponent": {
+    "createAccount": "Create your account",
+    "tellUsAboutYou": "Tell us a little about yourself",
+    "requiredField": "* Required field",
+    "firstName": "First Name",
+    "firstNameRequired": "First Name is required",
+    "lastName": "Last Name",
+    "lastNameRequired": "Last Name is required",
+    "birthDate": "Birth Date",
+    "birthDateRequired": "Birth Date is required",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "nonBinary": "Non-binary",
+    "userName": "Username",
+    "userNameRequired": "Username is required",
+    "userNameTaken": "Username is already taken",
+    "email": "Email",
+    "emailRequired": "Email is required and must be in a valid format",
+    "emailTaken": "Email is already taken",
+    "password": "Password",
+    "passwordRequired": "Password is required",
+    "rePassword": "Confirm your password",
+    "rePasswordRequired": "Password confirmation is required and passwords must match",
+    "accountCreated": "Account created successfully",
+    "thanksForJoining": "Thank you for joining us! We have sent a confirmation email to the email address provided during registration. Please check your inbox and click the confirmation link to complete the registration process.",
+    "continue ": "Continue"
+  },
+  "searchComponent": {
+    "placeholder": "Search for a movie or TV show title"
   },
   "movie": "Movie",
   "boy": "Boy",
