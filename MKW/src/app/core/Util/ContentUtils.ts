@@ -4,7 +4,6 @@ import { Content } from "../proxies/mkw-api.proxy";
 export class ContentUtils {
     static TMDBToContentCard(tmdbResponse: any) : ContentCard
     {
-        console.log(tmdbResponse);
         let contentCard: ContentCard = {
             title: tmdbResponse.title,
             releaseDate: new Date(tmdbResponse.release_date),
