@@ -1,6 +1,14 @@
 {
   "search": "Buscar",
   "changeLanguage": "Mudar idioma",
+  "login": {
+    "header": "Login",
+    "credentialPlaceholder": "Nome de usuário ou e-mail",
+    "passwordPlaceholder": "Senha",
+    "button": "Entrar",
+    "signupLink": "Não tem uma conta?",
+    "signupLinkText": "Cadastre-se"
+  },
   "movie": "Filme",
   "boy": "Menino",
   "girl": "Menina",
