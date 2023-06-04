@@ -20,6 +20,9 @@ export class AuthService {
       this.authClient.username(new LoginRequestByUserNameDTO({userName: request.credential, password: request.password})); 
   }
 
-
+  public refresh() : Observable<TokenDTOBaseResponseDTO>
+  {
+    return this.authClient.refresh();
+  }
 
 }

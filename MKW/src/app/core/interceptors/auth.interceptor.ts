@@ -19,17 +19,19 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
+
     return next.handle(request).pipe(map(event => {
       if (request.url.includes('Authentication') && event instanceof HttpResponse && event.status == 200) {
 
         let responseBody = event.body as Blob;
         responseBody.text().then((response) =>{
+
             let tokenInformationDto: TokenDTOBaseResponseDTO = JSON.parse(response as string);
             let tokenInfo: TokenInfo = new TokenInfo();
 
             tokenInfo.accessToken = tokenInformationDto!.content![0].accessToken!;
             tokenInfo.refreshToken = tokenInformationDto!.content![0].refreshToken!;
-            tokenInfo.expiresAt = new Date(Date.now() + 60000 * 10);
+            tokenInfo.expiresAt = new Date(tokenInformationDto!.content![0].accessTokenExpiration!);
 
             this.store.dispatch(new SetTokenInfo(tokenInfo))
         });
