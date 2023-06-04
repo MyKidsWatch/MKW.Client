@@ -72,6 +72,10 @@
     "editChildren": "Edit my children",
     "logout": "Logout from my account"
   },
+  "content": {
+    "rating": "Rating:",
+    "seeMore": "See more information"
+  },
   "movie": "Movie",
   "boy": "Boy",
   "girl": "Girl",

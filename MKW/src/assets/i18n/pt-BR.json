@@ -72,6 +72,10 @@
     "editChildren": "Editar minhas crianças",
     "logout": "Sair da minha conta"
   },
+  "content": {
+    "rating": "Avaliação:",
+    "seeMore": "Ver mais informações"
+  },
   "movie": "Filme",
   "boy": "Menino",
   "girl": "Menina",

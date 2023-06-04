@@ -17,7 +17,7 @@
     <label class="content-description">{{this.contentData.description}}</label>
     <footer>
       <aside class="rating">
-        <label class="rating-text">Avaliação:</label>
+        <label class="rating-text">{{ 'content.rating' | translate }}</label>
         <span>
           <img 
             src="assets/icon/star.svg" 
@@ -28,7 +28,7 @@
         </span>
       </aside>
       <nav [routerLink]="['../content/' + this.contentData.id]"  >
-        <label>Ver mais informações</label>
+        <label>{{ 'content.seeMore' | translate }}</label>
         <i class="material-icons">arrow_forward_ios</i>
       </nav>
     </footer>
