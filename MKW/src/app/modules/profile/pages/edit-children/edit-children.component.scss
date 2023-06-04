@@ -28,15 +28,15 @@ ion-footer{
         display: flex;
         background: var(--mkw-color-primary);
         align-items: center;
-        color: white;
+        color: var(--mkw-color-light);
         width: 100%;
         text-align: center;
         justify-content: center;
     }
 
     button.warning{
-        background-color: red;
-        color: white;
+        background-color: var(--mkw-color-danger);
+        color: var(--mkw-color-light);
     }
 }
 

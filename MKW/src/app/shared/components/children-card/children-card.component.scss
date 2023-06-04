@@ -1,29 +1,29 @@
-div{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 130px;
-    width: 130px; 
-    margin: 10px;   
-    font-weight: bold;
-    i{
-        font-size: 3em;
-    }
+div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 130px;
+  width: 130px;
+  margin: 10px;
+  font-weight: bold;
 
+  i {
+    font-size: 3em;
+  }
 }
 
-div.boy{
-    background-color: var(--mkw-color-primary);
-    color: white;
+div.boy {
+  background-color: var(--mkw-color-secondary);
+  color: var(--mkw-color-light);
 }
 
-div.girl{
-    background-color: #6812c7;
-    color: white;
+div.girl {
+  background-color: var(--mkw-color-purple);
+  color: var(--mkw-color-light);
 }
 
-div.unassigned{
-    background-color: #FFBA08;
-    color: #2C2C2C;
+div.unassigned {
+  background-color: var(--mkw-color-dark-warning);
+  color: var(--mkw-color-dark-medium);
 }
