@@ -5,12 +5,15 @@
   flex-wrap: nowrap;
   border-bottom: 2px solid #e2e2e2;
   font-family: 'Poppins', sans-serif;
+
   .content-poster {
+    min-width: 35vw;
     width: 35vw;
     height: 53.5vw;
     margin-right: .5rem;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   }
+
   article {
     display: flex;
     flex-direction: column;
