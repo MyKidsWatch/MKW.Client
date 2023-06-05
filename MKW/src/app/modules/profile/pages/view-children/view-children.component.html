@@ -1,0 +1,18 @@
+<ion-header class="children-header">
+  <ion-progress-bar *ngIf="isLoadingContent" type="indeterminate"></ion-progress-bar>
+  <app-header-back></app-header-back>
+</ion-header>
+
+<ion-content class="children-content">
+  <h2>{{ 'profile.myChildren' | translate }}</h2>
+  <label>{{ 'profile.clickToEditOrRemove' | translate }}</label>
+
+  <div>
+    <app-children-card *ngFor="let childrenCard of childrenCards" [routerLink]="'../edit-children/' + childrenCard.id"  [childrenCard]="childrenCard"></app-children-card>
+  </div>
+</ion-content>
+
+
+<ion-footer class="children-footer">
+  <button routerLink="../add-children"><i class="material-icons">add</i> {{ 'profile.addChildren' | translate }}</button>
+</ion-footer>

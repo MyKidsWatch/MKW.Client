@@ -1,0 +1,5 @@
+
+<ion-content>
+  <ion-searchbar (ionInput)="searchBarInput($event)" placeholder="{{ 'searchComponent.placeholder' | translate }}"></ion-searchbar>
+  <app-content-card *ngFor="let contentCard of contentCards" [contentData]="contentCard"></app-content-card>
+</ion-content>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SplashComponent } from './shared/components/splash/splash.component';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +11,14 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   standalone: true,
   imports: [
     IonicModule,
-    TranslateModule
+    TranslateModule,
+    SplashComponent
+    
   ],
 })
 export class AppComponent {
-  constructor(private translate: TranslateService) {
-    this.translate.setDefaultLang('pt');
-    this.translate.use('pt');
+  constructor(private translateService: TranslateService) {
+    const languageToUse = this.translateService.getDefaultLang();
+    this.translateService.use(languageToUse);
   }
 }

@@ -1,0 +1,85 @@
+ion-header {
+  border: unset;
+  padding: 0 4.4%;
+
+  &::after {
+    display: none;
+  }
+}
+
+ion-content {
+  width: 100%;
+
+  h2 {
+    text-align: center;
+  }
+
+  div {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+ion-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 4.4%;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: var(--mkw-color-primary);
+    color: var(--mkw-color-light);
+    padding: .75rem;
+    margin: .25rem 0;
+    font-size: 1.2rem;
+    filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
+
+    i {
+      margin-right: .5rem;
+    }
+  }
+
+  button.warning {
+    background-color: var(--mkw-color-danger);
+    color: var(--mkw-color-light);
+  }
+}
+
+form.form-content {
+  padding: 0 4.4%;
+  margin-top: 2rem;
+
+  label {
+    display: flex;
+    width: 100%;
+    font-size: 0.75em;
+  }
+
+  div.sign-up-form {
+    display: flex;
+    flex-direction: column;
+
+    ion-input,
+    ion-select {
+      border: 2px solid var(--mkw-color-dark);
+      width: 100%;
+      margin: .5rem 0;
+      padding: .5rem;
+
+      input {
+        --padding-start: 20px;
+      }
+    }
+
+    label {
+      margin: 0 !important;
+    }
+  }
+}

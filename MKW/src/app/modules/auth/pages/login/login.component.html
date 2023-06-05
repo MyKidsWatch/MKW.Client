@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-progress-bar *ngIf="isLoadingContent" type="indeterminate"></ion-progress-bar>
+</ion-header>
+<ion-content class="login-container">
+  <div class="logo">
+    <img src="assets/images/logo.svg">
+  </div>
+
+  <form class="login-form" [formGroup]="loginForm">
+    <ion-input type="text" formControlName="credential" placeholder="{{ 'login.credentialPlaceholder' | translate }}"></ion-input>
+    <ion-input type="password" formControlName="password" placeholder="{{ 'login.passwordPlaceholder' | translate }}"></ion-input>
+  </form>
+
+  <div class="login">
+    <button class="login-button" (click)="submit()">{{ 'login.button' | translate }}</button>
+    <label class="signup-link">{{ 'login.signupLink' | translate }} <ion-router-link routerLink="sign-up" class="bold">{{ 'login.signupLinkText' | translate }}</ion-router-link></label>
+  </div>
+</ion-content>

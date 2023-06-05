@@ -1,0 +1,100 @@
+div.page-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  app-stepper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 10px;
+  }
+
+  form.form-content {
+    padding: 0 8.8%;
+
+    div.go-back {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      i {
+        margin-right: 5px;
+      }
+    }
+
+    div.sign-up-form {
+      margin-top: 20px;
+
+      label {
+        font-size: 0.85em;
+      }
+
+      label.invalid-label {
+        color: var(--mkw-color-danger);
+      }
+
+      input,
+      ion-input,
+      ion-select {
+        border: 2px solid var(--mkw-color-dark);
+        width: 100%;
+        margin: 25px 0 0 0;
+        padding: 10px;
+
+        input {
+          padding: 10px !important;
+          --padding-start: 20px;
+          --padding-end: 20px;
+        }
+      }
+      
+      label {
+        margin: 0 !important;
+      }
+    }
+  }
+
+
+  div.account-created {
+    margin: auto 40px;
+
+    div.information {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      h2 {
+        text-align: center;
+      }
+
+      label {
+        margin-top: 30px;
+      }
+    }
+  }
+
+  div.button-div {
+    display: flex;
+    margin: auto 40px 30px 40px;
+    flex-direction: column;
+
+    button {
+      width: 100%;
+      background-color: var(--mkw-color-primary);
+      color: var(--mkw-color-light);
+      padding: .75rem;
+      margin: 1rem 0;
+      font-size: 1.2rem;
+      filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
+    }
+
+    button.invalid {
+      background-color: var(--mkw-color-light);
+      color: var(--mkw-color-primary);
+      border: 1px solid var(--mkw-color-primary);
+    }
+  }
+
+}
