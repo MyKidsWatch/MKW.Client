@@ -1,9 +1,9 @@
-<ion-header>
+<ion-header class="children-header">
   <ion-progress-bar *ngIf="isLoadingContent" type="indeterminate"></ion-progress-bar>
   <app-header-back></app-header-back>
 </ion-header>
 
-<ion-content>
+<ion-content class="children-content">
   <h2>{{ 'profile.myChildren' | translate }}</h2>
   <label>{{ 'profile.clickToEditOrRemove' | translate }}</label>
 
@@ -13,6 +13,6 @@
 </ion-content>
 
 
-<ion-footer>
+<ion-footer class="children-footer">
   <button routerLink="../add-children"><i class="material-icons">add</i> {{ 'profile.addChildren' | translate }}</button>
 </ion-footer>

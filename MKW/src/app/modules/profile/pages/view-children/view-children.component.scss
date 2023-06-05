@@ -1,34 +1,46 @@
-ion-content{
-    main{
-
-        padding: 20px !important;
-    }
-    text-align: center;
-    h2{
-        margin: 20px 0 0 0;
-    }
-    div{
-        width: 90%;
-        margin: 20px 1.2em;
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+.children-header {
+  padding: 0 4.4%;
 }
 
-ion-footer{
+.children-content {
+  text-align: center;
+
+  main {
+    padding: 20px !important;
+  }
+
+  h2 {
+    margin: 20px 0 0 0;
+  }
+
+  div {
+    width: 100%;
+    padding: 0 4.4%;
+    margin: 1rem auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.children-footer {
+  padding: 0 4.4%;
+
+  button {
     display: flex;
     align-items: center;
-    padding: 20px;
-    button{
-        padding: 10px;
-        display: flex;
-        background: var(--mkw-color-primary);
-        align-items: center;
-        color: var(--mkw-color-light);
-        width: 100%;
-        text-align: center;
-        justify-content: center;
+    justify-content: center;
+    width: 100%;
+    background-color: var(--mkw-color-primary);
+    color: var(--mkw-color-light);
+    padding: .75rem;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
+
+    i {
+      margin-right: .5rem;
     }
+  }
 }
