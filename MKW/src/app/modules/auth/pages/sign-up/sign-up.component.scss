@@ -59,15 +59,19 @@ div.page-content {
 
   div.account-created {
     margin: auto 40px;
+    text-align: center;
+    font-size: 1.6rem;
 
-    div.information {
+    .information {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
-      h2 {
-        text-align: center;
+      .thanks-for-joining {
+        font-family: 'Poppins', sans-serif;
+        text-align: left;
+        font-size: 1rem;
       }
 
       label {
@@ -88,6 +92,7 @@ div.page-content {
       padding: .75rem;
       margin: 1rem 0;
       font-size: 1.2rem;
+      font-weight: 500;
       filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
     }
 
