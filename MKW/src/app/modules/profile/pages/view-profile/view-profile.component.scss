@@ -8,6 +8,7 @@
   justify-content: flex-start;
   padding: 0 4.4%;
 
+
   i {
     font-size: 8rem;  
   }
@@ -26,18 +27,20 @@
 }
 
 main {
-  margin: 20px;
+  padding: 0 4.4%;
+  min-height: 50%;
   display: flex;
-  min-height: 75%;
   flex-direction: column;
+  justify-content: flex-start;
   font-size: 1.3rem;
+  justify-self: flex-start;
 
   .what-to-do {
     color: var(--mkw-color-primary);
     text-align: center;
     width: 100%;
     font-weight: bolder;
-    margin: .5rem 0;
+    margin: 1rem 0;
   }
 
   aside {
@@ -63,11 +66,12 @@ main {
 
 footer {
   margin: 20px;
-  height: auto;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   font-size: 1.3em;
+  border-top: 2px solid #ddd;
+  padding-top: 1.5rem;
 
   label {
     display: flex;
