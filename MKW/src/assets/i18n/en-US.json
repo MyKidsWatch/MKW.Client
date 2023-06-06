@@ -36,7 +36,7 @@
     "rePasswordRequired": "Password confirmation is required and passwords must match",
     "accountCreated": "Account created successfully",
     "thanksForJoining": "Thank you for joining us! We have sent a confirmation email to the email address provided during registration. Please check your inbox and click the confirmation link to complete the registration process.",
-    "continue ": "Continue"
+    "continue": "Continue"
   },
   "navTabs" : {
     "home": "Home",
