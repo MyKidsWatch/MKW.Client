@@ -44,7 +44,7 @@ export class FeedComponent  implements OnInit {
     this.algorithmService.getUserFeed(this.page, this.pageSize).pipe(take(1)).subscribe({
       next: (response) =>{
 
-          if(!response.content || response.content!.length == 0)
+          if(!response.content || response.content!.length == 0 && this.contentCards.length == 0)
             this.showContent = false;
           else
             this.transformResponseIntoContentCards(response)
@@ -58,7 +58,9 @@ export class FeedComponent  implements OnInit {
   transformResponseIntoContentCards(response: ObjectBaseResponseDTO)
   { 
       response.content!.forEach((element: any) =>{
-          this.contentCards.push(ContentUtils.algorithmToContentCard(element));
+          let contentCard = ContentUtils.algorithmToContentCard(element);
+          if(contentCard)
+            this.contentCards.push(contentCard);
       })
       this.showContent = this.contentCards.length > 0
   }

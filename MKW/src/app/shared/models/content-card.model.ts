@@ -1,11 +1,12 @@
 
-export interface ContentCard{
-    id: number;
-    title: string;
-    description: string;
-    contentType: string;
-    genre: string[];
-    releaseDate: Date;
-    averageRating: number;
-    picturePath?: string;
+export class ContentCard{
+    public id?: number;
+    public title?: string;
+    public description?: string;
+    public contentType?: string;
+    public genre?: string[];
+    public releaseDate?: Date;
+    public averageRating?: number;
+    public picturePath?: string;
 }
+
