@@ -90,12 +90,13 @@
 
       </div>
     </form>
-
+    
     <div *ngIf="currentStep === 3" class="account-created">
       <div class="information">
-        <h2>{{ 'signUpComponent.thanksForJoining' | translate }}</h2>
+        <h2>{{ 'signUpComponent.accountCreated' | translate }}</h2>
         <img src="assets/images/approve-email.png">
-      </div>
+        <p class="thanks-for-joining">{{ 'signUpComponent.thanksForJoining' | translate }}</p>
+      </div>  
     </div>
 
     <div class="button-div">

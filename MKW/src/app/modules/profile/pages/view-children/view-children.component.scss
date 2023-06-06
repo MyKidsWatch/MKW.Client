@@ -1,5 +1,9 @@
 .children-header {
   padding: 0 4.4%;
+  
+  &::after {
+    display: none;
+  }
 }
 
 .children-content {
@@ -37,10 +41,15 @@
     padding: .75rem;
     margin: 1rem 0;
     font-size: 1.2rem;
+    font-weight: 500;
     filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
 
     i {
       margin-right: .5rem;
     }
+  }
+
+  &::before {
+    display: none;
   }
 }
