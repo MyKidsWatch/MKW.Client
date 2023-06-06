@@ -19,8 +19,11 @@ export class ContentUtils {
 
     }
 
-    static algorithmToContentCard(tmdbResponse: any) : ContentCard
+    static algorithmToContentCard(tmdbResponse: any) : ContentCard | null
     {
+      if(!tmdbResponse)
+        return null;
+
       let contentCard: ContentCard = {
         title: tmdbResponse.title,
         releaseDate: new Date(tmdbResponse.release_date),
@@ -30,9 +33,9 @@ export class ContentUtils {
         genre: tmdbResponse.genres.map((x: any) => x.name),
         id: tmdbResponse.id,
         picturePath: tmdbResponse.poster_path ? 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + tmdbResponse.poster_path : undefined
-    }
+      }
 
-    return contentCard;
+      return contentCard;
     }
 
     static TMDBGenreToText(genreId: number): string {
