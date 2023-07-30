@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { SplashScreenService } from 'src/app/core/services/splash-screen.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ export class HomeComponent  implements OnInit {
 
   subscription = new Subscription();
 
-  constructor(private platform: Platform) { }
+  constructor(private platform: Platform, private splashScreenService: SplashScreenService) { }
 
   
   ngOnInit() {
@@ -20,7 +21,9 @@ export class HomeComponent  implements OnInit {
   }
 
   ionViewDidEnter() {
-    console.log("Entrei");
+
+    this.splashScreenService.stop();
+
     this.subscription = this.platform.backButton.subscribeWithPriority(9999, (response) =>{
       document.addEventListener('backbutton', (event) =>{
         event.preventDefault();

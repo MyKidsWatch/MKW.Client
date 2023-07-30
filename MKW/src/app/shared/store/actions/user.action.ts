@@ -7,7 +7,7 @@ export class SetUserData{
 
 export class SetTokenInfo{
     static readonly type ='[USER] Set Token Info';
-    constructor(public payload: TokenInfo) {}
+    constructor(public payload: TokenInfo | undefined) {}
 }
 
 
