@@ -45,7 +45,9 @@ export class SearchComponent  implements OnInit {
       this.contentCards = [];
       let content = response.content![0];
       content.results.forEach((element: any) =>{
-          this.contentCards.push(ContentUtils.TMDBToContentCard(element));
+          let contentCard = ContentUtils.TMDBToContentCard(element);
+          if(contentCard != null)
+            this.contentCards.push(contentCard);
       })
   }
 
