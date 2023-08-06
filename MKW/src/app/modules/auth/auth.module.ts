@@ -15,12 +15,14 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from 'src/app/core/interceptors/auth.interceptor';
 import { PlatformService } from 'src/app/core/services/platform.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
     AuthComponent,
     LoginComponent,
-    SignUpComponent
+    SignUpComponent,
+    ResetPasswordComponent
   ],
   imports: [
     StepperComponent,

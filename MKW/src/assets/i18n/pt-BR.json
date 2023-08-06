@@ -9,7 +9,8 @@
     "passwordPlaceholder": "Senha",
     "button": "Entrar",
     "signupLink": "Não tem uma conta?",
-    "signupLinkText": "Cadastre-se"
+    "signupLinkText": "Cadastre-se",
+    "forgotPassword": "Esqueceu sua senha?"
   },
   "signUpComponent": {
     "createAccount": "Crie sua conta",

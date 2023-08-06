@@ -19,12 +19,12 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    if(request.url.includes('Authentication/refresh'))
-    {
-        let tokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
-        let headers = request.headers.append('Authorization', 'Bearer ' + tokenInfo?.refreshToken)
-        request = request.clone({headers});
-    }
+    if(!request.url.includes('Authentication/refresh'))
+        return next.handle(request);
+
+    let tokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
+    let headers = request.headers.append('Authorization', 'Bearer ' + tokenInfo?.refreshToken)
+    request = request.clone({headers});
 
     return next.handle(request).pipe(
       catchError((error) => {
@@ -35,5 +35,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
         throw throwError(error);
       })
     );    
+
+    
   }
 }
