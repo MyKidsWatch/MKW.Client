@@ -9,7 +9,8 @@
     "passwordPlaceholder": "Password",
     "button": "Login",
     "signupLink": "Don't have an account?",
-    "signupLinkText": "Sign up"
+    "signupLinkText": "Sign up",
+    "forgotPassword": "Forgot your password?"
   },
   "signUpComponent": {
     "createAccount": "Create your account",
