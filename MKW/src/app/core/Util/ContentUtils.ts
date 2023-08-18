@@ -2,6 +2,7 @@ import { ContentCard } from "src/app/shared/models/content-card.model";
 import { Content } from "../proxies/mkw-api.proxy";
 import { time } from "console";
 import { title } from "process";
+import { ContentReviewPage } from "src/app/modules/content/models/content-review-page.model";
 
 export class ContentUtils {
 
@@ -47,6 +48,40 @@ export class ContentUtils {
     }
 
     return contentCard;
+  }
+
+  static ContentReviewToPage(tmdbResponse: any) : ContentReviewPage | null
+  {
+
+      let contentReviewPage: ContentReviewPage = {
+        reviewId: 1,
+        reviewTitle: "Bom filme",
+        reviewDescription: "Filme excelente, direção artistica impecável, todos os personagens em suas melhores versões. Shinji herói.",
+        reviewAuthor: {
+          userName: "Mommy Makima",
+          profilePictureUrl: "https://i.pinimg.com/736x/b4/88/75/b48875b97a4819d9b44dbd9469f96445.jpg"
+        },
+        reviewedContentInformation: {
+          title: tmdbResponse.title,
+          picturePath: tmdbResponse.poster_path ? 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + tmdbResponse.poster_path : undefined,
+          contentId: tmdbResponse.id,
+          platformId: 0
+        },
+        reviewRating: 5,
+        reviewComments: [
+          {
+
+            commentId: 1,
+            commentText: "Como o legítimo herdeiro do Trono de Ferro, Stannis Baratheon não recuará. A justiça guia meu caminho, e a lei é minha força. Passo esta mensagem a 10 leais aliados para que a verdade seja ouvida e o reino retorne à ordem. ",
+            commentAuthor: {
+              userName: "Stannis Baratheon",
+              profilePictureUrl: "https://static.tvtropes.org/pmwiki/pub/images/got_stannis_baratheon.png"
+            } ,
+            commentResponses: []
+          }
+        ]
+      }
+      return contentReviewPage;
   }
 
   static TMDBGenreToText(genreId: number): string {
