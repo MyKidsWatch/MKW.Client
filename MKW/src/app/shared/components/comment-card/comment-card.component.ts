@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
+import { Content } from 'src/app/core/proxies/mkw-api.proxy';
+import { ContentReviewComment } from 'src/app/modules/content/models/content-review-page.model';
 
 @Component({
   selector: 'app-comment-card',
@@ -13,6 +15,16 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class CommentCardComponent  implements OnInit {
 
+
+  
+  @Input() commentModel: ContentReviewComment = {
+    commentAuthor: {userName: '' , profilePictureUrl: ''},
+    commentId: 0,
+    commentResponses: [],
+    parentCommentId: 0,
+    commentText: ''
+  };
+  
   constructor() { }
 
   ngOnInit() {}

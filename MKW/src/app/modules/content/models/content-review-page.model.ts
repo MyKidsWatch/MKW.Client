@@ -4,6 +4,7 @@ export interface ContentReviewPage{
     reviewTitle?: string;
     reviewDescription?: string;
     reviewRating: number;
+    reviewCreationDate: Date;
     reviewAuthor: UserInformation;
     reviewedContentInformation: ContentInformation;
     reviewComments: ContentReviewComment[];

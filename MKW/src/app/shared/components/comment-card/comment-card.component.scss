@@ -1,0 +1,35 @@
+div.comment-modal{
+
+    div.main-comment-content{
+        display: flex;
+        flex-direction: row;
+        padding: 10px;
+    }
+    
+    div.responses-content{
+        padding-left: 50px;
+    }
+
+    img.comment-pfp{
+
+        border-radius: 50%;
+        height: 2.5em;
+    }
+
+    div.comment-content{
+
+        display: flex;
+        flex-direction: column;
+        padding-left: 15px;
+        
+
+        label.comment-username{
+            font-weight: 600;
+        }
+
+        label.comment-text{
+            font-weight: 300  ;
+        }
+    }
+
+}

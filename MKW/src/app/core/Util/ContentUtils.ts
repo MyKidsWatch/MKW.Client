@@ -77,9 +77,38 @@ export class ContentUtils {
               userName: "Stannis Baratheon",
               profilePictureUrl: "https://static.tvtropes.org/pmwiki/pub/images/got_stannis_baratheon.png"
             } ,
+            commentResponses: [
+              {
+                commentId: 2,
+                commentText: "Concordo",
+                commentAuthor: {
+                  userName: "Sir Davos",
+                  profilePictureUrl: "https://i.redd.it/3gc3jwh29rl21.jpg"
+                },
+                commentResponses: []
+              },
+              {
+                commentId: 2,
+                commentText: "kys",
+                commentAuthor: {
+                  userName: "Power",
+                  profilePictureUrl: "https://static.wikia.nocookie.net/d21d33f7-5adf-475d-b41e-0196825b1e56/scale-to-width/755"
+                },
+                commentResponses: []
+              }
+            ]
+          },
+          {
+            commentId: 4,
+            commentText: "Não entendi o final",
+            commentAuthor: {
+              userName: "Denji",
+              profilePictureUrl: "https://wallpapers-clan.com/wp-content/uploads/2023/01/chainsaw-man-denji-pfp-5.jpg"
+            } ,
             commentResponses: []
           }
-        ]
+        ],
+        reviewCreationDate: new Date(2022, 5, 23)
       }
       return contentReviewPage;
   }
