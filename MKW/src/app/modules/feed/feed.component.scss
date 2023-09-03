@@ -21,48 +21,6 @@ ion-header {
   }
 }
 
-.no-content {
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 2rem 4.4% 0 4.4%;
-
-  article {
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-
-    button {
-      width: 100%;
-      background-color: var(--mkw-color-primary);
-      color: var(--mkw-color-light);
-      padding: .75rem;
-      margin: 1rem 0;
-      font-size: 1rem;
-      filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
-    }
-
-    .paragraph {
-      font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
-      line-height: 1.2;
-      text-align: left;
-      margin: 1rem 0;
-    }
-
-  }
-
-  footer {
-    img {
-      padding: 30px 20px 0 20px;
-    }
-  }
-
-}
 
 .header-md::after {
   background-image: none;
