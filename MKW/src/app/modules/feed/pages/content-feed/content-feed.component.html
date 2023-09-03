@@ -1,3 +1,11 @@
+<ion-header>
+  <ion-progress-bar *ngIf="isLoadingContent" type="indeterminate"></ion-progress-bar>
+  <div class="header-items">
+    <label class="header-item" routerLink="../review-feed">{{ 'feedComponent.forYourChildren' | translate }}</label>
+    <label class="header-item underlined " >Em alta</label>
+  </div>
+</ion-header>
+
 <ion-content *ngIf="showContent" >
   <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -9,5 +17,13 @@
 </ion-content>
 
 <div class="no-content" *ngIf="!showContent">
-  <h1>Teste</h1>>
+  <article class="">
+    <h2>{{ 'feedComponent.noRecommendations' | translate }}</h2>
+    <label class="paragraph">{{ 'feedComponent.addChildrenText' | translate }}</label>
+    <button routerLink='../profile/add-children'>{{ 'feedComponent.addChildren' | translate }}</button>
+  </article>
+  
+  <footer>
+    <img src="assets/images/logging-off.png">
+  </footer>
 </div>

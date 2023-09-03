@@ -7,6 +7,7 @@ import { AlgorithmService } from 'src/app/core/services/algorithm.service';
 import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
+import { ContentReviewCard } from 'src/app/shared/models/content-review-card.model';
 
 @Component({
   selector: 'app-review-feed',
@@ -15,7 +16,7 @@ import { ContentCard } from 'src/app/shared/models/content-card.model';
 })
 export class ReviewFeedComponent  implements OnInit {
 
-  public contentCards: ContentCard[] = [];
+  public contentCards: ContentReviewCard[] = [];
   public page: number = 1;
   public pageSize: number = 10;
   public isLoadingContent: boolean = false;
@@ -41,29 +42,56 @@ export class ReviewFeedComponent  implements OnInit {
 
   searchAlgorithm()
   {
-    this.algorithmService.getUserFeed(this.page, this.pageSize).pipe(take(1)).subscribe({
-      next: (response) =>{
 
-          if(!response.content || response.content!.length == 0 && this.contentCards.length == 0)
-            this.showContent = false;
-          else
-            this.transformResponseIntoContentCards(response);
+      let contentReviewCard: ContentReviewCard = {
+        reviewId: 1,
+        reviewBody: 'O futuro é show',
+        reviewPublishDate: new Date(2023, 2, 2),
+        reviewerInformation: {
+          reviewerId: 1,
+          reviewerName: "Mommy Makima",
+          reviewerPicturePath: "https://i.pinimg.com/736x/b4/88/75/b48875b97a4819d9b44dbd9469f96445.jpg"
+        },
+        reviewRating: 3.5,
+        reviewTitle: "Pocoyo é ____",
+        reviewAwardInformation: {
+          reviewBronzeAwardCount: 10,
+          reviewGoldAwardCount: 20, 
+          reviewSilverAwardCount: 30
+        },
+        reviewCommentCount: 25,
+        reviewContentInformation: {
+          contentPosterPath: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/1fmaC3t96Napg7TR9SsfOX8q11X.jpg',
+          contentTitle: "Pocoyo"
+        },
 
-      },
-      error: (err) =>{
-          console.log(err);
       }
-    });
+
+      this.contentCards.push(contentReviewCard);
+  //   this.algorithmService.getUserFeed(this.page, this.pageSize).pipe(take(1)).subscribe({
+  //     next: (response) =>{
+
+  //         if(!response.content || response.content!.length == 0 && this.contentCards.length == 0)
+  //           this.showContent = false;
+  //         else
+  //           this.transformResponseIntoContentCards(response);
+
+  //     },
+  //     error: (err) =>{
+  //         console.log(err);
+  //     }
+  //   });
   }
+
 
   transformResponseIntoContentCards(response: ObjectBaseResponseDTO)
   { 
-      response.content!.forEach((element: any) =>{
-          let contentCard = ContentUtils.algorithmToContentCard(element);
-          if(contentCard)
-            this.contentCards.push(contentCard);
-      })
-      this.showContent = this.contentCards.length > 0
+      // response.content!.forEach((element: any) =>{
+      //     let contentCard = ContentUtils.algorithmToContentCard(element);
+      //     if(contentCard)
+      //       this.contentCards.push(contentCard);
+      // })
+      // this.showContent = this.contentCards.length > 0
   }
 
   onIonInfinite(event: any)

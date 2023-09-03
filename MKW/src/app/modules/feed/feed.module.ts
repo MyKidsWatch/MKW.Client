@@ -9,6 +9,7 @@ import { AlgorithmClient, MovieClient, Review } from 'src/app/core/proxies/mkw-a
 import { AlgorithmService } from 'src/app/core/services/algorithm.service';
 import { ReviewFeedComponent } from './pages/review-feed/review-feed.component';
 import { ContentFeedComponent } from './pages/content-feed/content-feed.component';
+import { ContentReviewCardComponent } from 'src/app/shared/components/content-review-card/content-review-card.component';
 
 const childrenRoutes: Routes = [
   {
@@ -41,7 +42,8 @@ const routes: Routes = [
     IonicModule.forRoot(),
     TranslateModule,
     RouterModule.forChild(routes),
-    ContentCardComponent
+    ContentCardComponent,
+    ContentReviewCardComponent
   ],
   providers:[
     AlgorithmClient,
