@@ -2307,7 +2307,7 @@ export class MovieClient {
      * @param language (optional) 
      * @return Success
      */
-    id(movieId: number, language: string | undefined): Observable<ObjectBaseResponseDTO> {
+    id(movieId: number, language: string | undefined): Observable<MovieDTOBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Movie/id/{movieId}?";
         if (movieId === undefined || movieId === null)
             throw new Error("The parameter 'movieId' must be defined.");
@@ -2333,16 +2333,15 @@ export class MovieClient {
                 try {
                     return this.processId(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ObjectBaseResponseDTO>;
+                    return _observableThrow(e) as any as Observable<MovieDTOBaseResponseDTO>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ObjectBaseResponseDTO>;
+                return _observableThrow(response_) as any as Observable<MovieDTOBaseResponseDTO>;
         }));
     }
 
-    protected processId(response: HttpResponseBase): Observable<ObjectBaseResponseDTO> {
+    protected processId(response: HttpResponseBase): Observable<MovieDTOBaseResponseDTO> {
         const status = response.status;
-
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
@@ -2351,10 +2350,8 @@ export class MovieClient {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
-            
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            console.log(resultData200)
-            result200 = ObjectBaseResponseDTO.fromJS(resultData200);
+            result200 = MovieDTOBaseResponseDTO.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status === 404) {
@@ -2537,16 +2534,32 @@ export class ReviewClient {
     }
 
     /**
+     * @param page (optional) 
+     * @param count (optional) 
+     * @param language (optional) 
      * @return Success
      */
-    reviewGet(): Observable<void> {
-        let url_ = this.baseUrl + "/v1/Review";
+    reviewGet(page: number | undefined, count: number | undefined, language: string | undefined): Observable<ReviewDetailsDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Review?";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (count === null)
+            throw new Error("The parameter 'count' cannot be null.");
+        else if (count !== undefined)
+            url_ += "count=" + encodeURIComponent("" + count) + "&";
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
+                "Accept": "application/json"
             })
         };
 
@@ -2557,14 +2570,14 @@ export class ReviewClient {
                 try {
                     return this.processReviewGet(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<ReviewDetailsDtoBaseResponseDTO>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<ReviewDetailsDtoBaseResponseDTO>;
         }));
     }
 
-    protected processReviewGet(response: HttpResponseBase): Observable<void> {
+    protected processReviewGet(response: HttpResponseBase): Observable<ReviewDetailsDtoBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2573,7 +2586,24 @@ export class ReviewClient {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReviewDetailsDtoBaseResponseDTO.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+            return throwException("Server Error", status, _responseText, _headers, result500);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -2587,7 +2617,7 @@ export class ReviewClient {
      * @param body (optional) 
      * @return Success
      */
-    reviewPost(body: Review | undefined): Observable<void> {
+    reviewPost(body: CreateReviewDto | undefined): Observable<ReviewDetailsDtoBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Review";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2599,6 +2629,7 @@ export class ReviewClient {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
@@ -2609,14 +2640,14 @@ export class ReviewClient {
                 try {
                     return this.processReviewPost(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<ReviewDetailsDtoBaseResponseDTO>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<ReviewDetailsDtoBaseResponseDTO>;
         }));
     }
 
-    protected processReviewPost(response: HttpResponseBase): Observable<void> {
+    protected processReviewPost(response: HttpResponseBase): Observable<ReviewDetailsDtoBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2625,159 +2656,24 @@ export class ReviewClient {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReviewDetailsDtoBaseResponseDTO.fromJS(resultData200);
+            return _observableOf(result200);
             }));
-        } else if (status !== 200 && status !== 204) {
+        } else if (status === 404) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
             }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    reviewPut(body: Review | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/v1/Review";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processReviewPut(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processReviewPut(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processReviewPut(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
+        } else if (status === 500) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    id(id: number): Observable<void> {
-        let url_ = this.baseUrl + "/v1/Review/id/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processId(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processId(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processId(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return Success
-     */
-    reviewDelete(id: number): Observable<void> {
-        let url_ = this.baseUrl + "/v1/Review/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-            })
-        };
-
-        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processReviewDelete(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processReviewDelete(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processReviewDelete(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+            return throwException("Server Error", status, _responseText, _headers, result500);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -4168,6 +4064,62 @@ export interface ICreateChildDto {
     genderId?: number;
 }
 
+export class CreateReviewDto implements ICreateReviewDto {
+    contentId?: number | null;
+    externalContentId?: string | null;
+    platformId?: number | null;
+    title?: string | null;
+    text?: string | null;
+    stars?: number;
+
+    constructor(data?: ICreateReviewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.contentId = _data["contentId"] !== undefined ? _data["contentId"] : <any>null;
+            this.externalContentId = _data["externalContentId"] !== undefined ? _data["externalContentId"] : <any>null;
+            this.platformId = _data["platformId"] !== undefined ? _data["platformId"] : <any>null;
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.text = _data["text"] !== undefined ? _data["text"] : <any>null;
+            this.stars = _data["stars"] !== undefined ? _data["stars"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CreateReviewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateReviewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["contentId"] = this.contentId !== undefined ? this.contentId : <any>null;
+        data["externalContentId"] = this.externalContentId !== undefined ? this.externalContentId : <any>null;
+        data["platformId"] = this.platformId !== undefined ? this.platformId : <any>null;
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["text"] = this.text !== undefined ? this.text : <any>null;
+        data["stars"] = this.stars !== undefined ? this.stars : <any>null;
+        return data;
+    }
+}
+
+export interface ICreateReviewDto {
+    contentId?: number | null;
+    externalContentId?: string | null;
+    platformId?: number | null;
+    title?: string | null;
+    text?: string | null;
+    stars?: number;
+}
+
 export class CreateUserDTO implements ICreateUserDTO {
     userName!: string;
     password!: string;
@@ -4502,6 +4454,46 @@ export interface IGenre {
     contentGenre?: ContentGenre[] | null;
 }
 
+export class GenreDTO implements IGenreDTO {
+    id?: number | null;
+    name?: string | null;
+
+    constructor(data?: IGenreDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): GenreDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new GenreDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        return data;
+    }
+}
+
+export interface IGenreDTO {
+    id?: number | null;
+    name?: string | null;
+}
+
 export class LoginRequestByEmailDTO implements ILoginRequestByEmailDTO {
     email!: string;
     password!: string;
@@ -4580,6 +4572,248 @@ export class LoginRequestByUserNameDTO implements ILoginRequestByUserNameDTO {
 export interface ILoginRequestByUserNameDTO {
     userName: string;
     password: string;
+}
+
+export class MovieDTO implements IMovieDTO {
+    adult?: boolean | null;
+    backdropPath?: string | null;
+    belongsToCollection?: any | null;
+    budget?: number | null;
+    genres?: GenreDTO[] | null;
+    homepage?: string | null;
+    id?: number | null;
+    imdbId?: string | null;
+    originalLanguage?: string | null;
+    originalTitle?: string | null;
+    overview?: string | null;
+    popularity?: number | null;
+    posterPath?: string | null;
+    productionCompanies?: ProductionCompanyDTO[] | null;
+    productionCountries?: ProductionCountryDTO[] | null;
+    releaseDate?: string | null;
+    revenue?: number | null;
+    runtime?: number | null;
+    spokenLanguages?: SpokenLanguageDTO[] | null;
+    status?: string | null;
+    tagline?: string | null;
+    title?: string | null;
+    video?: boolean | null;
+    voteAverage?: number | null;
+    voteCount?: number | null;
+
+    constructor(data?: IMovieDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.adult = _data["adult"] !== undefined ? _data["adult"] : <any>null;
+            this.backdropPath = _data["backdropPath"] !== undefined ? _data["backdropPath"] : <any>null;
+            this.belongsToCollection = _data["belongsToCollection"] !== undefined ? _data["belongsToCollection"] : <any>null;
+            this.budget = _data["budget"] !== undefined ? _data["budget"] : <any>null;
+            if (Array.isArray(_data["genres"])) {
+                this.genres = [] as any;
+                for (let item of _data["genres"])
+                    this.genres!.push(GenreDTO.fromJS(item));
+            }
+            else {
+                this.genres = <any>null;
+            }
+            this.homepage = _data["homepage"] !== undefined ? _data["homepage"] : <any>null;
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.imdbId = _data["imdbId"] !== undefined ? _data["imdbId"] : <any>null;
+            this.originalLanguage = _data["originalLanguage"] !== undefined ? _data["originalLanguage"] : <any>null;
+            this.originalTitle = _data["originalTitle"] !== undefined ? _data["originalTitle"] : <any>null;
+            this.overview = _data["overview"] !== undefined ? _data["overview"] : <any>null;
+            this.popularity = _data["popularity"] !== undefined ? _data["popularity"] : <any>null;
+            this.posterPath = _data["posterPath"] !== undefined ? _data["posterPath"] : <any>null;
+            if (Array.isArray(_data["productionCompanies"])) {
+                this.productionCompanies = [] as any;
+                for (let item of _data["productionCompanies"])
+                    this.productionCompanies!.push(ProductionCompanyDTO.fromJS(item));
+            }
+            else {
+                this.productionCompanies = <any>null;
+            }
+            if (Array.isArray(_data["productionCountries"])) {
+                this.productionCountries = [] as any;
+                for (let item of _data["productionCountries"])
+                    this.productionCountries!.push(ProductionCountryDTO.fromJS(item));
+            }
+            else {
+                this.productionCountries = <any>null;
+            }
+            this.releaseDate = _data["releaseDate"] !== undefined ? _data["releaseDate"] : <any>null;
+            this.revenue = _data["revenue"] !== undefined ? _data["revenue"] : <any>null;
+            this.runtime = _data["runtime"] !== undefined ? _data["runtime"] : <any>null;
+            if (Array.isArray(_data["spokenLanguages"])) {
+                this.spokenLanguages = [] as any;
+                for (let item of _data["spokenLanguages"])
+                    this.spokenLanguages!.push(SpokenLanguageDTO.fromJS(item));
+            }
+            else {
+                this.spokenLanguages = <any>null;
+            }
+            this.status = _data["status"] !== undefined ? _data["status"] : <any>null;
+            this.tagline = _data["tagline"] !== undefined ? _data["tagline"] : <any>null;
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.video = _data["video"] !== undefined ? _data["video"] : <any>null;
+            this.voteAverage = _data["voteAverage"] !== undefined ? _data["voteAverage"] : <any>null;
+            this.voteCount = _data["voteCount"] !== undefined ? _data["voteCount"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): MovieDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new MovieDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["adult"] = this.adult !== undefined ? this.adult : <any>null;
+        data["backdropPath"] = this.backdropPath !== undefined ? this.backdropPath : <any>null;
+        data["belongsToCollection"] = this.belongsToCollection !== undefined ? this.belongsToCollection : <any>null;
+        data["budget"] = this.budget !== undefined ? this.budget : <any>null;
+        if (Array.isArray(this.genres)) {
+            data["genres"] = [];
+            for (let item of this.genres)
+                data["genres"].push(item.toJSON());
+        }
+        data["homepage"] = this.homepage !== undefined ? this.homepage : <any>null;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["imdbId"] = this.imdbId !== undefined ? this.imdbId : <any>null;
+        data["originalLanguage"] = this.originalLanguage !== undefined ? this.originalLanguage : <any>null;
+        data["originalTitle"] = this.originalTitle !== undefined ? this.originalTitle : <any>null;
+        data["overview"] = this.overview !== undefined ? this.overview : <any>null;
+        data["popularity"] = this.popularity !== undefined ? this.popularity : <any>null;
+        data["posterPath"] = this.posterPath !== undefined ? this.posterPath : <any>null;
+        if (Array.isArray(this.productionCompanies)) {
+            data["productionCompanies"] = [];
+            for (let item of this.productionCompanies)
+                data["productionCompanies"].push(item.toJSON());
+        }
+        if (Array.isArray(this.productionCountries)) {
+            data["productionCountries"] = [];
+            for (let item of this.productionCountries)
+                data["productionCountries"].push(item.toJSON());
+        }
+        data["releaseDate"] = this.releaseDate !== undefined ? this.releaseDate : <any>null;
+        data["revenue"] = this.revenue !== undefined ? this.revenue : <any>null;
+        data["runtime"] = this.runtime !== undefined ? this.runtime : <any>null;
+        if (Array.isArray(this.spokenLanguages)) {
+            data["spokenLanguages"] = [];
+            for (let item of this.spokenLanguages)
+                data["spokenLanguages"].push(item.toJSON());
+        }
+        data["status"] = this.status !== undefined ? this.status : <any>null;
+        data["tagline"] = this.tagline !== undefined ? this.tagline : <any>null;
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["video"] = this.video !== undefined ? this.video : <any>null;
+        data["voteAverage"] = this.voteAverage !== undefined ? this.voteAverage : <any>null;
+        data["voteCount"] = this.voteCount !== undefined ? this.voteCount : <any>null;
+        return data;
+    }
+}
+
+export interface IMovieDTO {
+    adult?: boolean | null;
+    backdropPath?: string | null;
+    belongsToCollection?: any | null;
+    budget?: number | null;
+    genres?: GenreDTO[] | null;
+    homepage?: string | null;
+    id?: number | null;
+    imdbId?: string | null;
+    originalLanguage?: string | null;
+    originalTitle?: string | null;
+    overview?: string | null;
+    popularity?: number | null;
+    posterPath?: string | null;
+    productionCompanies?: ProductionCompanyDTO[] | null;
+    productionCountries?: ProductionCountryDTO[] | null;
+    releaseDate?: string | null;
+    revenue?: number | null;
+    runtime?: number | null;
+    spokenLanguages?: SpokenLanguageDTO[] | null;
+    status?: string | null;
+    tagline?: string | null;
+    title?: string | null;
+    video?: boolean | null;
+    voteAverage?: number | null;
+    voteCount?: number | null;
+}
+
+export class MovieDTOBaseResponseDTO implements IMovieDTOBaseResponseDTO {
+    readonly isSuccess?: boolean;
+    readonly content?: MovieDTO[] | null;
+    readonly errors?: string[] | null;
+
+    constructor(data?: IMovieDTOBaseResponseDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).isSuccess = _data["isSuccess"] !== undefined ? _data["isSuccess"] : <any>null;
+            if (Array.isArray(_data["content"])) {
+                (<any>this).content = [] as any;
+                for (let item of _data["content"])
+                    (<any>this).content!.push(MovieDTO.fromJS(item));
+            }
+            else {
+                (<any>this).content = <any>null;
+            }
+            if (Array.isArray(_data["errors"])) {
+                (<any>this).errors = [] as any;
+                for (let item of _data["errors"])
+                    (<any>this).errors!.push(item);
+            }
+            else {
+                (<any>this).errors = <any>null;
+            }
+        }
+    }
+
+    static fromJS(data: any): MovieDTOBaseResponseDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new MovieDTOBaseResponseDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isSuccess"] = this.isSuccess !== undefined ? this.isSuccess : <any>null;
+        if (Array.isArray(this.content)) {
+            data["content"] = [];
+            for (let item of this.content)
+                data["content"].push(item.toJSON());
+        }
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IMovieDTOBaseResponseDTO {
+    isSuccess?: boolean;
+    content?: MovieDTO[] | null;
+    errors?: string[] | null;
 }
 
 export class ObjectBaseResponseDTO implements IObjectBaseResponseDTO {
@@ -5315,6 +5549,142 @@ export interface IPremiumPerson {
     tierPlan?: TierPlan;
 }
 
+export class ProductionCompanyDTO implements IProductionCompanyDTO {
+    id?: number | null;
+    logoPath?: string | null;
+    name?: string | null;
+    originCountry?: string | null;
+
+    constructor(data?: IProductionCompanyDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.logoPath = _data["logoPath"] !== undefined ? _data["logoPath"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.originCountry = _data["originCountry"] !== undefined ? _data["originCountry"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ProductionCompanyDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProductionCompanyDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["logoPath"] = this.logoPath !== undefined ? this.logoPath : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["originCountry"] = this.originCountry !== undefined ? this.originCountry : <any>null;
+        return data;
+    }
+}
+
+export interface IProductionCompanyDTO {
+    id?: number | null;
+    logoPath?: string | null;
+    name?: string | null;
+    originCountry?: string | null;
+}
+
+export class ProductionCountryDTO implements IProductionCountryDTO {
+    iso31661?: string | null;
+    name?: string | null;
+
+    constructor(data?: IProductionCountryDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.iso31661 = _data["iso31661"] !== undefined ? _data["iso31661"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ProductionCountryDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProductionCountryDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["iso31661"] = this.iso31661 !== undefined ? this.iso31661 : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        return data;
+    }
+}
+
+export interface IProductionCountryDTO {
+    iso31661?: string | null;
+    name?: string | null;
+}
+
+export class ReadContentDTO implements IReadContentDTO {
+    id?: number;
+    name?: string | null;
+    imageUrl?: string | null;
+    platformCategory?: number;
+
+    constructor(data?: IReadContentDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.imageUrl = _data["imageUrl"] !== undefined ? _data["imageUrl"] : <any>null;
+            this.platformCategory = _data["platformCategory"] !== undefined ? _data["platformCategory"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ReadContentDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReadContentDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["imageUrl"] = this.imageUrl !== undefined ? this.imageUrl : <any>null;
+        data["platformCategory"] = this.platformCategory !== undefined ? this.platformCategory : <any>null;
+        return data;
+    }
+}
+
+export interface IReadContentDTO {
+    id?: number;
+    name?: string | null;
+    imageUrl?: string | null;
+    platformCategory?: number;
+}
+
 export class ReadPersonDTO implements IReadPersonDTO {
     id?: number;
     userId?: number;
@@ -5961,6 +6331,7 @@ export class ReviewDetails implements IReviewDetails {
     reviewId?: number;
     title?: string | null;
     text?: string | null;
+    stars?: number;
     review?: Review;
 
     constructor(data?: IReviewDetails) {
@@ -5982,6 +6353,7 @@ export class ReviewDetails implements IReviewDetails {
             this.reviewId = _data["reviewId"] !== undefined ? _data["reviewId"] : <any>null;
             this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
             this.text = _data["text"] !== undefined ? _data["text"] : <any>null;
+            this.stars = _data["stars"] !== undefined ? _data["stars"] : <any>null;
             this.review = _data["review"] ? Review.fromJS(_data["review"]) : <any>null;
         }
     }
@@ -6003,6 +6375,7 @@ export class ReviewDetails implements IReviewDetails {
         data["reviewId"] = this.reviewId !== undefined ? this.reviewId : <any>null;
         data["title"] = this.title !== undefined ? this.title : <any>null;
         data["text"] = this.text !== undefined ? this.text : <any>null;
+        data["stars"] = this.stars !== undefined ? this.stars : <any>null;
         data["review"] = this.review ? this.review.toJSON() : <any>null;
         return data;
     }
@@ -6017,7 +6390,198 @@ export interface IReviewDetails {
     reviewId?: number;
     title?: string | null;
     text?: string | null;
+    stars?: number;
     review?: Review;
+}
+
+export class ReviewDetailsDto implements IReviewDetailsDto {
+    id?: number;
+    person?: ReadPersonDTO;
+    content?: ReadContentDTO;
+    goldenAwards?: number;
+    silverAwards?: number;
+    bronzeAwards?: number;
+    commentsQuantity?: number;
+    title?: string | null;
+    text?: string | null;
+    stars?: number;
+    createDate?: Date;
+    edited?: boolean;
+
+    constructor(data?: IReviewDetailsDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.person = _data["person"] ? ReadPersonDTO.fromJS(_data["person"]) : <any>null;
+            this.content = _data["content"] ? ReadContentDTO.fromJS(_data["content"]) : <any>null;
+            this.goldenAwards = _data["goldenAwards"] !== undefined ? _data["goldenAwards"] : <any>null;
+            this.silverAwards = _data["silverAwards"] !== undefined ? _data["silverAwards"] : <any>null;
+            this.bronzeAwards = _data["bronzeAwards"] !== undefined ? _data["bronzeAwards"] : <any>null;
+            this.commentsQuantity = _data["commentsQuantity"] !== undefined ? _data["commentsQuantity"] : <any>null;
+            this.title = _data["title"] !== undefined ? _data["title"] : <any>null;
+            this.text = _data["text"] !== undefined ? _data["text"] : <any>null;
+            this.stars = _data["stars"] !== undefined ? _data["stars"] : <any>null;
+            this.createDate = _data["createDate"] ? new Date(_data["createDate"].toString()) : <any>null;
+            this.edited = _data["edited"] !== undefined ? _data["edited"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ReviewDetailsDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReviewDetailsDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["person"] = this.person ? this.person.toJSON() : <any>null;
+        data["content"] = this.content ? this.content.toJSON() : <any>null;
+        data["goldenAwards"] = this.goldenAwards !== undefined ? this.goldenAwards : <any>null;
+        data["silverAwards"] = this.silverAwards !== undefined ? this.silverAwards : <any>null;
+        data["bronzeAwards"] = this.bronzeAwards !== undefined ? this.bronzeAwards : <any>null;
+        data["commentsQuantity"] = this.commentsQuantity !== undefined ? this.commentsQuantity : <any>null;
+        data["title"] = this.title !== undefined ? this.title : <any>null;
+        data["text"] = this.text !== undefined ? this.text : <any>null;
+        data["stars"] = this.stars !== undefined ? this.stars : <any>null;
+        data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>null;
+        data["edited"] = this.edited !== undefined ? this.edited : <any>null;
+        return data;
+    }
+}
+
+export interface IReviewDetailsDto {
+    id?: number;
+    person?: ReadPersonDTO;
+    content?: ReadContentDTO;
+    goldenAwards?: number;
+    silverAwards?: number;
+    bronzeAwards?: number;
+    commentsQuantity?: number;
+    title?: string | null;
+    text?: string | null;
+    stars?: number;
+    createDate?: Date;
+    edited?: boolean;
+}
+
+export class ReviewDetailsDtoBaseResponseDTO implements IReviewDetailsDtoBaseResponseDTO {
+    readonly isSuccess?: boolean;
+    readonly content?: ReviewDetailsDto[] | null;
+    readonly errors?: string[] | null;
+
+    constructor(data?: IReviewDetailsDtoBaseResponseDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).isSuccess = _data["isSuccess"] !== undefined ? _data["isSuccess"] : <any>null;
+            if (Array.isArray(_data["content"])) {
+                (<any>this).content = [] as any;
+                for (let item of _data["content"])
+                    (<any>this).content!.push(ReviewDetailsDto.fromJS(item));
+            }
+            else {
+                (<any>this).content = <any>null;
+            }
+            if (Array.isArray(_data["errors"])) {
+                (<any>this).errors = [] as any;
+                for (let item of _data["errors"])
+                    (<any>this).errors!.push(item);
+            }
+            else {
+                (<any>this).errors = <any>null;
+            }
+        }
+    }
+
+    static fromJS(data: any): ReviewDetailsDtoBaseResponseDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReviewDetailsDtoBaseResponseDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isSuccess"] = this.isSuccess !== undefined ? this.isSuccess : <any>null;
+        if (Array.isArray(this.content)) {
+            data["content"] = [];
+            for (let item of this.content)
+                data["content"].push(item.toJSON());
+        }
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IReviewDetailsDtoBaseResponseDTO {
+    isSuccess?: boolean;
+    content?: ReviewDetailsDto[] | null;
+    errors?: string[] | null;
+}
+
+export class SpokenLanguageDTO implements ISpokenLanguageDTO {
+    englishName?: string | null;
+    iso6391?: string | null;
+    name?: string | null;
+
+    constructor(data?: ISpokenLanguageDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.englishName = _data["englishName"] !== undefined ? _data["englishName"] : <any>null;
+            this.iso6391 = _data["iso6391"] !== undefined ? _data["iso6391"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): SpokenLanguageDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new SpokenLanguageDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["englishName"] = this.englishName !== undefined ? this.englishName : <any>null;
+        data["iso6391"] = this.iso6391 !== undefined ? this.iso6391 : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        return data;
+    }
+}
+
+export interface ISpokenLanguageDTO {
+    englishName?: string | null;
+    iso6391?: string | null;
+    name?: string | null;
 }
 
 export class StringBaseResponseDTO implements IStringBaseResponseDTO {

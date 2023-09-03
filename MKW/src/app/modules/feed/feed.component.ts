@@ -41,18 +41,18 @@ export class FeedComponent  implements OnInit {
 
   searchAlgorithm()
   {
-    this.algorithmService.getUserFeed(this.page, this.pageSize).pipe(take(1)).subscribe({
-      next: (response) =>{
+    // this.algorithmService.getUserFeed(this.page, this.pageSize).pipe(take(1)).subscribe({
+    //   next: (response) =>{
 
-          if(!response.content || response.content!.length == 0 && this.contentCards.length == 0)
-            this.showContent = false;
-          else
-            this.transformResponseIntoContentCards(response)
-      },
-      error: (err) =>{
-          console.log(err);
-      }
-    });
+    //       if(!response.content || response.content!.length == 0 && this.contentCards.length == 0)
+    //         this.showContent = false;
+    //       else
+    //         this.transformResponseIntoContentCards(response)
+    //   },
+    //   error: (err) =>{
+    //       console.log(err);
+    //   }
+    // });
   }
 
   transformResponseIntoContentCards(response: ObjectBaseResponseDTO)

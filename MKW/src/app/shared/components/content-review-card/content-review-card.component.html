@@ -1,0 +1,22 @@
+<main *ngIf="this.contentData" class="content-card">
+  <img 
+    class="content-poster" 
+    [src]="this.contentData.reviewContentInformation.contentPosterPath || '../../../../assets/images/no-photo.png'"
+  >
+
+  <article>
+    <header>
+      <h2 class="content-title">{{this.contentData.reviewTitle}}</h2>
+      <label class="content-type">{{this.contentData.reviewerInformation.reviewerName}}</label>
+    </header>
+    <label class="content-description">{{this.contentData.reviewBody}}</label>
+    <footer>
+      <aside class="rating">
+        
+      </aside>
+      <nav [routerLink]="['../content/' + this.contentData.reviewId]"  >
+        <i class="material-icons">arrow_forward_ios</i>
+      </nav>
+    </footer>
+  </article>
+</main>
