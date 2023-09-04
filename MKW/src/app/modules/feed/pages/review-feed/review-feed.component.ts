@@ -45,7 +45,7 @@ export class ReviewFeedComponent  implements OnInit {
 
       let contentReviewCard: ContentReviewCard = {
         reviewId: 1,
-        reviewBody: 'O futuro é show',
+        reviewBody: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vel ultrices velit. Nullam convallis tellus a eros lobortis posuere in nec enim. Maecenas molestie turpis sed neque pellentesque efficitur. Praesent consectetur ipsum vitae iaculis iaculis. Nam luctus arcu dui, sed efficitur risus auctor sed. Pellentesque non egestas libero. Phasellus sagittis semper dui ultrices dictum. Sed porta, erat fermentum gravida egestas, risus ligula hendrerit arcu, et imperdiet odio metus non nulla.',
         reviewPublishDate: new Date(2023, 2, 2),
         reviewerInformation: {
           reviewerId: 1,
