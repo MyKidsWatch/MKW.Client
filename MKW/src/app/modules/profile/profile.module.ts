@@ -42,7 +42,7 @@ const childrenRoutes: Routes = [
     component: EditProfileComponent
   }
 ]
-export const routes: Routes = [
+const routes: Routes = [
   {
       path: '',
       component: ProfileComponent,

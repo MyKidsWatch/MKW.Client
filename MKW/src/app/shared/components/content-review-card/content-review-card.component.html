@@ -1,0 +1,53 @@
+
+<main *ngIf="this.contentData" class="content-card">
+
+  <header class="profile-header">
+    <div class="profile-information">
+      <img class="user-pfp" [src]="contentData.reviewerInformation.reviewerPicturePath"/>
+      <label>{{ contentData.reviewerInformation.reviewerName }}</label>
+    </div>
+    <label>{{ contentData.reviewPublishDate.toLocaleDateString() }}</label>
+  </header>
+  <section>
+    <article>
+      <img 
+      class="content-poster" 
+      [src]="this.contentData.reviewContentInformation.contentPosterPath || '../../../../assets/images/no-photo.png'"
+      >
+      <div class="grading" *ngIf="this.contentData.reviewRating">
+        <i class="material-icons grade-icon">grade</i>
+        <label>{{ this.contentData.reviewRating }}</label>
+      </div>
+    </article>
+    
+    <aside class="review-content">
+      <header>
+        <h2 class="content-title">{{this.contentData.reviewTitle}}</h2>
+        <label class="content-type">{{this.contentData.reviewContentInformation.contentTitle}}</label>
+      </header>
+      <label class="content-description">{{this.contentData.reviewBody}}</label>
+      <footer>
+        <aside class="awards">
+          <div class="award-details" *ngIf="this.contentData.reviewAwardInformation && this.contentData.reviewAwardInformation.reviewGoldAwardCount > 0">
+            <img src="assets/icon/GOLDEN_SHIELD.png">
+            <label>{{ this.contentData.reviewAwardInformation.reviewGoldAwardCount  }}</label>
+          </div>
+          <div class="award-details" *ngIf="this.contentData.reviewAwardInformation && this.contentData.reviewAwardInformation.reviewSilverAwardCount > 0">
+            <img src="assets/icon/SILVER_SHIELD.png">
+            <label>{{ this.contentData.reviewAwardInformation.reviewSilverAwardCount}}</label>
+          </div>
+          <div class="award-details" *ngIf="this.contentData.reviewAwardInformation && this.contentData.reviewAwardInformation.reviewBronzeAwardCount > 0">
+            <img src="assets/icon/BRONZE_SHIELD.png">
+            <label>{{ this.contentData.reviewAwardInformation.reviewBronzeAwardCount}}</label>
+          </div>
+        </aside>
+        <nav [routerLink]="['../content/' + this.contentData.reviewId]"  >
+          <i class="material-icons">message</i>
+          <label>{{ this.contentData.reviewCommentCount }}</label>
+          <i class="material-icons">arrow_forward_ios</i>
+        </nav>
+      </footer>
+    </aside>
+  </section>
+  
+</main>

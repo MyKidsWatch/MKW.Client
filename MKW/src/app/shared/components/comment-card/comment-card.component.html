@@ -1,0 +1,16 @@
+<div class="comment-modal">
+
+  <div class="main-comment-content">
+    <img [src]="commentModel.commentAuthor.profilePictureUrl !== '' ? 
+    commentModel.commentAuthor.profilePictureUrl : ''" 
+    class="comment-pfp">
+    <div class="comment-content">
+      <label class="comment-username">{{commentModel.commentAuthor.userName  }}</label>
+      <label class="comment-text">{{commentModel.commentText}}</label>
+    </div>
+  </div>
+  
+  <div class="responses-content">
+    <app-comment-card class="comment-response-modal" *ngFor="let response of commentModel.commentResponses" [commentModel]="response"></app-comment-card>
+  </div>
+</div>

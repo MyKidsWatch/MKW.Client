@@ -31,7 +31,7 @@ bootstrapApplication(AppComponent, {
     { provide: AuthenticationClient },
     importProvidersFrom
       (
-        IonicModule.forRoot({}), 
+        IonicModule.forRoot({animated: false}), 
         HttpClientModule, 
         CoreModule, 
         CommonModule,
