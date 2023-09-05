@@ -6,14 +6,21 @@
       <img class="user-pfp" [src]="contentData.reviewerInformation.reviewerPicturePath"/>
       <label>{{ contentData.reviewerInformation.reviewerName }}</label>
     </div>
-    <label>22 min atrás</label>
+    <label>{{ contentData.reviewPublishDate.toLocaleDateString() }}</label>
   </header>
   <section>
-    <img 
-    class="content-poster" 
-    [src]="this.contentData.reviewContentInformation.contentPosterPath || '../../../../assets/images/no-photo.png'"
-    >
     <article>
+      <img 
+      class="content-poster" 
+      [src]="this.contentData.reviewContentInformation.contentPosterPath || '../../../../assets/images/no-photo.png'"
+      >
+      <div class="grading" *ngIf="this.contentData.reviewRating">
+        <i class="material-icons grade-icon">grade</i>
+        <label>{{ this.contentData.reviewRating }}</label>
+      </div>
+    </article>
+    
+    <aside class="review-content">
       <header>
         <h2 class="content-title">{{this.contentData.reviewTitle}}</h2>
         <label class="content-type">{{this.contentData.reviewContentInformation.contentTitle}}</label>
@@ -40,7 +47,7 @@
           <i class="material-icons">arrow_forward_ios</i>
         </nav>
       </footer>
-    </article>
+    </aside>
   </section>
   
 </main>

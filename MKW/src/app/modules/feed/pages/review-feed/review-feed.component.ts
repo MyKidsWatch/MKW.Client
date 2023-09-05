@@ -68,6 +68,10 @@ export class ReviewFeedComponent  implements OnInit {
       }
 
       this.contentCards.push(contentReviewCard);
+      this.contentCards.push(contentReviewCard);
+      this.contentCards.push(contentReviewCard);
+      this.contentCards.push(contentReviewCard);
+      this.contentCards.push(contentReviewCard);
   //   this.algorithmService.getUserFeed(this.page, this.pageSize).pipe(take(1)).subscribe({
   //     next: (response) =>{
 
