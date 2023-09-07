@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import { take } from 'rxjs';
 import { ContentUtils } from 'src/app/core/Util/ContentUtils';
-import { ObjectBaseResponseDTO } from 'src/app/core/proxies/mkw-api.proxy';
+import { ObjectBaseResponseDTO, ReviewDetailsDto, ReviewDetailsDtoBaseResponseDTO } from 'src/app/core/proxies/mkw-api.proxy';
 import { AlgorithmService } from 'src/app/core/services/algorithm.service';
 import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
 import { MovieService } from 'src/app/core/services/movie.service';
+import { ReviewService } from 'src/app/core/services/review.service';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
 import { ContentReviewCard } from 'src/app/shared/models/content-review-card.model';
 
@@ -21,7 +22,8 @@ export class ReviewFeedComponent  implements OnInit {
   public pageSize: number = 10;
   public isLoadingContent: boolean = false;
   public showContent: boolean = true;
-  constructor(private algorithmService: AlgorithmService, public loadingBarService: LoadingBarService) { }
+
+  constructor(private reviewService: ReviewService, public loadingBarService: LoadingBarService) { }
 
   ngOnInit() {   
     this.setLoadingBar();       
@@ -63,7 +65,7 @@ export class ReviewFeedComponent  implements OnInit {
         reviewContentInformation: {
           contentPosterPath: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/1fmaC3t96Napg7TR9SsfOX8q11X.jpg',
           contentTitle: "Pocoyo"
-        },
+        }
 
       }
 
@@ -72,30 +74,35 @@ export class ReviewFeedComponent  implements OnInit {
       this.contentCards.push(contentReviewCard);
       this.contentCards.push(contentReviewCard);
       this.contentCards.push(contentReviewCard);
-  //   this.algorithmService.getUserFeed(this.page, this.pageSize).pipe(take(1)).subscribe({
-  //     next: (response) =>{
 
-  //         if(!response.content || response.content!.length == 0 && this.contentCards.length == 0)
-  //           this.showContent = false;
-  //         else
-  //           this.transformResponseIntoContentCards(response);
 
-  //     },
-  //     error: (err) =>{
-  //         console.log(err);
-  //     }
-  //   });
+      this.reviewService.getRelevantReviews(this.page, this.pageSize)
+      .pipe(take(1))
+      .subscribe(
+        {
+          next: (response) =>{
+            if(!response.content || response.content!.length == 0 && this.contentCards.length == 0)
+              this.showContent = false;
+            else
+              this.transformResponseIntoContentCards(response);
+          },
+          error: (error) =>{
+            console.log(error);
+          }
+        }
+      )
   }
 
 
-  transformResponseIntoContentCards(response: ObjectBaseResponseDTO)
+  transformResponseIntoContentCards(response: ReviewDetailsDtoBaseResponseDTO)
   { 
-      // response.content!.forEach((element: any) =>{
-      //     let contentCard = ContentUtils.algorithmToContentCard(element);
-      //     if(contentCard)
-      //       this.contentCards.push(contentCard);
-      // })
-      // this.showContent = this.contentCards.length > 0
+      response.content!.forEach((element: ReviewDetailsDto) =>{
+          let contentCard = ContentUtils.relevantReviewToContentReviewCard(element);
+          
+          if(contentCard)
+            this.contentCards.push(contentCard);
+      })
+      this.showContent = this.contentCards.length > 0
   }
 
   onIonInfinite(event: any)
