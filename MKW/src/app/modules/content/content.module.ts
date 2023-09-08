@@ -9,6 +9,7 @@ import { StarsRatingComponent } from '../../shared/components/stars-rating/stars
 import { ContentReviewPageComponent } from './pages/content-review-page/content-review-page.component';
 import { ContentFeedPageComponent } from './pages/content-feed-page/content-feed-page.component';
 import { CommentCardComponent } from 'src/app/shared/components/comment-card/comment-card.component';
+import { ContentReviewerPageComponent } from './pages/content-reviewer-page/content-reviewer-page.component';
 
 const routes: Routes = [
   {
@@ -18,11 +19,15 @@ const routes: Routes = [
   {
     path: 'review/:id',
     component: ContentReviewPageComponent
+  },
+  {
+    path: 'reviewer/:id',
+    component: ContentReviewerPageComponent
   }
 ];
 
 @NgModule({
-  declarations: [ContentComponent, StarsRatingComponent, ContentReviewPageComponent, ContentFeedPageComponent],
+  declarations: [ContentComponent, StarsRatingComponent, ContentReviewPageComponent, ContentFeedPageComponent, ContentReviewerPageComponent],
   imports: [
     CommonModule, 
     IonicModule, 
