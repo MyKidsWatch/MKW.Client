@@ -14,6 +14,7 @@ import { ContentAddReviewPageComponent } from './pages/content-add-review-page/c
 import { ReactiveFormsModule } from '@angular/forms';
 import { ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { ReviewService } from 'src/app/core/services/review.service';
+import { HeaderBackComponent } from 'src/app/shared/components/header-back/header-back.component';
 
 const routes: Routes = [
   {
@@ -29,7 +30,7 @@ const routes: Routes = [
     component: ContentReviewerPageComponent
   },
   {
-    path: 'add-review',
+    path: 'add-review/:contentId/:platformId',
     component: ContentAddReviewPageComponent
   }
 ];
@@ -58,7 +59,8 @@ const parentRoute: Routes = [
     ReactiveFormsModule,
     RouterModule,
     RouterModule.forChild(parentRoute),
-    CommentCardComponent
+    CommentCardComponent,
+    HeaderBackComponent
   ],
   exports: [ContentComponent],
   providers: [

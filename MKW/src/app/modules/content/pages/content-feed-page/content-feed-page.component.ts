@@ -42,8 +42,8 @@ export class ContentFeedPageComponent  implements OnInit {
 
   goToReviewPage(contentId: any, platformId: any)
   {
-    console.log("Entrando no redirect")
-    this.router.navigate(['home/content/add-review'])
+
+    this.router.navigate(['home/content/add-review', contentId, platformId])
   }
 
   goBack() {
