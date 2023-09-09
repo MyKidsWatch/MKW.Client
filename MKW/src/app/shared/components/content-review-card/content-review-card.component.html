@@ -41,7 +41,7 @@
             <label>{{ this.contentData.reviewAwardInformation.reviewBronzeAwardCount}}</label>
           </div>
         </aside>
-        <nav [routerLink]="['../../content/review/' + this.contentData.reviewId]"  >
+        <nav (click)="redirectToContentReviewPage(this.contentData.reviewId!)"  >
           <i class="material-icons">message</i>
           <label>{{ this.contentData.reviewCommentCount }}</label>
           <i class="material-icons">arrow_forward_ios</i>

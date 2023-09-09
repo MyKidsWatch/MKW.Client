@@ -111,6 +111,8 @@ export class ContentUtils {
         ],
         reviewCreationDate: new Date(2022, 5, 23)
       }
+
+      console.log(contentReviewPage)
       return contentReviewPage;
   }
 

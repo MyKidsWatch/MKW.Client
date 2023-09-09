@@ -27,7 +27,7 @@
           <label class="rating-value">{{ this.contentData.averageRating }}</label>
         </span>
       </aside>
-      <nav [routerLink]="['../content/' + this.contentData.id]"  >
+      <nav (click)="redirectToContentPage(this.contentData.id!)">
         <label>{{ 'content.seeMore' | translate }}</label>
         <i class="material-icons">arrow_forward_ios</i>
       </nav>

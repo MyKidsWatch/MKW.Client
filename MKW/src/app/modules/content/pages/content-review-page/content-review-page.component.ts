@@ -29,6 +29,7 @@ export class ContentReviewPageComponent  implements OnInit {
       .subscribe({
         next: (res: any) => {
 
+          console.log(res);
           this.contentObject = ContentUtils.ContentReviewToPage(res.content[0])!;
 
         

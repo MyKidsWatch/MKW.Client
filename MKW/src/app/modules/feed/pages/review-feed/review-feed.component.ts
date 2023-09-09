@@ -96,6 +96,7 @@ export class ReviewFeedComponent  implements OnInit {
 
   transformResponseIntoContentCards(response: ReviewDetailsDtoBaseResponseDTO)
   { 
+      console.log(response);
       response.content!.forEach((element: ReviewDetailsDto) =>{
           let contentCard = ContentUtils.relevantReviewToContentReviewCard(element);
           

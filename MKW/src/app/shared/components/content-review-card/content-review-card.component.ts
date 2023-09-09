@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ContentReviewCard } from '../../models/content-review-card.model';
 
 @Component({
@@ -16,7 +16,13 @@ export class ContentReviewCardComponent  implements OnInit {
 
   @Input() contentData?: ContentReviewCard;
 
-  constructor() { }
+  constructor(private router: Router) { }
+
+
+  redirectToContentReviewPage(contentId: number)
+  {
+      this.router.navigate([`home/content/review/${contentId}`]);
+  }
 
   ngOnInit() {}
 
