@@ -4,6 +4,7 @@ import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
 import { ContentReviewPage } from '../../models/content-review-page.model';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-content-review-page',
@@ -26,9 +27,11 @@ export class ContentReviewPageComponent  implements OnInit {
 
     this.movieService
       .getMovieById(id)
+      .pipe(take(1))
       .subscribe({
         next: (res: any) => {
 
+          console.log(res);
           this.contentObject = ContentUtils.ContentReviewToPage(res.content[0])!;
 
         

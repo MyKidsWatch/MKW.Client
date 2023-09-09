@@ -1,8 +1,8 @@
 
 export interface ContentReviewCard{
     reviewId?: number;
-    reviewTitle?: string;
-    reviewBody?: string;
+    reviewTitle?: string | null;
+    reviewBody?: string | null;
     reviewRating?: number;
     reviewCommentCount: number;
     reviewPublishDate: Date;
@@ -13,7 +13,7 @@ export interface ContentReviewCard{
 
 export interface ContentInformation{
     contentTitle: string;
-    contentPosterPath: string;
+    contentPosterPath?: string;
 }
 
 export interface ContentReviewAwardInformation{

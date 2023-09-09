@@ -2,7 +2,7 @@
 <main *ngIf="this.contentData" class="content-card">
 
   <header class="profile-header">
-    <div class="profile-information">
+    <div class="profile-information" [routerLink]="['../../content/reviewer/' + this.contentData.reviewerInformation.reviewerId]" >
       <img class="user-pfp" [src]="contentData.reviewerInformation.reviewerPicturePath"/>
       <label>{{ contentData.reviewerInformation.reviewerName }}</label>
     </div>
@@ -41,7 +41,7 @@
             <label>{{ this.contentData.reviewAwardInformation.reviewBronzeAwardCount}}</label>
           </div>
         </aside>
-        <nav [routerLink]="['../content/' + this.contentData.reviewId]"  >
+        <nav (click)="redirectToContentReviewPage(this.contentData.reviewId!)"  >
           <i class="material-icons">message</i>
           <label>{{ this.contentData.reviewCommentCount }}</label>
           <i class="material-icons">arrow_forward_ios</i>

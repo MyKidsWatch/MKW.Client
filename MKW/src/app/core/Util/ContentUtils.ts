@@ -1,8 +1,9 @@
 import { ContentCard } from "src/app/shared/models/content-card.model";
-import { Content } from "../proxies/mkw-api.proxy";
+import { Content, ReviewDetailsDto } from "../proxies/mkw-api.proxy";
 import { time } from "console";
 import { title } from "process";
 import { ContentReviewPage } from "src/app/modules/content/models/content-review-page.model";
+import { ContentReviewCard } from "src/app/shared/models/content-review-card.model";
 
 export class ContentUtils {
 
@@ -110,7 +111,40 @@ export class ContentUtils {
         ],
         reviewCreationDate: new Date(2022, 5, 23)
       }
+
+      console.log(contentReviewPage)
       return contentReviewPage;
+  }
+
+  static relevantReviewToContentReviewCard(relevantReview: ReviewDetailsDto) : ContentReviewCard | null
+  {
+    if(!relevantReview)
+      return null;
+
+    let contentReviewCard: ContentReviewCard = {
+      reviewId: relevantReview.id,
+      reviewBody: relevantReview.text,
+      reviewPublishDate: relevantReview.createDate!,
+      reviewerInformation: {
+        reviewerId: relevantReview.person?.id!,
+        reviewerName: '',
+        reviewerPicturePath: "https://i.pinimg.com/736x/b4/88/75/b48875b97a4819d9b44dbd9469f96445.jpg"
+      },
+      reviewRating: relevantReview.stars,
+      reviewTitle: relevantReview.title,
+      reviewAwardInformation: {
+        reviewBronzeAwardCount: relevantReview.bronzeAwards ? relevantReview.bronzeAwards : 0,
+        reviewGoldAwardCount: relevantReview.goldenAwards ? relevantReview.goldenAwards : 0, 
+        reviewSilverAwardCount: relevantReview.silverAwards ? relevantReview.silverAwards : 0
+      },
+      reviewCommentCount: relevantReview.commentsQuantity ? relevantReview.commentsQuantity : 0,
+      reviewContentInformation: {
+        contentPosterPath: relevantReview.content?.imageUrl ? 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + relevantReview.content?.imageUrl : undefined,
+        contentTitle: relevantReview.content?.name!
+      }
+    };
+
+    return contentReviewCard;
   }
 
   static TMDBGenreToText(genreId: number): string {
