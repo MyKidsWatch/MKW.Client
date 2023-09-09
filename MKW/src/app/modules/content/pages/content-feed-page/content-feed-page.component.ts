@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs';
 import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
@@ -16,7 +17,8 @@ export class ContentFeedPageComponent  implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private movieService: MovieService
+    private movieService: MovieService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -24,6 +26,7 @@ export class ContentFeedPageComponent  implements OnInit {
 
     this.movieService
       .getMovieById(id)
+      .pipe(take(1))
       .subscribe({
         next: (res: any) => {
 
@@ -34,6 +37,13 @@ export class ContentFeedPageComponent  implements OnInit {
           console.log(err);
         }
       });
+  }
+
+
+  goToReviewPage(contentId: any, platformId: any)
+  {
+    console.log("Entrando no redirect")
+    this.router.navigate(['home/content/add-review'])
   }
 
   goBack() {

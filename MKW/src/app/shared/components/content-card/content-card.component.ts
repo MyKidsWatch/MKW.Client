@@ -28,7 +28,7 @@ export class ContentCardComponent  implements OnInit {
 
   redirectToContentPage(contentId: number)
   {
-      this.router.navigate([`home/content/${contentId}`]);
+      this.router.navigate([`home/content/feed/${contentId}`]);
   }
 
   isValidDate()

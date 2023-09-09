@@ -1,0 +1,18 @@
+<ion-content>
+
+  <ion-icon 
+  name="arrow-back-outline" 
+  class="go-back-button" 
+  color="primary" 
+  role="button" 
+  (click)="goBack()">
+  </ion-icon>
+  <form class="login-form" [formGroup]="reviewForm">
+    <ion-input type="text" formControlName="reviewTitle" placeholder="Titulo"></ion-input>
+    <ion-input type="text" formControlName="reviewText" placeholder="Texto"></ion-input>
+  </form>
+
+</ion-content>
+    
+
+ 

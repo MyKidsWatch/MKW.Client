@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PlatformClient, ReviewClient } from '../proxies/mkw-api.proxy';
+import { CreateReviewDto, PlatformClient, ReviewClient } from '../proxies/mkw-api.proxy';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
@@ -16,5 +16,10 @@ export class ReviewService {
 
   getRelevantReviews(page: number = 1, count: number = 10) {
     return this.reviewClient.reviewGet(page, count, this.language);
+  }
+
+  registerReview(createReviewDTO: CreateReviewDto)
+  {
+    return this.reviewClient.reviewPost(createReviewDTO);
   }
 }
