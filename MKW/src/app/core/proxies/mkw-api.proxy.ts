@@ -10164,6 +10164,234 @@ export interface ISpokenLanguageDTO {
     name?: string | null;
 }
 
+export class ProfileBaseResponseDto implements IProfileBaseResponseDto {
+    isSuccess?: boolean;
+    content?: ProfileDto[] | null;
+    errors?: string[] | null;
+
+    constructor(data?: IProfileBaseResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isSuccess = _data["isSuccess"] !== undefined ? _data["isSuccess"] : <any>null;
+            if (Array.isArray(_data["content"])) {
+                this.content = [];
+                for (let item of _data["content"])
+                    this.content.push(ProfileDto.fromJS(item));
+            }
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [];
+                for (let item of _data["errors"])
+                    this.errors.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): ProfileBaseResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProfileBaseResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isSuccess"] = this.isSuccess !== undefined ? this.isSuccess : <any>null;
+        if (Array.isArray(this.content)) {
+            data["content"] = [];
+            for (let item of this.content)
+                data["content"].push(item.toJSON());
+        }
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IProfileBaseResponseDto {
+    isSuccess?: boolean;
+    content?: IProfileDto[] | null;
+    errors?: string[] | null;
+}
+
+export class ProfileDto implements IProfileDto {
+    userId?: number | null;
+    imageURL?: string | null;
+    name?: string | null;
+    username?: string | null;
+    childrens?: ProfileChildDto[] | null;
+    awards?: ProfileAwardDto[] | null;
+
+    constructor(data?: IProfileDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
+            this.imageURL = _data["imageURL"] !== undefined ? _data["imageURL"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
+            if (Array.isArray(_data["childrens"])) {
+                this.childrens = [] as any;
+                for (let item of _data["childrens"])
+                    this.childrens!.push(ProfileChildDto.fromJS(item));
+            }
+            else {
+                this.childrens = <any>null;
+            }
+            if (Array.isArray(_data["awards"])) {
+                this.awards = [] as any;
+                for (let item of _data["awards"])
+                    this.awards!.push(ProfileAwardDto.fromJS(item));
+            }
+            else {
+                this.awards = <any>null;
+            }
+        }
+    }
+
+    static fromJS(data: any): ProfileDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProfileDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId !== undefined ? this.userId : <any>null;
+        data["imageURL"] = this.imageURL !== undefined ? this.imageURL : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["username"] = this.username !== undefined ? this.username : <any>null;
+        if (Array.isArray(this.childrens)) {
+            data["childrens"] = [];
+            for (let item of this.childrens)
+                data["childrens"].push(item.toJSON());
+        }
+        if (Array.isArray(this.awards)) {
+            data["awards"] = [];
+            for (let item of this.awards)
+                data["awards"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IProfileDto {
+    userId?: number | null;
+    imageURL?: string | null;
+    name?: string | null;
+    username?: string | null;
+    childrens?: IProfileChildDto[] | null;
+    awards?: IProfileAwardDto[] | null;
+}
+
+export class ProfileChildDto implements IProfileChildDto {
+    id?: number | null;
+    ageRangeId?: number | null;
+    genderId?: number | null;
+    personId?: number | null;
+  
+    constructor(data?: IProfileChildDto) {
+      if (data) {
+        for (const property in data) {
+          if (data.hasOwnProperty(property)) {
+            (this as any)[property] = (data as any)[property];
+          }
+        }
+      }
+    }
+  
+    init(_data?: any) {
+      if (_data) {
+        this.id = _data.id !== undefined ? _data.id : null;
+        this.ageRangeId = _data.ageRangeId !== undefined ? _data.ageRangeId : null;
+        this.genderId = _data.genderId !== undefined ? _data.genderId : null;
+        this.personId = _data.personId !== undefined ? _data.personId : null;
+      }
+    }
+  
+    static fromJS(data: any): ProfileChildDto {
+      data = typeof data === 'object' ? data : {};
+      const result = new ProfileChildDto();
+      result.init(data);
+      return result;
+    }
+  
+    toJSON(data?: any): any {
+        data = typeof data === 'object' ? data : {};
+        data.id = this.id !== undefined ? this.id : null;
+        data.ageRangeId = this.ageRangeId !== undefined ? this.ageRangeId : null;
+        data.genderId = this.genderId !== undefined ? this.genderId : null;
+        data.personId = this.personId !== undefined ? this.personId : null;
+        return data;
+    }
+}
+
+export interface IProfileChildDto {
+    id?: number | null;
+    ageRangeId?: number | null;
+    genderId?: number | null;
+    personId?: number | null;
+}
+  
+export class ProfileAwardDto implements IProfileAwardDto {
+    name?: string | null;
+    quantity?: number | null;
+  
+    constructor(data?: IProfileAwardDto) {
+      if (data) {
+        for (const property in data) {
+          if (data.hasOwnProperty(property)) {
+            (this as any)[property] = (data as any)[property];
+          }
+        }
+      }
+    }
+  
+    init(_data?: any) {
+      if (_data) {
+        this.name = _data.name !== undefined ? _data.name : null;
+        this.quantity = _data.quantity !== undefined ? _data.quantity : null;
+      }
+    }
+  
+    static fromJS(data: any): ProfileAwardDto {
+      data = typeof data === 'object' ? data : {};
+      const result = new ProfileAwardDto();
+      result.init(data);
+      return result;
+    }
+  
+    toJSON(data?: any): any {
+    data = typeof data === 'object' ? data : {};
+    data.name = this.name !== undefined ? this.name : null;
+    data.quantity = this.quantity !== undefined ? this.quantity : null;
+    return data;
+    }
+}
+
+export interface IProfileAwardDto {
+    name?: string | null;
+    quantity?: number | null;
+}
+
 export class StringBaseResponseDTO implements IStringBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: string[] | null;
