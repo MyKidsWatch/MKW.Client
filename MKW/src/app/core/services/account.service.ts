@@ -37,7 +37,7 @@ export class AccountService {
 
   public requestPasswordKeyCode(request: RequestKeycodeDTO)
   {
-    let res = this.accountClient.passwordKeycodePost(request);
+    let res = this.accountClient.passwordKeycode(request);
     return res;
   }
 

@@ -2,8 +2,8 @@
 export interface ContentReviewPage{
     reviewId: number;
     reviewTitle?: string;
-    reviewDescription?: string;
-    reviewRating: number;
+    reviewDescription?: string | null;
+    reviewRating?: number;
     reviewCreationDate: Date;
     reviewAuthor: UserInformation;
     reviewedContentInformation: ContentInformation;
