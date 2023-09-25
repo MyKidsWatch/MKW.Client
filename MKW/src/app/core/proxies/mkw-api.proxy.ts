@@ -771,11 +771,16 @@ export class AccountClient {
     }
 
     /**
+     * @param language (optional) 
      * @param body (optional) 
      * @return Created
      */
-    register(body: CreateUserDTO | undefined): Observable<ReadUserDTOBaseResponseDTO> {
-        let url_ = this.baseUrl + "/v1/Account/register";
+    register(language: string | undefined, body: CreateUserDTO | undefined): Observable<ReadUserDTOBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Account/register?";
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -841,11 +846,16 @@ export class AccountClient {
     }
 
     /**
+     * @param language (optional) 
      * @param body (optional) 
      * @return No Content
      */
-    update(body: UpdateUserDTO | undefined): Observable<ObjectBaseResponseDTO> {
-        let url_ = this.baseUrl + "/v1/Account/user/update";
+    update(language: string | undefined, body: UpdateUserDTO | undefined): Observable<ObjectBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Account/user/update?";
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -911,11 +921,16 @@ export class AccountClient {
     }
 
     /**
+     * @param language (optional) 
      * @param body (optional) 
      * @return Success
      */
-    passwordKeycode(body: RequestKeycodeDTO | undefined): Observable<ResponseGenerateKeycodeDTOBaseResponseDTO> {
-        let url_ = this.baseUrl + "/v1/Account/password-keycode";
+    passwordKeycode(language: string | undefined, body: RequestKeycodeDTO | undefined): Observable<ResponseGenerateKeycodeDTOBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Account/password-keycode?";
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -981,11 +996,16 @@ export class AccountClient {
     }
 
     /**
+     * @param language (optional) 
      * @param body (optional) 
      * @return Success
      */
-    emailKeycode(body: RequestKeycodeDTO | undefined): Observable<ReadUserDTOBaseResponseDTO> {
-        let url_ = this.baseUrl + "/v1/Account/email-keycode";
+    emailKeycode(language: string | undefined, body: RequestKeycodeDTO | undefined): Observable<ReadUserDTOBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Account/email-keycode?";
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -2809,7 +2829,7 @@ export class ContentClient {
      * @param language (optional) 
      * @return Success
      */
-    external(externalContentId: string, platformId: PlatformEnum, language: string | undefined): Observable<ContentDetailsDTOBaseResponseDTO> {
+    external(externalContentId: string, platformId: PlatformEnum, language: string | undefined): Observable<ContentDetailsDTO> {
         let url_ = this.baseUrl + "/v1/Content/external/{platformId}/{externalContentId}?";
         if (externalContentId === undefined || externalContentId === null)
             throw new Error("The parameter 'externalContentId' must be defined.");
@@ -2838,14 +2858,14 @@ export class ContentClient {
                 try {
                     return this.processExternal(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ContentDetailsDTOBaseResponseDTO>;
+                    return _observableThrow(e) as any as Observable<ContentDetailsDTO>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ContentDetailsDTOBaseResponseDTO>;
+                return _observableThrow(response_) as any as Observable<ContentDetailsDTO>;
         }));
     }
 
-    protected processExternal(response: HttpResponseBase): Observable<ContentDetailsDTOBaseResponseDTO> {
+    protected processExternal(response: HttpResponseBase): Observable<ContentDetailsDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2856,7 +2876,7 @@ export class ContentClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ContentDetailsDTOBaseResponseDTO.fromJS(resultData200);
+            result200 = ContentDetailsDTO.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status === 404) {
@@ -7967,9 +7987,11 @@ export interface IReadAwardDTO {
 
 export class ReadContentDTO implements IReadContentDTO {
     id?: number;
+    externalId?: string | null;
     name?: string | null;
     imageUrl?: string | null;
     platformCategory?: number;
+    platformId?: number | null;
 
     constructor(data?: IReadContentDTO) {
         if (data) {
@@ -7983,9 +8005,11 @@ export class ReadContentDTO implements IReadContentDTO {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.externalId = _data["externalId"] !== undefined ? _data["externalId"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
             this.imageUrl = _data["imageUrl"] !== undefined ? _data["imageUrl"] : <any>null;
             this.platformCategory = _data["platformCategory"] !== undefined ? _data["platformCategory"] : <any>null;
+            this.platformId = _data["platformId"] !== undefined ? _data["platformId"] : <any>null;
         }
     }
 
@@ -7999,18 +8023,22 @@ export class ReadContentDTO implements IReadContentDTO {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["externalId"] = this.externalId !== undefined ? this.externalId : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
         data["imageUrl"] = this.imageUrl !== undefined ? this.imageUrl : <any>null;
         data["platformCategory"] = this.platformCategory !== undefined ? this.platformCategory : <any>null;
+        data["platformId"] = this.platformId !== undefined ? this.platformId : <any>null;
         return data;
     }
 }
 
 export interface IReadContentDTO {
     id?: number;
+    externalId?: string | null;
     name?: string | null;
     imageUrl?: string | null;
     platformCategory?: number;
+    platformId?: number | null;
 }
 
 export class ReadPersonDTO implements IReadPersonDTO {

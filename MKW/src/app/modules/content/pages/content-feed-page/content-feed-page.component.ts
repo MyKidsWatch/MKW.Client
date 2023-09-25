@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { ContentUtils } from 'src/app/core/Util/ContentUtils';
+import { ContentService } from 'src/app/core/services/content.service';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
 
@@ -12,31 +13,40 @@ import { ContentCard } from 'src/app/shared/models/content-card.model';
 })
 export class ContentFeedPageComponent  implements OnInit {
 
-  public movieObject?: ContentCard
+  public contentObject?: ContentCard | null
   public loading: boolean = true;
+
+  private contentId: string = '';
+  private platformId: number = 1;
 
   constructor(
     private route: ActivatedRoute,
-    private movieService: MovieService,
+    private contentService: ContentService,
     private router: Router
   ) {}
 
   ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.movieService
-      .getMovieById(id)
-      .pipe(take(1))
-      .subscribe({
-        next: (res: any) => {
+    this.contentId = this.route.snapshot.paramMap.get('contentId')!;
+    this.platformId = Number(this.route.snapshot.paramMap.get('platformId')!);
 
-          this.movieObject = ContentUtils.algorithmToContentCard(res.content[0])!;
-          this.loading = false;
-        },
-        error: (err: any) => {
-          console.log(err);
-        }
-      });
+    console.log(this.contentId)
+    this.contentService.getContentByExternalId(this.contentId, this.platformId)
+    .pipe(take(1))
+    .subscribe({
+      next: (res) =>{
+
+        console.log(res);
+        let contentData = res;
+        this.contentObject = ContentUtils.ContentDetailsDTOToContentCard(contentData);
+    
+        this.loading = false
+      },
+      error: (err) =>{
+        console.log(err);
+      }
+    })
+
   }
 
 

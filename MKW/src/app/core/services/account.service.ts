@@ -13,7 +13,7 @@ export class AccountService {
 
   public registerAccount(createUserDto: CreateUserDTO) : Observable<any>
   {
-      let res = this.accountClient.register(createUserDto);
+      let res = this.accountClient.register('', createUserDto);
       return res;
   }
 
@@ -37,7 +37,7 @@ export class AccountService {
 
   public requestPasswordKeyCode(request: RequestKeycodeDTO)
   {
-    let res = this.accountClient.passwordKeycode(request);
+    let res = this.accountClient.passwordKeycode('', request);
     return res;
   }
 

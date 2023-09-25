@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
@@ -21,7 +21,7 @@ export class ContentReviewPageComponent  implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-
+    private router: Router,
     private reviewService: ReviewService
   ) {}
 
@@ -44,5 +44,11 @@ export class ContentReviewPageComponent  implements OnInit {
 
   goBack() {
     window.history.back();
+  }
+
+  goToContentPage(contentId: any, platformId: any)
+  {
+
+    this.router.navigate(['home/content/feed', contentId, platformId])
   }
 }

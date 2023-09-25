@@ -13,6 +13,7 @@ export interface ContentReviewPage{
 export interface ContentInformation{
     contentId: number;
     platformId: number;
+    externalContentId: number | string;
     title: string;
     picturePath?: string;
 }
