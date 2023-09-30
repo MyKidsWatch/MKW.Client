@@ -9,33 +9,33 @@
     >
     </ion-icon>
     <div class="movie-poster"
-      style="background: linear-gradient(180deg, #f5f5f500 0%, #f5f5f500 52.92%, #f5f5f5 90%), url('{{ movieObject?.picturePath }}') no-repeat center center fixed; background-size: cover;">
+      style="background: linear-gradient(180deg, #f5f5f500 0%, #f5f5f500 52.92%, #f5f5f5 90%), url('{{ contentObject?.picturePath }}') no-repeat center center fixed; background-size: cover;">
     </div>
     <div class="movie-info">
       <div class="movie-title-container">
-        <h1 class="movie-title">{{ movieObject?.title }}</h1>
-        <app-stars-rating [rating]="movieObject?.averageRating || 0" />
+        <h1 class="movie-title">{{ contentObject?.title }}</h1>
+        <app-stars-rating [rating]="contentObject?.averageRating || 0" />
 
       </div>
       <div class="genres">
-        <ion-chip *ngFor="let genre of movieObject?.genre">
+        <ion-chip *ngFor="let genre of contentObject?.genre">
           <ion-label>{{ genre }}</ion-label>
         </ion-chip>
       </div>
       <p class="movie-description">
-        {{ movieObject?.description }}
+        {{ contentObject?.description }}
       </p>
       <div class="movie-additional-info">
         <div class="content-type">
           <img src="assets/icon/movie.svg" class="movie-icon" alt="Movie icon">
           <div>
             <p class="content-type-text"> {{ 'movie' | translate }}</p>
-            <p class="content-type-additional-info">{{ movieObject?.releaseDate?.getFullYear() }}</p>
+            <p class="content-type-additional-info">{{ contentObject?.releaseDate?.getFullYear() }}</p>
           </div>
         </div>
       </div>
     </div>
-    <button class="add-button" (click)="goToReviewPage(movieObject?.id, 1)" ><i class="material-icons">add</i>Review</button>
+    <button class="add-button" (click)="goToReviewPage(contentObject?.externalContentId, contentObject?.platformId)" ><i class="material-icons">add</i>Review</button>
   </div>
   
 

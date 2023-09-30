@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router, RouterModule } from '@angular/router';
 import { relative } from 'path';
+import { StarsRatingComponent } from '../stars-rating/stars-rating.component';
 
 @Component({
   selector: 'app-content-card',
@@ -26,9 +27,9 @@ export class ContentCardComponent  implements OnInit {
   }
 
 
-  redirectToContentPage(contentId: number)
+  redirectToContentPage(externalContentId: string, platformId: number)
   {
-      this.router.navigate([`home/content/feed/${contentId}`]);
+      this.router.navigate([`home/content/feed`, externalContentId, platformId]);
   }
 
   isValidDate()

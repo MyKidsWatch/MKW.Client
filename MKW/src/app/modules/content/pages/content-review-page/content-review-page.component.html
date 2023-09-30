@@ -34,7 +34,7 @@
         </p>
 
         <div class="see-more">
-          <label [routerLink]="['../../../content/' + this.contentObject?.reviewedContentInformation?.contentId]">Ver mais informações e outras análises</label>
+          <label (click)="goToContentPage(contentObject?.reviewedContentInformation?.externalContentId, contentObject?.reviewedContentInformation?.platformId)">Ver mais informações e outras análises</label>
           <i class="material-icons">arrow_forward_ios</i>
         </div>
       </div>

@@ -4,9 +4,10 @@ import { RouterModule } from '@angular/router';
 import { SearchComponent } from './search.component';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { MovieClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { ContentClient, MovieClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { ContentCardComponent } from 'src/app/shared/components/content-card/content-card.component';
+import { ContentService } from 'src/app/core/services/content.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,9 @@ import { ContentCardComponent } from 'src/app/shared/components/content-card/con
   ],
   providers: [
     MovieClient,
-    MovieService
+    MovieService,
+    ContentClient,
+    ContentService
   ]
 })
 export class SearchModule { }

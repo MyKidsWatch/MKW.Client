@@ -22,4 +22,9 @@ export class ReviewService {
   {
     return this.reviewClient.reviewPost(createReviewDTO);
   }
+
+  getReviewById(id: number, language: string = "pt-br" )
+  {
+    return this.reviewClient.id(id, language);
+  }
 }

@@ -12,13 +12,14 @@ import { CommentCardComponent } from 'src/app/shared/components/comment-card/com
 import { ContentReviewerPageComponent } from './pages/content-reviewer-page/content-reviewer-page.component';
 import { ContentAddReviewPageComponent } from './pages/content-add-review-page/content-add-review-page.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { ContentClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { HeaderBackComponent } from 'src/app/shared/components/header-back/header-back.component';
+import { ContentService } from 'src/app/core/services/content.service';
 
 const routes: Routes = [
   {
-    path: 'feed/:id',
+    path: 'feed/:contentId/:platformId',
     component: ContentFeedPageComponent
   },
   {
@@ -65,7 +66,9 @@ const parentRoute: Routes = [
   exports: [ContentComponent],
   providers: [
     ReviewClient,
-    ReviewService
+    ReviewService,
+    ContentClient,
+    ContentService  
   ]
 })
 
