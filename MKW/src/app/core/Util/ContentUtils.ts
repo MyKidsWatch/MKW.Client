@@ -136,6 +136,7 @@ export class ContentUtils {
                 userName: commentAnswer.person!.username!,
                 profilePictureUrl: 'assets/icon/default.jpg'
               },
+              parentCommentId: comment.id,
               commentResponses: []
             }
 
@@ -146,6 +147,7 @@ export class ContentUtils {
 
       return contentReviewPage;
   }
+
 
   static ContentDetailsDTOToContentCard(content: ContentDetailsDTO) : ContentCard | null
   {

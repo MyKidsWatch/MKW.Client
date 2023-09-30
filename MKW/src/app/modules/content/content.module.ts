@@ -11,11 +11,12 @@ import { ContentFeedPageComponent } from './pages/content-feed-page/content-feed
 import { CommentCardComponent } from 'src/app/shared/components/comment-card/comment-card.component';
 import { ContentReviewerPageComponent } from './pages/content-reviewer-page/content-reviewer-page.component';
 import { ContentAddReviewPageComponent } from './pages/content-add-review-page/content-add-review-page.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ContentClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommentClient, ContentClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { HeaderBackComponent } from 'src/app/shared/components/header-back/header-back.component';
 import { ContentService } from 'src/app/core/services/content.service';
+import { CommentService } from 'src/app/core/services/comment.service';
 
 const routes: Routes = [
   {
@@ -57,6 +58,7 @@ const parentRoute: Routes = [
     CommonModule, 
     IonicModule, 
     TranslateModule,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule,
     RouterModule.forChild(parentRoute),
@@ -68,7 +70,9 @@ const parentRoute: Routes = [
     ReviewClient,
     ReviewService,
     ContentClient,
-    ContentService  
+    ContentService,
+    CommentClient,
+    CommentService
   ]
 })
 
