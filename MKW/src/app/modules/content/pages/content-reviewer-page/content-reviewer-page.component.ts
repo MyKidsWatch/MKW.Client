@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./content-reviewer-page.component.scss'],
 })
 export class ContentReviewerPageComponent  implements OnInit {
-
+  public loading: boolean = false;
+  
   constructor() { }
 
   ngOnInit() {}
