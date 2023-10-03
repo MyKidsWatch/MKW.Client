@@ -7,10 +7,21 @@
     <div class="comment-content">
       <label class="comment-username">{{commentModel.commentAuthor.userName  }}</label>
       <label class="comment-text">{{commentModel.commentText}}</label>
+      <button *ngIf="commentModel.parentCommentId == null" class="answer-button" (click)="startAnswering($event)" >Responder</button>
     </div>
+
   </div>
   
-  <div class="responses-content">
+  <div class="responses-content" *ngIf="commentModel.parentCommentId == null">
     <app-comment-card class="comment-response-modal" *ngFor="let response of commentModel.commentResponses" [commentModel]="response"></app-comment-card>
+    
+    
+    <ion-item [style]="isAnswering ? 'display: block' : 'display: none'" >
+      <ion-input [(ngModel)]="newComment" type="text" #answer pldaceholder="Escreva seu comentário" (focusout)="stopAnswering()" ></ion-input>
+      <button clear item-right (click)="answerComment()"><i class="material-icons">send</i></button>
+    </ion-item>
   </div>
+
+
+  
 </div>

@@ -21,7 +21,7 @@ div.comment-modal{
         display: flex;
         flex-direction: column;
         padding-left: 15px;
-        
+        width: 100%;
 
         label.comment-username{
             font-weight: 600;
@@ -29,6 +29,10 @@ div.comment-modal{
 
         label.comment-text{
             font-weight: 300  ;
+        }
+
+        button.answer-button{
+            align-self: self-end;
         }
     }
 

@@ -46,10 +46,13 @@
         <i class="material-icons">comment</i>
         <label>{{contentObject?.reviewComments?.length}} commments</label>
       </div>
-
-
-      <app-comment-card *ngFor="let comment of contentObject?.reviewComments" [commentModel]="comment"></app-comment-card>
-
+      
+      <app-comment-card *ngFor="let comment of contentObject?.reviewComments" [commentModel]="comment" (commentAnswered)="addAnswerToComment($event)"></app-comment-card>
+      
+      <ion-item>
+        <ion-input type="text" placeholder="Escreva seu comentário" [(ngModel)]="newComment"></ion-input>
+        <button clear item-right (click)="addCommentToReview()"><i class="material-icons">send</i></button>
+      </ion-item>
     </div>
   </div>
 </ion-content>
