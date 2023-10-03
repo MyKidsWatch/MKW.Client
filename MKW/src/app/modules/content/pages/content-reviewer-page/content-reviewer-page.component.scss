@@ -110,5 +110,53 @@ ion-header {
 
 
   }
-  
+
+
+  .profile-children {
+    h3 {
+      font-family: Poppins;
+      text-align: center;
+      color: #00000085;
+      font-size: .85rem;
+      font-weight: 500;
+    }
+
+    .children {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      
+      .child {
+        max-width: 3rem;
+        margin: 0 .5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      
+        p{
+          font-family: Poppins;
+          font-size: .6rem;
+          line-height: 1.2;
+          margin: unset;
+          margin-top: .5rem;
+          text-align: center;
+        }
+        
+        .child-icon {
+          border-radius: 50%;
+          background: #FFBA08;
+          width: 3.5rem;
+          height: 3.5rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          
+          i{
+            font-size: 2.5rem;
+            color: #2C2C2C;
+          }
+        }
+      }
+    }
+  }
 }
