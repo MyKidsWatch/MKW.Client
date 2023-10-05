@@ -17,13 +17,17 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     let tokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
-
-    if(!!tokenInfo)
+    console.log(tokenInfo)
+    console.log("auth guard")
+    if(!!tokenInfo && !!tokenInfo.accessToken)
+    {
       return true;
+
+    }
     
     this.router.navigateByUrl('auth');
 
-    return !!tokenInfo;
+    return false;
   }
   
 

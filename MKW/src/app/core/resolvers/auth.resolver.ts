@@ -19,7 +19,7 @@ export class AuthResolver implements Resolve<boolean> {
     
     let tokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
 
-    if(tokenInfo)    
+    if(tokenInfo && !! tokenInfo.accessToken)    
       this.router.navigate(['home/feed']);
     
 
