@@ -49,9 +49,9 @@ const routes: Routes = [
   providers:[
     AlgorithmClient,
     AlgorithmService,
+    ReportClient,
     ReviewClient,
     ReviewService,
-    ReportClient
   ]
 })
 export class FeedModule { }
