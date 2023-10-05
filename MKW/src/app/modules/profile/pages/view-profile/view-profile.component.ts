@@ -28,7 +28,7 @@ export class ViewProfileComponent  implements OnInit {
   {
       this.store.dispatch(new RemoveUser()).subscribe({
         next: () =>{
-            this.router.navigateByUrl('auth');
+            this.router.navigateByUrl('auth', { replaceUrl: true });
         }
       });
   }

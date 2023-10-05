@@ -6,10 +6,11 @@ import { ContentCard } from 'src/app/shared/models/content-card.model';
 import { ContentReviewPage } from '../../models/content-review-page.model';
 import { take } from 'rxjs';
 import { ReviewService } from 'src/app/core/services/review.service';
-import { AnswerCommentDto, CreateCommentDto, ICreateCommentDto, ReviewDetailsDtoBaseResponseDTO } from 'src/app/core/proxies/mkw-api.proxy';
+import { AnswerCommentDto, CreateCommentDto, CreateReportDto, ICreateCommentDto, ReviewDetailsDtoBaseResponseDTO, UpdateCommentDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { CommentService } from 'src/app/core/services/comment.service';
-import { AnswerEvent } from 'src/app/shared/components/comment-card/comment-card.component';
 import { ContentReviewComment } from "src/app/modules/content/models/content-review-page.model";
+import { AnswerEvent, EditEvent, ReportEvent } from '../../components/comment-card/comment-card.component';
+import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 
 @Component({
   selector: 'app-content-review-page',
@@ -100,6 +101,7 @@ export class ContentReviewPageComponent  implements OnInit {
     )
   }
 
+
   addAnswerToComment(answerEvent: AnswerEvent)
   {
 
@@ -135,5 +137,74 @@ export class ContentReviewPageComponent  implements OnInit {
       }
     )
   }
+
+
+  reportComment(reportEvent: ReportEvent){
+
+    let reportCommentDTO = new CreateReportDto();
+    reportCommentDTO.commentId = reportEvent.commentId;
+    reportCommentDTO.commentId = reportEvent.reasonId;
+
+    this.commentService.reportComment(reportCommentDTO)
+    .pipe(take(1))
+    .subscribe(
+      {
+        next: (res) =>{
+        },
+        error: (err) =>{
+        }
+      }
+    )
+  }
+
+  deleteComment(commentId: number){
+    
+    this.commentService.deleteComment(commentId)
+    .pipe(take(1))
+    .subscribe(
+      {
+
+        next: (res) =>{
+            
+            let comment = this.contentObject?.reviewComments.find(x => x.commentId == commentId)
+            comment!.commentResponses.splice(comment!.commentResponses.indexOf(comment!))
+        },
+        error: (err) =>{     
+        }
+      }
+    )
+  }
+
+  editComment(editEvent: EditEvent){
+
+    let request = new UpdateCommentDto();
+
+    request.commentId = editEvent.commentId;
+    request.text = editEvent.nextText;
+
+    this.commentService.editComment(request)
+    .pipe(take(1))
+    .subscribe(
+      {
+
+        next: (res) =>{
+            
+            let newComment = res.content![0];
+
+            let newContentObjects = this.contentObject?.reviewComments.map(x => {
+              if(x.commentId == newComment.id)
+                x.commentText = newComment.text!;
+
+              return x;
+            });
+        
+            this.contentObject!.reviewComments = newContentObjects!;
+          },
+        error: (err) =>{
+          
+        }
+      }
+    )  }
+
 
 }

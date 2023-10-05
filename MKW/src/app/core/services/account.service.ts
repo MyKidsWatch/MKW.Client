@@ -13,7 +13,7 @@ export class AccountService {
 
   public registerAccount(createUserDto: CreateUserDTO) : Observable<any>
   {
-      let res = this.accountClient.register('', createUserDto);
+      let res = this.accountClient.register('pt-Br', createUserDto);
       return res;
   }
 
