@@ -37,6 +37,7 @@ export class ReviewFeedComponent  implements OnInit {
   }
 
   ionViewDidEnter(){
+    console.log("Aqui")
     this.showContent = true;
     if(this.contentCards.length == 0)
       this.searchAlgorithm();

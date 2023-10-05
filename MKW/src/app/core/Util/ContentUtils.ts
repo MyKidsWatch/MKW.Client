@@ -100,7 +100,7 @@ export class ContentUtils {
         reviewTitle: reviewDTO.title!,
         reviewDescription: reviewDTO.text!,
         reviewAuthor: {
-          userName: reviewDTO.person!.name!,
+          userName: reviewDTO.person!.username!,
           profilePictureUrl: "assets/icon/default.jpg"
         },
         reviewedContentInformation: {
@@ -181,7 +181,7 @@ export class ContentUtils {
       reviewPublishDate: relevantReview.createDate!,
       reviewerInformation: {
         reviewerId: relevantReview.person!.id!,
-        reviewerName: relevantReview.person!.name!,
+        reviewerName: relevantReview.person!.username!,
         reviewerPicturePath: "assets/icon/default.jpg"
       },
       reviewRating: relevantReview.stars,

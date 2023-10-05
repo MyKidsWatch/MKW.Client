@@ -8,15 +8,15 @@ import { ContentComponent } from './content.component';
 import { StarsRatingComponent } from '../../shared/components/stars-rating/stars-rating.component';
 import { ContentReviewPageComponent } from './pages/content-review-page/content-review-page.component';
 import { ContentFeedPageComponent } from './pages/content-feed-page/content-feed-page.component';
-import { CommentCardComponent } from 'src/app/shared/components/comment-card/comment-card.component';
 import { ContentReviewerPageComponent } from './pages/content-reviewer-page/content-reviewer-page.component';
 import { ContentAddReviewPageComponent } from './pages/content-add-review-page/content-add-review-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommentClient, ContentClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { CommentClient, ContentClient, ReportClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { HeaderBackComponent } from 'src/app/shared/components/header-back/header-back.component';
 import { ContentService } from 'src/app/core/services/content.service';
 import { CommentService } from 'src/app/core/services/comment.service';
+import { CommentCardComponent } from './components/comment-card/comment-card.component';
 
 const routes: Routes = [
   {
@@ -52,7 +52,8 @@ const parentRoute: Routes = [
     ContentReviewPageComponent, 
     ContentFeedPageComponent, 
     ContentReviewerPageComponent, 
-    ContentAddReviewPageComponent
+    ContentAddReviewPageComponent,
+    CommentCardComponent
   ],
   imports: [
     CommonModule, 
@@ -62,7 +63,6 @@ const parentRoute: Routes = [
     ReactiveFormsModule,
     RouterModule,
     RouterModule.forChild(parentRoute),
-    CommentCardComponent,
     HeaderBackComponent
   ],
   exports: [ContentComponent],
@@ -72,7 +72,8 @@ const parentRoute: Routes = [
     ContentClient,
     ContentService,
     CommentClient,
-    CommentService
+    CommentService,
+    ReportClient
   ]
 })
 

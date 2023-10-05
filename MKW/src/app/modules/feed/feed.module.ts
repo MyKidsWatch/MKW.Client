@@ -5,7 +5,7 @@ import { FeedComponent } from './feed.component';
 import { IonicModule } from '@ionic/angular';
 import { ContentCardComponent } from '../../shared/components/content-card/content-card.component'
 import { TranslateModule } from '@ngx-translate/core';
-import { AlgorithmClient, MovieClient, Review, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { AlgorithmClient, MovieClient, ReportClient, Review, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { AlgorithmService } from 'src/app/core/services/algorithm.service';
 import { ReviewFeedComponent } from './pages/review-feed/review-feed.component';
 import { ContentFeedComponent } from './pages/content-feed/content-feed.component';
@@ -50,7 +50,8 @@ const routes: Routes = [
     AlgorithmClient,
     AlgorithmService,
     ReviewClient,
-    ReviewService
+    ReviewService,
+    ReportClient
   ]
 })
 export class FeedModule { }
