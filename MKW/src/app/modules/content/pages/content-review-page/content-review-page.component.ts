@@ -158,21 +158,23 @@ export class ContentReviewPageComponent  implements OnInit {
   }
 
   deleteComment(commentId: number){
+    console.log(this.contentObject?.reviewComments[0])
+    let comment = this.contentObject?.reviewComments.find(x => x.commentId == commentId)
     
-    this.commentService.deleteComment(commentId)
-    .pipe(take(1))
-    .subscribe(
-      {
+    console.log(this.contentObject?.reviewComments[0])
+    this.contentObject!.reviewComments = this.contentObject!.reviewComments.splice(comment!.commentResponses.indexOf(comment!), 1)
+    // this.commentService.deleteComment(commentId)
+    // .pipe(take(1))
+    // .subscribe(
+    //   {
 
-        next: (res) =>{
+    //     next: (res) =>{
             
-            let comment = this.contentObject?.reviewComments.find(x => x.commentId == commentId)
-            comment!.commentResponses.splice(comment!.commentResponses.indexOf(comment!))
-        },
-        error: (err) =>{     
-        }
-      }
-    )
+    //     },
+    //     error: (err) =>{     
+    //     }
+    //   }
+    // )
   }
 
   editComment(editEvent: EditEvent){

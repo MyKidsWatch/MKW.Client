@@ -7,8 +7,8 @@ import {
 import { Observable, of, concatMap } from 'rxjs';
 import { AccountService } from '../services/account.service';
 import { Store } from '@ngxs/store';
-import { SetUserData } from 'src/app/shared/store/actions/user.action';
-import { UserData } from 'src/app/shared/store/models/user.model';
+import { SetUserData } from 'src/app/shared/store/user/user.action';
+import { UserData } from 'src/app/shared/store/user/user.model';
 
 @Injectable({
   providedIn: 'root'

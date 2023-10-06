@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { RemoveUser } from 'src/app/shared/store/actions/user.action';
-import { UserData } from 'src/app/shared/store/models/user.model';
-import { UserState } from 'src/app/shared/store/state/user.state';
+import { RemoveUser } from 'src/app/shared/store/user/user.action';
+import { UserData } from 'src/app/shared/store/user/user.model';
+import { UserState } from 'src/app/shared/store/user/user.state';
 
 @Component({
   selector: 'app-view-profile',

@@ -6,7 +6,7 @@ import {
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Store } from '@ngxs/store'
-import { UserState } from 'src/app/shared/store/state/user.state';
+import { UserState } from 'src/app/shared/store/user/user.state';
 import { SplashScreenService } from '../services/splash-screen.service';
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class AuthResolver implements Resolve<boolean> {
     
     let tokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
 
-    if(tokenInfo && !! tokenInfo.accessToken)    
+    if(tokenInfo && !!tokenInfo.accessToken)    
       this.router.navigate(['home/feed']);
     
 

@@ -8,9 +8,9 @@ import {
 } from '@angular/common/http';
 import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { UserState } from 'src/app/shared/store/state/user.state';
+import { UserState } from 'src/app/shared/store/user/user.state';
 import { Router } from '@angular/router';
-import { SetTokenInfo } from 'src/app/shared/store/actions/user.action';
+import { SetTokenInfo } from 'src/app/shared/store/user/user.action';
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {

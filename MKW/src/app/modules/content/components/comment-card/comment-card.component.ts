@@ -8,7 +8,7 @@ import { Content } from 'src/app/core/proxies/mkw-api.proxy';
 import { ContentReviewComment } from 'src/app/modules/content/models/content-review-page.model';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngxs/store';
-import { UserState } from 'src/app/shared/store/state/user.state';
+import { UserState } from 'src/app/shared/store/user/user.state';
 
 @Component({
   selector: 'app-comment-card',
@@ -20,6 +20,23 @@ export class CommentCardComponent  implements OnInit {
   public newComment = '';
   public isAnswering: boolean = false;
   public currentUsername?: string = '';
+  public alertButtons = [
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      handler: () => {
+        console.log('Alert canceled');
+      },
+    },
+    {
+      text: 'OK',
+      role: 'confirm',
+      handler: (commentId: number) => {
+        this.commentDeleted.emit(this.commentModel.commentId)
+      },
+    },
+  ];
+  
   @ViewChild('answer', { static: false }) answerInput?: IonInput;
 
   @Output() commentAnswered: EventEmitter<AnswerEvent> = new EventEmitter(); 

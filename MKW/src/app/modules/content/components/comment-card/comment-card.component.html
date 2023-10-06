@@ -12,9 +12,18 @@
           <ng-template>
             <label style="padding: 10px;" *ngIf="commentModel.commentAuthor.userName == this.currentUsername">Editar</label>
             <label style="padding: 10px;" *ngIf="commentModel.commentAuthor.userName == this.currentUsername">Excluir</label>
-            <label style="padding: 10px;">Denunciar</label>
+            <label style="padding: 10px;" id="delete-comment-alert">Denunciar</label>
+            
+            <ion-alert
+              trigger="delete-comment-alert"
+              header="Tem certeza que deseja excluir o comentário?"
+              [buttons]="alertButtons"
+            ></ion-alert>
           </ng-template>
         </ion-popover>
+
+
+        
       </div>
       <label class="comment-text">{{commentModel.commentText}}</label>
       <button *ngIf="commentModel.parentCommentId == null" class="answer-button" (click)="startAnswering($event)" >Responder</button>
