@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()"><i class="material-icons">arrow_back</i></ion-button>
+    </ion-buttons>
+    <ion-title>Editar comentário</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label position="stacked">Digite seu comentário</ion-label>
+    <ion-input type="text" placeholder="Digite aqui seu novo comentário" [(ngModel)]="comment"></ion-input>
+  </ion-item>
+
+  <ion-button (click)="confirm()">Editar</ion-button>
+</ion-content>

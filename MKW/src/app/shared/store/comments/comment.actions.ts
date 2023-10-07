@@ -1,12 +1,17 @@
 
 
+
+export class UpdateCommentList{
+    static readonly type = '[Comment] Update Comment List';
+
+    constructor(public reviewId: number){}
+}
+
 export class AddComment{
     static readonly type = '[Comment] Add Comment';
 
     constructor(public commentText: string, public reviewId: number){}
 }
-
-
 
 export class EditComment{
     static readonly type = '[Comment] Edit Comment';

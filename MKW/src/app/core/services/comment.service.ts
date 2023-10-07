@@ -9,6 +9,13 @@ export class CommentService {
 
   constructor(private commentClient: CommentClient, private reportClient: ReportClient) { }
 
+
+  getReviewComments(reviewId: number)
+  {
+    let res = this.commentClient.review(reviewId, 'pt-BR');
+    return res;
+  }
+  
   publishComment(request: CreateCommentDto) : Observable<CommentDetailsDtoBaseResponseDTO>
   { 
     let res = this.commentClient.commentPost(request); 

@@ -3,21 +3,33 @@ import { TranslateService } from '@ngx-translate/core';
 import { CommentClient, CreateReportDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { Store } from '@ngxs/store';
 import { CommentService } from 'src/app/core/services/comment.service';
-import { AddComment, AnswerComment, DeleteComment, EditComment, ReportComment } from '../store/comments/comment.actions';
+import { AddComment, AnswerComment, DeleteComment, EditComment, ReportComment, UpdateCommentList } from '../store/comments/comment.actions';
 import { ReportService } from 'src/app/core/services/report.service';
+import { CommentSelectors } from '../store/comments/comment.selectors';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ContentFacade {
+export class CommentFacade {
 
   constructor(private store: Store, private reportService: ReportService) {}
 
-  getReviewComments()
+
+
+  getCurrentReviewComments()
   {
-    
+    return this.store.select(CommentSelectors.GetComments);
   }
 
+  getCurrentReviewCommentViewModel()
+  {
+    return this.store.select(CommentSelectors.GetCommentCardModel);
+  }
+
+  setReviewComments(reviewId: number)
+  {
+    return this.store.dispatch(new UpdateCommentList(reviewId));
+  }
 
   createComment(commentText: string, reviewId: number)
   {
@@ -29,9 +41,9 @@ export class ContentFacade {
     return this.store.dispatch(new EditComment(commentText, reviewId));
   }
 
-  answerComment(answerText: string, reviewId: number)
+  answerComment(answerText: string, commentId: number)
   {
-    return this.store.dispatch(new AnswerComment(answerText, reviewId));
+    return this.store.dispatch(new AnswerComment(answerText, commentId));
   }
 
   deleteComment(commentId: number)

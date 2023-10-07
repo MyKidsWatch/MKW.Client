@@ -111,39 +111,9 @@ export class ContentUtils {
           externalContentId: reviewDTO!.content!.externalId!
         },
         reviewRating: reviewDTO!.stars,
-        reviewComments: [],
         reviewCreationDate: reviewDTO.createDate!
       }
 
-      reviewDTO.comments?.forEach(comment => {
-
-        let reviewComment: ContentReviewComment = {
-            commentId: comment.id!,
-            commentText: comment.text!,
-            commentAuthor: {
-              userName: comment.person!.username!,
-              profilePictureUrl: 'assets/icon/default.jpg'
-            } ,
-            commentResponses: []          
-          };
-
-
-          comment.answers?.forEach(commentAnswer =>{
-            let reviewAnswer: ContentReviewComment ={
-              commentId: commentAnswer.id!,
-              commentText: commentAnswer.text!,
-              commentAuthor:{
-                userName: commentAnswer.person!.username!,
-                profilePictureUrl: 'assets/icon/default.jpg'
-              },
-              parentCommentId: comment.id,
-              commentResponses: []
-            }
-
-            reviewComment.commentResponses.push(reviewAnswer)
-          });
-          contentReviewPage.reviewComments.push(reviewComment);
-      });
 
       return contentReviewPage;
   }

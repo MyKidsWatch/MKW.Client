@@ -18,6 +18,7 @@ import { AuthInterceptor } from './app/core/interceptors/auth.interceptor';
 import { TokenInterceptor } from './app/core/interceptors/token.interceptor';
 import { LoadingInterceptor } from './app/core/interceptors/loading.interceptor';
 import { RefreshTokenInterceptor } from './app/core/interceptors/refresh-token.interceptor';
+import { CommentState } from './app/shared/store/comments/comment.state';
 
 if (environment.production) {
   enableProdMode();

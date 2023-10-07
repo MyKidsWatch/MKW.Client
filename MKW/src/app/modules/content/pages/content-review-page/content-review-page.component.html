@@ -44,16 +44,12 @@
     <div class="review-comments">
       <div class="comment-information">
         <i class="material-icons">comment</i>
-        <label>{{contentObject?.reviewComments?.length}} commments</label>
+        <label>{{reviewComments.length}} commments</label>
       </div>
       
       <app-comment-card 
-        *ngFor="let comment of contentObject?.reviewComments" 
+        *ngFor="let comment of reviewComments" 
         [commentModel]="comment" 
-        (commentAnswered)="addAnswerToComment($event)"
-        (commentDeleted)="deleteComment($event)"
-        (commentReported)="reportComment($event)"
-        (commentEdited)="editComment($event)"
       ></app-comment-card>
       
       <ion-item>

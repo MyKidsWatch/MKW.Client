@@ -16,4 +16,11 @@ export class ReportService {
     let res = this.reportClient.reportPost(request);
     return res;
   }
+
+
+  getReportOptions()
+  {
+    let res = this.reportClient.reason();
+    return res;
+  }
 }

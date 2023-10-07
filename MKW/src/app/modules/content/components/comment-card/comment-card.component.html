@@ -7,21 +7,12 @@
     <div class="comment-content">
       <div class="comment-header">
         <label class="comment-username">{{commentModel.commentAuthor.userName}}</label>
-        <i class="material-icons" id="click-trigger">more_vert</i>
-        <ion-popover trigger="click-trigger" triggerAction="click">
-          <ng-template>
-            <label style="padding: 10px;" *ngIf="commentModel.commentAuthor.userName == this.currentUsername">Editar</label>
-            <label style="padding: 10px;" *ngIf="commentModel.commentAuthor.userName == this.currentUsername">Excluir</label>
-            <label style="padding: 10px;" id="delete-comment-alert">Denunciar</label>
-            
-            <ion-alert
-              trigger="delete-comment-alert"
-              header="Tem certeza que deseja excluir o comentário?"
-              [buttons]="alertButtons"
-            ></ion-alert>
-          </ng-template>
-        </ion-popover>
+        <i class="material-icons" [id]="'click-trigger-'+ commentModel.commentId">more_vert</i>
 
+        <ion-action-sheet 
+          (didDismiss)="logResult($event, commentModel.commentId)" 
+          [trigger]="'click-trigger-'+ commentModel.commentId" 
+          [buttons]="actionSheetButtons"></ion-action-sheet>
 
         
       </div>

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { State, StateContext, Action } from '@ngxs/store';
 import { CommentModel, CommentStateModel } from './comment.model';
 import { CommentService } from 'src/app/core/services/comment.service';
-import { AddComment, AnswerComment, DeleteComment, EditComment } from './comment.actions';
-import { AnswerCommentDto, CommentDetailsDtoBaseResponseDTO, CreateCommentDto, UpdateCommentDto } from 'src/app/core/proxies/mkw-api.proxy';
+import { AddComment, AnswerComment, DeleteComment, EditComment, UpdateCommentList } from './comment.actions';
+import { AnswerCommentDto, CommentDetailsDto, CommentDetailsDtoBaseResponseDTO, CreateCommentDto, UpdateCommentDto } from 'src/app/core/proxies/mkw-api.proxy';
 
 import {tap} from 'rxjs';
 
@@ -14,12 +14,44 @@ import {tap} from 'rxjs';
   }
 })
 
+
 @Injectable()
 export class CommentState {
 
     constructor(private commentService: CommentService){}
 
 
+    @Action(UpdateCommentList)
+    UpdateCommentList({getState, setState} : StateContext<CommentStateModel>, {reviewId} : UpdateCommentList)
+    {
+        return this.commentService.getReviewComments(reviewId)
+        .pipe(
+            tap((res: CommentDetailsDtoBaseResponseDTO) =>{
+
+                let commentState: CommentStateModel = {comments: []};
+                res.content?.forEach(comment =>{
+                    let newComment: CommentModel = {
+                        id: comment.id!,
+                        commentAuthor: comment.person!.username!,
+                        commentText: comment.text!,
+                        commentAnswers: []
+                    }
+
+                    newComment.commentAnswers = comment.answers?.map(answer => (
+                        {
+                            id: answer.id,
+                            commentAuthor: answer.person!.username!,
+                            commentText: answer.text!,
+                            parentId: comment.id,
+                        } as CommentModel));
+                    
+                    commentState.comments.push(newComment);
+                });
+
+                setState(commentState)
+            })
+        );
+    }
 
     @Action(AddComment)
     AddComment({getState, patchState} : StateContext<CommentStateModel>, {commentText, reviewId} : AddComment)
@@ -89,19 +121,13 @@ export class CommentState {
 
                 let commentState = getState();
 
-                //Sorry
                 commentState.comments = commentState.comments.filter(comment =>{
                     if(comment.id == commentId)
                         return false;
 
                     if(comment.commentAnswers)
-                    {
-                        comment.commentAnswers = comment.commentAnswers.filter(answer =>{
-                            if(answer.id == commentId)
-                                return false;
-                            return true;
-                        });
-                    }
+                        comment.commentAnswers = comment.commentAnswers.filter(answer => answer.id !== commentId);
+                    
                     return true;
                 })
 
@@ -121,7 +147,6 @@ export class CommentState {
         return this.commentService.publishAnswer(request)
         .pipe(
             tap((res) =>{
-
                 let response = res.content![0];
                 let commentState = getState();
 
