@@ -4,9 +4,9 @@ import { Observable, interval, map } from 'rxjs';
 import { SplashScreenService } from '../services/splash-screen.service';
 import { tick } from '@angular/core/testing';
 import { Store } from '@ngxs/store';
-import { TokenInfo } from 'src/app/shared/store/models/user.model';
-import { UserState } from 'src/app/shared/store/state/user.state';
-import { SetTokenInfo } from 'src/app/shared/store/actions/user.action';
+import { TokenInfo } from 'src/app/shared/store/user/user.model';
+import { UserState } from 'src/app/shared/store/user/user.state';
+import { SetTokenInfo } from 'src/app/shared/store/user/user.action';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, getStoreMetadata } from "@ngxs/store";
-import { TokenInfo, UserData } from "../models/user.model";
-import { RemoveUser, SetTokenInfo, SetUserData } from "../actions/user.action";
+import { TokenInfo, UserData } from "./user.model";
+import { RemoveUser, SetTokenInfo, SetUserData } from "./user.action";
 import { Injectable } from '@angular/core';
 
 export class UserStateModel{

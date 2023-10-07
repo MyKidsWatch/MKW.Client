@@ -11,13 +11,14 @@ import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { CoreModule } from './app/core/core.module';
 import { CommonModule } from '@angular/common';
 import { NgxsModule } from '@ngxs/store';
-import { UserState } from './app/shared/store/state/user.state';
+import { UserState } from './app/shared/store/user/user.state';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { AuthInterceptor } from './app/core/interceptors/auth.interceptor';
 import { TokenInterceptor } from './app/core/interceptors/token.interceptor';
 import { LoadingInterceptor } from './app/core/interceptors/loading.interceptor';
 import { RefreshTokenInterceptor } from './app/core/interceptors/refresh-token.interceptor';
+import { CommentState } from './app/shared/store/comments/comment.state';
 
 if (environment.production) {
   enableProdMode();

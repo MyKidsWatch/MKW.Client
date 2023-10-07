@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable, concatMap, map, of, switchMap, take } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { UserState } from 'src/app/shared/store/state/user.state';
+import { UserState } from 'src/app/shared/store/user/user.state';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()

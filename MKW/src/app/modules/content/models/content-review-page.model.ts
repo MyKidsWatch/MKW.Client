@@ -7,7 +7,6 @@ export interface ContentReviewPage{
     reviewCreationDate: Date;
     reviewAuthor: UserInformation;
     reviewedContentInformation: ContentInformation;
-    reviewComments: ContentReviewComment[];
 }
 
 export interface ContentInformation{

@@ -8,9 +8,9 @@ import {
 } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { SetTokenInfo } from 'src/app/shared/store/actions/user.action';
+import { SetTokenInfo } from 'src/app/shared/store/user/user.action';
 import { TokenDTOBaseResponseDTO } from '../proxies/mkw-api.proxy';
-import { TokenInfo } from 'src/app/shared/store/models/user.model';
+import { TokenInfo } from 'src/app/shared/store/user/user.model';
 
 @Injectable({providedIn: 'root'})
 export class AuthInterceptor implements HttpInterceptor {

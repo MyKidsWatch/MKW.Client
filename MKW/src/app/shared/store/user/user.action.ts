@@ -1,4 +1,4 @@
-import { TokenInfo, UserData } from "../models/user.model";
+import { TokenInfo, UserData } from "./user.model";
 
 export class SetUserData{
     static readonly type ='[USER] Set User Data';

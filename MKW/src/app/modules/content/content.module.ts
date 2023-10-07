@@ -17,7 +17,12 @@ import { HeaderBackComponent } from 'src/app/shared/components/header-back/heade
 import { ContentService } from 'src/app/core/services/content.service';
 import { CommentService } from 'src/app/core/services/comment.service';
 import { CommentCardComponent } from './components/comment-card/comment-card.component';
-
+import { CommentFacade } from 'src/app/shared/facades/comment.facade';
+import { NgxsModule } from '@ngxs/store';
+import { CommentState } from 'src/app/shared/store/comments/comment.state';
+import { ReportService } from 'src/app/core/services/report.service';
+import { EditCommentModalComponent } from './components/edit-comment-modal/edit-comment-modal.component';
+import { ReportCommentModalComponent } from './components/report-comment-modal/report-comment-modal.component';
 const routes: Routes = [
   {
     path: 'feed/:contentId/:platformId',
@@ -37,6 +42,8 @@ const routes: Routes = [
   }
 ];
 
+
+
 const parentRoute: Routes = [
   {
     path: '',
@@ -53,7 +60,9 @@ const parentRoute: Routes = [
     ContentFeedPageComponent, 
     ContentReviewerPageComponent, 
     ContentAddReviewPageComponent,
-    CommentCardComponent
+    CommentCardComponent,
+    EditCommentModalComponent,
+    ReportCommentModalComponent
   ],
   imports: [
     CommonModule, 
@@ -63,7 +72,9 @@ const parentRoute: Routes = [
     ReactiveFormsModule,
     RouterModule,
     RouterModule.forChild(parentRoute),
-    HeaderBackComponent
+    HeaderBackComponent,
+    NgxsModule.forFeature([CommentState])
+
   ],
   exports: [ContentComponent],
   providers: [
@@ -71,9 +82,11 @@ const parentRoute: Routes = [
     ReviewService,
     ContentClient,
     ContentService,
+    CommentFacade,
     CommentClient,
     CommentService,
-    ReportClient
+    ReportClient,
+    ReportService
   ]
 })
 
