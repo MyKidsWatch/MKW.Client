@@ -7,5 +7,5 @@ import { ProfileClient } from '../proxies/mkw-api.proxy';
 export class ProfileService {
   constructor(private profileClient: ProfileClient) { }
 
-  getProfile = (userName: string) => this.profileClient.profileGet(userName);
+  getProfile = (userName: string) => this.profileClient.search(userName);
 }

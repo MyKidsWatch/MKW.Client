@@ -11,7 +11,7 @@ import { ContentFeedPageComponent } from './pages/content-feed-page/content-feed
 import { ContentReviewerPageComponent } from './pages/content-reviewer-page/content-reviewer-page.component';
 import { ContentAddReviewPageComponent } from './pages/content-add-review-page/content-add-review-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommentClient, ContentClient, ReportClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { CommentClient, ContentClient, ProfileClient, ReportClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { HeaderBackComponent } from 'src/app/shared/components/header-back/header-back.component';
 import { ContentService } from 'src/app/core/services/content.service';
@@ -23,6 +23,8 @@ import { CommentState } from 'src/app/shared/store/comments/comment.state';
 import { ReportService } from 'src/app/core/services/report.service';
 import { EditCommentModalComponent } from './components/edit-comment-modal/edit-comment-modal.component';
 import { ReportCommentModalComponent } from './components/report-comment-modal/report-comment-modal.component';
+import { ProfileService } from 'src/app/core/services/profile.service';
+
 const routes: Routes = [
   {
     path: 'feed/:contentId/:platformId',
@@ -33,7 +35,7 @@ const routes: Routes = [
     component: ContentReviewPageComponent
   },
   {
-    path: 'reviewer/:id',
+    path: 'reviewer/:username',
     component: ContentReviewerPageComponent
   },
   {
@@ -41,8 +43,6 @@ const routes: Routes = [
     component: ContentAddReviewPageComponent
   }
 ];
-
-
 
 const parentRoute: Routes = [
   {
@@ -86,7 +86,9 @@ const parentRoute: Routes = [
     CommentClient,
     CommentService,
     ReportClient,
-    ReportService
+    ReportService,
+    ProfileClient,
+    ProfileService,
   ]
 })
 
