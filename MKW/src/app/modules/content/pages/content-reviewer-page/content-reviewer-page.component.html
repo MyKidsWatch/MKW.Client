@@ -4,56 +4,48 @@
 <ion-content>
   <div class="content">
     <div class="profile-header">
-      <img alt="Profile picture" src="https://via.placeholder.com/59" class="profile-picture">
+      <img alt="Profile picture" [src]="profile?.imageURL" class="profile-picture">
       <div class="profile-info">
-        <h2 class="profile-name">Fulano Ciclano da Silva</h2>
-        <p class="profile-username">@fulano.ciclano01</p>
+        <h2 class="profile-name">{{ profile?.name }}</h2>
+        <p class="profile-username">@{{ profile?.username }}</p>
       </div>
       <button><img alt="options" src="assets/icon/kebab-menu.svg" class="kebab-menu"></button>
     </div>
 
-    <div class="profile-awards awards-gold">
-      <img alt="awards" class="awards-img" src="assets/images/awards-gold-first.png">
-      <div class="awards-text">
-        <h3 class="awards-title">Ouro reluzente!</h3>
-        <p class="awards-description">Fulano tem 32 medalhas de ouro, 25 de prata e 15 de bronze.</p>
+    <div *ngIf="shouldShowAwards" class="profile-awards">
+      <div *ngIf="goldenAwards > silverAwards && goldenAwards > bronzeAwards" class="awards-gold">
+        <img alt="awards" class="awards-img" src="assets/images/awards-gold-first.png">
+        <div class="awards-text">
+          <h3 class="awards-title">Ouro reluzente!</h3>
+          <p class="awards-description">{{ profile?.name }} tem {{ goldenAwards }} medalhas de ouro, {{ silverAwards }} de prata e {{ bronzeAwards }} de bronze.</p>
+        </div>
+      </div>
+      <div *ngIf="silverAwards > goldenAwards && silverAwards > bronzeAwards" class="awards-silver">
+        <img alt="awards" class="awards-img" src="assets/images/awards-silver-first.png">
+        <div class="awards-text">
+          <h3 class="awards-title">Brilhando como a prata!</h3>
+          <p class="awards-description">{{ profile?.name }} tem {{ silverAwards }} medalhas de prata, {{ goldenAwards }} de ouro e {{ bronzeAwards }} de bronze.</p>
+        </div>
+      </div>
+      <div *ngIf="bronzeAwards > goldenAwards && bronzeAwards > silverAwards" class="awards-bronze">
+        <img alt="awards" class="awards-img" src="assets/images/awards-bronze-first.png">
+        <div class="awards-text">
+          <h3 class="awards-title">Bronze com brilho próprio!</h3>
+          <p class="awards-description">{{ profile?.name }} tem {{ bronzeAwards }} medalhas de bronze, {{ goldenAwards }} de ouro e {{ silverAwards }} de prata.</p>
+        </div>
       </div>
     </div>
 
     <div class="divider"></div>
 
     <div class="profile-children">
-      <h3>Fulano tem 3 crianças:</h3>
+      <h3>{{ profile?.name }} tem {{ profile?.children?.length || 0 }} crianças</h3>
       <div class="children">
-        <div class="child">
+        <div class="child" *ngFor="let child of profile?.children">
           <div class="child-icon">
             <i class="material-icons">child_care</i>
           </div>
-          <p>Menino de 3 a 5 anos</p>
-        </div>
-        <div class="child">
-          <div class="child-icon">
-            <i class="material-icons">child_care</i>
-          </div>
-          <p>Menino de 3 a 5 anos</p>
-        </div>
-        <div class="child">
-          <div class="child-icon">
-            <i class="material-icons">child_care</i>
-          </div>
-          <p>Menino de 3 a 5 anos</p>
-        </div>
-        <div class="child">
-          <div class="child-icon">
-            <i class="material-icons">child_care</i>
-          </div>
-          <p>Menino de 3 a 5 anos</p>
-        </div>
-        <div class="child">
-          <div class="child-icon">
-            <i class="material-icons">child_care</i>
-          </div>
-          <p>Menino de 3 a 5 anos</p>
+          <p>{{ child.gender }} de {{ child.ageRange }} anos</p>
         </div>
       </div>
     </div>
