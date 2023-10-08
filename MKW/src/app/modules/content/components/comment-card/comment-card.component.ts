@@ -153,7 +153,7 @@ export class CommentCardComponent  implements OnInit {
       this.commentFacade.editComment(data, this.commentModel.commentId);
   }
   
-  logResult(event: any, commentId: number)
+  actionSheetEvent(event: any, commentId: number)
   {
     let action = event.detail.data.action;
 

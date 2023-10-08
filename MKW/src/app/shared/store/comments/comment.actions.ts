@@ -1,6 +1,3 @@
-
-
-
 export class UpdateCommentList{
     static readonly type = '[Comment] Update Comment List';
 

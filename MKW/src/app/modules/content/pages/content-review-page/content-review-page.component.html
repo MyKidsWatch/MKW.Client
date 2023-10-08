@@ -8,6 +8,31 @@
       (click)="goBack()"
     >
     </ion-icon>
+
+    <ion-icon 
+      name="arrow-back-outline" 
+      class="go-back-button" 
+      color="primary" 
+      role="button" 
+      (click)="goBack()"
+    >
+    </ion-icon>
+
+    <ion-icon 
+      name="ellipsis-vertical-outline"
+      class="review-options-button" 
+      color="primary" 
+      role="button" 
+      [id]="'click-trigger-'+ contentObject?.reviewId"
+    ></ion-icon>
+
+    <ion-action-sheet 
+    (didDismiss)="actionSheetEvent($event, contentObject?.reviewId!)" 
+    [trigger]="'click-trigger-'+ contentObject?.reviewId" 
+    [buttons]="actionSheetButtons"></ion-action-sheet>
+
+  
+
     <div class="content-poster"
       style="background: linear-gradient(180deg, #f5f5f500 0%, #f5f5f500 52.92%, #f5f5f5 90%), url('{{  contentObject?.reviewedContentInformation?.picturePath }}') no-repeat center center fixed; background-size: cover;">
     </div>

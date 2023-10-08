@@ -23,6 +23,8 @@ import { CommentState } from 'src/app/shared/store/comments/comment.state';
 import { ReportService } from 'src/app/core/services/report.service';
 import { EditCommentModalComponent } from './components/edit-comment-modal/edit-comment-modal.component';
 import { ReportCommentModalComponent } from './components/report-comment-modal/report-comment-modal.component';
+import { ReviewFacade } from 'src/app/shared/facades/review.facade';
+import { ReviewState } from 'src/app/shared/store/review/review.state';
 const routes: Routes = [
   {
     path: 'feed/:contentId/:platformId',
@@ -73,13 +75,14 @@ const parentRoute: Routes = [
     RouterModule,
     RouterModule.forChild(parentRoute),
     HeaderBackComponent,
-    NgxsModule.forFeature([CommentState])
+    NgxsModule.forFeature([CommentState, ReviewState])
 
   ],
   exports: [ContentComponent],
   providers: [
     ReviewClient,
     ReviewService,
+    ReviewFacade,
     ContentClient,
     ContentService,
     CommentFacade,
