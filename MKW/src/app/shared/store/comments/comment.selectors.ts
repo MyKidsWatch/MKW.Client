@@ -43,7 +43,7 @@ export class CommentSelectors{
                     commentResponses: [],
                     parentCommentId: answer.parentId
                 }
-                contentReviewComment.commentResponses.push(commentAnswer)
+                contentReviewComment.commentResponses!.push(commentAnswer)
             });
 
             contentReviewComments.push(contentReviewComment);
