@@ -41,7 +41,30 @@ export class ReviewState
             let state = getState();
             let reviewDTO = res.content![0];
 
-            state = this.ReviewDetailsDtoToState(reviewDTO, state);
+            let reviewDetails: ReviewDetailsModel = {
+                id: reviewDTO.id!,
+                creationDate: reviewDTO.createDate!,
+                description: reviewDTO.text!,
+                rating: reviewDTO.stars,
+                title: reviewDTO.title! 
+             };
+    
+             let reviewContent: ReviewContentModel = {
+                 contentId: reviewDTO.content!.id!,
+                 externalContentId: reviewDTO.content!.externalId!,
+                 picturePath: reviewDTO.content!.imageUrl!,
+                 platformId: reviewDTO.content!.platformId!,
+                 title: reviewDTO.content!.name!
+             };
+    
+             let reviewOwner: ReviewOwnerModel = {
+                 userName: reviewDTO.person!.username!,
+                 profilePictureUrl: 'assets/icon/default.jpg'
+             };
+    
+             state.reviewContent = reviewContent;
+             state.reviewDetails = reviewDetails;
+             state.reviewOwner = reviewOwner;
 
             patchState(state);
         });
@@ -51,7 +74,7 @@ export class ReviewState
     CreateReview({getState, patchState} : StateContext<ReviewStateModel>, {title, rating, reviewText, contentId, platformId} : CreateReview)
     {
         let createReviewDTO: ICreateReviewDto = {
-            externalContentId: contentId.toString(),
+            externalContentId: contentId,
             platformId: platformId,
             title: title,
             text: reviewText,
@@ -64,8 +87,30 @@ export class ReviewState
             let state = getState();
             let reviewDTO = res.content![0];
 
-            state = this.ReviewDetailsDtoToState(reviewDTO, state);
-
+            let reviewDetails: ReviewDetailsModel = {
+                id: reviewDTO.id!,
+                creationDate: reviewDTO.createDate!,
+                description: reviewDTO.text!,
+                rating: reviewDTO.stars,
+                title: reviewDTO.title! 
+             };
+    
+             let reviewContent: ReviewContentModel = {
+                 contentId: reviewDTO.content!.id!,
+                 externalContentId: reviewDTO.content!.externalId!,
+                 picturePath: reviewDTO.content!.imageUrl!,
+                 platformId: reviewDTO.content!.platformId!,
+                 title: reviewDTO.content!.name!
+             };
+    
+             let reviewOwner: ReviewOwnerModel = {
+                 userName: reviewDTO.person!.username!,
+                 profilePictureUrl: 'assets/icon/default.jpg'
+             };
+    
+             state.reviewContent = reviewContent;
+             state.reviewDetails = reviewDetails;
+             state.reviewOwner = reviewOwner;
             patchState(state);
         });  
     }
@@ -86,7 +131,30 @@ export class ReviewState
             let state = getState();
             let reviewDTO = res.content![0];
 
-            state = this.ReviewDetailsDtoToState(reviewDTO, state);
+            let reviewDetails: ReviewDetailsModel = {
+                id: reviewDTO.id!,
+                creationDate: reviewDTO.createDate!,
+                description: reviewDTO.text!,
+                rating: reviewDTO.stars,
+                title: reviewDTO.title! 
+             };
+    
+             let reviewContent: ReviewContentModel = {
+                 contentId: reviewDTO.content!.id!,
+                 externalContentId: reviewDTO.content!.externalId!,
+                 picturePath: reviewDTO.content!.imageUrl!,
+                 platformId: reviewDTO.content!.platformId!,
+                 title: reviewDTO.content!.name!
+             };
+    
+             let reviewOwner: ReviewOwnerModel = {
+                 userName: reviewDTO.person!.username!,
+                 profilePictureUrl: 'assets/icon/default.jpg'
+             };
+    
+             state.reviewContent = reviewContent;
+             state.reviewDetails = reviewDetails;
+             state.reviewOwner = reviewOwner;
 
             patchState(state);
         });  

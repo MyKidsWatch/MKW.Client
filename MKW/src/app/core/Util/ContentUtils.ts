@@ -109,7 +109,7 @@ export class ContentUtils {
           platformId: reviewDTO!.content!.platformId!,
           externalContentId: reviewDTO!.content!.externalId!
         },
-        reviewRating: reviewDTO!.stars,
+        reviewRating: reviewDTO!.stars!,
         reviewCreationDate: reviewDTO.createDate!
       }
 

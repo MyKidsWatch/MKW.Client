@@ -4,16 +4,16 @@ import { take } from 'rxjs';
 import { ReportService } from 'src/app/core/services/report.service';
 
 @Component({
-  selector: 'app-report-comment-modal',
-  templateUrl: './report-comment-modal.component.html',
-  styleUrls: ['./report-comment-modal.component.scss'],
+  selector: 'app-report-review-modal',
+  templateUrl: './report-review-modal.component.html',
+  styleUrls: ['./report-review-modal.component.scss'],
 })
-export class ReportCommentModalComponent  implements OnInit {
+export class ReportReviewModalComponent  implements OnInit {
 
   constructor(private modalController: ModalController, private reportService: ReportService) {}
 
-  public reportReasons: ReportReasons[] = [];
-  
+  public reportReasons: ReportReasons[] = []
+
   public reportReasonId?: number;
   ngOnInit() {
     this.reportService.getReportOptions().pipe(take(1)).subscribe({

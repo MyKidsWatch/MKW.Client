@@ -8,7 +8,8 @@ import { ReportService } from 'src/app/core/services/report.service';
 import { CommentSelectors } from '../store/comments/comment.selectors';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { ReviewSelectors } from '../store/review/review.selectors';
-import { SetReviewState } from '../store/review/review.actions';
+import { CreateReview, SetReviewState } from '../store/review/review.actions';
+import { title } from 'process';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,11 @@ export class ReviewFacade{
       return this.store.select(ReviewSelectors.GetCurrentReview);
     }
 
+    getCurrentReviewId()
+    {
+      return this.store.selectSnapshot(ReviewSelectors.GetCurrentReviewId);
+    }
+
     getCurrentReviewViewModel()
     {
       return this.store.select(ReviewSelectors.GetReviewViewModel);
@@ -37,9 +43,9 @@ export class ReviewFacade{
       return this.store.dispatch(new SetReviewState(reviewId))
     }
 
-    createReview(reviewTitle: string, rating?: number, text?: string)
+    createReview(contentId: string, platformId: number, reviewTitle: string, rating: number, text?: string)
     {
-
+      return this.store.dispatch(new CreateReview(reviewTitle, rating, platformId, contentId, text))
     }
 
     editReview(reviewId: number, rating: number, text: string)

@@ -5,13 +5,15 @@ import { CommentService } from 'src/app/core/services/comment.service';
 import { AddComment, AnswerComment, DeleteComment, EditComment, UpdateCommentList } from './comment.actions';
 import { AnswerCommentDto, CommentDetailsDto, CommentDetailsDtoBaseResponseDTO, CreateCommentDto, UpdateCommentDto } from 'src/app/core/proxies/mkw-api.proxy';
 
-import {tap} from 'rxjs';
+import {catchError, tap} from 'rxjs';
 
+
+const defaultCommentState: CommentStateModel = {
+    comments: []
+}
 @State<CommentStateModel>({
   name: 'commmentState',
-  defaults: {
-    comments: []
-  }
+  defaults: defaultCommentState
 })
 
 
@@ -50,7 +52,11 @@ export class CommentState {
 
                 setState(commentState)
             })
-        );
+        )
+        .pipe(catchError((err) =>{
+            setState(defaultCommentState)
+            throw err;
+        }));
     }
 
     @Action(AddComment)

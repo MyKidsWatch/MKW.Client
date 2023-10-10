@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()"><i class="material-icons">arrow_back</i></ion-button>
+    </ion-buttons>
+    <ion-title></ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="edit-review">
+    <h2>Adicionar análise</h2>
+
+
+    <div class="movie-information">
+      <img [src]="contentPicturePath">
+      <div class="movie-title-and-stars">
+        <h2>{{contentName}}</h2>
+        
+        <div class="review-stars">
+          <i class="material-icons" (click)="setStarValue(1)" [style]="isStarMarked(1) ? 'color: yellow' : ''">star</i>
+          <i class="material-icons" (click)="setStarValue(2)" [style]="isStarMarked(2) ? 'color: yellow' : ''">star</i>
+          <i class="material-icons" (click)="setStarValue(3)" [style]="isStarMarked(3) ? 'color: yellow' : ''">star</i>
+          <i class="material-icons" (click)="setStarValue(4)" [style]="isStarMarked(4) ? 'color: yellow' : ''">star</i>
+          <i class="material-icons" (click)="setStarValue(5)" [style]="isStarMarked(5) ? 'color: yellow' : ''">star</i>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="reviewForm" class="form-content">
+      <label class="mandatory">{{ 'profile.mandatoryField' | translate }}</label>
+      <div class="signup-form">
+        <ion-input placeholder="Título" formControlName="reviewTitle"></ion-input>
+        <ion-textarea placeholder="Descrição" [rows]="8" formControlName="reviewText"></ion-textarea>
+
+      </div>
+    </form>
+    <button class="add-button" (click)="sendReview()"><i class="material-icons">add</i>Adicionar Review</button>
+  </div>
+</ion-content>

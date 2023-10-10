@@ -4,7 +4,7 @@ import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
 import { ContentReviewPage } from '../../models/content-review-page.model';
-import { take } from 'rxjs';
+import { Observable, Subscription, take, tap } from 'rxjs';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { AnswerCommentDto, CreateCommentDto, CreateReportDto, ICreateCommentDto, ReviewDetailsDtoBaseResponseDTO, UpdateCommentDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { CommentService } from 'src/app/core/services/comment.service';
@@ -13,6 +13,9 @@ import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 import { CommentFacade } from 'src/app/shared/facades/comment.facade';
 import { ModalController } from '@ionic/angular';
 import { ReviewFacade } from 'src/app/shared/facades/review.facade';
+import { ReviewEditModalComponent } from '../../components/review-edit-modal/review-edit-modal.component';
+import { ReportReview } from 'src/app/shared/store/review/review.actions';
+import { ReportReviewModalComponent } from '../../components/report-review-modal/report-review-modal.component';
 
 @Component({
   selector: 'app-content-review-page',
@@ -23,22 +26,40 @@ export class ContentReviewPageComponent  implements OnInit {
 
 
   public reviewId?: number;
-  public contentObject?: ContentReviewPage;
+  public contentObject: ContentReviewPage = {
+    reviewAuthor: {
+      userName: '',
+    },
+    reviewCreationDate: new Date(),
+    reviewedContentInformation: {
+      contentId: 0,
+      externalContentId: 0,
+      platformId: 0,
+      title: '',
+      picturePath: ''
+    },
+    reviewId: 0,
+    reviewRating: 0,
+    reviewTitle: '',
+    reviewDescription: ''
+  };
   public loading: boolean = true;
 
 
   public reviewComments: ContentReviewComment[] = [];
+
   
+  private reviewSubscription?: Subscription;
+  private commentSubscription?: Subscription;
   public newComment = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private reviewService: ReviewService,
     private commentFacade: CommentFacade,
     private modalController: ModalController,
-    private reviewFacade: ReviewFacade
-  ) {}
+    private reviewFacade: ReviewFacade) {
+  }
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -47,7 +68,20 @@ export class ContentReviewPageComponent  implements OnInit {
     this.reviewFacade.setCurrentReview(this.reviewId);
     this.commentFacade.setReviewComments(this.reviewId);
 
-    this.commentFacade.getCurrentReviewCommentViewModel()
+    this.reviewSubscription = this.reviewFacade.getCurrentReviewViewModel()
+    .subscribe({
+      next: (res: ContentReviewPage) =>{
+        console.log(res);
+        this.contentObject = res;
+        this.loading = false;
+        console.log(this.contentObject)
+      },
+      error: (err) =>{
+
+      }
+    });
+
+    this.commentSubscription = this.commentFacade.getCurrentReviewCommentViewModel()
     .subscribe({
       next: (res: ContentReviewComment[]) =>{
         console.log(res)
@@ -56,24 +90,14 @@ export class ContentReviewPageComponent  implements OnInit {
       error: (err) =>{
         alert("Erro buscando os comentários dessa análise")
       }
-    })
-
-    this.reviewService.getReviewById(id)
-    .pipe(take(1))
-    .subscribe({
-      next: (res: ReviewDetailsDtoBaseResponseDTO) =>{
-        this.contentObject = ContentUtils.ContentReviewToPage(res.content![0])!
-        this.loading = false
-      },
-      error: (err: any) => {
-        console.log(err);
-      }
-    })
-
+    });
   }
 
   goBack() {
-    window.history.back();
+    this.router.navigate([".."]);  
+    this.commentSubscription?.unsubscribe();
+    this.reviewSubscription?.unsubscribe();
+
   }
 
   goToContentPage(contentId: any, platformId: any)
@@ -120,13 +144,25 @@ export class ContentReviewPageComponent  implements OnInit {
 
   async openEditModal()
   {
-    const modal = await this.modalController.create({component: ContentReviewPageComponent})
+    const modal = await this.modalController.create({component: ReviewEditModalComponent})
+  
+  
+    modal.present();
+
+    let result = await modal.onWillDismiss();
+  
+    console.log(result);
   }
 
   async openReportModal()
   {
-    const modal = await this.modalController.create({component: ContentReviewPageComponent})
+    const modal = await this.modalController.create({component: ReportReviewModalComponent})
 
+    modal.present();
+
+    let result = await modal.onWillDismiss();
+  
+    console.log(result);
   }
 
   public actionSheetButtons = [

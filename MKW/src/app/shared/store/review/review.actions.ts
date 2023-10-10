@@ -7,7 +7,7 @@ export class SetReviewState{
 export class CreateReview{
     static readonly type = '[Review] Create Review';
 
-    constructor(public title: string, public rating: number, public platformId: number, public contentId: number, public reviewText?: string){}
+    constructor(public title: string, public rating: number, public platformId: number, public contentId: string, public reviewText?: string){}
 }
 
 export class EditReview{

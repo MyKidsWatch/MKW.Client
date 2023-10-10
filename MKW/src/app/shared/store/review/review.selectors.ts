@@ -15,28 +15,34 @@ export class ReviewSelectors{
     }
 
     @Selector([ReviewState])
+    static GetCurrentReviewId(state: ReviewStateModel)
+    {
+      return state.reviewDetails.id;
+    }
+
+    @Selector([ReviewState])
     static GetReviewViewModel(state: ReviewStateModel) : ContentReviewPage
     {
         let reviewState = state;
         let contentReviewPage: ContentReviewPage = {
-            reviewId: reviewState.reviewDetails.id,
-            reviewTitle: reviewState.reviewDetails.title,
+            reviewId: reviewState.reviewDetails.id!,
+            reviewTitle: reviewState.reviewDetails.title!,
             reviewDescription: reviewState.reviewDetails.description,
             reviewAuthor: {
               userName: reviewState.reviewOwner.userName,
               profilePictureUrl: reviewState.reviewOwner.profilePictureUrl
             },
             reviewedContentInformation: {
-              title: reviewState.reviewContent.title,
+              title: reviewState.reviewContent.title!,
               picturePath: 
                 reviewState.reviewContent.picturePath ? 
                 ContentUtils.picturePathFromPlatformId(reviewState.reviewContent.platformId as number) + reviewState!.reviewContent!.picturePath : 
                 undefined,
-              contentId: reviewState.reviewContent.contentId,
-              platformId: reviewState.reviewContent.platformId,
-              externalContentId: reviewState.reviewContent.externalContentId
+              contentId: reviewState.reviewContent.contentId!,
+              platformId: reviewState.reviewContent.platformId!,
+              externalContentId: reviewState.reviewContent.externalContentId!
             },
-            reviewRating: reviewState.reviewDetails.rating,
+            reviewRating: reviewState.reviewDetails.rating!,
             reviewCreationDate: reviewState.reviewDetails.creationDate!
           }
     
