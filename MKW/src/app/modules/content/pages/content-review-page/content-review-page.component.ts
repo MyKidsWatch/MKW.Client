@@ -145,13 +145,16 @@ export class ContentReviewPageComponent  implements OnInit {
   async openEditModal()
   {
     const modal = await this.modalController.create({component: ReviewEditModalComponent})
-  
-  
+
     modal.present();
 
     let result = await modal.onWillDismiss();
   
-    console.log(result);
+
+    if(result.data === null || result.role != 'edit')
+      return;
+
+    this.reviewFacade.editReview(this.reviewId!, result.data.title, result.data.stars, result.data.text)
   }
 
   async openReportModal()
