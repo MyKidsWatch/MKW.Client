@@ -3837,6 +3837,40 @@ export class ReviewClient {
         }));
     }
 
+    getByUserId(userId: number, language: string | undefined): Observable<ReviewDetailsDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Review/User/{userId}?";
+        if (userId === undefined || userId === null)
+            throw new Error("The parameter 'userId' must be defined.");
+        url_ = url_.replace("{userId}", encodeURIComponent("" + userId));
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processId(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processId(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReviewDetailsDtoBaseResponseDTO>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReviewDetailsDtoBaseResponseDTO>;
+        }));    
+    }
+
+
     protected processId(response: HttpResponseBase): Observable<ReviewDetailsDtoBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
