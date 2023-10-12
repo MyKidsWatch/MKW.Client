@@ -1,0 +1,78 @@
+.edit-review{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 90vh;
+    padding: 0 4.4%;
+  
+    .movie-information{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        img{
+            width: 45%;
+        }
+
+        label{
+            width: 100%;
+        }
+
+        div.movie-title-and-stars{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+    }
+    h2 {
+      text-align: center;
+    }
+  
+    .mandatory {
+      display: flex;
+      width: 100%;
+      font-size: 0.75em;
+    }
+  
+    .form-content {
+      margin-top: 2rem;
+      
+      ion-input,
+      ion-textarea,
+      ion-select {
+        width: 100%;
+        border: 2px solid var(--mkw-color-dark);
+        padding: .5rem;
+        margin: 1rem 0;
+  
+        input {
+          padding: 10px !important;
+          --padding-start: 20px;
+        }
+      }
+    }
+  
+    .add-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: auto;
+      margin-bottom: 1rem;
+      justify-self: flex-end;
+      width: 100%;
+      background-color: var(--mkw-color-primary);
+      color: var(--mkw-color-light);
+      padding: .75rem 0;
+      font-size: 1.2rem;
+      font-weight: 500;
+      filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
+  
+      i {
+        margin-right: .5rem;
+      }
+    }
+  }

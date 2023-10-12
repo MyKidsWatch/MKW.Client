@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CreateReviewDto, PlatformClient, ReviewClient } from '../proxies/mkw-api.proxy';
+import { CreateReviewDto, PlatformClient, ReviewClient, UpdateReviewDto } from '../proxies/mkw-api.proxy';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
@@ -23,6 +23,16 @@ export class ReviewService {
     return this.reviewClient.reviewPost(createReviewDTO);
   }
 
+
+  editReview(updateReviewDTO: UpdateReviewDto)
+  {
+    return this.reviewClient.reviewPut(updateReviewDTO);
+  }
+
+  deleteReview(reviewId: number)
+  {
+    return this.reviewClient.reviewDelete(reviewId);
+  }
   getReviewById(id: number, language: string = "pt-br" )
   {
     return this.reviewClient.id(id, language);

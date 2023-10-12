@@ -9,7 +9,6 @@ import { StarsRatingComponent } from '../../shared/components/stars-rating/stars
 import { ContentReviewPageComponent } from './pages/content-review-page/content-review-page.component';
 import { ContentFeedPageComponent } from './pages/content-feed-page/content-feed-page.component';
 import { ContentReviewerPageComponent } from './pages/content-reviewer-page/content-reviewer-page.component';
-import { ContentAddReviewPageComponent } from './pages/content-add-review-page/content-add-review-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommentClient, ContentClient, ReportClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { ReviewService } from 'src/app/core/services/review.service';
@@ -23,6 +22,11 @@ import { CommentState } from 'src/app/shared/store/comments/comment.state';
 import { ReportService } from 'src/app/core/services/report.service';
 import { EditCommentModalComponent } from './components/edit-comment-modal/edit-comment-modal.component';
 import { ReportCommentModalComponent } from './components/report-comment-modal/report-comment-modal.component';
+import { ReviewFacade } from 'src/app/shared/facades/review.facade';
+import { ReviewState } from 'src/app/shared/store/review/review.state';
+import { ReportReviewModalComponent } from './components/report-review-modal/report-review-modal.component';
+import { ReviewEditModalComponent } from './components/review-edit-modal/review-edit-modal.component';
+import { ReviewAddModalComponent } from './components/review-add-modal/review-add-modal.component';
 const routes: Routes = [
   {
     path: 'feed/:contentId/:platformId',
@@ -35,10 +39,6 @@ const routes: Routes = [
   {
     path: 'reviewer/:id',
     component: ContentReviewerPageComponent
-  },
-  {
-    path: 'add-review/:contentId/:platformId',
-    component: ContentAddReviewPageComponent
   }
 ];
 
@@ -59,10 +59,12 @@ const parentRoute: Routes = [
     ContentReviewPageComponent, 
     ContentFeedPageComponent, 
     ContentReviewerPageComponent, 
-    ContentAddReviewPageComponent,
     CommentCardComponent,
     EditCommentModalComponent,
-    ReportCommentModalComponent
+    ReportCommentModalComponent,
+    ReportReviewModalComponent,
+    ReviewEditModalComponent,
+    ReviewAddModalComponent
   ],
   imports: [
     CommonModule, 
@@ -73,13 +75,14 @@ const parentRoute: Routes = [
     RouterModule,
     RouterModule.forChild(parentRoute),
     HeaderBackComponent,
-    NgxsModule.forFeature([CommentState])
+    NgxsModule.forFeature([CommentState, ReviewState])
 
   ],
   exports: [ContentComponent],
   providers: [
     ReviewClient,
     ReviewService,
+    ReviewFacade,
     ContentClient,
     ContentService,
     CommentFacade,
