@@ -8,6 +8,7 @@ import { Observable, of } from 'rxjs';
 import { Store } from '@ngxs/store'
 import { UserState } from 'src/app/shared/store/user/user.state';
 import { SplashScreenService } from '../services/splash-screen.service';
+import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
 @Injectable({
   providedIn: 'root'
 })
@@ -17,7 +18,7 @@ export class AuthResolver implements Resolve<boolean> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     
-    let tokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
+    let tokenInfo = this.store.selectSnapshot(UserSelectors.getTokenInfo);
 
     if(tokenInfo && !!tokenInfo.accessToken)    
       this.router.navigate(['home/feed']);

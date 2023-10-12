@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { RemoveUser } from 'src/app/shared/store/user/user.action';
 import { UserData } from 'src/app/shared/store/user/user.model';
+import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
 import { UserState } from 'src/app/shared/store/user/user.state';
 
 @Component({
@@ -16,7 +17,7 @@ export class ViewProfileComponent  implements OnInit {
   constructor(private store: Store, private router: Router) { }
 
   ngOnInit() {
-    this.store.select(UserState.getUser).subscribe({
+    this.store.select(UserSelectors.getUser).subscribe({
       next: (user) =>{
         this.userData = user;
       }

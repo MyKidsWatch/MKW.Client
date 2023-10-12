@@ -14,7 +14,6 @@ import { NgxsModule } from '@ngxs/store';
 import { UserState } from './app/shared/store/user/user.state';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
-import { AuthInterceptor } from './app/core/interceptors/auth.interceptor';
 import { TokenInterceptor } from './app/core/interceptors/token.interceptor';
 import { LoadingInterceptor } from './app/core/interceptors/loading.interceptor';
 import { RefreshTokenInterceptor } from './app/core/interceptors/refresh-token.interceptor';
@@ -44,11 +43,6 @@ bootstrapApplication(AppComponent, {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor ,
-      multi: true   
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
       multi: true   
     },
     {

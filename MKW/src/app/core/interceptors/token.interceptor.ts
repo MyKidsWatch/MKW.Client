@@ -9,6 +9,7 @@ import { Observable, concatMap, map, of, switchMap, take } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { UserState } from 'src/app/shared/store/user/user.state';
 import { AuthService } from '../services/auth.service';
+import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -23,12 +24,12 @@ export class TokenInterceptor implements HttpInterceptor {
       return next.handle(request);
 
 
-    let tokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
+    let tokenInfo = this.store.selectSnapshot(UserSelectors.getTokenInfo);
 
     if(tokenInfo && tokenInfo.expiresAt && new Date(tokenInfo.expiresAt).getTime() <= Date.now())
     { 
       return this.authService.refresh().pipe(switchMap(response =>{
-          const updatedTokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
+          const updatedTokenInfo = this.store.selectSnapshot(UserSelectors.getTokenInfo);
           let headers = request.headers.append('Authorization', 'Bearer ' + updatedTokenInfo?.accessToken)
           request = request.clone({headers});
           return next.handle(request)

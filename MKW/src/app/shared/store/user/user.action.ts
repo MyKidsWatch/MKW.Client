@@ -20,3 +20,14 @@ export class RemoveUser{
     static readonly type ='[USER] Remove User from state';
     constructor() {}
 }
+
+export class LoginUser{
+    static readonly type ='[USER] User login';
+    constructor(public credentials: string, public password: string) {}
+}
+
+
+export class LogUserOff{
+    static readonly type = '[USER] Logoff user';
+    constructor(){}
+}

@@ -11,6 +11,7 @@ import { Store } from '@ngxs/store';
 import { UserState } from 'src/app/shared/store/user/user.state';
 import { Router } from '@angular/router';
 import { SetTokenInfo } from 'src/app/shared/store/user/user.action';
+import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
@@ -22,7 +23,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
     if(!request.url.includes('Authentication/refresh'))
         return next.handle(request);
 
-    let tokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
+    let tokenInfo = this.store.selectSnapshot(UserSelectors.getTokenInfo);
     let headers = request.headers.append('Authorization', 'Bearer ' + tokenInfo?.refreshToken)
     request = request.clone({headers});
 

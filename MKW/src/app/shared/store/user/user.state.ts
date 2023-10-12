@@ -1,7 +1,11 @@
 import { Action, Selector, State, StateContext, getStoreMetadata } from "@ngxs/store";
 import { TokenInfo, UserData } from "./user.model";
-import { RemoveUser, SetTokenInfo, SetUserData } from "./user.action";
+import { LoginUser, RemoveUser, SetTokenInfo, SetUserData } from "./user.action";
 import { Injectable } from '@angular/core';
+import { AuthService } from "src/app/core/services/auth.service";
+import { ILoginRequestDTO } from "src/app/modules/auth/models/login-request";
+import { log } from "console";
+import { map, switchMap, take, tap } from "rxjs";
 
 export class UserStateModel{
     user?: UserData;
@@ -9,29 +13,17 @@ export class UserStateModel{
 }
 
 
+const defaultUserState: UserStateModel = {}
+
 @State<UserStateModel>({
     name: 'userState',
-    defaults: {
-        user: new UserData(),
-        token: new TokenInfo()
-    }
+    defaults: defaultUserState
 })
 
 @Injectable()
 export class UserState{
 
-    @Selector()
-    static getUser(state: UserStateModel)
-    {
-        return state.user;
-    }
-
-    @Selector([UserState])
-    static getTokenInfo(state: UserStateModel)
-    {
-        return state.token;
-    }
-
+    constructor(private authService: AuthService){}
 
     @Action(SetUserData)
     setUserData(ctx: StateContext<UserStateModel>, { payload } : SetUserData)
@@ -55,4 +47,33 @@ export class UserState{
     {
         ctx.setState(new UserStateModel());
     }
+
+
+    @Action(LoginUser)
+    public loginUser({getState, patchState}: StateContext<UserStateModel>, {credentials, password} : LoginUser)
+    {
+        let loginRequest: ILoginRequestDTO = {
+            credential: credentials,
+            password: password
+        }
+
+        return this.authService.authenticate(loginRequest)
+        .pipe(take(1))
+        .pipe(tap(res =>{
+            const state = getState();
+
+            let tokenInfo = res.content![0];
+
+            state.token = {
+                accessToken: tokenInfo.accessToken!,
+                expiresAt: tokenInfo.accessTokenExpiration!,
+                refreshToken: tokenInfo.refreshToken!
+            }
+
+            patchState(state);
+        }))
+    }
+    
+
+
 }
