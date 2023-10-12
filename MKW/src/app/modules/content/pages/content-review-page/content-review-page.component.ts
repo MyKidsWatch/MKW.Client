@@ -140,6 +140,16 @@ export class ContentReviewPageComponent  implements OnInit {
   deleteReview()
   {
 
+    this.reviewFacade.deleteReview(this.reviewId!)
+    .subscribe({
+      next: (res) =>{
+        alert("Review excluída com sucesso");
+        this.router.navigate(['home/feed']);
+      },
+      error: (err) =>{ 
+        alert("Erro ao excluir review");
+      }
+    })
   }
 
   async openEditModal()
@@ -155,6 +165,14 @@ export class ContentReviewPageComponent  implements OnInit {
       return;
 
     this.reviewFacade.editReview(this.reviewId!, result.data.title, result.data.stars, result.data.text)
+    .subscribe({
+      next: (res) =>{
+        alert("Review editada com sucesso")
+      },
+      error: (err) =>{ 
+        alert("Erro ao editar review");
+      }
+    })
   }
 
   async openReportModal()
@@ -165,7 +183,19 @@ export class ContentReviewPageComponent  implements OnInit {
 
     let result = await modal.onWillDismiss();
   
-    console.log(result);
+
+    if(result.data === null || result.role != 'report')
+      return;
+
+    this.reviewFacade.reportReview(result.data, this.reviewId!)
+    .subscribe({
+      next: (res) =>{
+        alert("Review denunciada com sucesso")
+      },
+      error: (err) =>{ 
+        alert("Erro ao denunciar review");
+      }
+    })  
   }
 
   public actionSheetButtons = [

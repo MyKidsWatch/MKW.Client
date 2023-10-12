@@ -8,7 +8,7 @@ import { ReportService } from 'src/app/core/services/report.service';
 import { CommentSelectors } from '../store/comments/comment.selectors';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { ReviewSelectors } from '../store/review/review.selectors';
-import { CreateReview, EditReview, SetReviewState } from '../store/review/review.actions';
+import { CreateReview, DeleteReview, EditReview, SetReviewState } from '../store/review/review.actions';
 import { title } from 'process';
 
 @Injectable({
@@ -55,7 +55,7 @@ export class ReviewFacade{
 
     deleteReview(reviewId: number)
     {
-
+      return this.store.dispatch(new DeleteReview(reviewId));
     }
 
     reportReview(reportReasonId: number, reviewId: number)

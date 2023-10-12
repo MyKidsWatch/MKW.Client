@@ -30,6 +30,7 @@ export class CommentState {
         .pipe(
             tap((res: CommentDetailsDtoBaseResponseDTO) =>{
 
+                
                 let commentState: CommentStateModel = {comments: []};
                 res.content?.forEach(comment =>{
                     let newComment: CommentModel = {
