@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AccountClient, CheckEmailDTOBaseResponseDTO, CheckUserNameDTOBaseResponseDTO, RequestCheckEmailDTO, RequestCheckUserNameDTO, RequestKeycodeDTO, ResetPasswordDTO } from '../proxies/mkw-api.proxy';
+import { AccountClient, CheckEmailDTOBaseResponseDTO, CheckUserNameDTOBaseResponseDTO, ConfirmAccountEmailDTO, RequestCheckEmailDTO, RequestCheckUserNameDTO, RequestKeycodeDTO, ResetPasswordDTO } from '../proxies/mkw-api.proxy';
 import { CreateUserDTO } from '../proxies/mkw-api.proxy';
 import { Observable } from 'rxjs';
 import { ReadUserDTOBaseResponseDTO } from '../proxies/mkw-api.proxy';
@@ -37,7 +37,7 @@ export class AccountService {
 
   public requestPasswordKeyCode(request: RequestKeycodeDTO)
   {
-    let res = this.accountClient.passwordKeycode('', request);
+    let res = this.accountClient.passwordKeycode('pt-BR', request);
     return res;
   }
 
@@ -47,4 +47,9 @@ export class AccountService {
       return res;
   }
 
+  public activateEmail(request: ConfirmAccountEmailDTO)
+  {
+    let res = this.accountClient.confirmEmail(request);
+    return res;
+  }
 }

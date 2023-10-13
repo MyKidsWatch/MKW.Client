@@ -6,7 +6,6 @@ import { tick } from '@angular/core/testing';
 import { Store } from '@ngxs/store';
 import { TokenInfo } from 'src/app/shared/store/user/user.model';
 import { UserState } from 'src/app/shared/store/user/user.state';
-import { SetTokenInfo } from 'src/app/shared/store/user/user.action';
 import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
 
 @Injectable({

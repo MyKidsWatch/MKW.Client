@@ -1,24 +1,10 @@
-import { TokenInfo, UserData } from "./user.model";
-
-export class SetUserData{
-    static readonly type ='[USER] Set User Data';
-    constructor(public payload: UserData) {}
-}
-
-export class SetTokenInfo{
-    static readonly type ='[USER] Set Token Info';
-    constructor(public payload: TokenInfo | undefined) {}
-}
-
-
-export class UpdateTokenInfo{
-    static readonly type ='[USER] Update Token Info';
-    constructor(public payload: TokenInfo) {}
-}
-
-export class RemoveUser{
-    static readonly type ='[USER] Remove User from state';
+export class RefreshCurrentUserToken{
+    static readonly type ='[USER] Refresh current user token';
     constructor() {}
+}
+
+export class UpdateCurrentUserInformation{
+    static readonly type = '[USER] Update current User information';
 }
 
 export class LoginUser{
@@ -30,4 +16,9 @@ export class LoginUser{
 export class LogUserOff{
     static readonly type = '[USER] Logoff user';
     constructor(){}
+}
+
+export class ActivateUserEmail{
+    static readonly type = '[USER] Activate user email';
+    constructor(public keycode: string){}
 }

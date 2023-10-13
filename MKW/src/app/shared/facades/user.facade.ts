@@ -6,10 +6,11 @@ import { CommentService } from 'src/app/core/services/comment.service';
 import { AddComment, AnswerComment, DeleteComment, EditComment, ReportComment, UpdateCommentList } from '../store/comments/comment.actions';
 import { ReportService } from 'src/app/core/services/report.service';
 import { CommentSelectors } from '../store/comments/comment.selectors';
-import { LogUserOff, LoginUser } from '../store/user/user.action';
+import { ActivateUserEmail, LogUserOff, LoginUser, RefreshCurrentUserToken, UpdateCurrentUserInformation } from '../store/user/user.action';
 import { UserSelectors } from '../store/user/user.selectors';
 import { TokenInfo, UserData } from '../store/user/user.model';
 import { UserStateModel } from '../store/user/user.state';
+import { ActivateEmailComponent } from 'src/app/modules/home/activate-email/activate-email.component';
 
 
 @Injectable({
@@ -35,17 +36,24 @@ export class UserFacade{
         return this.store.dispatch(new LoginUser(credentials, password));
     }
 
-    public setUser(){
-
-
+    public updateUserInformation(){
+        return this.store.dispatch(new UpdateCurrentUserInformation());
     }
-    public updateUserInformation(){}
 
 
+    public refreshUserToken()
+    {
+        return this.store.dispatch(new RefreshCurrentUserToken());
+    }
 
     public logOffUser()
     {
         return this.store.dispatch(new LogUserOff());
+    }
+
+    public activateUserEmail(keycode: string)
+    {
+        return this.store.dispatch(new ActivateUserEmail(keycode))
     }
 
 
