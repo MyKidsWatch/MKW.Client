@@ -112,7 +112,8 @@ export class UserState{
         confirmEmailRequest.keycode = Number(keycode);
         confirmEmailRequest.userId = state.user?.userId! 
 
-        this.accountService.activateEmail(confirmEmailRequest)
+        console.log(confirmEmailRequest);
+        return this.accountService.activateEmail(confirmEmailRequest)
         .pipe(take(1))
         .pipe(tap(res =>{
             state.user!.isEmailVerified = true;
