@@ -15,6 +15,7 @@ import { ReportComment } from 'src/app/shared/store/comments/comment.actions';
 import { ReportCommentModalComponent } from '../report-comment-modal/report-comment-modal.component';
 import { EditCommentModalComponent } from '../edit-comment-modal/edit-comment-modal.component';
 import { take } from 'rxjs';
+import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
 
 @Component({
   selector: 'app-comment-card',
@@ -74,7 +75,7 @@ export class CommentCardComponent  implements OnInit {
     private modalController: ModalController) { }
 
   ngOnInit() {
-    this.currentUsername = this.store.selectSnapshot(UserState.getUser)?.username;
+    this.currentUsername = this.store.selectSnapshot(UserSelectors.getUser)?.username;
     console.log(this.currentUsername);  
   }
 

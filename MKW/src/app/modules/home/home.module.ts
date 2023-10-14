@@ -6,6 +6,7 @@ import { HomeComponent } from './home.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/core/guards/auth.guard';
+import { ActivateEmailComponent } from './activate-email/activate-email.component';
 
 const routes: Routes = [
   {
@@ -36,13 +37,18 @@ const routes: Routes = [
         loadChildren: () => import('./../feed/feed.module').then(m => m.FeedModule)
 
       }
-    ]
+    ],
   },
+  {
+    path: 'activate-email',
+    component: ActivateEmailComponent
+  }
 ];
 
 @NgModule({
   declarations: [
-    HomeComponent
+    HomeComponent,
+    ActivateEmailComponent
   ],
   imports: [
     CommonModule,

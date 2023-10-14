@@ -5,6 +5,7 @@ import { ILoginRequestDTO } from '../../models/login-request';
 import { error } from 'console';
 import { Route, Router } from '@angular/router';
 import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
+import { UserFacade } from 'src/app/shared/facades/user.facade';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,10 @@ export class LoginComponent  implements OnInit, OnDestroy {
       password: new FormControl('')
   });
 
-  constructor(private authService: AuthService, private router: Router, public loadingBarService: LoadingBarService) { }
+  constructor(private authService: AuthService, 
+    private router: Router, 
+    public loadingBarService: LoadingBarService,
+    public userFacade: UserFacade) { }
 
   ngOnInit() {   
     this.setLoadingBar();   
@@ -38,15 +42,15 @@ export class LoginComponent  implements OnInit, OnDestroy {
   submit()
   {
       let credentials: ILoginRequestDTO = {credential: this.loginForm.controls['credential'].value!, password: this.loginForm.controls['password'].value!}
-      this.authService.authenticate(credentials).subscribe({
+      
+      this.userFacade.loginUser(credentials.credential, credentials.password)
+      .subscribe({
         next: () =>{
-
-          this.router.navigate(['home/feed'])
+          this.router.navigate(['home/feed']);
         },
         error: () =>{
           alert("Erro durante a realização do login");
         }
-        
       })
   }
 

@@ -6,7 +6,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
-import { API_BASE_URL, AuthenticationClient, MovieClient } from './app/core/proxies/mkw-api.proxy';
+import { API_BASE_URL, AccountClient, AuthenticationClient, MovieClient } from './app/core/proxies/mkw-api.proxy';
 import { HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { CoreModule } from './app/core/core.module';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,6 @@ import { NgxsModule } from '@ngxs/store';
 import { UserState } from './app/shared/store/user/user.state';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
-import { AuthInterceptor } from './app/core/interceptors/auth.interceptor';
 import { TokenInterceptor } from './app/core/interceptors/token.interceptor';
 import { LoadingInterceptor } from './app/core/interceptors/loading.interceptor';
 import { RefreshTokenInterceptor } from './app/core/interceptors/refresh-token.interceptor';
@@ -30,6 +29,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: AuthenticationClient },
+    { provide: AccountClient },
     importProvidersFrom
       (
         IonicModule.forRoot({animated: false}), 
@@ -44,11 +44,6 @@ bootstrapApplication(AppComponent, {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor ,
-      multi: true   
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
       multi: true   
     },
     {
