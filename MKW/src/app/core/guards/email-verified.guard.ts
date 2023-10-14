@@ -14,12 +14,16 @@ export class EmailVerifiedGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       let userInfo = this.userFacade.getUserState();
 
-      console.log("Is user email verified guard")
       if(!!userInfo && !!userInfo.isEmailVerified)
+      {
         return true;
+      }
+      else
+      {
+        this.router.navigate(['home/activate-email']);
+        return false;
+      }
       
-      this.router.navigate(['home/activate-email']);
-      return false;
   }
   
 }

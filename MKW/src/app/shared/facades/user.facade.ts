@@ -11,6 +11,7 @@ import { UserSelectors } from '../store/user/user.selectors';
 import { TokenInfo, UserData } from '../store/user/user.model';
 import { UserStateModel } from '../store/user/user.state';
 import { ActivateEmailComponent } from 'src/app/modules/home/activate-email/activate-email.component';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -29,6 +30,11 @@ export class UserFacade{
     public getUserState() : UserData | undefined
     {
         return this.store.selectSnapshot(UserSelectors.getUser);
+    }
+
+    public getUserAdminState() : Observable<boolean>
+    {   
+        return this.store.select(UserSelectors.getUserAdminInformation);
     }
 
     public loginUser(credentials: string, password: string)

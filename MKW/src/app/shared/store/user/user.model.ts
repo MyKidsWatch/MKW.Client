@@ -5,7 +5,7 @@ export class UserData{
     birthDate?: Date;
     username?: string;
     isEmailVerified?: boolean;
-    isPremium?: boolean;
+    isAdmin?: boolean;
 }
 
 export class TokenInfo{
