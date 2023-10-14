@@ -10,26 +10,46 @@
             text-align: center;
         }
     }
-    div.button-div {
-        display: flex;
-        margin: auto 40px 30px 40px;
-        flex-direction: column;
+    div.account-created {
+        margin: auto 40px;
+        text-align: center;
+        font-size: 1.6rem;
+    
+        .information {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+    
+          .thanks-for-joining {
+            font-family: 'Poppins', sans-serif;
+            text-align: left;
+            font-size: 1rem;
+          }
+    
+          label {
+            margin-top: 30px;
+          }
 
-        button {
-        width: 100%;
-        background-color: var(--mkw-color-primary);
-        color: var(--mkw-color-light);
-        padding: .75rem;
-        margin: 1rem 0;
-        font-size: 1.2rem;
-        font-weight: 500;
-        filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
-        }
+          button {
+            width: 100%;
+            background-color: var(--mkw-color-primary);
+            color: var(--mkw-color-light);
+            padding: .75rem;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            font-weight: 500;
+            filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
+            }
+    
+            button.invalid {
+            background-color: var(--mkw-color-light);
+            color: var(--mkw-color-primary);
+            border: 1px solid var(--mkw-color-primary);
+            }
 
-        button.invalid {
-        background-color: var(--mkw-color-light);
-        color: var(--mkw-color-primary);
-        border: 1px solid var(--mkw-color-primary);
         }
-    }
+      }
+
+
 }

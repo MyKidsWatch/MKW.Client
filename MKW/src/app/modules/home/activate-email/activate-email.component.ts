@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
+import { take, tap } from 'rxjs';
 import { SplashScreenService } from 'src/app/core/services/splash-screen.service';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 
@@ -13,9 +15,16 @@ export class ActivateEmailComponent  implements OnInit {
 
   
   public emailKeyCode?: string;
-  constructor(private splashScreenService: SplashScreenService, private userFacade: UserFacade) { }
+  public isUserEmailVerified: boolean = false;
+  constructor(private splashScreenService: SplashScreenService, private userFacade: UserFacade, private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    let userData = this.userFacade.getUserState();
+
+    if(!!userData)
+      this.isUserEmailVerified = userData.isEmailVerified!;
+  }
 
   ionViewDidEnter() {
 
@@ -25,7 +34,28 @@ export class ActivateEmailComponent  implements OnInit {
 
   submitKeyCode()
   {
-    console.log(this.emailKeyCode);
+    if(this.emailKeyCode)
+      this.activeUserEmail();
   }
   
+
+  activeUserEmail()
+  {
+
+    this.userFacade.activateUserEmail(this.emailKeyCode!)
+    .pipe(take(1))
+    .subscribe({
+      next: () =>{
+        this.isUserEmailVerified = true;
+      },
+      error: (err) =>{
+        alert("Erro ao confirmar seu e-mail, verifique se foi enviado o valor correto.");
+      }
+    })
+  }
+
+  goToMainApplication()
+  {
+    this.router.navigate(['home/feed']);
+  }
 }

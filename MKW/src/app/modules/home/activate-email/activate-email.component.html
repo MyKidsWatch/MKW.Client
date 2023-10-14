@@ -1,17 +1,25 @@
+<ion-content >
+
 <div class="page-content">
 
-
-    <div class="form-information">
-      <h2>Confirmação de e-mail</h2>
-      <label>Informe o código recebido no seu e-mail para acessar a aplicação.</label>
-      
-      <ion-input type="text" placeholder="Insira o código recebido aqui" [(ngModel)]="emailKeyCode"></ion-input>
+  <div *ngIf="!isUserEmailVerified"  class="account-created">
+      <div class="information">
+        <h2>Informe o código recebido no seu e-mail</h2>
+        <p class="thanks-for-joining">Enviamos um código nesse e-mail, ele serve para sabermos que você é realmente dono do e-mail utilizado na criação da sua conta. Informe ele no campo abaixo para acessar a aplicação!</p>
+        <ion-input [(ngModel)]="emailKeyCode" style="border: 1px solid"></ion-input>
+        <button (click)="submitKeyCode()">Enviar</button>
+      </div>  
     </div>
-
     
-    <div class="button-div">
-      <button (click)="submitKeyCode()">Enviar</button>
-    </div>
-
-
+  <div *ngIf="isUserEmailVerified" class="account-created">
+    <div class="information">
+      <h2>E-mail confirmado com sucesso</h2>
+      <img src="assets/images/approve-email.png">
+      <p class="thanks-for-joining">Seu e-mail foi confirmado com sucesso, você pode acessar a aplicação normalmente agora.</p>
+      <button (click)="goToMainApplication()">Início</button>
+    </div>  
+  </div>
 </div>
+
+
+</ion-content>
