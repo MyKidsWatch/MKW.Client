@@ -85,7 +85,7 @@ export class ContentReviewerPageComponent implements OnInit {
       ageRangeId: child.ageRangeId,
       ageRange: AccountUtils.getAgeRangeString(child.ageRangeId),
       genderId: child.genderId,
-      gender: AccountUtils.getAgeRangeString(child.genderId)
+      gender: AccountUtils.getGenderString(child.genderId) || '',
     }));
   
     const awards = profileDto.awards || [];
