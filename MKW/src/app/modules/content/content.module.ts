@@ -24,6 +24,7 @@ import { ReportService } from 'src/app/core/services/report.service';
 import { EditCommentModalComponent } from './components/edit-comment-modal/edit-comment-modal.component';
 import { ReportCommentModalComponent } from './components/report-comment-modal/report-comment-modal.component';
 import { ProfileService } from 'src/app/core/services/profile.service';
+import { ShortContentReviewCardComponent } from 'src/app/shared/components/short-content-review-card/short-content-review-card.component';
 
 const routes: Routes = [
   {
@@ -73,8 +74,8 @@ const parentRoute: Routes = [
     RouterModule,
     RouterModule.forChild(parentRoute),
     HeaderBackComponent,
-    NgxsModule.forFeature([CommentState])
-
+    NgxsModule.forFeature([CommentState]),
+    ShortContentReviewCardComponent,
   ],
   exports: [ContentComponent],
   providers: [

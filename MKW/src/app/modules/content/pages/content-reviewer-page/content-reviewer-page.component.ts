@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs';
-import { ReadProfileDTO, ReadProfileDTOIEnumerableBaseResponseDTO, ReviewDetailsDto, ReviewDetailsDtoBaseResponseDTO } from 'src/app/core/proxies/mkw-api.proxy';
+import { ReadProfileDTO, ReadProfileDTOIEnumerableBaseResponseDTO, ReviewDetailsDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { ProfileModel } from '../../models/profile.model';
@@ -14,7 +14,7 @@ import { ContentUtils } from 'src/app/core/Util/ContentUtils';
   templateUrl: './content-reviewer-page.component.html',
   styleUrls: ['./content-reviewer-page.component.scss'],
 })
-export class ContentReviewerPageComponent  implements OnInit {
+export class ContentReviewerPageComponent implements OnInit {
   public loading: boolean = false;
   public profile: ProfileModel | undefined;
 
@@ -46,6 +46,7 @@ export class ContentReviewerPageComponent  implements OnInit {
       .subscribe({
         next: (res: ReadProfileDTOIEnumerableBaseResponseDTO) => {
           const profileDto = res.content![0][0];
+
           this.profile = this.mapProfile(profileDto);
 
           this.loading = false;
@@ -78,24 +79,38 @@ export class ContentReviewerPageComponent  implements OnInit {
       });
   }
 
-  mapProfile = (profileDto: ReadProfileDTO): ProfileModel => ({
-    userId: profileDto.userId,
-    imageURL: profileDto.imageURL,
-    name: profileDto.name,
-    username: profileDto.username,
-    children: profileDto.childrens?.map(child => ({
+  mapProfile = (profileDto: ReadProfileDTO): ProfileModel => {
+    const children = profileDto.childrens?.map(child => ({
       id: child.id,
       ageRangeId: child.ageRangeId,
       ageRange: AccountUtils.getAgeRangeString(child.ageRangeId),
       genderId: child.genderId,
       gender: AccountUtils.getAgeRangeString(child.genderId)
-    })),
-    goldenAwards: profileDto.awards?.filter(award => award.name == 'gold').length || 0,
-    silverAwards: profileDto.awards?.filter(award => award.name == 'silver').length || 0,
-    bronzeAwards: profileDto.awards?.filter(award => award.name == 'bronze').length || 0,
-    hasAnyAward: this.goldenAwards > 0 || this.silverAwards > 0 || this.bronzeAwards > 0
-  })
+    }));
+  
+    const awards = profileDto.awards || [];
+    const goldenAwards = awards.filter(award => award.name === 'gold')[0].quantity || 0;
+    const silverAwards = awards.filter(award => award.name === 'silver')[0].quantity || 0;
+    const bronzeAwards = awards.filter(award => award.name === 'bronze')[0].quantity || 0;
+    const hasAnyAward = goldenAwards > 0 || silverAwards > 0 || bronzeAwards > 0;
+  
+    this.shouldShowAwards = hasAnyAward;
+    this.goldenAwards = goldenAwards;
+    this.silverAwards = silverAwards;
+    this.bronzeAwards = bronzeAwards;
+
+    return {
+      userId: profileDto.userId,
+      imageURL: profileDto.imageURL,
+      name: profileDto.name,
+      username: profileDto.username,
+      children,
+      goldenAwards,
+      silverAwards,
+      bronzeAwards,
+      hasAnyAward,
+    };
+  }
 
   mapReview = (response: ReviewDetailsDto) => ContentUtils.relevantReviewToContentReviewCard(response);
-
 }
