@@ -1,0 +1,111 @@
+.short-review-card {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  margin: .5rem 0;
+  padding: .5rem 0;
+  border-bottom: 3px solid #e2e2e2;
+
+  .poster-and-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: .5rem;
+
+    .review-poster {
+      min-width: 18.29vw;
+      width: 18.29vw;
+      height: 27.4vw;
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    }
+
+    ion-chip {
+      font-family: 'Poppins', sans-serif;
+      --color: var(--mkw-color-light);
+      background-color: var(--mkw-color-primary);
+      font-size: .8rem;
+      padding: .2rem 0;
+      margin: unset;
+      width: 70%;
+      text-align: center;
+      position: relative;
+      bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i {
+        color: var(--mkw-color-warning);
+        margin-left: -.25rem;
+      }
+    }
+  }
+
+  .review-info {
+    height: 27.4vw;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: unset;
+    margin: unset;
+    position: relative;
+    bottom: 1rem;
+
+    .review-info-header {
+      display: flex;
+      justify-content: space-between;
+      
+      .review-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+        font-weight: bold;
+        line-height: 1;
+        margin: unset;
+      }
+
+      .timestamp {
+        line-height: 1;
+        font-size: .8rem;
+        margin: unset;
+      }
+    }
+
+    .review-description {
+      font-family: 'Poppins', sans-serif;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      font-size: 0.8rem;
+      margin: .5rem 0;
+      line-height: 1.2;
+      overflow: hidden;
+      white-space:  break-word;
+      text-overflow: ellipsis;
+    }
+
+    .comments-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      max-width: 2rem;
+      align-self: flex-end;
+      position: relative;
+      bottom: -1rem;
+      right: .4rem;
+      margin: unset;
+      padding: unset;
+      color: #2C2C2C;
+
+      .comments {
+        font-size: 1.2rem;
+      }
+
+      .arrow {
+        font-size: 1rem;
+      }
+    }
+  }
+
+}
