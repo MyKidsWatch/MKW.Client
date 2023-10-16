@@ -53,7 +53,6 @@ export class ContentReviewerPageComponent implements OnInit {
           
           if (this.profile?.userId) {
             this.getUserReviews(this.profile.userId);
-            console.log(this.reviews)
           }
         },
         error: (err: any) => {
@@ -89,9 +88,9 @@ export class ContentReviewerPageComponent implements OnInit {
     }));
   
     const awards = profileDto.awards || [];
-    const goldenAwards = awards.filter(award => award.name === 'gold')[0].quantity || 0;
-    const silverAwards = awards.filter(award => award.name === 'silver')[0].quantity || 0;
-    const bronzeAwards = awards.filter(award => award.name === 'bronze')[0].quantity || 0;
+    const goldenAwards = awards.filter(award => award.name?.toLowerCase() === 'gold')[0]?.quantity || 0;
+    const silverAwards = awards.filter(award => award.name?.toLowerCase() === 'silver')[0]?.quantity || 0;
+    const bronzeAwards = awards.filter(award => award.name?.toLowerCase() === 'bronze')[0]?.quantity || 0;
     const hasAnyAward = goldenAwards > 0 || silverAwards > 0 || bronzeAwards > 0;
   
     this.shouldShowAwards = hasAnyAward;
