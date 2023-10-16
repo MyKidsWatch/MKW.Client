@@ -1,1 +1,28 @@
-<p>SOCORRO VELHO</p>>
+<main *ngIf="this.contentData" class="short-review-card">
+  <div class="poster-and-rating">
+    <img class="review-poster"
+      [src]="this.contentData.reviewContentInformation.contentPosterPath || '../../../../assets/images/no-photo.png'"
+      alt="Content's poster"
+    >
+    <ion-chip class="rating">
+      <i class="material-icons grade-icon">grade</i>
+      <ion-label>{{ this.contentData.reviewRating }}</ion-label>
+    </ion-chip>
+  </div>
+  <div class="review-info">
+    <div class="review-info-header">
+      <h4 class="review-title">{{ this.contentData.reviewTitle }}</h4>
+      <p class="timestamp">{{ contentData.reviewPublishDate.toLocaleDateString() }}</p>
+    </div>
+    <p class="review-description">{{ this.contentData.reviewBody }}</p>
+    <button
+      class="comments-button" 
+      (click)="redirectToContentReviewPage(this.contentData.reviewId!)"
+    >
+      <i class="material-icons comments">message</i>
+      <label>{{ this.contentData.reviewCommentCount }}</label>
+      <i class="material-icons arrow">arrow_forward_ios</i>
+    </button>
+  </div>
+ 
+</main>
