@@ -12,22 +12,22 @@
       <button><img alt="options" src="assets/icon/kebab-menu.svg" class="kebab-menu"></button>
     </div>
 
-    <div *ngIf="shouldShowAwards" class="profile-awards">
-      <div *ngIf="goldenAwards > silverAwards && goldenAwards > bronzeAwards" class="awards-gold">
+    <div *ngIf="shouldShowAwards">
+      <div *ngIf="goldenAwards >= silverAwards && goldenAwards >= bronzeAwards" class="profile-awards awards-gold">
         <img alt="awards" class="awards-img" src="assets/images/awards-gold-first.png">
         <div class="awards-text">
           <h3 class="awards-title">Ouro reluzente!</h3>
           <p class="awards-description">{{ profile?.name }} tem {{ goldenAwards }} medalhas de ouro, {{ silverAwards }} de prata e {{ bronzeAwards }} de bronze.</p>
         </div>
       </div>
-      <div *ngIf="silverAwards > goldenAwards && silverAwards > bronzeAwards" class="awards-silver">
+      <div *ngIf="silverAwards >= goldenAwards && silverAwards >= bronzeAwards && goldenAwards < silverAwards" class="profile-awards awards-silver">
         <img alt="awards" class="awards-img" src="assets/images/awards-silver-first.png">
         <div class="awards-text">
           <h3 class="awards-title">Brilhando como a prata!</h3>
           <p class="awards-description">{{ profile?.name }} tem {{ silverAwards }} medalhas de prata, {{ goldenAwards }} de ouro e {{ bronzeAwards }} de bronze.</p>
         </div>
       </div>
-      <div *ngIf="bronzeAwards > goldenAwards && bronzeAwards > silverAwards" class="awards-bronze">
+      <div *ngIf="bronzeAwards >= goldenAwards && bronzeAwards >= silverAwards && goldenAwards < bronzeAwards && silverAwards < bronzeAwards" class="profile-awards awards-bronze">
         <img alt="awards" class="awards-img" src="assets/images/awards-bronze-first.png">
         <div class="awards-text">
           <h3 class="awards-title">Bronze com brilho próprio!</h3>
@@ -49,5 +49,13 @@
         </div>
       </div>
     </div>
+
+    <div class="divider"></div>
+
+    <div class="profile-reviews">
+      <app-short-content-review-card *ngFor="let contentCard of reviews" [contentData]="contentCard">
+      </app-short-content-review-card>
+    </div>
+
   </div>
 </ion-content>
