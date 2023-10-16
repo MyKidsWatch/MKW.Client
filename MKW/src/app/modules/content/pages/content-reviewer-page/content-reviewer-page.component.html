@@ -38,7 +38,7 @@
 
     <div class="divider"></div>
 
-    <div class="profile-children">
+    <div class="profile-children" *ngIf="profile?.children?.length || 0 > 0">
       <h3>{{ profile?.name }} tem {{ profile?.children?.length || 0 }} crianças</h3>
       <div class="children">
         <div class="child" *ngFor="let child of profile?.children">
@@ -52,7 +52,8 @@
 
     <div class="divider"></div>
 
-    <div class="profile-reviews">
+    <div class="profile-reviews" *ngIf="shouldShowReviews">
+      <h3>{{ reviews.length }} análises</h3>
       <app-short-content-review-card *ngFor="let contentCard of reviews" [contentData]="contentCard">
       </app-short-content-review-card>
     </div>
