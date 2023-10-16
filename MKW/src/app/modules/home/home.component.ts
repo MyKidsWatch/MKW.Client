@@ -33,7 +33,6 @@ export class HomeComponent  implements OnInit {
   }
   
   ionViewWillLeave() {
-      console.log("Sai");
       this.subscription.unsubscribe();
   }
 

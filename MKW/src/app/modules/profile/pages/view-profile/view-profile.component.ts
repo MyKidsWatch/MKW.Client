@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngxs/store';
-import { RemoveUser } from 'src/app/shared/store/user/user.action';
+import { UserFacade } from 'src/app/shared/facades/user.facade';
 import { UserData } from 'src/app/shared/store/user/user.model';
-import { UserState } from 'src/app/shared/store/user/user.state';
+
 
 @Component({
   selector: 'app-view-profile',
@@ -13,23 +12,16 @@ import { UserState } from 'src/app/shared/store/user/user.state';
 export class ViewProfileComponent  implements OnInit {
 
   public userData?: UserData;
-  constructor(private store: Store, private router: Router) { }
+  constructor(private userFacade: UserFacade, private router: Router) { }
 
   ngOnInit() {
-    this.store.select(UserState.getUser).subscribe({
-      next: (user) =>{
-        this.userData = user;
-      }
-    });
+    this.userData = this.userFacade.getUserState();
   }
-
 
   logOffUser()
   {
-      this.store.dispatch(new RemoveUser()).subscribe({
-        next: () =>{
-            this.router.navigateByUrl('auth', { replaceUrl: true });
-        }
-      });
+    this.userFacade.logOffUser().subscribe(res =>{
+      this.router.navigateByUrl('auth', {replaceUrl: true})
+    })
   }
 }

@@ -10,7 +10,7 @@
         <i class="material-icons" [id]="'click-trigger-'+ commentModel.commentId">more_vert</i>
 
         <ion-action-sheet 
-          (didDismiss)="logResult($event, commentModel.commentId)" 
+          (didDismiss)="actionSheetEvent($event, commentModel.commentId)" 
           [trigger]="'click-trigger-'+ commentModel.commentId" 
           [buttons]="actionSheetButtons"></ion-action-sheet>
 

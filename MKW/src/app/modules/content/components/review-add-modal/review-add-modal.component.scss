@@ -1,4 +1,4 @@
-.add-children {
+.edit-review{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -6,6 +6,28 @@
     min-height: 90vh;
     padding: 0 4.4%;
   
+    .movie-information{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        img{
+            width: 45%;
+        }
+
+        label{
+            width: 100%;
+        }
+
+        div.movie-title-and-stars{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+    }
     h2 {
       text-align: center;
     }

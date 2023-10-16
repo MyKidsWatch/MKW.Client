@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ContentAddReviewPageComponent } from './content-add-review-page.component';
+import { ReviewEditModalComponent } from './review-edit-modal.component';
 
-describe('ContentAddReviewPageComponent', () => {
-  let component: ContentAddReviewPageComponent;
-  let fixture: ComponentFixture<ContentAddReviewPageComponent>;
+describe('ReviewEditModalComponent', () => {
+  let component: ReviewEditModalComponent;
+  let fixture: ComponentFixture<ReviewEditModalComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContentAddReviewPageComponent ],
+      declarations: [ ReviewEditModalComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ContentAddReviewPageComponent);
+    fixture = TestBed.createComponent(ReviewEditModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

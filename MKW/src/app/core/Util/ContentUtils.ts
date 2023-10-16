@@ -1,9 +1,8 @@
 import { ContentCard } from "src/app/shared/models/content-card.model";
 import { Content, ContentDetailsDTO, ContentListItemDTO, ReviewDetailsDto } from "../proxies/mkw-api.proxy";
-import { time } from "console";
-import { title } from "process";
 import { ContentReviewComment, ContentReviewPage } from "src/app/modules/content/models/content-review-page.model";
 import { ContentReviewCard } from "src/app/shared/models/content-review-card.model";
+
 export class ContentUtils {
 
   private static restrictedTerms = ['sex', 'porn', 'vagina', 'penis', 'anus', 'blowjob'];
@@ -12,7 +11,7 @@ export class ContentUtils {
     return this.restrictedTerms.some(term => text.toLowerCase().includes(term.toLowerCase()));
   }
 
-  private static picturePathFromPlatformId(platformId: number)
+  static picturePathFromPlatformId(platformId: number)
   {
       let picturePath = ''
       switch(platformId)
@@ -110,7 +109,7 @@ export class ContentUtils {
           platformId: reviewDTO!.content!.platformId!,
           externalContentId: reviewDTO!.content!.externalId!
         },
-        reviewRating: reviewDTO!.stars,
+        reviewRating: reviewDTO!.stars!,
         reviewCreationDate: reviewDTO.createDate!
       }
 

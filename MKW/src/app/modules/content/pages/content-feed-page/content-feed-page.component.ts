@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs';
+import { ModalController } from '@ionic/angular';
+import { take, tap } from 'rxjs';
 import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { ContentService } from 'src/app/core/services/content.service';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
+import { ReviewAddModalComponent } from '../../components/review-add-modal/review-add-modal.component';
+import { ReviewFacade } from 'src/app/shared/facades/review.facade';
+import { ActionType, Actions, ofActionCompleted, ofActionSuccessful } from '@ngxs/store';
+import { CreateReview } from 'src/app/shared/store/review/review.actions';
 
 @Component({
   selector: 'app-content-feed-page',
@@ -22,6 +27,9 @@ export class ContentFeedPageComponent  implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private contentService: ContentService,
+    private reviewFacade: ReviewFacade,
+    private modalController: ModalController,
+    private actions: Actions,
     private router: Router
   ) {}
 
@@ -47,13 +55,40 @@ export class ContentFeedPageComponent  implements OnInit {
       }
     })
 
+
+    this.actions
+    .pipe(ofActionCompleted(CreateReview))
+    .subscribe(res => {
+
+      setTimeout(() => {
+        let reviewNumber = this.reviewFacade.getCurrentReviewId();
+        this.router.navigate([`home/content/review/${reviewNumber}`]);
+      }, 500)
+      
+    })
   }
 
 
-  goToReviewPage(contentId: any, platformId: any)
+  async goToReviewPage(contentId: any, platformId: any)
   {
+    const modal = await this.modalController.create(
+      {
+        component: ReviewAddModalComponent,
+        componentProps: {
+          contentName: this.contentObject?.title,
+          contentPicturePath: this.contentObject?.picturePath
+        }
+      })
 
-    this.router.navigate(['home/content/add-review', contentId, platformId])
+    modal.present();
+
+    let result = await modal.onWillDismiss();
+    
+    console.log(result);
+    if(result.data === null || result.role == "cancel")
+      return;
+
+    this.reviewFacade.createReview(contentId, platformId, result.data.title, result.data.stars, result.data.text);
   }
 
   goBack() {
