@@ -71,7 +71,15 @@
     "addChildren": "Add children",
     "whatToDo": "What do you want to do?",
     "editChildren": "Edit my children",
-    "logout": "Logout from my account"
+    "logout": "Logout from my account",
+    "awards": {
+      "goldenTitle": "Shining Gold!",
+      "goldenDescription": "{{name}} has {{goldenAwards}} gold medals, {{silverAwards}} silver medals, and {{bronzeAwards}} bronze medals.",
+      "silverTitle": "Shining like Silver!",
+      "silverDescription": "{{name}} has {{silverAwards}} silver medals, {{goldenAwards}} gold medals, and {{bronzeAwards}} bronze medals.",
+      "bronzeTitle": "Bronze with its own shine!",
+      "bronzeDescription": "{{name}} has {{bronzeAwards}} bronze medals, {{goldenAwards}} gold medals, and {{silverAwards}} silver medals."
+    }
   },
   "content": {
     "rating": "Rating:",
@@ -80,6 +88,12 @@
   "movie": "Movie",
   "boy": "Boy",
   "girl": "Girl",
+  "children": "children",
+  "has": "has",
+  "to": "to",
+  "of": "of",
+  "review": "review",
+  "reviews": "reviews",
   "Action": "Action",
   "Adventure": "Adventure",
   "Animation": "Animation",
