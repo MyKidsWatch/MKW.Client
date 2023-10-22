@@ -1,7 +1,7 @@
 <ion-header class="header">
   <app-header-back></app-header-back>
 </ion-header>
-<ion-content>
+<ion-content *ngIf="!loading">
   <div class="content">
     <div class="profile-header">
       <img alt="Profile picture" [src]="profile?.imageURL" class="profile-picture">
@@ -9,7 +9,7 @@
         <h2 class="profile-name">{{ profile?.name }}</h2>
         <p class="profile-username">@{{ profile?.username }}</p>
       </div>
-      <button><img alt="options" src="assets/icon/kebab-menu.svg" class="kebab-menu"></button>
+      <app-kebab-menu [items]="menuItems"></app-kebab-menu>
     </div>
 
     <div *ngIf="shouldShowAwards">
@@ -57,6 +57,5 @@
       <app-short-content-review-card *ngFor="let contentCard of reviews" [contentData]="contentCard">
       </app-short-content-review-card>
     </div>
-
   </div>
 </ion-content>

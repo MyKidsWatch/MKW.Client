@@ -25,10 +25,12 @@ import { ReportCommentModalComponent } from './components/report-comment-modal/r
 import { ReviewFacade } from 'src/app/shared/facades/review.facade';
 import { ReviewState } from 'src/app/shared/store/review/review.state';
 import { ReportReviewModalComponent } from './components/report-review-modal/report-review-modal.component';
+import { ReportProfileModalComponent } from './components/report-profile-modal/report-profile-modal.component';
 import { ReviewEditModalComponent } from './components/review-edit-modal/review-edit-modal.component';
 import { ReviewAddModalComponent } from './components/review-add-modal/review-add-modal.component';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { ShortContentReviewCardComponent } from 'src/app/shared/components/short-content-review-card/short-content-review-card.component';
+import { KebabMenuComponent } from 'src/app/shared/components/kebab-menu/kebab-menu.component';
 
 const routes: Routes = [
   {
@@ -64,6 +66,7 @@ const parentRoute: Routes = [
     EditCommentModalComponent,
     ReportCommentModalComponent,
     ReportReviewModalComponent,
+    ReportProfileModalComponent,
     ReviewEditModalComponent,
     ReviewAddModalComponent
   ],
@@ -76,6 +79,8 @@ const parentRoute: Routes = [
     RouterModule,
     RouterModule.forChild(parentRoute),
     HeaderBackComponent,
+    ShortContentReviewCardComponent,
+    KebabMenuComponent,
     NgxsModule.forFeature([CommentState, ReviewState]),
     ShortContentReviewCardComponent,
   ],

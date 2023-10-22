@@ -6292,6 +6292,7 @@ export interface ICreateCommentDto {
 export class CreateReportDto implements ICreateReportDto {
     reasonId?: number;
     commentId?: number | null;
+    reportedPersonId?: number | null;
     reviewId?: number | null;
     details?: string | null;
 
@@ -6308,6 +6309,7 @@ export class CreateReportDto implements ICreateReportDto {
         if (_data) {
             this.reasonId = _data["reasonId"] !== undefined ? _data["reasonId"] : <any>null;
             this.commentId = _data["commentId"] !== undefined ? _data["commentId"] : <any>null;
+            this.reportedPersonId = _data["reportedPersonId"] !== undefined ? _data["reportedPersonId"] : <any>null;
             this.reviewId = _data["reviewId"] !== undefined ? _data["reviewId"] : <any>null;
             this.details = _data["details"] !== undefined ? _data["details"] : <any>null;
         }
@@ -6324,6 +6326,7 @@ export class CreateReportDto implements ICreateReportDto {
         data = typeof data === 'object' ? data : {};
         data["reasonId"] = this.reasonId !== undefined ? this.reasonId : <any>null;
         data["commentId"] = this.commentId !== undefined ? this.commentId : <any>null;
+        data["reportedPersonId"] = this.reportedPersonId !== undefined ? this.reportedPersonId : <any>null;
         data["reviewId"] = this.reviewId !== undefined ? this.reviewId : <any>null;
         data["details"] = this.details !== undefined ? this.details : <any>null;
         return data;
@@ -6333,6 +6336,7 @@ export class CreateReportDto implements ICreateReportDto {
 export interface ICreateReportDto {
     reasonId?: number;
     commentId?: number | null;
+    reportedPersonId?: number | null;
     reviewId?: number | null;
     details?: string | null;
 }
@@ -8791,6 +8795,7 @@ export interface IReport {
     reasonId?: number;
     statusId?: number;
     personId?: number;
+    reportedPersonId?: number;
     reviewId?: number | null;
     commentId?: number | null;
     details?: string | null;
@@ -8799,12 +8804,14 @@ export interface IReport {
     comment?: Comment;
     status?: ReportStatus;
     person?: Person;
+    reportedPerson?: Person;
 }
 
 export class ReportDto implements IReportDto {
     reportId?: number;
     reasonId?: number;
     personId?: number;
+    reportedPersonId?: number;
     reviewId?: number | null;
     commentId?: number | null;
     statusId?: number | null;
@@ -8813,6 +8820,7 @@ export class ReportDto implements IReportDto {
     review?: ReviewDto;
     comment?: CommentDetailsDto;
     person?: ReadPersonDTO;
+    reportedPerson?: Person;
     status?: ReportStatusDto;
 
     constructor(data?: IReportDto) {

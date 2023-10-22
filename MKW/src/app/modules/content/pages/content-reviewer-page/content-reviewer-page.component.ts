@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs';
-import { ReadProfileDTO, ReadProfileDTOIEnumerableBaseResponseDTO, ReviewDetailsDto } from 'src/app/core/proxies/mkw-api.proxy';
+import { CreateReportDto, ReadProfileDTO, ReadProfileDTOIEnumerableBaseResponseDTO, ReviewDetailsDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { ReviewService } from 'src/app/core/services/review.service';
+import { ReportService } from 'src/app/core/services/report.service';
 import { ProfileModel } from '../../models/profile.model';
 import { AccountUtils } from 'src/app/core/Util/AccountUtil';
 import { ContentReviewCard } from 'src/app/shared/models/content-review-card.model';
 import { ContentUtils } from 'src/app/core/Util/ContentUtils';
+import { KebabMenuItem } from 'src/app/shared/models/kebab-menu-item.model';
+import { ModalController } from '@ionic/angular';
+import { ReportProfileModalComponent } from '../../components/report-profile-modal/report-profile-modal.component';
 
 @Component({
   selector: 'app-content-reviewer-page',
@@ -27,10 +31,19 @@ export class ContentReviewerPageComponent implements OnInit {
   public reviews: ContentReviewCard[] = [];
   public shouldShowReviews: boolean = false;
 
+  public menuItems: KebabMenuItem[] = [
+    {
+      label: 'Denunciar perfil',
+      callback: () => this.openReportModal(),
+    },
+  ];
+
   constructor(
     private profileService: ProfileService,
     private reviewService: ReviewService,
+    private reportService: ReportService,
     private route: ActivatedRoute,
+    private modalController: ModalController,
   ) {}
 
   ngOnInit() {
@@ -112,4 +125,51 @@ export class ContentReviewerPageComponent implements OnInit {
   }
 
   mapReview = (response: ReviewDetailsDto) => ContentUtils.relevantReviewToContentReviewCard(response);
+
+  async openReportModal() {
+    const modal = await this.modalController.create({component: ReportProfileModalComponent})
+
+    modal.present();
+
+    const result = await modal.onWillDismiss();
+  
+    if(result.data === null || result.role != 'report')
+      return;
+
+    const request = new CreateReportDto();
+    request.reportedPersonId = this.profile?.userId;
+    request.reasonId = result.data;
+
+    console.log(request);
+
+    this.reportService.report(request)
+      .pipe(take(1))
+      .subscribe({
+        next: (res: any) => {
+          alert('Perfil denunciado com sucesso');
+        },
+        error: (err: any) => {
+          alert('Erro ao denunciar perfil');
+        },
+      });
+
+    // this.reviewFacade.reportReview(result.data, this.reviewId!)
+    // .subscribe({
+    //   next: (res) =>{
+    //     alert("Review denunciada com sucesso")
+    //   },
+    //   error: (err) =>{ 
+    //     alert("Erro ao denunciar review");
+    //   }
+    // }) 
+    
+    //   reportComment(reportReasonId: number, commentId: number)
+    // {
+    //   let request = new CreateReportDto();
+    //   request.commentId = commentId;
+    //   request.reasonId = reportReasonId;
+
+    //   return this.reportService.report(request);
+    // }
+  }
 }

@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()"><i class="material-icons">arrow_back</i></ion-button>
+    </ion-buttons>
+    <ion-title>Denunciar Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+
+  <ion-select 
+    [placeholder]="'Selecione o motivo'" 
+    [ngModel]="reportReasonId"
+    (ionChange)="handleChange($event)"
+  >
+    <ion-select-option *ngFor="let reportReason of reportReasons" [value]="reportReason.id">
+      {{reportReason.reasonTitle}}
+    </ion-select-option>
+  </ion-select>
+
+  <ion-button [disabled]="!reportReasonId" (click)="confirm()">Editar</ion-button>
+</ion-content>
