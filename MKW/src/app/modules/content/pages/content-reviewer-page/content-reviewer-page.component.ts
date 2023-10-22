@@ -5,6 +5,7 @@ import { CreateReportDto, ReadProfileDTO, ReadProfileDTOIEnumerableBaseResponseD
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { ReportService } from 'src/app/core/services/report.service';
+import { TranslateService } from '@ngx-translate/core';
 import { ProfileModel } from '../../models/profile.model';
 import { AccountUtils } from 'src/app/core/Util/AccountUtil';
 import { ContentReviewCard } from 'src/app/shared/models/content-review-card.model';
@@ -44,6 +45,7 @@ export class ContentReviewerPageComponent implements OnInit {
     private reportService: ReportService,
     private route: ActivatedRoute,
     private modalController: ModalController,
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit() {
@@ -95,7 +97,7 @@ export class ContentReviewerPageComponent implements OnInit {
     const children = profileDto.childrens?.map(child => ({
       id: child.id,
       ageRangeId: child.ageRangeId,
-      ageRange: AccountUtils.getAgeRangeString(child.ageRangeId),
+      ageRange: AccountUtils.getAgeRangeString(child.ageRangeId, this.translateService),
       genderId: child.genderId,
       gender: AccountUtils.getGenderString(child.genderId) || '',
     }));
