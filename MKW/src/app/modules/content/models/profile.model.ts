@@ -1,4 +1,5 @@
 export interface ProfileModel {
+  personId?: number;
   userId?: number;
   imageURL?: string | null;
   name?: string | null;

@@ -8298,6 +8298,7 @@ export interface IReadPersonDTO {
 }
 
 export class ReadProfileDTO implements IReadProfileDTO {
+    personId?: number;
     userId?: number;
     imageURL?: string | null;
     name?: string | null;
@@ -8367,6 +8368,7 @@ export class ReadProfileDTO implements IReadProfileDTO {
 }
 
 export interface IReadProfileDTO {
+    personId?: number;
     userId?: number;
     imageURL?: string | null;
     name?: string | null;
@@ -10267,6 +10269,7 @@ export interface IProfileBaseResponseDto {
 }
 
 export class ProfileDto implements IProfileDto {
+    personId?: number | null;
     userId?: number | null;
     imageURL?: string | null;
     name?: string | null;
@@ -10285,6 +10288,7 @@ export class ProfileDto implements IProfileDto {
 
     init(_data?: any) {
         if (_data) {
+            this.personId = _data["personId"] !== undefined ? _data["personId"] : <any>null;
             this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
             this.imageURL = _data["imageURL"] !== undefined ? _data["imageURL"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
@@ -10317,6 +10321,7 @@ export class ProfileDto implements IProfileDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["personId"] = this.personId !== undefined ? this.personId : <any>null;
         data["userId"] = this.userId !== undefined ? this.userId : <any>null;
         data["imageURL"] = this.imageURL !== undefined ? this.imageURL : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
@@ -10336,6 +10341,7 @@ export class ProfileDto implements IProfileDto {
 }
 
 export interface IProfileDto {
+    personId?: number | null;
     userId?: number | null;
     imageURL?: string | null;
     name?: string | null;

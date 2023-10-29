@@ -114,6 +114,7 @@ export class ContentReviewerPageComponent implements OnInit {
     this.bronzeAwards = bronzeAwards;
 
     return {
+      personId: profileDto.personId,
       userId: profileDto.userId,
       imageURL: profileDto.imageURL,
       name: profileDto.name,
@@ -139,7 +140,7 @@ export class ContentReviewerPageComponent implements OnInit {
       return;
 
     const request = new CreateReportDto();
-    request.reportedPersonId = this.profile?.userId;
+    request.reportedPersonId = this.profile?.personId;
     request.reasonId = result.data;
 
     console.log(request);
@@ -154,24 +155,5 @@ export class ContentReviewerPageComponent implements OnInit {
           alert('Erro ao denunciar perfil');
         },
       });
-
-    // this.reviewFacade.reportReview(result.data, this.reviewId!)
-    // .subscribe({
-    //   next: (res) =>{
-    //     alert("Review denunciada com sucesso")
-    //   },
-    //   error: (err) =>{ 
-    //     alert("Erro ao denunciar review");
-    //   }
-    // }) 
-    
-    //   reportComment(reportReasonId: number, commentId: number)
-    // {
-    //   let request = new CreateReportDto();
-    //   request.commentId = commentId;
-    //   request.reasonId = reportReasonId;
-
-    //   return this.reportService.report(request);
-    // }
   }
 }
