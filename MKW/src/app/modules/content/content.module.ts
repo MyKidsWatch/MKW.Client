@@ -10,7 +10,7 @@ import { ContentReviewPageComponent } from './pages/content-review-page/content-
 import { ContentFeedPageComponent } from './pages/content-feed-page/content-feed-page.component';
 import { ContentReviewerPageComponent } from './pages/content-reviewer-page/content-reviewer-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommentClient, ContentClient, ReportClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { CommentClient, ContentClient, ProfileClient, ReportClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { HeaderBackComponent } from 'src/app/shared/components/header-back/header-back.component';
 import { ContentService } from 'src/app/core/services/content.service';
@@ -25,8 +25,13 @@ import { ReportCommentModalComponent } from './components/report-comment-modal/r
 import { ReviewFacade } from 'src/app/shared/facades/review.facade';
 import { ReviewState } from 'src/app/shared/store/review/review.state';
 import { ReportReviewModalComponent } from './components/report-review-modal/report-review-modal.component';
+import { ReportProfileModalComponent } from './components/report-profile-modal/report-profile-modal.component';
 import { ReviewEditModalComponent } from './components/review-edit-modal/review-edit-modal.component';
 import { ReviewAddModalComponent } from './components/review-add-modal/review-add-modal.component';
+import { ProfileService } from 'src/app/core/services/profile.service';
+import { ShortContentReviewCardComponent } from 'src/app/shared/components/short-content-review-card/short-content-review-card.component';
+import { KebabMenuComponent } from 'src/app/shared/components/kebab-menu/kebab-menu.component';
+
 const routes: Routes = [
   {
     path: 'feed/:contentId/:platformId',
@@ -37,12 +42,10 @@ const routes: Routes = [
     component: ContentReviewPageComponent
   },
   {
-    path: 'reviewer/:id',
+    path: 'reviewer/:username',
     component: ContentReviewerPageComponent
   }
 ];
-
-
 
 const parentRoute: Routes = [
   {
@@ -63,6 +66,7 @@ const parentRoute: Routes = [
     EditCommentModalComponent,
     ReportCommentModalComponent,
     ReportReviewModalComponent,
+    ReportProfileModalComponent,
     ReviewEditModalComponent,
     ReviewAddModalComponent
   ],
@@ -75,8 +79,10 @@ const parentRoute: Routes = [
     RouterModule,
     RouterModule.forChild(parentRoute),
     HeaderBackComponent,
-    NgxsModule.forFeature([CommentState, ReviewState])
-
+    ShortContentReviewCardComponent,
+    KebabMenuComponent,
+    NgxsModule.forFeature([CommentState, ReviewState]),
+    ShortContentReviewCardComponent,
   ],
   exports: [ContentComponent],
   providers: [
@@ -89,7 +95,9 @@ const parentRoute: Routes = [
     CommentClient,
     CommentService,
     ReportClient,
-    ReportService
+    ReportService,
+    ProfileClient,
+    ProfileService,
   ]
 })
 

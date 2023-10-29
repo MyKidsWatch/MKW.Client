@@ -1,0 +1,66 @@
+.kebab-menu {
+  position: relative;
+
+  .kebab-menu-button {
+    position: relative;
+    cursor: pointer;
+    padding: .75rem;
+    padding-right: 0;
+    border-radius: 50%;
+    transition: background-color 0.2s ease-in-out;
+    background: transparent;
+
+    &--right {
+      padding-right: .75rem;
+      padding-left: 0;
+    }
+  }
+
+  .items {
+    display: none;
+    opacity: 0;
+    position: absolute;
+    top: 1.5rem;
+    right: 0;
+    min-width: 12rem;
+    background-color: #FFFFFF;
+    border: 1px solid #C2C2C2;
+    padding: .8rem 1rem;
+    box-shadow: 0 2px 14px #00000055;
+    list-style: none;
+    z-index: 1;
+    transition: opacity 0.1s;
+
+    &--open {
+      display: block;
+      opacity: 1;
+    }
+
+    &--right {
+      left: 0;
+    }
+
+    .item {
+      margin: 0;
+      padding: 0;
+      display: block;
+
+      button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 1rem .5rem;
+        margin: 0;
+        width: 100%;
+        text-align: left;
+        transition: background-color 0.2s ease-in-out;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+
+        &:hover {
+          background-color: #f2f2f2;
+        }
+      }
+    }
+  }
+}
