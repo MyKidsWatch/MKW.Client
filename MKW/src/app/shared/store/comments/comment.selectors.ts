@@ -24,6 +24,7 @@ export class CommentSelectors{
 
             let contentReviewComment: ContentReviewComment = {
                 commentAuthor: {
+                    creatorId: comment.personId,
                     userName: comment.commentAuthor,
                     profilePictureUrl: 'assets/icon/default.jpg'
                 },
@@ -35,6 +36,7 @@ export class CommentSelectors{
             comment.commentAnswers?.forEach(answer =>{
                 let commentAnswer: ContentReviewComment = {
                     commentAuthor: {
+                        creatorId: comment.personId,
                         userName: answer.commentAuthor,
                         profilePictureUrl: 'assets/icon/default.jpg'
                     },

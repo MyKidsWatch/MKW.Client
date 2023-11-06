@@ -30,7 +30,8 @@ export class ReviewSelectors{
             reviewDescription: reviewState.reviewDetails.description,
             reviewAuthor: {
               userName: reviewState.reviewOwner.userName,
-              profilePictureUrl: reviewState.reviewOwner.profilePictureUrl
+              profilePictureUrl: reviewState.reviewOwner.profilePictureUrl,
+              creatorId: reviewState.reviewOwner.id
             },
             reviewedContentInformation: {
               title: reviewState.reviewContent.title!,

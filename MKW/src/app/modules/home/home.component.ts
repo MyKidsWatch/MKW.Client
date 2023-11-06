@@ -27,7 +27,10 @@ export class HomeComponent  implements OnInit {
     this.splashScreenService.stop();
     
     this.isUserAdminSubscription = this.userFacade.getUserAdminState()
-    .subscribe(res => {console.log("is user admin: " + res); this.isUserAdmin = res});
+    .subscribe(res => {
+      console.log("is user admin: " + res); 
+      this.isUserAdmin = res
+    });
     
     this.subscription = this.platform.backButton.subscribeWithPriority(9999, (response) =>{
       document.addEventListener('backbutton', (event) =>{

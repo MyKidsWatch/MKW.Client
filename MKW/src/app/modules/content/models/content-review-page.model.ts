@@ -18,6 +18,7 @@ export interface ContentInformation{
 }
 
 export interface UserInformation{
+    creatorId: number;
     userName: string;
     profilePictureUrl?: string;
 }

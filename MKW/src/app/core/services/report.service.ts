@@ -23,4 +23,11 @@ export class ReportService {
     let res = this.reportClient.reason();
     return res;
   }
+
+
+  getReportFeed(page: number = 1, size: number = 10, reasonId: number = 1)
+  {
+    let res = this.reportClient.reportGet(page, size, reasonId);
+    return res;
+  }
 }

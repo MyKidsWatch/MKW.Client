@@ -58,12 +58,13 @@ export class ReviewFacade{
       return this.store.dispatch(new DeleteReview(reviewId));
     }
 
-    reportReview(reportReasonId: number, reviewId: number)
+    reportReview(reportReasonId: number, reviewId: number, creatorId: number)
     {
         let reportDto: CreateReportDto = new CreateReportDto();
 
         reportDto.reasonId = reportReasonId;
         reportDto.reviewId = reviewId;
+        reportDto.reportedPersonId = creatorId;
 
         return this.reportService.report(reportDto);
     }

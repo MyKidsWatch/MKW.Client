@@ -17,6 +17,7 @@ export interface ReviewContentModel
 }
 
 export interface ReviewOwnerModel{
+    id: number;
     userName: string;
     profilePictureUrl?: string;
 }

@@ -16,6 +16,9 @@ import { ReviewFacade } from 'src/app/shared/facades/review.facade';
 import { ReviewEditModalComponent } from '../../components/review-edit-modal/review-edit-modal.component';
 import { ReportReview } from 'src/app/shared/store/review/review.actions';
 import { ReportReviewModalComponent } from '../../components/report-review-modal/report-review-modal.component';
+import { Store } from '@ngxs/store';
+import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
+import { UserFacade } from 'src/app/shared/facades/user.facade';
 
 @Component({
   selector: 'app-content-review-page',
@@ -26,9 +29,11 @@ export class ContentReviewPageComponent  implements OnInit {
 
 
   public reviewId?: number;
+  
   public contentObject: ContentReviewPage = {
     reviewAuthor: {
       userName: '',
+      creatorId: 0
     },
     reviewCreationDate: new Date(),
     reviewedContentInformation: {
@@ -58,7 +63,8 @@ export class ContentReviewPageComponent  implements OnInit {
     private router: Router,
     private commentFacade: CommentFacade,
     private modalController: ModalController,
-    private reviewFacade: ReviewFacade) {
+    private reviewFacade: ReviewFacade,
+    private userFacade: UserFacade) {
   }
 
   ngOnInit() {
@@ -71,10 +77,13 @@ export class ContentReviewPageComponent  implements OnInit {
     this.reviewSubscription = this.reviewFacade.getCurrentReviewViewModel()
     .subscribe({
       next: (res: ContentReviewPage) =>{
-        console.log(res);
+        
         this.contentObject = res;
         this.loading = false;
-        console.log(this.contentObject)
+        
+        let username = this.userFacade.getUserState()?.username!        
+        this.actionSheetButtons = username == this.contentObject.reviewAuthor.userName ? this.actionSheetOp : this.actionSheetNotOp;
+
       },
       error: (err) =>{
 
@@ -119,6 +128,9 @@ export class ContentReviewPageComponent  implements OnInit {
 
   actionSheetEvent(event: any, commentId: number)
   {
+    if(!event.detail.data || !event.detail.data.action)
+      return; 
+
     let action = event.detail?.data?.action;
 
     if(!action)
@@ -187,7 +199,7 @@ export class ContentReviewPageComponent  implements OnInit {
     if(result.data === null || result.role != 'report')
       return;
 
-    this.reviewFacade.reportReview(result.data, this.reviewId!)
+    this.reviewFacade.reportReview(result.data, this.reviewId!, this.contentObject.reviewAuthor.creatorId)
     .subscribe({
       next: (res) =>{
         alert("Review denunciada com sucesso")
@@ -198,7 +210,9 @@ export class ContentReviewPageComponent  implements OnInit {
     })  
   }
 
-  public actionSheetButtons = [
+  public actionSheetButtons: any[] = [  ];
+
+  private actionSheetOp = [
     {
       text: 'Deletar',
       role: 'destructive',
@@ -212,6 +226,17 @@ export class ContentReviewPageComponent  implements OnInit {
         action: 'edit',
       }
     },
+
+    {
+      text: 'Cancelar',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      }
+    }
+  ]
+
+  private actionSheetNotOp = [
     {
       text: 'Denunciar',
       data: {
@@ -224,6 +249,7 @@ export class ContentReviewPageComponent  implements OnInit {
       data: {
         action: 'cancel',
       }
-    },
-  ];
+    }
+  ]
+
 }

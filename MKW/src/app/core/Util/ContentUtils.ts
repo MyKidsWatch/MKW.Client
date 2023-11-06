@@ -99,6 +99,7 @@ export class ContentUtils {
         reviewTitle: reviewDTO.title!,
         reviewDescription: reviewDTO.text!,
         reviewAuthor: {
+          creatorId: reviewDTO.person!.userId!,
           userName: reviewDTO.person!.username!,
           profilePictureUrl: "assets/icon/default.jpg"
         },

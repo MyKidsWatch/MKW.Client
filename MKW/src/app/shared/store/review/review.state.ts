@@ -16,6 +16,7 @@ const defautlState: ReviewStateModel = {
     reviewDetails: {
     },
     reviewOwner: {
+        id: 0,
         userName: '',
     }
 }
@@ -58,6 +59,7 @@ export class ReviewState
              };
     
              let reviewOwner: ReviewOwnerModel = {
+                 id: reviewDTO.person!.id!,
                  userName: reviewDTO.person!.username!,
                  profilePictureUrl: 'assets/icon/default.jpg'
              };
@@ -105,6 +107,7 @@ export class ReviewState
              };
     
              let reviewOwner: ReviewOwnerModel = {
+                id: reviewDTO.person!.id!,
                  userName: reviewDTO.person!.username!,
                  profilePictureUrl: 'assets/icon/default.jpg'
              };
@@ -153,6 +156,7 @@ export class ReviewState
                 };
     
                 let reviewOwner: ReviewOwnerModel = {
+                    id: reviewDTO.person!.id!,
                     userName: reviewDTO.person!.username!,
                     profilePictureUrl: 'assets/icon/default.jpg'
                 };
@@ -196,6 +200,7 @@ export class ReviewState
          };
 
          let reviewOwner: ReviewOwnerModel = {
+             id: reviewDTO.person!.id!,
              userName: reviewDTO.person!.username!,
              profilePictureUrl: 'assets/icon/default.jpg'
          };

@@ -3654,10 +3654,25 @@ export class ReportClient {
     }
 
     /**
+     * @param page (optional) 
+     * @param pageSize (optional) 
+     * @param reasonId (optional) 
      * @return Success
      */
-    reportGet(): Observable<ReportDtoBaseResponseDTO> {
-        let url_ = this.baseUrl + "/v1/Report";
+    reportGet(page: number | undefined, pageSize: number | undefined, reasonId: number | undefined): Observable<ReportDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Report?";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (reasonId === null)
+            throw new Error("The parameter 'reasonId' cannot be null.");
+        else if (reasonId !== undefined)
+            url_ += "reasonId=" + encodeURIComponent("" + reasonId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3753,6 +3768,76 @@ export class ReportClient {
     }
 
     protected processReportPost(response: HttpResponseBase): Observable<ReportDtoBaseResponseDTO> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReportDtoBaseResponseDTO.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+            return throwException("Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    reportPatch(body: UpdateReportStatusDto | undefined): Observable<ReportDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Report";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processReportPatch(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processReportPatch(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReportDtoBaseResponseDTO>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReportDtoBaseResponseDTO>;
+        }));
+    }
+
+    protected processReportPatch(response: HttpResponseBase): Observable<ReportDtoBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4393,6 +4478,7 @@ export interface IAgeRangeDto {
 export class AgeRangeDtoBaseResponseDTO implements IAgeRangeDtoBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: AgeRangeDto[] | null;
+    pagedContent?: AgeRangeDtoPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IAgeRangeDtoBaseResponseDTO) {
@@ -4415,6 +4501,7 @@ export class AgeRangeDtoBaseResponseDTO implements IAgeRangeDtoBaseResponseDTO {
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? AgeRangeDtoPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -4441,6 +4528,7 @@ export class AgeRangeDtoBaseResponseDTO implements IAgeRangeDtoBaseResponseDTO {
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -4453,7 +4541,75 @@ export class AgeRangeDtoBaseResponseDTO implements IAgeRangeDtoBaseResponseDTO {
 export interface IAgeRangeDtoBaseResponseDTO {
     isSuccess?: boolean;
     content?: AgeRangeDto[] | null;
+    pagedContent?: AgeRangeDtoPagedList;
     errors?: string[] | null;
+}
+
+export class AgeRangeDtoPagedList implements IAgeRangeDtoPagedList {
+    results?: AgeRangeDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IAgeRangeDtoPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(AgeRangeDto.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AgeRangeDtoPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new AgeRangeDtoPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IAgeRangeDtoPagedList {
+    results?: AgeRangeDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class AnswerCommentDto implements IAnswerCommentDto {
@@ -4734,6 +4890,7 @@ export interface IAwardDetailsDto {
 export class AwardDetailsDtoBaseResponseDTO implements IAwardDetailsDtoBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: AwardDetailsDto[] | null;
+    pagedContent?: AwardDetailsDtoPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IAwardDetailsDtoBaseResponseDTO) {
@@ -4756,6 +4913,7 @@ export class AwardDetailsDtoBaseResponseDTO implements IAwardDetailsDtoBaseRespo
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? AwardDetailsDtoPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -4782,6 +4940,7 @@ export class AwardDetailsDtoBaseResponseDTO implements IAwardDetailsDtoBaseRespo
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -4794,7 +4953,75 @@ export class AwardDetailsDtoBaseResponseDTO implements IAwardDetailsDtoBaseRespo
 export interface IAwardDetailsDtoBaseResponseDTO {
     isSuccess?: boolean;
     content?: AwardDetailsDto[] | null;
+    pagedContent?: AwardDetailsDtoPagedList;
     errors?: string[] | null;
+}
+
+export class AwardDetailsDtoPagedList implements IAwardDetailsDtoPagedList {
+    results?: AwardDetailsDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IAwardDetailsDtoPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(AwardDetailsDto.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AwardDetailsDtoPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new AwardDetailsDtoPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IAwardDetailsDtoPagedList {
+    results?: AwardDetailsDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class AwardPerson implements IAwardPerson {
@@ -4912,6 +5139,7 @@ export interface ICheckEmailDTO {
 export class CheckEmailDTOBaseResponseDTO implements ICheckEmailDTOBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: CheckEmailDTO[] | null;
+    pagedContent?: CheckEmailDTOPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: ICheckEmailDTOBaseResponseDTO) {
@@ -4934,6 +5162,7 @@ export class CheckEmailDTOBaseResponseDTO implements ICheckEmailDTOBaseResponseD
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? CheckEmailDTOPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -4960,6 +5189,7 @@ export class CheckEmailDTOBaseResponseDTO implements ICheckEmailDTOBaseResponseD
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -4972,7 +5202,75 @@ export class CheckEmailDTOBaseResponseDTO implements ICheckEmailDTOBaseResponseD
 export interface ICheckEmailDTOBaseResponseDTO {
     isSuccess?: boolean;
     content?: CheckEmailDTO[] | null;
+    pagedContent?: CheckEmailDTOPagedList;
     errors?: string[] | null;
+}
+
+export class CheckEmailDTOPagedList implements ICheckEmailDTOPagedList {
+    results?: CheckEmailDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: ICheckEmailDTOPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(CheckEmailDTO.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CheckEmailDTOPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new CheckEmailDTOPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface ICheckEmailDTOPagedList {
+    results?: CheckEmailDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class CheckUserNameDTO implements ICheckUserNameDTO {
@@ -5014,6 +5312,7 @@ export interface ICheckUserNameDTO {
 export class CheckUserNameDTOBaseResponseDTO implements ICheckUserNameDTOBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: CheckUserNameDTO[] | null;
+    pagedContent?: CheckUserNameDTOPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: ICheckUserNameDTOBaseResponseDTO) {
@@ -5036,6 +5335,7 @@ export class CheckUserNameDTOBaseResponseDTO implements ICheckUserNameDTOBaseRes
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? CheckUserNameDTOPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -5062,6 +5362,7 @@ export class CheckUserNameDTOBaseResponseDTO implements ICheckUserNameDTOBaseRes
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -5074,7 +5375,75 @@ export class CheckUserNameDTOBaseResponseDTO implements ICheckUserNameDTOBaseRes
 export interface ICheckUserNameDTOBaseResponseDTO {
     isSuccess?: boolean;
     content?: CheckUserNameDTO[] | null;
+    pagedContent?: CheckUserNameDTOPagedList;
     errors?: string[] | null;
+}
+
+export class CheckUserNameDTOPagedList implements ICheckUserNameDTOPagedList {
+    results?: CheckUserNameDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: ICheckUserNameDTOPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(CheckUserNameDTO.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CheckUserNameDTOPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new CheckUserNameDTOPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface ICheckUserNameDTOPagedList {
+    results?: CheckUserNameDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class ChildDto implements IChildDto {
@@ -5128,6 +5497,7 @@ export interface IChildDto {
 export class ChildDtoBaseResponseDTO implements IChildDtoBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: ChildDto[] | null;
+    pagedContent?: ChildDtoPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IChildDtoBaseResponseDTO) {
@@ -5150,6 +5520,7 @@ export class ChildDtoBaseResponseDTO implements IChildDtoBaseResponseDTO {
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? ChildDtoPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -5176,6 +5547,7 @@ export class ChildDtoBaseResponseDTO implements IChildDtoBaseResponseDTO {
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -5188,7 +5560,75 @@ export class ChildDtoBaseResponseDTO implements IChildDtoBaseResponseDTO {
 export interface IChildDtoBaseResponseDTO {
     isSuccess?: boolean;
     content?: ChildDto[] | null;
+    pagedContent?: ChildDtoPagedList;
     errors?: string[] | null;
+}
+
+export class ChildDtoPagedList implements IChildDtoPagedList {
+    results?: ChildDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IChildDtoPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(ChildDto.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ChildDtoPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ChildDtoPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IChildDtoPagedList {
+    results?: ChildDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class Claim implements IClaim {
@@ -5604,6 +6044,7 @@ export interface ICommentDetailsDto {
 export class CommentDetailsDtoBaseResponseDTO implements ICommentDetailsDtoBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: CommentDetailsDto[] | null;
+    pagedContent?: CommentDetailsDtoPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: ICommentDetailsDtoBaseResponseDTO) {
@@ -5626,6 +6067,7 @@ export class CommentDetailsDtoBaseResponseDTO implements ICommentDetailsDtoBaseR
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? CommentDetailsDtoPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -5652,6 +6094,7 @@ export class CommentDetailsDtoBaseResponseDTO implements ICommentDetailsDtoBaseR
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -5664,7 +6107,75 @@ export class CommentDetailsDtoBaseResponseDTO implements ICommentDetailsDtoBaseR
 export interface ICommentDetailsDtoBaseResponseDTO {
     isSuccess?: boolean;
     content?: CommentDetailsDto[] | null;
+    pagedContent?: CommentDetailsDtoPagedList;
     errors?: string[] | null;
+}
+
+export class CommentDetailsDtoPagedList implements ICommentDetailsDtoPagedList {
+    results?: CommentDetailsDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: ICommentDetailsDtoPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(CommentDetailsDto.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): CommentDetailsDtoPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new CommentDetailsDtoPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface ICommentDetailsDtoPagedList {
+    results?: CommentDetailsDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class ConfirmAccountEmailDTO implements IConfirmAccountEmailDTO {
@@ -5895,6 +6406,7 @@ export interface IContentDetailsDTO {
 export class ContentDetailsDTOBaseResponseDTO implements IContentDetailsDTOBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: ContentDetailsDTO[] | null;
+    pagedContent?: ContentDetailsDTOPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IContentDetailsDTOBaseResponseDTO) {
@@ -5917,6 +6429,7 @@ export class ContentDetailsDTOBaseResponseDTO implements IContentDetailsDTOBaseR
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? ContentDetailsDTOPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -5943,6 +6456,7 @@ export class ContentDetailsDTOBaseResponseDTO implements IContentDetailsDTOBaseR
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -5955,7 +6469,75 @@ export class ContentDetailsDTOBaseResponseDTO implements IContentDetailsDTOBaseR
 export interface IContentDetailsDTOBaseResponseDTO {
     isSuccess?: boolean;
     content?: ContentDetailsDTO[] | null;
+    pagedContent?: ContentDetailsDTOPagedList;
     errors?: string[] | null;
+}
+
+export class ContentDetailsDTOPagedList implements IContentDetailsDTOPagedList {
+    results?: ContentDetailsDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IContentDetailsDTOPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(ContentDetailsDTO.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ContentDetailsDTOPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ContentDetailsDTOPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IContentDetailsDTOPagedList {
+    results?: ContentDetailsDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class ContentGenre implements IContentGenre {
@@ -6112,6 +6694,7 @@ export interface IContentListItemDTO {
 export class ContentListItemDTOBaseResponseDTO implements IContentListItemDTOBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: ContentListItemDTO[] | null;
+    pagedContent?: ContentListItemDTOPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IContentListItemDTOBaseResponseDTO) {
@@ -6134,6 +6717,7 @@ export class ContentListItemDTOBaseResponseDTO implements IContentListItemDTOBas
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? ContentListItemDTOPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -6160,6 +6744,7 @@ export class ContentListItemDTOBaseResponseDTO implements IContentListItemDTOBas
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -6172,7 +6757,75 @@ export class ContentListItemDTOBaseResponseDTO implements IContentListItemDTOBas
 export interface IContentListItemDTOBaseResponseDTO {
     isSuccess?: boolean;
     content?: ContentListItemDTO[] | null;
+    pagedContent?: ContentListItemDTOPagedList;
     errors?: string[] | null;
+}
+
+export class ContentListItemDTOPagedList implements IContentListItemDTOPagedList {
+    results?: ContentListItemDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IContentListItemDTOPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(ContentListItemDTO.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ContentListItemDTOPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ContentListItemDTOPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IContentListItemDTOPagedList {
+    results?: ContentListItemDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class CreateChildDto implements ICreateChildDto {
@@ -6256,6 +6909,7 @@ export interface ICreateCommentDto {
 }
 
 export class CreateReportDto implements ICreateReportDto {
+    reportedPersonId?: number;
     reasonId?: number;
     commentId?: number | null;
     reviewId?: number | null;
@@ -6272,6 +6926,7 @@ export class CreateReportDto implements ICreateReportDto {
 
     init(_data?: any) {
         if (_data) {
+            this.reportedPersonId = _data["reportedPersonId"] !== undefined ? _data["reportedPersonId"] : <any>null;
             this.reasonId = _data["reasonId"] !== undefined ? _data["reasonId"] : <any>null;
             this.commentId = _data["commentId"] !== undefined ? _data["commentId"] : <any>null;
             this.reviewId = _data["reviewId"] !== undefined ? _data["reviewId"] : <any>null;
@@ -6288,6 +6943,7 @@ export class CreateReportDto implements ICreateReportDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["reportedPersonId"] = this.reportedPersonId !== undefined ? this.reportedPersonId : <any>null;
         data["reasonId"] = this.reasonId !== undefined ? this.reasonId : <any>null;
         data["commentId"] = this.commentId !== undefined ? this.commentId : <any>null;
         data["reviewId"] = this.reviewId !== undefined ? this.reviewId : <any>null;
@@ -6297,6 +6953,7 @@ export class CreateReportDto implements ICreateReportDto {
 }
 
 export interface ICreateReportDto {
+    reportedPersonId?: number;
     reasonId?: number;
     commentId?: number | null;
     reviewId?: number | null;
@@ -6559,6 +7216,7 @@ export interface IGenderDto {
 export class GenderDtoBaseResponseDTO implements IGenderDtoBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: GenderDto[] | null;
+    pagedContent?: GenderDtoPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IGenderDtoBaseResponseDTO) {
@@ -6581,6 +7239,7 @@ export class GenderDtoBaseResponseDTO implements IGenderDtoBaseResponseDTO {
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? GenderDtoPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -6607,6 +7266,7 @@ export class GenderDtoBaseResponseDTO implements IGenderDtoBaseResponseDTO {
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -6619,7 +7279,75 @@ export class GenderDtoBaseResponseDTO implements IGenderDtoBaseResponseDTO {
 export interface IGenderDtoBaseResponseDTO {
     isSuccess?: boolean;
     content?: GenderDto[] | null;
+    pagedContent?: GenderDtoPagedList;
     errors?: string[] | null;
+}
+
+export class GenderDtoPagedList implements IGenderDtoPagedList {
+    results?: GenderDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IGenderDtoPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(GenderDto.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): GenderDtoPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new GenderDtoPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IGenderDtoPagedList {
+    results?: GenderDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class Genre implements IGenre {
@@ -6824,6 +7552,7 @@ export interface IGivenAwardDto {
 export class GivenAwardDtoBaseResponseDTO implements IGivenAwardDtoBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: GivenAwardDto[] | null;
+    pagedContent?: GivenAwardDtoPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IGivenAwardDtoBaseResponseDTO) {
@@ -6846,6 +7575,7 @@ export class GivenAwardDtoBaseResponseDTO implements IGivenAwardDtoBaseResponseD
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? GivenAwardDtoPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -6872,6 +7602,7 @@ export class GivenAwardDtoBaseResponseDTO implements IGivenAwardDtoBaseResponseD
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -6884,7 +7615,75 @@ export class GivenAwardDtoBaseResponseDTO implements IGivenAwardDtoBaseResponseD
 export interface IGivenAwardDtoBaseResponseDTO {
     isSuccess?: boolean;
     content?: GivenAwardDto[] | null;
+    pagedContent?: GivenAwardDtoPagedList;
     errors?: string[] | null;
+}
+
+export class GivenAwardDtoPagedList implements IGivenAwardDtoPagedList {
+    results?: GivenAwardDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IGivenAwardDtoPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(GivenAwardDto.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): GivenAwardDtoPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new GivenAwardDtoPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IGivenAwardDtoPagedList {
+    results?: GivenAwardDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class LoginRequestByEmailDTO implements ILoginRequestByEmailDTO {
@@ -7146,6 +7945,7 @@ export interface IMovieDTO {
 export class MovieDTOBaseResponseDTO implements IMovieDTOBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: MovieDTO[] | null;
+    pagedContent?: MovieDTOPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IMovieDTOBaseResponseDTO) {
@@ -7168,6 +7968,7 @@ export class MovieDTOBaseResponseDTO implements IMovieDTOBaseResponseDTO {
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? MovieDTOPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -7194,6 +7995,7 @@ export class MovieDTOBaseResponseDTO implements IMovieDTOBaseResponseDTO {
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -7206,12 +8008,81 @@ export class MovieDTOBaseResponseDTO implements IMovieDTOBaseResponseDTO {
 export interface IMovieDTOBaseResponseDTO {
     isSuccess?: boolean;
     content?: MovieDTO[] | null;
+    pagedContent?: MovieDTOPagedList;
     errors?: string[] | null;
+}
+
+export class MovieDTOPagedList implements IMovieDTOPagedList {
+    results?: MovieDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IMovieDTOPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(MovieDTO.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): MovieDTOPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new MovieDTOPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IMovieDTOPagedList {
+    results?: MovieDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class ObjectBaseResponseDTO implements IObjectBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: any[] | null;
+    pagedContent?: ObjectPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IObjectBaseResponseDTO) {
@@ -7234,6 +8105,7 @@ export class ObjectBaseResponseDTO implements IObjectBaseResponseDTO {
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? ObjectPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -7260,6 +8132,7 @@ export class ObjectBaseResponseDTO implements IObjectBaseResponseDTO {
             for (let item of this.content)
                 data["content"].push(item);
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -7272,7 +8145,75 @@ export class ObjectBaseResponseDTO implements IObjectBaseResponseDTO {
 export interface IObjectBaseResponseDTO {
     isSuccess?: boolean;
     content?: any[] | null;
+    pagedContent?: ObjectPagedList;
     errors?: string[] | null;
+}
+
+export class ObjectPagedList implements IObjectPagedList {
+    results?: any[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IObjectPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(item);
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ObjectPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item);
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IObjectPagedList {
+    results?: any[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class Operation implements IOperation {
@@ -7442,6 +8383,7 @@ export class Person implements IPerson {
     awardsGiven?: AwardPerson[] | null;
     operations?: Operation[] | null;
     reports?: Report[] | null;
+    reportedIn?: Report[] | null;
 
     constructor(data?: IPerson) {
         if (data) {
@@ -7522,6 +8464,14 @@ export class Person implements IPerson {
             else {
                 this.reports = <any>null;
             }
+            if (Array.isArray(_data["reportedIn"])) {
+                this.reportedIn = [] as any;
+                for (let item of _data["reportedIn"])
+                    this.reportedIn!.push(Report.fromJS(item));
+            }
+            else {
+                this.reportedIn = <any>null;
+            }
         }
     }
 
@@ -7581,6 +8531,11 @@ export class Person implements IPerson {
             for (let item of this.reports)
                 data["reports"].push(item.toJSON());
         }
+        if (Array.isArray(this.reportedIn)) {
+            data["reportedIn"] = [];
+            for (let item of this.reportedIn)
+                data["reportedIn"].push(item.toJSON());
+        }
         return data;
     }
 }
@@ -7605,6 +8560,7 @@ export interface IPerson {
     awardsGiven?: AwardPerson[] | null;
     operations?: Operation[] | null;
     reports?: Report[] | null;
+    reportedIn?: Report[] | null;
 }
 
 export class PersonChild implements IPersonChild {
@@ -8260,6 +9216,7 @@ export interface IReadPersonDTO {
 }
 
 export class ReadProfileDTO implements IReadProfileDTO {
+    personId?: number;
     userId?: number;
     imageURL?: string | null;
     name?: string | null;
@@ -8278,6 +9235,7 @@ export class ReadProfileDTO implements IReadProfileDTO {
 
     init(_data?: any) {
         if (_data) {
+            this.personId = _data["personId"] !== undefined ? _data["personId"] : <any>null;
             this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
             this.imageURL = _data["imageURL"] !== undefined ? _data["imageURL"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
@@ -8310,6 +9268,7 @@ export class ReadProfileDTO implements IReadProfileDTO {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["personId"] = this.personId !== undefined ? this.personId : <any>null;
         data["userId"] = this.userId !== undefined ? this.userId : <any>null;
         data["imageURL"] = this.imageURL !== undefined ? this.imageURL : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
@@ -8329,6 +9288,7 @@ export class ReadProfileDTO implements IReadProfileDTO {
 }
 
 export interface IReadProfileDTO {
+    personId?: number;
     userId?: number;
     imageURL?: string | null;
     name?: string | null;
@@ -8340,6 +9300,7 @@ export interface IReadProfileDTO {
 export class ReadProfileDTOBaseResponseDTO implements IReadProfileDTOBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: ReadProfileDTO[] | null;
+    pagedContent?: ReadProfileDTOPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IReadProfileDTOBaseResponseDTO) {
@@ -8362,6 +9323,7 @@ export class ReadProfileDTOBaseResponseDTO implements IReadProfileDTOBaseRespons
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? ReadProfileDTOPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -8388,6 +9350,7 @@ export class ReadProfileDTOBaseResponseDTO implements IReadProfileDTOBaseRespons
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -8400,12 +9363,14 @@ export class ReadProfileDTOBaseResponseDTO implements IReadProfileDTOBaseRespons
 export interface IReadProfileDTOBaseResponseDTO {
     isSuccess?: boolean;
     content?: ReadProfileDTO[] | null;
+    pagedContent?: ReadProfileDTOPagedList;
     errors?: string[] | null;
 }
 
 export class ReadProfileDTOIEnumerableBaseResponseDTO implements IReadProfileDTOIEnumerableBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: ReadProfileDTO[][] | null;
+    pagedContent?: ReadProfileDTOIEnumerablePagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IReadProfileDTOIEnumerableBaseResponseDTO) {
@@ -8428,6 +9393,7 @@ export class ReadProfileDTOIEnumerableBaseResponseDTO implements IReadProfileDTO
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? ReadProfileDTOIEnumerablePagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -8454,6 +9420,7 @@ export class ReadProfileDTOIEnumerableBaseResponseDTO implements IReadProfileDTO
             for (let item of this.content)
                 data["content"].push(item);
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -8466,7 +9433,142 @@ export class ReadProfileDTOIEnumerableBaseResponseDTO implements IReadProfileDTO
 export interface IReadProfileDTOIEnumerableBaseResponseDTO {
     isSuccess?: boolean;
     content?: ReadProfileDTO[][] | null;
+    pagedContent?: ReadProfileDTOIEnumerablePagedList;
     errors?: string[] | null;
+}
+
+export class ReadProfileDTOIEnumerablePagedList implements IReadProfileDTOIEnumerablePagedList {
+    results?: ReadProfileDTO[][] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IReadProfileDTOIEnumerablePagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(item);
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ReadProfileDTOIEnumerablePagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReadProfileDTOIEnumerablePagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item);
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IReadProfileDTOIEnumerablePagedList {
+    results?: ReadProfileDTO[][] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
+}
+
+export class ReadProfileDTOPagedList implements IReadProfileDTOPagedList {
+    results?: ReadProfileDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IReadProfileDTOPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(ReadProfileDTO.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ReadProfileDTOPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReadProfileDTOPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IReadProfileDTOPagedList {
+    results?: ReadProfileDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class ReadUserDTO implements IReadUserDTO {
@@ -8480,6 +9582,7 @@ export class ReadUserDTO implements IReadUserDTO {
     phoneNumberConfirmed?: boolean;
     twoFactorEnabled?: boolean;
     lockoutEnabled?: boolean;
+    isAdminUser?: boolean;
     lockoutEnd?: Date;
     createDate?: Date;
     alterDate?: Date | null;
@@ -8508,6 +9611,7 @@ export class ReadUserDTO implements IReadUserDTO {
             this.phoneNumberConfirmed = _data["phoneNumberConfirmed"] !== undefined ? _data["phoneNumberConfirmed"] : <any>null;
             this.twoFactorEnabled = _data["twoFactorEnabled"] !== undefined ? _data["twoFactorEnabled"] : <any>null;
             this.lockoutEnabled = _data["lockoutEnabled"] !== undefined ? _data["lockoutEnabled"] : <any>null;
+            this.isAdminUser = _data["isAdminUser"] !== undefined ? _data["isAdminUser"] : <any>null;
             this.lockoutEnd = _data["lockoutEnd"] ? new Date(_data["lockoutEnd"].toString()) : <any>null;
             this.createDate = _data["createDate"] ? new Date(_data["createDate"].toString()) : <any>null;
             this.alterDate = _data["alterDate"] ? new Date(_data["alterDate"].toString()) : <any>null;
@@ -8536,6 +9640,7 @@ export class ReadUserDTO implements IReadUserDTO {
         data["phoneNumberConfirmed"] = this.phoneNumberConfirmed !== undefined ? this.phoneNumberConfirmed : <any>null;
         data["twoFactorEnabled"] = this.twoFactorEnabled !== undefined ? this.twoFactorEnabled : <any>null;
         data["lockoutEnabled"] = this.lockoutEnabled !== undefined ? this.lockoutEnabled : <any>null;
+        data["isAdminUser"] = this.isAdminUser !== undefined ? this.isAdminUser : <any>null;
         data["lockoutEnd"] = this.lockoutEnd ? this.lockoutEnd.toISOString() : <any>null;
         data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>null;
         data["alterDate"] = this.alterDate ? this.alterDate.toISOString() : <any>null;
@@ -8557,6 +9662,7 @@ export interface IReadUserDTO {
     phoneNumberConfirmed?: boolean;
     twoFactorEnabled?: boolean;
     lockoutEnabled?: boolean;
+    isAdminUser?: boolean;
     lockoutEnd?: Date;
     createDate?: Date;
     alterDate?: Date | null;
@@ -8568,6 +9674,7 @@ export interface IReadUserDTO {
 export class ReadUserDTOBaseResponseDTO implements IReadUserDTOBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: ReadUserDTO[] | null;
+    pagedContent?: ReadUserDTOPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IReadUserDTOBaseResponseDTO) {
@@ -8590,6 +9697,7 @@ export class ReadUserDTOBaseResponseDTO implements IReadUserDTOBaseResponseDTO {
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? ReadUserDTOPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -8616,6 +9724,7 @@ export class ReadUserDTOBaseResponseDTO implements IReadUserDTOBaseResponseDTO {
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -8628,7 +9737,75 @@ export class ReadUserDTOBaseResponseDTO implements IReadUserDTOBaseResponseDTO {
 export interface IReadUserDTOBaseResponseDTO {
     isSuccess?: boolean;
     content?: ReadUserDTO[] | null;
+    pagedContent?: ReadUserDTOPagedList;
     errors?: string[] | null;
+}
+
+export class ReadUserDTOPagedList implements IReadUserDTOPagedList {
+    results?: ReadUserDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IReadUserDTOPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(ReadUserDTO.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ReadUserDTOPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReadUserDTOPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IReadUserDTOPagedList {
+    results?: ReadUserDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class RemoveUserFromRoleDTO implements IRemoveUserFromRoleDTO {
@@ -8680,6 +9857,7 @@ export class Report implements IReport {
     reasonId?: number;
     statusId?: number;
     personId?: number;
+    reportedPersonId?: number | null;
     reviewId?: number | null;
     commentId?: number | null;
     details?: string | null;
@@ -8688,6 +9866,7 @@ export class Report implements IReport {
     comment?: Comment;
     status?: ReportStatus;
     person?: Person;
+    reportedPerson?: Person;
 
     constructor(data?: IReport) {
         if (data) {
@@ -8708,6 +9887,7 @@ export class Report implements IReport {
             this.reasonId = _data["reasonId"] !== undefined ? _data["reasonId"] : <any>null;
             this.statusId = _data["statusId"] !== undefined ? _data["statusId"] : <any>null;
             this.personId = _data["personId"] !== undefined ? _data["personId"] : <any>null;
+            this.reportedPersonId = _data["reportedPersonId"] !== undefined ? _data["reportedPersonId"] : <any>null;
             this.reviewId = _data["reviewId"] !== undefined ? _data["reviewId"] : <any>null;
             this.commentId = _data["commentId"] !== undefined ? _data["commentId"] : <any>null;
             this.details = _data["details"] !== undefined ? _data["details"] : <any>null;
@@ -8716,6 +9896,7 @@ export class Report implements IReport {
             this.comment = _data["comment"] ? Comment.fromJS(_data["comment"]) : <any>null;
             this.status = _data["status"] ? ReportStatus.fromJS(_data["status"]) : <any>null;
             this.person = _data["person"] ? Person.fromJS(_data["person"]) : <any>null;
+            this.reportedPerson = _data["reportedPerson"] ? Person.fromJS(_data["reportedPerson"]) : <any>null;
         }
     }
 
@@ -8736,6 +9917,7 @@ export class Report implements IReport {
         data["reasonId"] = this.reasonId !== undefined ? this.reasonId : <any>null;
         data["statusId"] = this.statusId !== undefined ? this.statusId : <any>null;
         data["personId"] = this.personId !== undefined ? this.personId : <any>null;
+        data["reportedPersonId"] = this.reportedPersonId !== undefined ? this.reportedPersonId : <any>null;
         data["reviewId"] = this.reviewId !== undefined ? this.reviewId : <any>null;
         data["commentId"] = this.commentId !== undefined ? this.commentId : <any>null;
         data["details"] = this.details !== undefined ? this.details : <any>null;
@@ -8744,6 +9926,7 @@ export class Report implements IReport {
         data["comment"] = this.comment ? this.comment.toJSON() : <any>null;
         data["status"] = this.status ? this.status.toJSON() : <any>null;
         data["person"] = this.person ? this.person.toJSON() : <any>null;
+        data["reportedPerson"] = this.reportedPerson ? this.reportedPerson.toJSON() : <any>null;
         return data;
     }
 }
@@ -8757,6 +9940,7 @@ export interface IReport {
     reasonId?: number;
     statusId?: number;
     personId?: number;
+    reportedPersonId?: number | null;
     reviewId?: number | null;
     commentId?: number | null;
     details?: string | null;
@@ -8765,6 +9949,7 @@ export interface IReport {
     comment?: Comment;
     status?: ReportStatus;
     person?: Person;
+    reportedPerson?: Person;
 }
 
 export class ReportDto implements IReportDto {
@@ -8850,6 +10035,7 @@ export interface IReportDto {
 export class ReportDtoBaseResponseDTO implements IReportDtoBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: ReportDto[] | null;
+    pagedContent?: ReportDtoPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IReportDtoBaseResponseDTO) {
@@ -8872,6 +10058,7 @@ export class ReportDtoBaseResponseDTO implements IReportDtoBaseResponseDTO {
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? ReportDtoPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -8898,6 +10085,7 @@ export class ReportDtoBaseResponseDTO implements IReportDtoBaseResponseDTO {
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -8910,7 +10098,75 @@ export class ReportDtoBaseResponseDTO implements IReportDtoBaseResponseDTO {
 export interface IReportDtoBaseResponseDTO {
     isSuccess?: boolean;
     content?: ReportDto[] | null;
+    pagedContent?: ReportDtoPagedList;
     errors?: string[] | null;
+}
+
+export class ReportDtoPagedList implements IReportDtoPagedList {
+    results?: ReportDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IReportDtoPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(ReportDto.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ReportDtoPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportDtoPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IReportDtoPagedList {
+    results?: ReportDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class ReportReason implements IReportReason {
@@ -9035,6 +10291,7 @@ export interface IReportReasonDto {
 export class ReportReasonDtoBaseResponseDTO implements IReportReasonDtoBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: ReportReasonDto[] | null;
+    pagedContent?: ReportReasonDtoPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IReportReasonDtoBaseResponseDTO) {
@@ -9057,6 +10314,7 @@ export class ReportReasonDtoBaseResponseDTO implements IReportReasonDtoBaseRespo
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? ReportReasonDtoPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -9083,6 +10341,7 @@ export class ReportReasonDtoBaseResponseDTO implements IReportReasonDtoBaseRespo
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -9095,7 +10354,75 @@ export class ReportReasonDtoBaseResponseDTO implements IReportReasonDtoBaseRespo
 export interface IReportReasonDtoBaseResponseDTO {
     isSuccess?: boolean;
     content?: ReportReasonDto[] | null;
+    pagedContent?: ReportReasonDtoPagedList;
     errors?: string[] | null;
+}
+
+export class ReportReasonDtoPagedList implements IReportReasonDtoPagedList {
+    results?: ReportReasonDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IReportReasonDtoPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(ReportReasonDto.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ReportReasonDtoPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportReasonDtoPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IReportReasonDtoPagedList {
+    results?: ReportReasonDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class ReportStatus implements IReportStatus {
@@ -9404,6 +10731,7 @@ export interface IResponseGenerateKeycodeDTO {
 export class ResponseGenerateKeycodeDTOBaseResponseDTO implements IResponseGenerateKeycodeDTOBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: ResponseGenerateKeycodeDTO[] | null;
+    pagedContent?: ResponseGenerateKeycodeDTOPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IResponseGenerateKeycodeDTOBaseResponseDTO) {
@@ -9426,6 +10754,7 @@ export class ResponseGenerateKeycodeDTOBaseResponseDTO implements IResponseGener
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? ResponseGenerateKeycodeDTOPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -9452,6 +10781,7 @@ export class ResponseGenerateKeycodeDTOBaseResponseDTO implements IResponseGener
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -9464,7 +10794,75 @@ export class ResponseGenerateKeycodeDTOBaseResponseDTO implements IResponseGener
 export interface IResponseGenerateKeycodeDTOBaseResponseDTO {
     isSuccess?: boolean;
     content?: ResponseGenerateKeycodeDTO[] | null;
+    pagedContent?: ResponseGenerateKeycodeDTOPagedList;
     errors?: string[] | null;
+}
+
+export class ResponseGenerateKeycodeDTOPagedList implements IResponseGenerateKeycodeDTOPagedList {
+    results?: ResponseGenerateKeycodeDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IResponseGenerateKeycodeDTOPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(ResponseGenerateKeycodeDTO.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ResponseGenerateKeycodeDTOPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResponseGenerateKeycodeDTOPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IResponseGenerateKeycodeDTOPagedList {
+    results?: ResponseGenerateKeycodeDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class Review implements IReview {
@@ -9481,6 +10879,9 @@ export class Review implements IReview {
     comments?: Comment[] | null;
     awards?: AwardPerson[] | null;
     reports?: Report[] | null;
+    readonly goldenAwards?: number;
+    readonly silverAwards?: number;
+    readonly bronzeAwards?: number;
 
     constructor(data?: IReview) {
         if (data) {
@@ -9534,6 +10935,9 @@ export class Review implements IReview {
             else {
                 this.reports = <any>null;
             }
+            (<any>this).goldenAwards = _data["goldenAwards"] !== undefined ? _data["goldenAwards"] : <any>null;
+            (<any>this).silverAwards = _data["silverAwards"] !== undefined ? _data["silverAwards"] : <any>null;
+            (<any>this).bronzeAwards = _data["bronzeAwards"] !== undefined ? _data["bronzeAwards"] : <any>null;
         }
     }
 
@@ -9575,6 +10979,9 @@ export class Review implements IReview {
             for (let item of this.reports)
                 data["reports"].push(item.toJSON());
         }
+        data["goldenAwards"] = this.goldenAwards !== undefined ? this.goldenAwards : <any>null;
+        data["silverAwards"] = this.silverAwards !== undefined ? this.silverAwards : <any>null;
+        data["bronzeAwards"] = this.bronzeAwards !== undefined ? this.bronzeAwards : <any>null;
         return data;
     }
 }
@@ -9593,6 +11000,9 @@ export interface IReview {
     comments?: Comment[] | null;
     awards?: AwardPerson[] | null;
     reports?: Report[] | null;
+    goldenAwards?: number;
+    silverAwards?: number;
+    bronzeAwards?: number;
 }
 
 export class ReviewDetails implements IReviewDetails {
@@ -9765,6 +11175,7 @@ export interface IReviewDetailsDto {
 export class ReviewDetailsDtoBaseResponseDTO implements IReviewDetailsDtoBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: ReviewDetailsDto[] | null;
+    pagedContent?: ReviewDetailsDtoPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IReviewDetailsDtoBaseResponseDTO) {
@@ -9787,6 +11198,7 @@ export class ReviewDetailsDtoBaseResponseDTO implements IReviewDetailsDtoBaseRes
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? ReviewDetailsDtoPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -9813,6 +11225,7 @@ export class ReviewDetailsDtoBaseResponseDTO implements IReviewDetailsDtoBaseRes
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -9825,7 +11238,75 @@ export class ReviewDetailsDtoBaseResponseDTO implements IReviewDetailsDtoBaseRes
 export interface IReviewDetailsDtoBaseResponseDTO {
     isSuccess?: boolean;
     content?: ReviewDetailsDto[] | null;
+    pagedContent?: ReviewDetailsDtoPagedList;
     errors?: string[] | null;
+}
+
+export class ReviewDetailsDtoPagedList implements IReviewDetailsDtoPagedList {
+    results?: ReviewDetailsDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IReviewDetailsDtoPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(ReviewDetailsDto.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ReviewDetailsDtoPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReviewDetailsDtoPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IReviewDetailsDtoPagedList {
+    results?: ReviewDetailsDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class ReviewDto implements IReviewDto {
@@ -9958,6 +11439,7 @@ export interface ISearchDTO {
 export class SearchDTOBaseResponseDTO implements ISearchDTOBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: SearchDTO[] | null;
+    pagedContent?: SearchDTOPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: ISearchDTOBaseResponseDTO) {
@@ -9980,6 +11462,7 @@ export class SearchDTOBaseResponseDTO implements ISearchDTOBaseResponseDTO {
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? SearchDTOPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -10006,6 +11489,7 @@ export class SearchDTOBaseResponseDTO implements ISearchDTOBaseResponseDTO {
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -10018,7 +11502,75 @@ export class SearchDTOBaseResponseDTO implements ISearchDTOBaseResponseDTO {
 export interface ISearchDTOBaseResponseDTO {
     isSuccess?: boolean;
     content?: SearchDTO[] | null;
+    pagedContent?: SearchDTOPagedList;
     errors?: string[] | null;
+}
+
+export class SearchDTOPagedList implements ISearchDTOPagedList {
+    results?: SearchDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: ISearchDTOPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(SearchDTO.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): SearchDTOPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new SearchDTOPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface ISearchDTOPagedList {
+    results?: SearchDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class SearchResultDTO implements ISearchResultDTO {
@@ -10167,6 +11719,7 @@ export interface ISpokenLanguageDTO {
 export class StringBaseResponseDTO implements IStringBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: string[] | null;
+    pagedContent?: StringPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: IStringBaseResponseDTO) {
@@ -10189,6 +11742,7 @@ export class StringBaseResponseDTO implements IStringBaseResponseDTO {
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? StringPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -10215,6 +11769,7 @@ export class StringBaseResponseDTO implements IStringBaseResponseDTO {
             for (let item of this.content)
                 data["content"].push(item);
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -10227,7 +11782,75 @@ export class StringBaseResponseDTO implements IStringBaseResponseDTO {
 export interface IStringBaseResponseDTO {
     isSuccess?: boolean;
     content?: string[] | null;
+    pagedContent?: StringPagedList;
     errors?: string[] | null;
+}
+
+export class StringPagedList implements IStringPagedList {
+    results?: string[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IStringPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(item);
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): StringPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new StringPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item);
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IStringPagedList {
+    results?: string[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class Tier implements ITier {
@@ -10518,6 +12141,7 @@ export interface ITokenDTO {
 export class TokenDTOBaseResponseDTO implements ITokenDTOBaseResponseDTO {
     readonly isSuccess?: boolean;
     readonly content?: TokenDTO[] | null;
+    pagedContent?: TokenDTOPagedList;
     readonly errors?: string[] | null;
 
     constructor(data?: ITokenDTOBaseResponseDTO) {
@@ -10540,6 +12164,7 @@ export class TokenDTOBaseResponseDTO implements ITokenDTOBaseResponseDTO {
             else {
                 (<any>this).content = <any>null;
             }
+            this.pagedContent = _data["pagedContent"] ? TokenDTOPagedList.fromJS(_data["pagedContent"]) : <any>null;
             if (Array.isArray(_data["errors"])) {
                 (<any>this).errors = [] as any;
                 for (let item of _data["errors"])
@@ -10566,6 +12191,7 @@ export class TokenDTOBaseResponseDTO implements ITokenDTOBaseResponseDTO {
             for (let item of this.content)
                 data["content"].push(item.toJSON());
         }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
         if (Array.isArray(this.errors)) {
             data["errors"] = [];
             for (let item of this.errors)
@@ -10578,7 +12204,75 @@ export class TokenDTOBaseResponseDTO implements ITokenDTOBaseResponseDTO {
 export interface ITokenDTOBaseResponseDTO {
     isSuccess?: boolean;
     content?: TokenDTO[] | null;
+    pagedContent?: TokenDTOPagedList;
     errors?: string[] | null;
+}
+
+export class TokenDTOPagedList implements ITokenDTOPagedList {
+    results?: TokenDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: ITokenDTOPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(TokenDTO.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): TokenDTOPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new TokenDTOPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface ITokenDTOPagedList {
+    results?: TokenDTO[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class UpdateCommentDto implements IUpdateCommentDto {
@@ -10619,6 +12313,46 @@ export class UpdateCommentDto implements IUpdateCommentDto {
 export interface IUpdateCommentDto {
     commentId?: number;
     text?: string | null;
+}
+
+export class UpdateReportStatusDto implements IUpdateReportStatusDto {
+    reportId?: number;
+    statusId?: number;
+
+    constructor(data?: IUpdateReportStatusDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.reportId = _data["reportId"] !== undefined ? _data["reportId"] : <any>null;
+            this.statusId = _data["statusId"] !== undefined ? _data["statusId"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): UpdateReportStatusDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateReportStatusDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["reportId"] = this.reportId !== undefined ? this.reportId : <any>null;
+        data["statusId"] = this.statusId !== undefined ? this.statusId : <any>null;
+        return data;
+    }
+}
+
+export interface IUpdateReportStatusDto {
+    reportId?: number;
+    statusId?: number;
 }
 
 export class UpdateReviewDto implements IUpdateReviewDto {

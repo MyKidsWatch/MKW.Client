@@ -34,6 +34,7 @@ export class CommentState {
                 let commentState: CommentStateModel = {comments: []};
                 res.content?.forEach(comment =>{
                     let newComment: CommentModel = {
+                        personId: comment.person!.id!,
                         id: comment.id!,
                         commentAuthor: comment.person!.username!,
                         commentText: comment.text!,
@@ -76,6 +77,7 @@ export class CommentState {
                 let commentState = getState();
 
                 let newComment: CommentModel = {
+                    personId: response.person!.id!,
                     id: response.id!,
                     commentText: response.text!,
                     commentAuthor: response.person!.username!
@@ -165,6 +167,7 @@ export class CommentState {
                         
                         let newAnswer: CommentModel = 
                         {
+                            personId: response.person!.id!,
                             id: response.id!,
                             commentAuthor: response.person!.username!,
                             commentText: response.text!,

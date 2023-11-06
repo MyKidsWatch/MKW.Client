@@ -28,7 +28,9 @@ export class CommentCardComponent  implements OnInit {
   public isAnswering: boolean = false;
   public currentUsername?: string = '';
 
-  public actionSheetButtons = [
+  public actionSheetButtons: any[] = [  ];
+
+  private actionSheetOp = [
     {
       text: 'Deletar',
       role: 'destructive',
@@ -42,6 +44,17 @@ export class CommentCardComponent  implements OnInit {
         action: 'edit',
       }
     },
+
+    {
+      text: 'Cancelar',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      }
+    }
+  ]
+
+  private actionSheetNotOp = [
     {
       text: 'Denunciar',
       data: {
@@ -54,14 +67,15 @@ export class CommentCardComponent  implements OnInit {
       data: {
         action: 'cancel',
       }
-    },
-  ];
+    }
+  ]
+
   @ViewChild('answer', { static: false }) answerInput?: IonInput;
 
 
 
   @Input() commentModel: ContentReviewComment = {
-    commentAuthor: {userName: '' , profilePictureUrl: ''},
+    commentAuthor: {userName: '' , profilePictureUrl: '', creatorId: 0},
     commentId: 0,
     commentResponses: [],
     parentCommentId: 0,
@@ -76,7 +90,10 @@ export class CommentCardComponent  implements OnInit {
 
   ngOnInit() {
     this.currentUsername = this.store.selectSnapshot(UserSelectors.getUser)?.username;
-    console.log(this.currentUsername);  
+
+
+    this.actionSheetButtons = this.currentUsername == this.commentModel.commentAuthor.userName ? this.actionSheetOp : this.actionSheetNotOp;
+
   }
 
   startAnswering(event: Event)
@@ -110,14 +127,14 @@ export class CommentCardComponent  implements OnInit {
 
   reportComment(reasonId: number, commentId: number)
   {
-    this.commentFacade.reportComment(reasonId, commentId)
+    this.commentFacade.reportComment(reasonId, commentId, this.commentModel.commentAuthor.creatorId)
     .pipe(take(1))
     .subscribe({
       next: () =>{
         alert("Comentário denunciado com sucesso.");
       },
       error: () =>{
-        console.log("Erro ao denunciar comentário")
+        alert("Erro ao denunciar comentário")
       }
     })
   }
@@ -156,6 +173,9 @@ export class CommentCardComponent  implements OnInit {
   
   actionSheetEvent(event: any, commentId: number)
   {
+    if(!event.detail.data || !event.detail.data.action)
+      return; 
+
     let action = event.detail.data.action;
 
     switch(action)
