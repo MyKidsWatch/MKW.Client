@@ -86,6 +86,7 @@
     "seeMore": "See more information"
   },
   "movie": "Movie",
+  "channel": "Channel",
   "boy": "Boy",
   "girl": "Girl",
   "children": "children",
@@ -112,5 +113,6 @@
   "TV Movie": "TV Movie",
   "Thriller": "Thriller",
   "War": "War",
-  "Western": "Western"
+  "Western": "Western",
+  "add-review": "Add review"
 }

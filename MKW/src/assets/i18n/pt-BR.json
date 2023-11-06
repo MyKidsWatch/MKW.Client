@@ -86,6 +86,7 @@
     "seeMore": "Ver mais informações"
   },
   "movie": "Filme",
+  "channel": "Canal",
   "boy": "Menino",
   "girl": "Menina",
   "children": "crianças",
@@ -112,5 +113,6 @@
   "TV Movie": "Filme para TV",
   "Thriller": "Suspense",
   "War": "Guerra",
-  "Western": "Faroeste"
+  "Western": "Faroeste",
+  "add-review": "Adicionar análise"
 }

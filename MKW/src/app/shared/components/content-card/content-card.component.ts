@@ -4,8 +4,6 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { Router, RouterModule } from '@angular/router';
-import { relative } from 'path';
-import { StarsRatingComponent } from '../stars-rating/stars-rating.component';
 
 @Component({
   selector: 'app-content-card',
@@ -14,27 +12,21 @@ import { StarsRatingComponent } from '../stars-rating/stars-rating.component';
   standalone: true,
   imports: [CommonModule, IonicModule, TranslateModule, RouterModule]
 })
-export class ContentCardComponent  implements OnInit {
-
+export class ContentCardComponent implements OnInit {
   @Input() contentData?: ContentCard;
 
-  constructor(private router: Router) { 
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
-    
 
   }
 
-
-  redirectToContentPage(externalContentId: string, platformId: number)
-  {
-      this.router.navigate([`home/content/feed`, externalContentId, platformId]);
+  redirectToContentPage(externalContentId: string, platformId: number) {
+    this.router.navigate([`home/content/feed`, externalContentId, platformId]);
   }
 
-  isValidDate()
-  {
-      return this.contentData?.releaseDate instanceof Date && !isNaN(this.contentData.releaseDate.valueOf());
+  isValidDate() {
+    return this.contentData?.releaseDate instanceof Date && !isNaN(this.contentData.releaseDate.valueOf());
   }
-
 }
