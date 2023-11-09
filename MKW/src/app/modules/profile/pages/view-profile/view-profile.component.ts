@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 import { UserData } from 'src/app/shared/store/user/user.model';
-
+import {take } from 'rxjs'
 
 @Component({
   selector: 'app-view-profile',
@@ -20,7 +20,7 @@ export class ViewProfileComponent  implements OnInit {
 
   logOffUser()
   {
-    this.userFacade.logOffUser().subscribe(res =>{
+    this.userFacade.logOffUser().pipe(take(1)).subscribe(res =>{
       this.router.navigateByUrl('auth', {replaceUrl: true})
     })
   }

@@ -6,6 +6,7 @@ import { AccountService } from 'src/app/core/services/account.service';
 import { lowerCaseValidator, matchFieldsValidator, numericValidator, unusedUserName, uppercaseValidator, specialCharacterValidator } from 'src/app/core/validators/sign-up.validators';
 import { unusedEmail } from 'src/app/core/validators/sign-up.validators';
 import { take } from 'rxjs';
+import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -13,10 +14,14 @@ import { take } from 'rxjs';
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent implements OnInit {
+  public isLoadingContent: boolean = false;
+
+  
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private accountService: AccountService
+    private accountService: AccountService,
+    public loadingBarService: LoadingBarService
   ) { }
 
   registrationForm: FormGroup = this.formBuilder.group({
@@ -38,7 +43,15 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit() {
     this.currentStep = 1;
+    this.setLoadingBar();   
   }
+  setLoadingBar()
+  {
+    this.loadingBarService.getLoadingBar().subscribe((response) =>{
+      this.isLoadingContent = response as boolean;
+    })
+  }
+
 
   public registerAccount() {
     const personDetails: IPersonOnCreateUserDTO = {

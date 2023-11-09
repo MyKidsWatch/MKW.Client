@@ -37,9 +37,28 @@ export class ReportState{
                 let reportObject: ReportObject = {
                     reasonId: report.reasonId!,
                     reportId: report.reportId!,
-                    reportType: ReportType.Comment,
+                    reportType: report.reportType!,
                     statusId: report.status!.statusId!,
-                    statusName: report.status!.name!
+                    statusName: report.status!.name!,
+                    reasonName: report.reason!.title!
+                }
+
+                if(report.review)
+                {
+                    reportObject.reportReview = {
+                        reviewAuthor: report.review!.user!.username!,
+                        reviewId: report.reviewId!,
+                        reviewText: report.review.text!
+                    }
+                }
+
+                if(report.comment)
+                {
+                    reportObject.reportComment = {
+                        commentAuthor: report.comment!.person!.username!,
+                        commentText :report.comment!.text!,
+                        commentId: report.commentId!
+                    }
                 }
 
                 reportListState.push(reportObject);

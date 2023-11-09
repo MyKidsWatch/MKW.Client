@@ -4,16 +4,38 @@ export enum ReportType{
     Profile
 }
 
+
+export interface ReportComment{
+    commentText: string;
+    commentId: number;
+    commentAuthor: string;
+}
+
+export interface ReportReview{
+    reviewText: string;
+    reviewId: number;
+    reviewAuthor: string;
+}
+
+export interface ReportProfile{
+    profileId: number;
+    profileUsername: string;
+}
+
 export interface ReportObject
 {
     reportId: number; 
     statusId: number;
-    statusName: string;
     reasonId: number;
-    reportType: ReportType;
-    commentId?: number;
-    reviewId?: number;
-    profileId?: number;
+
+
+    reportComment?: ReportComment;
+    reportReview?: ReportReview;
+    profileId?: ReportProfile;
+
+    reasonName: string;
+    reportType: string;
+    statusName: string;
     reportAuthor?: string;
 
 }

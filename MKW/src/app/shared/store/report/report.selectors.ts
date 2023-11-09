@@ -10,8 +10,8 @@ export class ReportSelectors{
 
 
     @Selector([ReportState])
-    static GetCurrentReport(){
-
+    static GetCurrentReport(state: ReportStateModel){
+        return state.currentReport;
     }
 
     @Selector([ReportState])
@@ -26,8 +26,8 @@ export class ReportSelectors{
                 reportId: report.reportId,
                 reportDate: new Date(),
                 reportStatus: report.statusName,
-                reportContentType: "",
-                reportType: "",
+                reportReason: report.reasonName,
+                reportType: report.reportType,
                 reportAuthor: "Eren Yeagar",
                 reportStatusId: report.statusId
             }
@@ -42,7 +42,10 @@ export class ReportSelectors{
     static GetPaginationData(state: ReportStateModel){
         return state.paginationData;
     }
+    
     @Selector([ReportState])
     static GetReportListViewModel(){}
+
+
 
 }

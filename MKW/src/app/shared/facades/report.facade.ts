@@ -13,7 +13,7 @@ import { UserStateModel } from '../store/user/user.state';
 import { ActivateEmailComponent } from 'src/app/modules/home/activate-email/activate-email.component';
 import { Observable } from 'rxjs';
 import { ReportSelectors } from '../store/report/report.selectors';
-import { SetReportList } from '../store/report/report.action';
+import { SetIndividualReport, SetReportList } from '../store/report/report.action';
 
 
 @Injectable({
@@ -30,9 +30,19 @@ export class ReportFacade{
         return this.store.dispatch(new SetReportList(pageSize, pageIndex, reportReason));
     }
 
+    setCurrentReport(reportId: number)
+    {
+        return this.store.dispatch(new SetIndividualReport(reportId));
+    }
+
     getReportList()
     {
         return this.store.select(ReportSelectors.GetReportList);
+    }
+
+    getCurrentReport()
+    {
+        return this.store.select(ReportSelectors.GetCurrentReport);
     }
 
     getPaginationData()

@@ -31,7 +31,7 @@ export class UserState{
 
 
     @Action(LogUserOff)
-    logOffUser(ctx: StateContext<UserStateModel>){ctx.setState(defaultUserState);}
+    logOffUser(ctx: StateContext<UserStateModel>){ctx.setState({});}
 
 
     @Action(LoginUser)

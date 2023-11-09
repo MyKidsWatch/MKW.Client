@@ -1,8 +1,8 @@
-<ion-item *ngIf="reportListItem">
+<ion-item *ngIf="reportListItem" (click)="selectReport()">
   <div slot="start" [ngClass]="'dot ' + mapStatusToDot(reportListItem.reportStatusId)"></div>
   <ion-label class="ion-text-wrap">
     <h3>
-      {{reportListItem.reportContentType}} - {{reportListItem.reportType}}
+      {{reportListItem.reportType}} - {{reportListItem.reportReason}}
       <span class="date">
         <ion-note>{{ reportListItem.reportDate| date: 'shortDate' }}</ion-note>
       </span>

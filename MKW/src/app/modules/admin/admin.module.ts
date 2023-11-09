@@ -14,12 +14,17 @@ import { ReportListComponent } from './components/report-list/report-list.compon
 import { ReportFacade } from 'src/app/shared/facades/report.facade';
 import { NgxsModule } from '@ngxs/store';
 import { ReportState } from 'src/app/shared/store/report/report.state';
+import { ReportOverviewComponent } from './pages/report-overview/report-overview.component';
 
 
 const childrenRoutes: Routes = [
   {
     path: 'admin-feed',
     component: AdminFeedComponent
+  },
+  {
+    path: 'report-overview',
+    component: ReportOverviewComponent
   },
   {
     path: '', redirectTo: 'admin-feed', pathMatch: 'full'
@@ -31,7 +36,8 @@ const childrenRoutes: Routes = [
     AdminComponent,
     AdminFeedComponent,
     ReportListItemCardComponent,
-    ReportListComponent
+    ReportListComponent,
+    ReportOverviewComponent
   ],
   imports: [
     CommonModule,

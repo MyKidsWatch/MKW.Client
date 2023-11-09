@@ -1,0 +1,14 @@
+<ion-content *ngIf="reportObject">
+
+  
+  <h3>{{reportObject.reportType}} - {{reportObject.reasonName}}</h3>
+  <h3>Status: {{reportObject.statusName}}</h3>
+  <h3>Autor: {{reportObject.reportAuthor}}</h3>
+  <button (click)="true">
+    Descartar
+  </button>
+
+  <button (click)="true">
+    Validar
+  </button>
+</ion-content>

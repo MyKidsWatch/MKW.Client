@@ -33,6 +33,7 @@ export class AdminFeedComponent  implements OnInit {
   selectReportType(reportType?: number)
   {
     this.selectedReportType = reportType;
+    this.pageIndex = 1;
     this.updateReportList();
   }
   

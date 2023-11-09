@@ -4,7 +4,7 @@ export interface ReportListItem{
     reportStatus?: string;
     reportStatusId?: number;
     reportType?: string;
-    reportContentType?: string;
+    reportReason?: string;
     reportDate?: Date;
     reportPreview?: string;
 }
