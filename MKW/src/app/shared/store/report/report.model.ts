@@ -1,9 +1,21 @@
+export enum ReportType{
+    Comment, 
+    Review,
+    Profile
+}
+
 export interface ReportObject
 {
     reportId: number; 
     statusId: number;
+    statusName: string;
     reasonId: number;
-    reportType: string;
+    reportType: ReportType;
+    commentId?: number;
+    reviewId?: number;
+    profileId?: number;
+    reportAuthor?: string;
+
 }
 
 export interface ReportPaginationInformation{
@@ -14,7 +26,16 @@ export interface ReportPaginationInformation{
     hasPrevPage: boolean;
 }
 
+export interface ReportSearchOptions{
+    preferedReason?: number;
+    pageSize: number;
+
+
+}
+
+
 export interface ReportStateModel{
     reports: ReportObject[];
-    paginationData: ReportPaginationInformation;
+    currentReport?: ReportObject;
+    paginationData?: ReportPaginationInformation;
 }

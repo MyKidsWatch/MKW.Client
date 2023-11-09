@@ -3660,6 +3660,7 @@ export class ReportClient {
      * @return Success
      */
     reportGet(page: number | undefined, pageSize: number | undefined, reasonId: number | undefined): Observable<ReportDtoBaseResponseDTO> {
+        console.log(reasonId)
         let url_ = this.baseUrl + "/v1/Report?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
@@ -4032,13 +4033,18 @@ export class ReviewClient {
     }
 
     /**
+     * @param childId (optional) 
      * @param page (optional) 
      * @param count (optional) 
      * @param language (optional) 
      * @return Success
      */
-    reviewGet(page: number | undefined, count: number | undefined, language: string | undefined): Observable<ReviewDetailsDtoBaseResponseDTO> {
+    reviewGet(childId: number | undefined, page: number | undefined, count: number | undefined, language: string | undefined): Observable<ReviewDetailsDtoBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Review?";
+        if (childId === null)
+            throw new Error("The parameter 'childId' cannot be null.");
+        else if (childId !== undefined)
+            url_ += "childId=" + encodeURIComponent("" + childId) + "&";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
         else if (page !== undefined)
@@ -4216,6 +4222,86 @@ export class ReviewClient {
     }
 
     protected processReviewPut(response: HttpResponseBase): Observable<ReviewDetailsDtoBaseResponseDTO> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ReviewDetailsDtoBaseResponseDTO.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+            return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+            return throwException("Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param page (optional) 
+     * @param count (optional) 
+     * @param language (optional) 
+     * @return Success
+     */
+    trending(page: number | undefined, count: number | undefined, language: string | undefined): Observable<ReviewDetailsDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Review/Trending?";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (count === null)
+            throw new Error("The parameter 'count' cannot be null.");
+        else if (count !== undefined)
+            url_ += "count=" + encodeURIComponent("" + count) + "&";
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processTrending(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processTrending(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReviewDetailsDtoBaseResponseDTO>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReviewDetailsDtoBaseResponseDTO>;
+        }));
+    }
+
+    protected processTrending(response: HttpResponseBase): Observable<ReviewDetailsDtoBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4773,6 +4859,7 @@ export class Award implements IAward {
     name?: string | null;
     price?: number;
     value?: number;
+    stripeId?: string | null;
     awardPerson?: AwardPerson[] | null;
 
     constructor(data?: IAward) {
@@ -4794,6 +4881,7 @@ export class Award implements IAward {
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
             this.price = _data["price"] !== undefined ? _data["price"] : <any>null;
             this.value = _data["value"] !== undefined ? _data["value"] : <any>null;
+            this.stripeId = _data["stripeId"] !== undefined ? _data["stripeId"] : <any>null;
             if (Array.isArray(_data["awardPerson"])) {
                 this.awardPerson = [] as any;
                 for (let item of _data["awardPerson"])
@@ -4822,6 +4910,7 @@ export class Award implements IAward {
         data["name"] = this.name !== undefined ? this.name : <any>null;
         data["price"] = this.price !== undefined ? this.price : <any>null;
         data["value"] = this.value !== undefined ? this.value : <any>null;
+        data["stripeId"] = this.stripeId !== undefined ? this.stripeId : <any>null;
         if (Array.isArray(this.awardPerson)) {
             data["awardPerson"] = [];
             for (let item of this.awardPerson)
@@ -4840,6 +4929,7 @@ export interface IAward {
     name?: string | null;
     price?: number;
     value?: number;
+    stripeId?: string | null;
     awardPerson?: AwardPerson[] | null;
 }
 
@@ -4847,6 +4937,7 @@ export class AwardDetailsDto implements IAwardDetailsDto {
     awardId?: number;
     name?: string | null;
     price?: number;
+    stripeId?: string | null;
 
     constructor(data?: IAwardDetailsDto) {
         if (data) {
@@ -4862,6 +4953,7 @@ export class AwardDetailsDto implements IAwardDetailsDto {
             this.awardId = _data["awardId"] !== undefined ? _data["awardId"] : <any>null;
             this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
             this.price = _data["price"] !== undefined ? _data["price"] : <any>null;
+            this.stripeId = _data["stripeId"] !== undefined ? _data["stripeId"] : <any>null;
         }
     }
 
@@ -4877,6 +4969,7 @@ export class AwardDetailsDto implements IAwardDetailsDto {
         data["awardId"] = this.awardId !== undefined ? this.awardId : <any>null;
         data["name"] = this.name !== undefined ? this.name : <any>null;
         data["price"] = this.price !== undefined ? this.price : <any>null;
+        data["stripeId"] = this.stripeId !== undefined ? this.stripeId : <any>null;
         return data;
     }
 }
@@ -4885,6 +4978,7 @@ export interface IAwardDetailsDto {
     awardId?: number;
     name?: string | null;
     price?: number;
+    stripeId?: string | null;
 }
 
 export class AwardDetailsDtoBaseResponseDTO implements IAwardDetailsDtoBaseResponseDTO {
@@ -6909,7 +7003,7 @@ export interface ICreateCommentDto {
 }
 
 export class CreateReportDto implements ICreateReportDto {
-    reportedPersonId?: number;
+    reportedPersonId?: number | null;
     reasonId?: number;
     commentId?: number | null;
     reviewId?: number | null;
@@ -6953,7 +7047,7 @@ export class CreateReportDto implements ICreateReportDto {
 }
 
 export interface ICreateReportDto {
-    reportedPersonId?: number;
+    reportedPersonId?: number | null;
     reasonId?: number;
     commentId?: number | null;
     reviewId?: number | null;
@@ -9956,10 +10050,12 @@ export class ReportDto implements IReportDto {
     reportId?: number;
     reasonId?: number;
     personId?: number;
+    reportedPersonId?: number | null;
     reviewId?: number | null;
     commentId?: number | null;
     statusId?: number | null;
     details?: string | null;
+    reportType?: string | null;
     reason?: ReportReasonDto;
     review?: ReviewDto;
     comment?: CommentDetailsDto;
@@ -9980,10 +10076,12 @@ export class ReportDto implements IReportDto {
             this.reportId = _data["reportId"] !== undefined ? _data["reportId"] : <any>null;
             this.reasonId = _data["reasonId"] !== undefined ? _data["reasonId"] : <any>null;
             this.personId = _data["personId"] !== undefined ? _data["personId"] : <any>null;
+            this.reportedPersonId = _data["reportedPersonId"] !== undefined ? _data["reportedPersonId"] : <any>null;
             this.reviewId = _data["reviewId"] !== undefined ? _data["reviewId"] : <any>null;
             this.commentId = _data["commentId"] !== undefined ? _data["commentId"] : <any>null;
             this.statusId = _data["statusId"] !== undefined ? _data["statusId"] : <any>null;
             this.details = _data["details"] !== undefined ? _data["details"] : <any>null;
+            this.reportType = _data["reportType"] !== undefined ? _data["reportType"] : <any>null;
             this.reason = _data["reason"] ? ReportReasonDto.fromJS(_data["reason"]) : <any>null;
             this.review = _data["review"] ? ReviewDto.fromJS(_data["review"]) : <any>null;
             this.comment = _data["comment"] ? CommentDetailsDto.fromJS(_data["comment"]) : <any>null;
@@ -10004,10 +10102,12 @@ export class ReportDto implements IReportDto {
         data["reportId"] = this.reportId !== undefined ? this.reportId : <any>null;
         data["reasonId"] = this.reasonId !== undefined ? this.reasonId : <any>null;
         data["personId"] = this.personId !== undefined ? this.personId : <any>null;
+        data["reportedPersonId"] = this.reportedPersonId !== undefined ? this.reportedPersonId : <any>null;
         data["reviewId"] = this.reviewId !== undefined ? this.reviewId : <any>null;
         data["commentId"] = this.commentId !== undefined ? this.commentId : <any>null;
         data["statusId"] = this.statusId !== undefined ? this.statusId : <any>null;
         data["details"] = this.details !== undefined ? this.details : <any>null;
+        data["reportType"] = this.reportType !== undefined ? this.reportType : <any>null;
         data["reason"] = this.reason ? this.reason.toJSON() : <any>null;
         data["review"] = this.review ? this.review.toJSON() : <any>null;
         data["comment"] = this.comment ? this.comment.toJSON() : <any>null;
@@ -10021,10 +10121,12 @@ export interface IReportDto {
     reportId?: number;
     reasonId?: number;
     personId?: number;
+    reportedPersonId?: number | null;
     reviewId?: number | null;
     commentId?: number | null;
     statusId?: number | null;
     details?: string | null;
+    reportType?: string | null;
     reason?: ReportReasonDto;
     review?: ReviewDto;
     comment?: CommentDetailsDto;

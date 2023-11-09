@@ -51,6 +51,7 @@ export class CommentFacade {
     return this.store.dispatch(new DeleteComment(commentId));
   }
 
+
   reportComment(reportReasonId: number, commentId: number, authorId: number)
   {
     let request = new CreateReportDto();

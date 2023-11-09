@@ -9,6 +9,11 @@ import { patch } from '@ngxs/store/operators';
 import { AdminFeedComponent } from './pages/admin-feed/admin-feed.component';
 import { ReportClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { ReportService } from 'src/app/core/services/report.service';
+import { ReportListItemCardComponent } from './components/report-list-item-card/report-list-item-card.component';
+import { ReportListComponent } from './components/report-list/report-list.component';
+import { ReportFacade } from 'src/app/shared/facades/report.facade';
+import { NgxsModule } from '@ngxs/store';
+import { ReportState } from 'src/app/shared/store/report/report.state';
 
 
 const childrenRoutes: Routes = [
@@ -23,7 +28,10 @@ const childrenRoutes: Routes = [
 
 @NgModule({
   declarations: [
-    AdminComponent
+    AdminComponent,
+    AdminFeedComponent,
+    ReportListItemCardComponent,
+    ReportListComponent
   ],
   imports: [
     CommonModule,
@@ -36,11 +44,14 @@ const childrenRoutes: Routes = [
         children: childrenRoutes
       }
     ]),
-    IonicModule.forRoot()
+    IonicModule.forRoot(),
+    NgxsModule.forFeature([ReportState])
+
   ],
   providers: [
     ReportClient,
-    ReportService
+    ReportService,
+    ReportFacade
   ]
 })
 export class AdminModule { }

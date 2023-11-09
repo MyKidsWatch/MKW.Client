@@ -94,7 +94,8 @@ export class UserState{
                 firstName: response.firstName!,
                 isEmailVerified: response.emailConfirmed!,
                 userId: response.id!,
-                lastName: response.lastName!
+                lastName: response.lastName!,
+                isAdmin: response.isAdminUser
             }
             
 

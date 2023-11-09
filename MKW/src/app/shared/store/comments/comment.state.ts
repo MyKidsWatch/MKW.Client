@@ -24,7 +24,7 @@ export class CommentState {
 
 
     @Action(UpdateCommentList)
-    UpdateCommentList({getState, setState} : StateContext<CommentStateModel>, {reviewId} : UpdateCommentList)
+    UpdateCommentList({getState, setState, patchState} : StateContext<CommentStateModel>, {reviewId} : UpdateCommentList)
     {
         return this.commentService.getReviewComments(reviewId)
         .pipe(
@@ -56,7 +56,7 @@ export class CommentState {
             })
         )
         .pipe(catchError((err) =>{
-            setState(defaultCommentState)
+            patchState({comments: []})
             throw err;
         }));
     }

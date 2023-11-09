@@ -9,6 +9,7 @@ export class LoadingBarService {
   private subject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   setLoadingBar(value: boolean = false): void {
+    console.log("entrei aqui - " + value)
     this.subject.next(value);
   }
 

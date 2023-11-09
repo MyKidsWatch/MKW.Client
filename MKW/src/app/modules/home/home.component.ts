@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
 import { SplashScreenService } from 'src/app/core/services/splash-screen.service';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 
@@ -13,14 +14,25 @@ export class HomeComponent  implements OnInit {
 
   subscription = new Subscription();
   isUserAdminSubscription = new Subscription();
+  
+  public isLoadingContent: boolean = false;
 
   public isUserAdmin: boolean = false;
-  constructor(private platform: Platform, private splashScreenService: SplashScreenService, private userFacade: UserFacade) { }
+  constructor(private platform: Platform, private splashScreenService: SplashScreenService, private userFacade: UserFacade, public loadingBarService: LoadingBarService) { }
 
-  
-  ngOnInit() {
-   
+
+  ngOnInit() {   
+    this.setLoadingBar();       
+  } 
+
+  setLoadingBar()
+  {
+    this.loadingBarService.getLoadingBar().subscribe((response) =>{
+      console.log("Loading bar - " + response)
+      this.isLoadingContent = response as boolean;
+    })
   }
+
 
   ionViewDidEnter() {
 
@@ -28,7 +40,6 @@ export class HomeComponent  implements OnInit {
     
     this.isUserAdminSubscription = this.userFacade.getUserAdminState()
     .subscribe(res => {
-      console.log("is user admin: " + res); 
       this.isUserAdmin = res
     });
     

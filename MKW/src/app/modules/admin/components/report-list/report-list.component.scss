@@ -1,25 +1,9 @@
-
-
-ion-chip{
-    background-color: var(--mkw-color-primary);
-    color: var(--mkw-color-light);
-}
-
-ion-chip.not-selected{
-    color: var(--mkw-color-primary);
-    background-color: var(--mkw-color-light);
-    border: 1px solid var(--mkw-color-primary);
-}
-
 footer{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     margin-top: 2em;
 
-    label{
-        align-self: center;
-    }
     button{
         background-color: var(--mkw-color-primary);
         color: var(--mkw-color-light);

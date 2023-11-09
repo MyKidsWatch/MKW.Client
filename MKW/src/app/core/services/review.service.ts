@@ -15,7 +15,7 @@ export class ReviewService {
   }
 
   getRelevantReviews(page: number = 1, count: number = 10) {
-    return this.reviewClient.reviewGet(page, count, this.language);
+    return this.reviewClient.reviewGet(undefined, page, count, this.language);
   }
 
   registerReview(createReviewDTO: CreateReviewDto)

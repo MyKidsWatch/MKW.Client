@@ -4,7 +4,7 @@ import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
 import { ContentReviewPage } from '../../models/content-review-page.model';
-import { Observable, Subscription, take, tap } from 'rxjs';
+import { Observable, Subscription, catchError, take, tap } from 'rxjs';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { AnswerCommentDto, CreateCommentDto, CreateReportDto, ICreateCommentDto, ReviewDetailsDtoBaseResponseDTO, UpdateCommentDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { CommentService } from 'src/app/core/services/comment.service';
@@ -122,9 +122,6 @@ export class ContentReviewPageComponent  implements OnInit {
     .subscribe(res => console.log);
     this.newComment = '';
   }
-
-
-
 
   actionSheetEvent(event: any, commentId: number)
   {
