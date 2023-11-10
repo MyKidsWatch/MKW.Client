@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportFacade } from 'src/app/shared/facades/report.facade';
 import { ReportObject } from 'src/app/shared/store/report/report.model';
+import { ReportOverviewInformation } from '../../model/report-overview-model';
 
 @Component({
   selector: 'app-report-overview',
@@ -10,13 +11,13 @@ import { ReportObject } from 'src/app/shared/store/report/report.model';
 export class ReportOverviewComponent  implements OnInit {
 
 
-  public reportObject?: ReportObject;
+  public reportOverview?: ReportOverviewInformation;
   constructor(private reportFacade: ReportFacade) { }
 
   ngOnInit() {
 
-    this.reportFacade.getCurrentReport()
-    .subscribe(res => this.reportObject = res);
+    this.reportFacade.getCurrentReportOverview()
+    .subscribe(res => this.reportOverview = res);
   }
 
 
