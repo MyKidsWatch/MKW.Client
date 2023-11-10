@@ -37,6 +37,11 @@ export class UserFacade{
         return this.store.select(UserSelectors.getUserAdminInformation);
     }
 
+    public getUserCurrentCoinCount() : Observable<number | undefined>
+    {
+        return this.store.select(UserSelectors.getUserCoins);
+    }
+    
     public loginUser(credentials: string, password: string)
     {
         return this.store.dispatch(new LoginUser(credentials, password));

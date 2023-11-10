@@ -45,6 +45,10 @@ export class ReportFacade{
         return this.store.select(ReportSelectors.GetCurrentReport);
     }
 
+    getCurrentReportOverview()
+    {
+        return this.store.select(ReportSelectors.GetReportOverview);
+    }
     getPaginationData()
     {
         return this.store.select(ReportSelectors.GetPaginationData)

@@ -27,11 +27,11 @@ export interface ReportObject
     reportId: number; 
     statusId: number;
     reasonId: number;
-
+    reportCreationDate: Date;
 
     reportComment?: ReportComment;
     reportReview?: ReportReview;
-    profileId?: ReportProfile;
+    reportProfile?: ReportProfile;
 
     reasonName: string;
     reportType: string;

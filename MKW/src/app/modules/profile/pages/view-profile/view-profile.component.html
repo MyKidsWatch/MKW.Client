@@ -2,6 +2,7 @@
   <i class="material-icons">account_circle</i>
   <div>
     <h3>{{userData!.firstName}} {{userData!.lastName}}</h3>
+    <h4 *ngIf="coinCount != undefined">Moedas: {{this.coinCount}}</h4>
   </div>
 </header>
 

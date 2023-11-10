@@ -12,10 +12,17 @@ import {take } from 'rxjs'
 export class ViewProfileComponent  implements OnInit {
 
   public userData?: UserData;
+  public coinCount?: number;
   constructor(private userFacade: UserFacade, private router: Router) { }
 
   ngOnInit() {
     this.userData = this.userFacade.getUserState();
+
+    this.userFacade.getUserCurrentCoinCount()
+    .subscribe(res => {
+      console.log(res);
+      this.coinCount = res
+    });
   }
 
   logOffUser()

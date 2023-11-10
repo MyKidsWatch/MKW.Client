@@ -3660,7 +3660,6 @@ export class ReportClient {
      * @return Success
      */
     reportGet(page: number | undefined, pageSize: number | undefined, reasonId: number | undefined): Observable<ReportDtoBaseResponseDTO> {
-        console.log(reasonId)
         let url_ = this.baseUrl + "/v1/Report?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
@@ -10056,10 +10055,12 @@ export class ReportDto implements IReportDto {
     statusId?: number | null;
     details?: string | null;
     reportType?: string | null;
+    createDate?: Date;
     reason?: ReportReasonDto;
     review?: ReviewDto;
     comment?: CommentDetailsDto;
     person?: ReadPersonDTO;
+    reportedPerson?: ReadPersonDTO;
     status?: ReportStatusDto;
 
     constructor(data?: IReportDto) {
@@ -10082,10 +10083,12 @@ export class ReportDto implements IReportDto {
             this.statusId = _data["statusId"] !== undefined ? _data["statusId"] : <any>null;
             this.details = _data["details"] !== undefined ? _data["details"] : <any>null;
             this.reportType = _data["reportType"] !== undefined ? _data["reportType"] : <any>null;
+            this.createDate = _data["createDate"] ? new Date(_data["createDate"].toString()) : <any>null;
             this.reason = _data["reason"] ? ReportReasonDto.fromJS(_data["reason"]) : <any>null;
             this.review = _data["review"] ? ReviewDto.fromJS(_data["review"]) : <any>null;
             this.comment = _data["comment"] ? CommentDetailsDto.fromJS(_data["comment"]) : <any>null;
             this.person = _data["person"] ? ReadPersonDTO.fromJS(_data["person"]) : <any>null;
+            this.reportedPerson = _data["reportedPerson"] ? ReadPersonDTO.fromJS(_data["reportedPerson"]) : <any>null;
             this.status = _data["status"] ? ReportStatusDto.fromJS(_data["status"]) : <any>null;
         }
     }
@@ -10108,10 +10111,12 @@ export class ReportDto implements IReportDto {
         data["statusId"] = this.statusId !== undefined ? this.statusId : <any>null;
         data["details"] = this.details !== undefined ? this.details : <any>null;
         data["reportType"] = this.reportType !== undefined ? this.reportType : <any>null;
+        data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>null;
         data["reason"] = this.reason ? this.reason.toJSON() : <any>null;
         data["review"] = this.review ? this.review.toJSON() : <any>null;
         data["comment"] = this.comment ? this.comment.toJSON() : <any>null;
         data["person"] = this.person ? this.person.toJSON() : <any>null;
+        data["reportedPerson"] = this.reportedPerson ? this.reportedPerson.toJSON() : <any>null;
         data["status"] = this.status ? this.status.toJSON() : <any>null;
         return data;
     }
@@ -10127,10 +10132,12 @@ export interface IReportDto {
     statusId?: number | null;
     details?: string | null;
     reportType?: string | null;
+    createDate?: Date;
     reason?: ReportReasonDto;
     review?: ReviewDto;
     comment?: CommentDetailsDto;
     person?: ReadPersonDTO;
+    reportedPerson?: ReadPersonDTO;
     status?: ReportStatusDto;
 }
 
@@ -11412,13 +11419,13 @@ export interface IReviewDetailsDtoPagedList {
 }
 
 export class ReviewDto implements IReviewDto {
-    id?: string | null;
+    id?: number | null;
     title?: string | null;
     text?: string | null;
     stars?: number;
     commentCount?: number;
-    userId?: string | null;
-    contentId?: string | null;
+    userId?: number | null;
+    contentId?: number | null;
     externalContentId?: string | null;
     user?: ReadPersonDTO;
 
@@ -11468,13 +11475,13 @@ export class ReviewDto implements IReviewDto {
 }
 
 export interface IReviewDto {
-    id?: string | null;
+    id?: number | null;
     title?: string | null;
     text?: string | null;
     stars?: number;
     commentCount?: number;
-    userId?: string | null;
-    contentId?: string | null;
+    userId?: number | null;
+    contentId?: number | null;
     externalContentId?: string | null;
     user?: ReadPersonDTO;
 }

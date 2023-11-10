@@ -95,7 +95,8 @@ export class UserState{
                 isEmailVerified: response.emailConfirmed!,
                 userId: response.id!,
                 lastName: response.lastName!,
-                isAdmin: response.isAdminUser
+                isAdmin: response.isAdminUser,
+                coinCount: 0
             }
             
 

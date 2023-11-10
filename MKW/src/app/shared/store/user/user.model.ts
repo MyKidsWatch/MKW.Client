@@ -6,6 +6,7 @@ export class UserData{
     username?: string;
     isEmailVerified?: boolean;
     isAdmin?: boolean;
+    coinCount?: number;
 }
 
 export class TokenInfo{

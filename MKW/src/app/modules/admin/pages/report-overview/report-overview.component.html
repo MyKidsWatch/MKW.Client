@@ -1,14 +1,23 @@
-<ion-content *ngIf="reportObject">
+<ion-content *ngIf="reportOverview">
 
   
-  <h3>{{reportObject.reportType}} - {{reportObject.reasonName}}</h3>
-  <h3>Status: {{reportObject.statusName}}</h3>
-  <h3>Autor: {{reportObject.reportAuthor}}</h3>
-  <button (click)="true">
-    Descartar
-  </button>
+  <h3>{{reportOverview.reportType}} - {{reportOverview.reportReason}}</h3>
+  <h3>Status: {{reportOverview.reportStatus}}</h3>
+  <h3>Autor: {{reportOverview.reportedPerson}}</h3>
 
-  <button (click)="true">
-    Validar
-  </button>
+  
+  <footer>
+    <button (click)="true">
+      Descartar
+    </button>
+  
+    <button *ngIf="this.reportOverview.reportType != 'Profile'" (click)="true">
+      Excluir {{this.reportOverview.reportType}}
+    </button>
+  
+    <button (click)="true">
+      Excluir perfil
+    </button>
+  </footer>
+  
 </ion-content>

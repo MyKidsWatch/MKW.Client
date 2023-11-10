@@ -17,6 +17,12 @@ export class UserSelectors{
     }
 
     @Selector([UserState])
+    static getUserCoins(state: UserStateModel)
+    {
+        return state.user?.coinCount;
+    }
+
+    @Selector([UserState])
     static getUserAdminInformation(state: UserStateModel)
     {
         if(!!state && !!state.user && state.user.isAdmin != undefined)
@@ -24,4 +30,7 @@ export class UserSelectors{
 
         return false;
     }
+
+
+    
 }

@@ -40,14 +40,16 @@ export class ReportState{
                     reportType: report.reportType!,
                     statusId: report.status!.statusId!,
                     statusName: report.status!.name!,
-                    reasonName: report.reason!.title!
+                    reasonName: report.reason!.title!,
+                    reportCreationDate: report.createDate!
+                    
                 }
 
                 if(report.review)
                 {
                     reportObject.reportReview = {
                         reviewAuthor: report.review!.user!.username!,
-                        reviewId: report.reviewId!,
+                        reviewId: report.review!.id!,
                         reviewText: report.review.text!
                     }
                 }
@@ -57,10 +59,18 @@ export class ReportState{
                     reportObject.reportComment = {
                         commentAuthor: report.comment!.person!.username!,
                         commentText :report.comment!.text!,
-                        commentId: report.commentId!
+                        commentId: report.comment!.id!
                     }
                 }
 
+
+                if(report.reportedPerson)
+                {
+                    reportObject.reportProfile = {
+                        profileId: report.reportedPerson!.id!,
+                        profileUsername: report.reportedPerson!.username!
+                    }
+                }
                 reportListState.push(reportObject);
             });
 
