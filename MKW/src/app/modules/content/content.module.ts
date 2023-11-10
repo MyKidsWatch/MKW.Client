@@ -27,6 +27,7 @@ import { ReviewState } from 'src/app/shared/store/review/review.state';
 import { ReportReviewModalComponent } from './components/report-review-modal/report-review-modal.component';
 import { ReviewEditModalComponent } from './components/review-edit-modal/review-edit-modal.component';
 import { ReviewAddModalComponent } from './components/review-add-modal/review-add-modal.component';
+import { ReviewResolver } from 'src/app/core/resolvers/review.resolver';
 const routes: Routes = [
   {
     path: 'feed/:contentId/:platformId',
@@ -34,7 +35,8 @@ const routes: Routes = [
   },
   {
     path: 'review/:id',
-    component: ContentReviewPageComponent
+    component: ContentReviewPageComponent,
+    resolve: [ReviewResolver]
   },
   {
     path: 'reviewer/:id',
@@ -89,7 +91,8 @@ const parentRoute: Routes = [
     CommentClient,
     CommentService,
     ReportClient,
-    ReportService
+    ReportService,
+    ReviewResolver
   ]
 })
 

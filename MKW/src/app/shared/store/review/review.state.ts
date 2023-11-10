@@ -37,7 +37,7 @@ export class ReviewState
     {
         return this.reviewService.getReviewById(reviewId)
         .pipe(take(1))
-        .subscribe(res =>{
+        .pipe(tap(res =>{
 
             let state = getState();
             let reviewDTO = res.content![0];
@@ -69,7 +69,7 @@ export class ReviewState
              state.reviewOwner = reviewOwner;
 
             patchState(state);
-        });
+        }));
     }
 
     @Action(CreateReview)
