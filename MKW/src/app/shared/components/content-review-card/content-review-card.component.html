@@ -2,7 +2,7 @@
 <main *ngIf="this.contentData" class="content-card">
 
   <header class="profile-header">
-    <div class="profile-information" [routerLink]="['../../content/reviewer/' + this.contentData.reviewerInformation.reviewerId]" >
+    <div class="profile-information" [routerLink]="['../../content/reviewer/' + this.contentData.reviewerInformation.reviewerName]" >
       <img class="user-pfp" [src]="contentData.reviewerInformation.reviewerPicturePath"/>
       <label>{{ contentData.reviewerInformation.reviewerName }}</label>
     </div>

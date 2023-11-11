@@ -17,7 +17,11 @@ export class ViewChildrenComponent  implements OnInit {
   public childrenCards: ChildrenCard[] = [];
   public isLoadingContent: boolean = false;
   
-  constructor(private childService: ChildService, private loadingBarService: LoadingBarService) {   }
+  constructor(
+    private childService: ChildService, 
+    private loadingBarService: LoadingBarService,
+    private ageRangeService: AgeRangeService
+  ) {}
 
   ngOnInit() {   
     this.setLoadingBar();   

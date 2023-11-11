@@ -1,10 +1,10 @@
 import { ContentCard } from "src/app/shared/models/content-card.model";
-import { Content, ContentDetailsDTO, ContentListItemDTO, ReviewDetailsDto } from "../proxies/mkw-api.proxy";
-import { ContentReviewComment, ContentReviewPage } from "src/app/modules/content/models/content-review-page.model";
+import { ContentDetailsDTO, ContentListItemDTO, ReviewDetailsDto } from "../proxies/mkw-api.proxy";
+import { ContentReviewPage } from "src/app/modules/content/models/content-review-page.model";
 import { ContentReviewCard } from "src/app/shared/models/content-review-card.model";
+import { TranslateService } from "@ngx-translate/core";
 
 export class ContentUtils {
-
   private static restrictedTerms = ['sex', 'porn', 'vagina', 'penis', 'anus', 'blowjob'];
 
   private static textContainsBlackListedTerms(text: string): boolean {
@@ -26,20 +26,20 @@ export class ContentUtils {
   }
 
   static TMDBToContentCard(tmdbResponse: any): ContentCard | null {
-
     if (this.textContainsBlackListedTerms(tmdbResponse.title) || this.textContainsBlackListedTerms(tmdbResponse.overview))
+
       return null;
 
-    let contentCard: ContentCard = {
+    const contentCard: ContentCard = {
       title: tmdbResponse.title,
       releaseDate: new Date(tmdbResponse.release_date),
       averageRating: Math.round(tmdbResponse.vote_average * 5) / 10,
-      contentType: 'Movie',
       description: tmdbResponse.overview,
       genre: tmdbResponse.genre_ids.map((x: number) => this.TMDBGenreToText(x)),
       contentId: 0,
       externalContentId: tmdbResponse.id,
       platformId: 1,
+      platformName: this.getPlatformString(1),
       picturePath: tmdbResponse.poster_path ? 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + tmdbResponse.poster_path : undefined
     }
 
@@ -51,16 +51,16 @@ export class ContentUtils {
     if (!tmdbResponse)
       return null;
 
-    let contentCard: ContentCard = {
+    const contentCard: ContentCard = {
       title: tmdbResponse.title,
       releaseDate: new Date(tmdbResponse.release_date),
       averageRating: Math.round(tmdbResponse.vote_average * 5) / 10,
-      contentType: 'Movie',
       description: tmdbResponse.overview,
       genre: tmdbResponse.genres.map((x: any) => x.name),
       contentId: 0,
       externalContentId: tmdbResponse.id,
       platformId: 1,
+      platformName: this.getPlatformString(1),
       picturePath: tmdbResponse.poster_path ? 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + tmdbResponse.poster_path : undefined
     }
 
@@ -69,21 +69,45 @@ export class ContentUtils {
 
   static ContentDTOResponseToContentCard(content: ContentListItemDTO): ContentCard | null {
 
-    if (!content)
-      return null;
+      if(!content)
+        return null;
 
-    let contentCard: ContentCard = {
-      title: content.name!,
-      releaseDate: new Date(content.releaseDate!),
-      averageRating: Math.round(content.averageRating! * 5) / 10,
-      contentType: 'Movie',
-      description: content.description!,
-      genre: content.tags?.map((x: any) => x.name),
-      platformId: content.platformId!,
-      externalContentId: content.externalId!,
-      contentId: content.id!,
-      picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined
-    }
+      const contentCard: ContentCard = {
+        title: content.name!,
+        releaseDate: new Date(content.releaseDate!),
+        averageRating: Math.round(content.averageRating! * 5) / 10,
+        description: content.description!,
+        genre: content.tags?.map((x: any) => x.name),
+        platformId: content.platformId!,
+        platformName: this.getPlatformString(content.platformId!),
+        externalContentId: content.externalId!,
+        contentId: content.id!,
+        picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined
+      }
+
+      return contentCard;
+  }
+
+  static ContentReviewToPage(reviewDTO: ReviewDetailsDto) : ContentReviewPage | null {
+      const contentReviewPage: ContentReviewPage = {
+        reviewId: reviewDTO.id!,
+        reviewTitle: reviewDTO.title!,
+        reviewDescription: reviewDTO.text!,
+        reviewAuthor: {
+          userName: reviewDTO.person!.username!,
+          profilePictureUrl: "assets/icon/default.jpg"
+        },
+        reviewedContentInformation: {
+          title: reviewDTO!.content!.name!,
+          picturePath: reviewDTO!.content!.imageUrl ? 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + reviewDTO!.content!.imageUrl : undefined,
+          contentId: reviewDTO!.content!.id!,
+          platformId: reviewDTO!.content!.platformId!,
+          externalContentId: reviewDTO!.content!.externalId!
+        },
+        reviewRating: reviewDTO!.stars!,
+        reviewCreationDate: reviewDTO.createDate!
+      }
+
 
     return contentCard;
   }
@@ -103,7 +127,6 @@ export class ContentUtils {
       externalContentId: content.externalId!,
       contentId: content.id,
       picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined
-    }
 
     return contentCard;
   }
@@ -112,7 +135,7 @@ export class ContentUtils {
     if (!relevantReview)
       return null;
 
-    let contentReviewCard: ContentReviewCard = {
+    const contentReviewCard: ContentReviewCard = {
       reviewId: relevantReview.id,
       reviewBody: relevantReview.text,
       reviewPublishDate: relevantReview.createDate!,
@@ -136,6 +159,7 @@ export class ContentUtils {
     };
 
     return contentReviewCard;
+  }
   }
 
   static TMDBGenreToText(genreId: number): string {
@@ -183,5 +207,25 @@ export class ContentUtils {
     }
   }
 
+  static getPlatformString(platformId: number) {
+    if (platformId == 1)
+      return 'movie';
 
+    if (platformId == 2)
+      return 'channel';
+
+    return '';
+  }
+
+  static getPlatformIcon(platformId: number) {
+    const basePath = 'assets/icon/';
+
+    if (platformId == 1)
+      return basePath + 'movie.svg';
+
+    if (platformId == 2)
+      return basePath + 'channel.svg';
+
+    return '';
+  }
 }

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { FeedComponent } from './feed.component';
 import { IonicModule } from '@ionic/angular';
 import { ContentCardComponent } from '../../shared/components/content-card/content-card.component'
 import { TranslateModule } from '@ngx-translate/core';
-import { AlgorithmClient, MovieClient, ReportClient, Review, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { AlgorithmClient, ReportClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { AlgorithmService } from 'src/app/core/services/algorithm.service';
 import { ReviewFeedComponent } from './pages/review-feed/review-feed.component';
 import { ContentFeedComponent } from './pages/content-feed/content-feed.component';
@@ -21,7 +21,10 @@ const childrenRoutes: Routes = [
     path: 'content-feed',
     component: ContentFeedComponent
   },
-  { path: '',   redirectTo: 'review-feed', pathMatch: 'full' }
+  { path: '', 
+    redirectTo: 'review-feed', 
+    pathMatch: 'full' 
+  }
 ];
 
 const routes: Routes = [
@@ -36,7 +39,7 @@ const routes: Routes = [
   declarations: [
     FeedComponent,
     ReviewFeedComponent,
-    ContentFeedComponent
+    ContentFeedComponent,
   ],
   imports: [
     CommonModule,
@@ -44,7 +47,7 @@ const routes: Routes = [
     TranslateModule,
     RouterModule.forChild(routes),
     ContentCardComponent,
-    ContentReviewCardComponent
+    ContentReviewCardComponent,
   ],
   providers:[
     AlgorithmClient,

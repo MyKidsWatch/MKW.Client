@@ -1,3 +1,61 @@
-<p>
-  content-reviewer-page works!
-</p>
+<ion-header class="header">
+  <app-header-back></app-header-back>
+</ion-header>
+<ion-content *ngIf="!loading">
+  <div class="content">
+    <div class="profile-header">
+      <img alt="Profile picture" [src]="profile?.imageURL" class="profile-picture">
+      <div class="profile-info">
+        <h2 class="profile-name">{{ profile?.name }}</h2>
+        <p class="profile-username">@{{ profile?.username }}</p>
+      </div>
+      <app-kebab-menu [items]="menuItems"></app-kebab-menu>
+    </div>
+
+    <div *ngIf="shouldShowAwards">
+      <div *ngIf="goldenAwards >= silverAwards && goldenAwards >= bronzeAwards" class="profile-awards awards-gold">
+        <img alt="awards" class="awards-img" src="assets/images/awards-gold-first.png">
+        <div class="awards-text">
+          <h3 class="awards-title">{{ 'profile.awards.goldenTitle' | translate}}</h3>
+          <p class="awards-description">{{ 'profile.awards.goldenDescription' | translate: {name: profile?.name, goldenAwards, silverAwards, bronzeAwards} }}</p>
+        </div>
+      </div>
+      <div *ngIf="silverAwards >= goldenAwards && silverAwards >= bronzeAwards && goldenAwards < silverAwards" class="profile-awards awards-silver">
+        <img alt="awards" class="awards-img" src="assets/images/awards-silver-first.png">
+        <div class="awards-text">
+          <h3 class="awards-title">{{ 'profile.awards.silverTitle' | translate}}</h3>
+          <p class="awards-description">{{ 'profile.awards.silverDescription' | translate: {name: profile?.name, goldenAwards, silverAwards, bronzeAwards} }}</p>
+        </div>
+      </div>
+      <div *ngIf="bronzeAwards >= goldenAwards && bronzeAwards >= silverAwards && goldenAwards < bronzeAwards && silverAwards < bronzeAwards" class="profile-awards awards-bronze">
+        <img alt="awards" class="awards-img" src="assets/images/awards-bronze-first.png">
+        <div class="awards-text">
+          <h3 class="awards-title">{{ 'profile.awards.bronzeTitle' | translate}}</h3>
+          <p class="awards-description">{{ 'profile.awards.bronzeDescription' | translate: {name: profile?.name, goldenAwards, silverAwards, bronzeAwards} }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="profile-children" *ngIf="profile?.children?.length || 0 > 0">
+      <h3>{{ profile?.name }} {{ 'has' | translate }} {{ profile?.children?.length || 0 }} {{ 'children' | translate }}</h3>
+      <div class="children">
+        <div class="child" *ngFor="let child of profile?.children">
+          <div class="child-icon">
+            <i class="material-icons">child_care</i>
+          </div>
+          <p>{{ child.gender | translate }} {{ 'of' | translate}} {{ child.ageRange }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="profile-reviews" *ngIf="shouldShowReviews">
+      <h3>{{ reviews.length }} {{ 'reviews' | translate }}</h3>
+      <app-short-content-review-card *ngFor="let contentCard of reviews" [contentData]="contentCard">
+      </app-short-content-review-card>
+    </div>
+  </div>
+</ion-content>

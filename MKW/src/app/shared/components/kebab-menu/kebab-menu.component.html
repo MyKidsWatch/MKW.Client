@@ -1,0 +1,11 @@
+<div class="kebab-menu">
+  <button class="kebab-menu-button" [ngClass]="{ 'kebab-menu--right:': side == 'right'}" (click)="handleToggle()">
+    <img alt="options" src="assets/icon/kebab-menu.svg" class="kebab-menu-icon">
+  </button>
+
+  <ul class="items" [ngClass]="{ 'items--open': isOpen, 'items--right': side == 'right' }">
+    <li class="item" *ngFor="let item of items">
+      <button (click)="item.callback()">{{ item.label }}</button>
+    </li>
+  </ul>
+</div>

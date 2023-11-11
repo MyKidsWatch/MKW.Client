@@ -71,15 +71,30 @@
     "addChildren": "Adicionar crianças",
     "whatToDo": "O que você deseja fazer?",
     "editChildren": "Editar minhas crianças",
-    "logout": "Sair da minha conta"
+    "logout": "Sair da minha conta",
+    "awards": {
+      "goldenTitle": "Ouro reluzente!",
+      "goldenDescription": "{{name} tem {{goldenAwards}} medalhas de ouro, {{silverAwards}} de prata e {{bronzeAwards}} de bronze.",
+      "silverTitle": "Brilhando como a prata!",
+      "silverDescription": "{{name} tem {{silverAwards}} medalhas de prata, {{goldenAwards}} de ouro e {{bronzeAwards}} de bronze.",
+      "bronzeTitle": "Bronze com brilho próprio!",
+      "bronzeDescription": "{{name} tem {{bronzeAwards}} medalhas de bronze, {{goldenAwards}} de ouro e {{silverAwards}} de prata."
+    }
   },
   "content": {
     "rating": "Avaliação:",
     "seeMore": "Ver mais informações"
   },
   "movie": "Filme",
+  "channel": "Canal",
   "boy": "Menino",
   "girl": "Menina",
+  "children": "crianças",
+  "has": "tem",
+  "to": "a",
+  "of": "de",
+  "review": "Análise",
+  "reviews": "Análises",
   "Action": "Ação",
   "Adventure": "Aventura",
   "Animation": "Animação",
@@ -98,5 +113,6 @@
   "TV Movie": "Filme para TV",
   "Thriller": "Suspense",
   "War": "Guerra",
-  "Western": "Faroeste"
+  "Western": "Faroeste",
+  "add-review": "Adicionar análise"
 }

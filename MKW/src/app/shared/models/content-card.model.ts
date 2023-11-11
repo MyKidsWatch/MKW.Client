@@ -2,13 +2,14 @@
 export interface ContentCard{
     contentId?: number;
     externalContentId?: string;
-    platformId?: number
+    platformId?: number;
+    platformName?: string;
     title?: string;
     description?: string;
-    contentType?: string;
     genre?: string[];
     releaseDate?: Date;
     averageRating?: number;
     picturePath?: string;
+    platformIconPath?: string;
 }
 

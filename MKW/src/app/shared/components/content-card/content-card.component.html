@@ -1,20 +1,21 @@
 <main *ngIf="this.contentData" class="content-card">
   <img 
     class="content-poster" 
+    [class.square]="this.contentData.platformId === 2"
     [src]="this.contentData.picturePath || '../../../../assets/images/no-photo.png'"
   >
 
   <article>
     <header>
       <h2 class="content-title">{{this.contentData.title}}</h2>
-      <label class="content-type" *ngIf="isValidDate()">{{this.contentData.contentType!.toLowerCase() | translate }}, {{this.contentData.releaseDate | date: 'yyyy'}}</label>
+      <label class="content-type" *ngIf="isValidDate()">{{ this.contentData.platformName!.toLowerCase() | translate }}, {{this.contentData.releaseDate | date: 'yyyy'}}</label>
     </header>
     <div class="genres">
       <ion-chip *ngFor="let genre of contentData?.genre">
         <ion-label>{{ genre | translate }}</ion-label>
       </ion-chip>
     </div>
-    <label class="content-description">{{this.contentData.description}}</label>
+    <label class="content-description">{{ this.contentData.description }}</label>
     <footer>
       <aside class="rating">
         <label class="rating-text">{{ 'content.rating' | translate }}</label>

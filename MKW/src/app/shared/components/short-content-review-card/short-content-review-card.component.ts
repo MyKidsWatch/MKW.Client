@@ -6,21 +6,19 @@ import { Router, RouterModule } from '@angular/router';
 import { ContentReviewCard } from '../../models/content-review-card.model';
 
 @Component({
-  selector: 'app-content-review-card',
-  templateUrl: './content-review-card.component.html',
-  styleUrls: ['./content-review-card.component.scss'],
+  selector: 'app-short-content-review-card',
+  templateUrl: './short-content-review-card.component.html',
+  styleUrls: ['./short-content-review-card.component.scss'],
   standalone: true,
   imports: [CommonModule, IonicModule, TranslateModule, RouterModule]
 })
-export class ContentReviewCardComponent  implements OnInit {
-
+export class ShortContentReviewCardComponent implements OnInit {
   @Input() contentData?: ContentReviewCard;
 
   constructor(private router: Router) { }
 
-
   redirectToContentReviewPage(contentId: number) {
-      this.router.navigate([`home/content/review/${contentId}`]);
+    this.router.navigate([`home/content/review/${contentId}`]);
   }
 
   ngOnInit() {}
