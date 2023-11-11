@@ -29,6 +29,7 @@ export class ContentReviewPageComponent implements OnInit {
 
 
   public reviewId?: number;
+  public canAward: boolean = false;
 
   public contentObject: ContentReviewPage = {
     reviewAuthor: {
@@ -88,7 +89,7 @@ export class ContentReviewPageComponent implements OnInit {
 
           let username = this.userFacade.getUserState()?.username!
           this.actionSheetButtons = username == this.contentObject.reviewAuthor.userName ? this.actionSheetOp : this.actionSheetNotOp;
-
+          this.canAward = username !== this.contentObject.reviewAuthor.userName
         },
         error: (err) => {
 
