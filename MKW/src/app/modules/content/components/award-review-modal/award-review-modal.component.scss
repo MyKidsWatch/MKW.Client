@@ -1,0 +1,59 @@
+ion-header {}
+
+ion-content {
+    text-align: center;
+
+    label.add-funds {
+        color: #737373;
+        text-decoration: underline;
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        height: 80%;
+        justify-content: space-evenly;
+        align-items: center;
+
+        div.award-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 40%;
+            height: 20%;
+            padding: 15px;
+            border: 2px solid var(--mkw-color-primary);
+            text-align: center;
+        }
+
+
+        div.award-card.selected {
+            background-color: var(--mkw-color-primary);
+            color: var(--mkw-color-light);
+        }
+
+        div.award-card.unavailable {
+            background-color: #cccccc;
+            border: 2px solid #999999;
+        }
+
+    }
+
+    footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        button {
+            display: flex;
+            align-items: center;
+            background-color: var(--mkw-color-primary);
+            color: var(--mkw-color-light);
+            padding: 10px;
+            width: 70%;
+            justify-content: center;
+        }
+    }
+
+}

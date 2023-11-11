@@ -19,6 +19,7 @@ import { ReportReviewModalComponent } from '../../components/report-review-modal
 import { Store } from '@ngxs/store';
 import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
+import { AwardReviewModalComponent } from '../../components/award-review-modal/award-review-modal.component';
 
 @Component({
   selector: 'app-content-review-page',
@@ -206,6 +207,12 @@ export class ContentReviewPageComponent implements OnInit {
       })
   }
 
+
+  async openAwardModal() {
+    const modal = await this.modalController.create({ component: AwardReviewModalComponent })
+
+    modal.present();
+  }
   public actionSheetButtons: any[] = [];
 
   private actionSheetOp = [

@@ -28,6 +28,7 @@ import { ReportReviewModalComponent } from './components/report-review-modal/rep
 import { ReviewEditModalComponent } from './components/review-edit-modal/review-edit-modal.component';
 import { ReviewAddModalComponent } from './components/review-add-modal/review-add-modal.component';
 import { ReviewResolver } from 'src/app/core/resolvers/review.resolver';
+import { AwardReviewModalComponent } from './components/award-review-modal/award-review-modal.component';
 const routes: Routes = [
   {
     path: 'feed/:contentId/:platformId',
@@ -56,21 +57,22 @@ const parentRoute: Routes = [
 
 @NgModule({
   declarations: [
-    ContentComponent, 
-    StarsRatingComponent, 
-    ContentReviewPageComponent, 
-    ContentFeedPageComponent, 
-    ContentReviewerPageComponent, 
+    ContentComponent,
+    StarsRatingComponent,
+    ContentReviewPageComponent,
+    ContentFeedPageComponent,
+    ContentReviewerPageComponent,
     CommentCardComponent,
     EditCommentModalComponent,
     ReportCommentModalComponent,
     ReportReviewModalComponent,
     ReviewEditModalComponent,
-    ReviewAddModalComponent
+    ReviewAddModalComponent,
+    AwardReviewModalComponent
   ],
   imports: [
-    CommonModule, 
-    IonicModule, 
+    CommonModule,
+    IonicModule,
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,

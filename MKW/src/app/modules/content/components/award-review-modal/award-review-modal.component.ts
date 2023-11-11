@@ -20,6 +20,10 @@ export class AwardReviewModalComponent implements OnInit {
   }
 
 
+  selectAward(awardId: number) {
+    this.selectedAwardId = awardId;
+  }
+
   cancel() {
     this.modalController.dismiss(null, 'cancel')
   }
