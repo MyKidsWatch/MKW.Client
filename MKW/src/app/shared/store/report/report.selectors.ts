@@ -59,7 +59,7 @@ export class ReportSelectors{
             reportId: currentReport.reportId,
             reportDate: currentReport.reportCreationDate,
             reportedPerson: currentReport.reportProfile!.profileUsername,
-            reportReason: currentReport.reasonId,
+            reportReason: currentReport.reasonName,
             reportStatus: currentReport.statusName,
             reportText: this.getReportText(currentReport),
             reportType: currentReport.reportType

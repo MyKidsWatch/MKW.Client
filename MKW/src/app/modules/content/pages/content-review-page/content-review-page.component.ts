@@ -25,11 +25,11 @@ import { UserFacade } from 'src/app/shared/facades/user.facade';
   templateUrl: './content-review-page.component.html',
   styleUrls: ['./content-review-page.component.scss'],
 })
-export class ContentReviewPageComponent  implements OnInit {
+export class ContentReviewPageComponent implements OnInit {
 
 
   public reviewId?: number;
-  
+
   public contentObject: ContentReviewPage = {
     reviewAuthor: {
       userName: '',
@@ -46,14 +46,19 @@ export class ContentReviewPageComponent  implements OnInit {
     reviewId: 0,
     reviewRating: 0,
     reviewTitle: '',
-    reviewDescription: ''
+    reviewDescription: '',
+    reviewAwardInformation: {
+      bronzeAwardCount: 0,
+      goldenAwardCount: 0,
+      silverAwardCount: 0
+    }
   };
   public loading: boolean = true;
 
 
   public reviewComments: ContentReviewComment[] = [];
 
-  
+
   private reviewSubscription?: Subscription;
   private commentSubscription?: Subscription;
   public newComment = '';
@@ -75,65 +80,61 @@ export class ContentReviewPageComponent  implements OnInit {
     this.commentFacade.setReviewComments(this.reviewId);
 
     this.reviewSubscription = this.reviewFacade.getCurrentReviewViewModel()
-    .subscribe({
-      next: (res: ContentReviewPage) =>{
-        
-        this.contentObject = res;
-        this.loading = false;
-        
-        let username = this.userFacade.getUserState()?.username!        
-        this.actionSheetButtons = username == this.contentObject.reviewAuthor.userName ? this.actionSheetOp : this.actionSheetNotOp;
+      .subscribe({
+        next: (res: ContentReviewPage) => {
 
-      },
-      error: (err) =>{
+          this.contentObject = res;
+          this.loading = false;
 
-      }
-    });
+          let username = this.userFacade.getUserState()?.username!
+          this.actionSheetButtons = username == this.contentObject.reviewAuthor.userName ? this.actionSheetOp : this.actionSheetNotOp;
+
+        },
+        error: (err) => {
+
+        }
+      });
 
     this.commentSubscription = this.commentFacade.getCurrentReviewCommentViewModel()
-    .subscribe({
-      next: (res: ContentReviewComment[]) =>{
-        console.log(res)
-        this.reviewComments = res;
-      },
-      error: (err) =>{
-        alert("Erro buscando os comentários dessa análise")
-      }
-    });
+      .subscribe({
+        next: (res: ContentReviewComment[]) => {
+          console.log(res)
+          this.reviewComments = res;
+        },
+        error: (err) => {
+          alert("Erro buscando os comentários dessa análise")
+        }
+      });
   }
 
   goBack() {
-    this.router.navigate([".."]);  
+    this.router.navigate([".."]);
     this.commentSubscription?.unsubscribe();
     this.reviewSubscription?.unsubscribe();
 
   }
 
-  goToContentPage(contentId: any, platformId: any)
-  {
+  goToContentPage(contentId: any, platformId: any) {
 
     this.router.navigate(['home/content/feed', contentId, platformId])
   }
 
-  addCommentToReview()
-  {
+  addCommentToReview() {
     this.commentFacade.createComment(this.newComment, this.reviewId!)
-    .pipe(take(1))
-    .subscribe(res => console.log);
+      .pipe(take(1))
+      .subscribe(res => console.log);
     this.newComment = '';
   }
 
-  actionSheetEvent(event: any, commentId: number)
-  {
-    if(!event.detail.data || !event.detail.data.action)
-      return; 
+  actionSheetEvent(event: any, commentId: number) {
+    if (!event.detail.data || !event.detail.data.action)
+      return;
 
     let action = event.detail?.data?.action;
 
-    if(!action)
+    if (!action)
       return;
-    switch(action)
-    {
+    switch (action) {
       case 'delete':
         this.deleteReview();
         break;
@@ -146,68 +147,65 @@ export class ContentReviewPageComponent  implements OnInit {
     }
   }
 
-  deleteReview()
-  {
+  deleteReview() {
 
     this.reviewFacade.deleteReview(this.reviewId!)
-    .subscribe({
-      next: (res) =>{
-        alert("Review excluída com sucesso");
-        this.router.navigate(['home/feed']);
-      },
-      error: (err) =>{ 
-        alert("Erro ao excluir review");
-      }
-    })
+      .subscribe({
+        next: (res) => {
+          alert("Review excluída com sucesso");
+          this.router.navigate(['home/feed']);
+        },
+        error: (err) => {
+          alert("Erro ao excluir review");
+        }
+      })
   }
 
-  async openEditModal()
-  {
-    const modal = await this.modalController.create({component: ReviewEditModalComponent})
+  async openEditModal() {
+    const modal = await this.modalController.create({ component: ReviewEditModalComponent })
 
     modal.present();
 
     let result = await modal.onWillDismiss();
-  
 
-    if(result.data === null || result.role != 'edit')
+
+    if (result.data === null || result.role != 'edit')
       return;
 
     this.reviewFacade.editReview(this.reviewId!, result.data.title, result.data.stars, result.data.text)
-    .subscribe({
-      next: (res) =>{
-        alert("Review editada com sucesso")
-      },
-      error: (err) =>{ 
-        alert("Erro ao editar review");
-      }
-    })
+      .subscribe({
+        next: (res) => {
+          alert("Review editada com sucesso")
+        },
+        error: (err) => {
+          alert("Erro ao editar review");
+        }
+      })
   }
 
-  async openReportModal()
-  {
-    const modal = await this.modalController.create({component: ReportReviewModalComponent})
+  async openReportModal() {
+    const modal = await this.modalController.create({ component: ReportReviewModalComponent })
 
     modal.present();
 
     let result = await modal.onWillDismiss();
-  
 
-    if(result.data === null || result.role != 'report')
+
+    if (result.data === null || result.role != 'report')
       return;
 
     this.reviewFacade.reportReview(result.data, this.reviewId!, this.contentObject.reviewAuthor.creatorId)
-    .subscribe({
-      next: (res) =>{
-        alert("Review denunciada com sucesso")
-      },
-      error: (err) =>{ 
-        alert("Erro ao denunciar review");
-      }
-    })  
+      .subscribe({
+        next: (res) => {
+          alert("Review denunciada com sucesso")
+        },
+        error: (err) => {
+          alert("Erro ao denunciar review");
+        }
+      })
   }
 
-  public actionSheetButtons: any[] = [  ];
+  public actionSheetButtons: any[] = [];
 
   private actionSheetOp = [
     {

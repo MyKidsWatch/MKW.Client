@@ -55,7 +55,6 @@ export interface ReportSearchOptions{
 
 }
 
-
 export interface ReportStateModel{
     reports: ReportObject[];
     currentReport?: ReportObject;

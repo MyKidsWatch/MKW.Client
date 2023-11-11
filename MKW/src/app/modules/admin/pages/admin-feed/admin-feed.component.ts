@@ -23,14 +23,15 @@ export class AdminFeedComponent  implements OnInit {
 
     this.reportFacade.getPaginationData().subscribe(res => this.paginationData = res);
   }
+  
   ionViewDidEnter()
   {
     this.updateReportList();
   }
+
   updateReportList()
   {
     this.reportFacade.setReportList(this.pageSize, this.pageIndex, this.selectedReportType).subscribe(res =>{})
-  
   }
 
   selectReportType(reportType?: number)

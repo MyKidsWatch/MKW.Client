@@ -5,7 +5,7 @@ export interface ReportOverviewInformation{
     reportedPerson: string;
     reportStatus: string;
     reportType: string;
-    reportReason: number;
+    reportReason: string;
     reportDate: Date;
     reportText: string;
 

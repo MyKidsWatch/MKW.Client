@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ReportListItem } from '../../model/report-list-item.model';
 import { stat } from 'fs';
 import { ReportFacade } from 'src/app/shared/facades/report.facade';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-report-list-item-card',
@@ -11,7 +12,7 @@ import { ReportFacade } from 'src/app/shared/facades/report.facade';
 export class ReportListItemCardComponent  implements OnInit {
 
   @Input() reportListItem?: ReportListItem;
-  constructor(private reportFacade: ReportFacade){}
+  constructor(private reportFacade: ReportFacade, private router: Router){}
   ngOnInit() {}
 
 
@@ -35,5 +36,7 @@ export class ReportListItemCardComponent  implements OnInit {
   selectReport()
   {
     this.reportFacade.setCurrentReport(this.reportListItem!.reportId)
+    this.router.navigate([`home/admin/report-overview`]);
+
   }
 }

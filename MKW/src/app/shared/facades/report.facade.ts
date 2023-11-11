@@ -24,6 +24,7 @@ export class ReportFacade{
   
     constructor(private store: Store){}
 
+
     
     setReportList(pageSize: number = 10, pageIndex: number = 1, reportReason?: number)
     {
@@ -52,5 +53,20 @@ export class ReportFacade{
     getPaginationData()
     {
         return this.store.select(ReportSelectors.GetPaginationData)
+    }
+
+    discardCurrentReport()
+    {
+
+    }
+
+    deleteContentFromCurrentReport()
+    {
+
+    }
+
+    deleteProfileFromCurrentReport()
+    {
+
     }
 }

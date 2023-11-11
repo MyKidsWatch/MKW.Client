@@ -1,5 +1,13 @@
 
 
+div.report-type{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 5px 10px 0 5px;
+    justify-content: space-evenly;
+}
 ion-chip{
     background-color: var(--mkw-color-primary);
     color: var(--mkw-color-light);

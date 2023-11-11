@@ -11,25 +11,23 @@ export class ContentUtils {
     return this.restrictedTerms.some(term => text.toLowerCase().includes(term.toLowerCase()));
   }
 
-  static picturePathFromPlatformId(platformId: number)
-  {
-      let picturePath = ''
-      switch(platformId)
-      {
-        case 1:
-          picturePath = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
-          break;
-        case 2:
-          picturePath = ''
-          break; 
-      }
+  static picturePathFromPlatformId(platformId: number) {
+    let picturePath = ''
+    switch (platformId) {
+      case 1:
+        picturePath = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
+        break;
+      case 2:
+        picturePath = ''
+        break;
+    }
 
-      return picturePath;
+    return picturePath;
   }
 
   static TMDBToContentCard(tmdbResponse: any): ContentCard | null {
 
-    if(this.textContainsBlackListedTerms(tmdbResponse.title) || this.textContainsBlackListedTerms(tmdbResponse.overview))
+    if (this.textContainsBlackListedTerms(tmdbResponse.title) || this.textContainsBlackListedTerms(tmdbResponse.overview))
       return null;
 
     let contentCard: ContentCard = {
@@ -69,80 +67,49 @@ export class ContentUtils {
     return contentCard;
   }
 
-  static ContentDTOResponseToContentCard(content: ContentListItemDTO) : ContentCard | null
-  {
+  static ContentDTOResponseToContentCard(content: ContentListItemDTO): ContentCard | null {
 
-      if(!content)
-        return null;
-
-      let contentCard: ContentCard = {
-        title: content.name!,
-        releaseDate: new Date(content.releaseDate!),
-        averageRating: Math.round(content.averageRating! * 5) / 10,
-        contentType: 'Movie',
-        description: content.description!,
-        genre: content.tags?.map((x: any) => x.name),
-        platformId: content.platformId!,
-        externalContentId: content.externalId!,
-        contentId: content.id!,
-        picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined
-      }
-
-      return contentCard;
-  }
-
-
-  static ContentReviewToPage(reviewDTO: ReviewDetailsDto) : ContentReviewPage | null
-  {
-      let contentReviewPage: ContentReviewPage = {
-        reviewId: reviewDTO.id!,
-        reviewTitle: reviewDTO.title!,
-        reviewDescription: reviewDTO.text!,
-        reviewAuthor: {
-          creatorId: reviewDTO.person!.userId!,
-          userName: reviewDTO.person!.username!,
-          profilePictureUrl: "assets/icon/default.jpg"
-        },
-        reviewedContentInformation: {
-          title: reviewDTO!.content!.name!,
-          picturePath: reviewDTO!.content!.imageUrl ? 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + reviewDTO!.content!.imageUrl : undefined,
-          contentId: reviewDTO!.content!.id!,
-          platformId: reviewDTO!.content!.platformId!,
-          externalContentId: reviewDTO!.content!.externalId!
-        },
-        reviewRating: reviewDTO!.stars!,
-        reviewCreationDate: reviewDTO.createDate!
-      }
-
-
-      return contentReviewPage;
-  }
-
-
-  static ContentDetailsDTOToContentCard(content: ContentDetailsDTO) : ContentCard | null
-  {
     if (!content)
       return null;
 
-      let contentCard: ContentCard = {
-        title: content.name!,
-        releaseDate: new Date(content.releaseDate!),
-        averageRating: Math.round(content.averageRating! * 5) / 10,
-        contentType: 'Movie',
-        description: content.description!,
-        genre: content.tags?.map((x: any) => x.name),
-        platformId: content.platformId!,
-        externalContentId: content.externalId!,
-        contentId: content.id,
-        picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined
-      }
+    let contentCard: ContentCard = {
+      title: content.name!,
+      releaseDate: new Date(content.releaseDate!),
+      averageRating: Math.round(content.averageRating! * 5) / 10,
+      contentType: 'Movie',
+      description: content.description!,
+      genre: content.tags?.map((x: any) => x.name),
+      platformId: content.platformId!,
+      externalContentId: content.externalId!,
+      contentId: content.id!,
+      picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined
+    }
 
     return contentCard;
   }
 
-  static relevantReviewToContentReviewCard(relevantReview: ReviewDetailsDto) : ContentReviewCard | null
-  {
-    if(!relevantReview)
+  static ContentDetailsDTOToContentCard(content: ContentDetailsDTO): ContentCard | null {
+    if (!content)
+      return null;
+
+    let contentCard: ContentCard = {
+      title: content.name!,
+      releaseDate: new Date(content.releaseDate!),
+      averageRating: Math.round(content.averageRating! * 5) / 10,
+      contentType: 'Movie',
+      description: content.description!,
+      genre: content.tags?.map((x: any) => x.name),
+      platformId: content.platformId!,
+      externalContentId: content.externalId!,
+      contentId: content.id,
+      picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined
+    }
+
+    return contentCard;
+  }
+
+  static relevantReviewToContentReviewCard(relevantReview: ReviewDetailsDto): ContentReviewCard | null {
+    if (!relevantReview)
       return null;
 
     let contentReviewCard: ContentReviewCard = {
@@ -158,7 +125,7 @@ export class ContentUtils {
       reviewTitle: relevantReview.title,
       reviewAwardInformation: {
         reviewBronzeAwardCount: relevantReview.bronzeAwards ? relevantReview.bronzeAwards : 0,
-        reviewGoldAwardCount: relevantReview.goldenAwards ? relevantReview.goldenAwards : 0, 
+        reviewGoldAwardCount: relevantReview.goldenAwards ? relevantReview.goldenAwards : 0,
         reviewSilverAwardCount: relevantReview.silverAwards ? relevantReview.silverAwards : 0
       },
       reviewCommentCount: relevantReview.commentsQuantity ? relevantReview.commentsQuantity : 0,

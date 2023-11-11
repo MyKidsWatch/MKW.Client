@@ -1962,7 +1962,7 @@ export class AwardClient {
      * @param body (optional) 
      * @return Success
      */
-    awardPost(body: GiveAwardDto | undefined): Observable<GivenAwardDtoBaseResponseDTO> {
+    awardPost(body: GiveAwardDto | undefined): Observable<AwardPurchaseDtoBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Award";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1985,14 +1985,14 @@ export class AwardClient {
                 try {
                     return this.processAwardPost(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GivenAwardDtoBaseResponseDTO>;
+                    return _observableThrow(e) as any as Observable<AwardPurchaseDtoBaseResponseDTO>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GivenAwardDtoBaseResponseDTO>;
+                return _observableThrow(response_) as any as Observable<AwardPurchaseDtoBaseResponseDTO>;
         }));
     }
 
-    protected processAwardPost(response: HttpResponseBase): Observable<GivenAwardDtoBaseResponseDTO> {
+    protected processAwardPost(response: HttpResponseBase): Observable<AwardPurchaseDtoBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2003,7 +2003,7 @@ export class AwardClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GivenAwardDtoBaseResponseDTO.fromJS(resultData200);
+            result200 = AwardPurchaseDtoBaseResponseDTO.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status === 404) {
@@ -3292,6 +3292,69 @@ export class MovieClient {
 }
 
 @Injectable()
+export class PaymentClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    payment(): Observable<StringBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Payment";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPayment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPayment(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<StringBaseResponseDTO>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<StringBaseResponseDTO>;
+        }));
+    }
+
+    protected processPayment(response: HttpResponseBase): Observable<StringBaseResponseDTO> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StringBaseResponseDTO.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class PlatformClient {
     private http: HttpClient;
     private baseUrl: string;
@@ -3657,9 +3720,11 @@ export class ReportClient {
      * @param page (optional) 
      * @param pageSize (optional) 
      * @param reasonId (optional) 
+     * @param orderBy (optional) 
+     * @param orderByAscending (optional) 
      * @return Success
      */
-    reportGet(page: number | undefined, pageSize: number | undefined, reasonId: number | undefined): Observable<ReportDtoBaseResponseDTO> {
+    reportGet(page: number | undefined, pageSize: number | undefined, reasonId: number | undefined, orderBy: string | undefined, orderByAscending: boolean | undefined): Observable<ReportDtoBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Report?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
@@ -3673,6 +3738,14 @@ export class ReportClient {
             throw new Error("The parameter 'reasonId' cannot be null.");
         else if (reasonId !== undefined)
             url_ += "reasonId=" + encodeURIComponent("" + reasonId) + "&";
+        if (orderBy === null)
+            throw new Error("The parameter 'orderBy' cannot be null.");
+        else if (orderBy !== undefined)
+            url_ += "orderBy=" + encodeURIComponent("" + orderBy) + "&";
+        if (orderByAscending === null)
+            throw new Error("The parameter 'orderByAscending' cannot be null.");
+        else if (orderByAscending !== undefined)
+            url_ += "orderByAscending=" + encodeURIComponent("" + orderByAscending) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -5191,6 +5264,191 @@ export interface IAwardPerson {
     person?: Person;
     review?: Review;
     award?: Award;
+}
+
+export class AwardPurchaseDto implements IAwardPurchaseDto {
+    necessaryCoins?: number;
+    sucessful?: boolean;
+    checkoutUrl?: string | null;
+    award?: GivenAwardDto;
+
+    constructor(data?: IAwardPurchaseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.necessaryCoins = _data["necessaryCoins"] !== undefined ? _data["necessaryCoins"] : <any>null;
+            this.sucessful = _data["sucessful"] !== undefined ? _data["sucessful"] : <any>null;
+            this.checkoutUrl = _data["checkoutUrl"] !== undefined ? _data["checkoutUrl"] : <any>null;
+            this.award = _data["award"] ? GivenAwardDto.fromJS(_data["award"]) : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AwardPurchaseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AwardPurchaseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["necessaryCoins"] = this.necessaryCoins !== undefined ? this.necessaryCoins : <any>null;
+        data["sucessful"] = this.sucessful !== undefined ? this.sucessful : <any>null;
+        data["checkoutUrl"] = this.checkoutUrl !== undefined ? this.checkoutUrl : <any>null;
+        data["award"] = this.award ? this.award.toJSON() : <any>null;
+        return data;
+    }
+}
+
+export interface IAwardPurchaseDto {
+    necessaryCoins?: number;
+    sucessful?: boolean;
+    checkoutUrl?: string | null;
+    award?: GivenAwardDto;
+}
+
+export class AwardPurchaseDtoBaseResponseDTO implements IAwardPurchaseDtoBaseResponseDTO {
+    readonly isSuccess?: boolean;
+    readonly content?: AwardPurchaseDto[] | null;
+    pagedContent?: AwardPurchaseDtoPagedList;
+    readonly errors?: string[] | null;
+
+    constructor(data?: IAwardPurchaseDtoBaseResponseDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).isSuccess = _data["isSuccess"] !== undefined ? _data["isSuccess"] : <any>null;
+            if (Array.isArray(_data["content"])) {
+                (<any>this).content = [] as any;
+                for (let item of _data["content"])
+                    (<any>this).content!.push(AwardPurchaseDto.fromJS(item));
+            }
+            else {
+                (<any>this).content = <any>null;
+            }
+            this.pagedContent = _data["pagedContent"] ? AwardPurchaseDtoPagedList.fromJS(_data["pagedContent"]) : <any>null;
+            if (Array.isArray(_data["errors"])) {
+                (<any>this).errors = [] as any;
+                for (let item of _data["errors"])
+                    (<any>this).errors!.push(item);
+            }
+            else {
+                (<any>this).errors = <any>null;
+            }
+        }
+    }
+
+    static fromJS(data: any): AwardPurchaseDtoBaseResponseDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new AwardPurchaseDtoBaseResponseDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isSuccess"] = this.isSuccess !== undefined ? this.isSuccess : <any>null;
+        if (Array.isArray(this.content)) {
+            data["content"] = [];
+            for (let item of this.content)
+                data["content"].push(item.toJSON());
+        }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IAwardPurchaseDtoBaseResponseDTO {
+    isSuccess?: boolean;
+    content?: AwardPurchaseDto[] | null;
+    pagedContent?: AwardPurchaseDtoPagedList;
+    errors?: string[] | null;
+}
+
+export class AwardPurchaseDtoPagedList implements IAwardPurchaseDtoPagedList {
+    results?: AwardPurchaseDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IAwardPurchaseDtoPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(AwardPurchaseDto.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AwardPurchaseDtoPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new AwardPurchaseDtoPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IAwardPurchaseDtoPagedList {
+    results?: AwardPurchaseDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class CheckEmailDTO implements ICheckEmailDTO {
@@ -7642,143 +7900,6 @@ export interface IGivenAwardDto {
     award?: AwardDetailsDto;
 }
 
-export class GivenAwardDtoBaseResponseDTO implements IGivenAwardDtoBaseResponseDTO {
-    readonly isSuccess?: boolean;
-    readonly content?: GivenAwardDto[] | null;
-    pagedContent?: GivenAwardDtoPagedList;
-    readonly errors?: string[] | null;
-
-    constructor(data?: IGivenAwardDtoBaseResponseDTO) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            (<any>this).isSuccess = _data["isSuccess"] !== undefined ? _data["isSuccess"] : <any>null;
-            if (Array.isArray(_data["content"])) {
-                (<any>this).content = [] as any;
-                for (let item of _data["content"])
-                    (<any>this).content!.push(GivenAwardDto.fromJS(item));
-            }
-            else {
-                (<any>this).content = <any>null;
-            }
-            this.pagedContent = _data["pagedContent"] ? GivenAwardDtoPagedList.fromJS(_data["pagedContent"]) : <any>null;
-            if (Array.isArray(_data["errors"])) {
-                (<any>this).errors = [] as any;
-                for (let item of _data["errors"])
-                    (<any>this).errors!.push(item);
-            }
-            else {
-                (<any>this).errors = <any>null;
-            }
-        }
-    }
-
-    static fromJS(data: any): GivenAwardDtoBaseResponseDTO {
-        data = typeof data === 'object' ? data : {};
-        let result = new GivenAwardDtoBaseResponseDTO();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["isSuccess"] = this.isSuccess !== undefined ? this.isSuccess : <any>null;
-        if (Array.isArray(this.content)) {
-            data["content"] = [];
-            for (let item of this.content)
-                data["content"].push(item.toJSON());
-        }
-        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
-        if (Array.isArray(this.errors)) {
-            data["errors"] = [];
-            for (let item of this.errors)
-                data["errors"].push(item);
-        }
-        return data;
-    }
-}
-
-export interface IGivenAwardDtoBaseResponseDTO {
-    isSuccess?: boolean;
-    content?: GivenAwardDto[] | null;
-    pagedContent?: GivenAwardDtoPagedList;
-    errors?: string[] | null;
-}
-
-export class GivenAwardDtoPagedList implements IGivenAwardDtoPagedList {
-    results?: GivenAwardDto[] | null;
-    pageCount?: number;
-    pageSize?: number;
-    page?: number;
-    readonly hasPreviousPage?: boolean;
-    readonly hasNextPage?: boolean;
-
-    constructor(data?: IGivenAwardDtoPagedList) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["results"])) {
-                this.results = [] as any;
-                for (let item of _data["results"])
-                    this.results!.push(GivenAwardDto.fromJS(item));
-            }
-            else {
-                this.results = <any>null;
-            }
-            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
-            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
-            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
-            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
-            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
-        }
-    }
-
-    static fromJS(data: any): GivenAwardDtoPagedList {
-        data = typeof data === 'object' ? data : {};
-        let result = new GivenAwardDtoPagedList();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.results)) {
-            data["results"] = [];
-            for (let item of this.results)
-                data["results"].push(item.toJSON());
-        }
-        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
-        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
-        data["page"] = this.page !== undefined ? this.page : <any>null;
-        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
-        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
-        return data;
-    }
-}
-
-export interface IGivenAwardDtoPagedList {
-    results?: GivenAwardDto[] | null;
-    pageCount?: number;
-    pageSize?: number;
-    page?: number;
-    hasPreviousPage?: boolean;
-    hasNextPage?: boolean;
-}
-
 export class LoginRequestByEmailDTO implements ILoginRequestByEmailDTO {
     email!: string;
     password!: string;
@@ -9245,8 +9366,9 @@ export class ReadPersonDTO implements IReadPersonDTO {
     birthDate?: Date;
     createDate?: Date;
     alterDate?: Date | null;
+    balance?: number;
     active?: boolean;
-    genderId?: number;
+    genderId?: number | null;
 
     constructor(data?: IReadPersonDTO) {
         if (data) {
@@ -9267,6 +9389,7 @@ export class ReadPersonDTO implements IReadPersonDTO {
             this.birthDate = _data["birthDate"] ? new Date(_data["birthDate"].toString()) : <any>null;
             this.createDate = _data["createDate"] ? new Date(_data["createDate"].toString()) : <any>null;
             this.alterDate = _data["alterDate"] ? new Date(_data["alterDate"].toString()) : <any>null;
+            this.balance = _data["balance"] !== undefined ? _data["balance"] : <any>null;
             this.active = _data["active"] !== undefined ? _data["active"] : <any>null;
             this.genderId = _data["genderId"] !== undefined ? _data["genderId"] : <any>null;
         }
@@ -9289,6 +9412,7 @@ export class ReadPersonDTO implements IReadPersonDTO {
         data["birthDate"] = this.birthDate ? this.birthDate.toISOString() : <any>null;
         data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>null;
         data["alterDate"] = this.alterDate ? this.alterDate.toISOString() : <any>null;
+        data["balance"] = this.balance !== undefined ? this.balance : <any>null;
         data["active"] = this.active !== undefined ? this.active : <any>null;
         data["genderId"] = this.genderId !== undefined ? this.genderId : <any>null;
         return data;
@@ -9304,8 +9428,9 @@ export interface IReadPersonDTO {
     birthDate?: Date;
     createDate?: Date;
     alterDate?: Date | null;
+    balance?: number;
     active?: boolean;
-    genderId?: number;
+    genderId?: number | null;
 }
 
 export class ReadProfileDTO implements IReadProfileDTO {
