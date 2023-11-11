@@ -1,0 +1,36 @@
+<ion-content *ngIf="reportOverview" style="display: flex; flex-direction: column;">
+
+  <ion-icon 
+      name="arrow-back-outline" 
+      class="go-back-button" 
+      color="primary" 
+      role="button" 
+      (click)="goBack()"
+    >
+    </ion-icon>
+
+  <main>
+  
+    <h3>{{reportOverview.reportType}} - {{reportOverview.reportReason}}</h3>
+    <h4>Status: {{reportOverview.reportStatus}}</h4>
+    <h4>Autor: {{reportOverview.reportedPerson}}</h4>
+  
+    <label>"{{reportOverview.reportText}}"</label>
+  </main>
+  
+  <footer>
+    <ion-button>
+      Descartar
+    </ion-button>
+
+    <ion-button *ngIf="this.reportOverview.reportType != 'Profile'">
+      Excluir {{this.reportOverview.reportType}}
+    </ion-button>
+
+    <ion-button>
+      Excluir perfil
+    </ion-button>
+
+  </footer>
+  
+</ion-content>

@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Lista de denúncias</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <div class="report-type">
+    <ion-text>Tipo de denúncia:</ion-text> 
+    <ion-chip (click)="selectReportType()" [ngClass]="selectedReportType ? 'not-selected' : ''">Todos os tipos</ion-chip>
+    <ion-chip (click)="selectReportType(2)" [ngClass]="selectedReportType != 2 ? 'not-selected' : ''">Assédio</ion-chip>
+    <ion-chip (click)="selectReportType(1)" [ngClass]="selectedReportType != 1 ? 'not-selected' : ''">Discurso de ódio</ion-chip>
+    <ion-chip (click)="selectReportType(3)" [ngClass]="selectedReportType != 3 ? 'not-selected' : ''">Conteúdo sexual</ion-chip>
+    <ion-chip (click)="selectReportType(4)" [ngClass]="selectedReportType != 4 ? 'not-selected' : ''">Outros</ion-chip>
+  </div>
+
+
+  <app-report-list></app-report-list>
+  
+
+  <footer>
+    <button [disabled]="!paginationData?.hasPrevPage" [ngClass]="paginationData?.hasPrevPage ? '' : 'disabled'" (click)="previousPage()">
+      <i class="material-icons">arrow_back</i>
+    </button>
+  
+    <label>{{paginationData?.currentPage}} de {{paginationData?.pageCount}} página(s)</label>
+    <button  [disabled]="!paginationData?.hasNextPage" [ngClass]="paginationData?.hasNextPage ? '' : 'disabled'" (click)="nextPage()">
+      <i class="material-icons">arrow_forward</i>
+    </button>
+  </footer>
+
+</ion-content>

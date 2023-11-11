@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()"><i class="material-icons">arrow_back</i></ion-button>
+    </ion-buttons>
+    <ion-title>Recompensar review</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h2>Saldo atual: 0</h2>
+  <label class="add-funds">Adicionar fundos?</label>
+
+  <main>
+
+    <div (click)="selectAward(1)" class="award-card selected">
+      <img src="assets/icon/GOLDEN_SHIELD.png">
+      <label>Prêmio de ouro</label>
+      <label>150 pontos</label>
+    </div>
+
+    <div (click)="selectAward(2)" class="award-card">
+      <img src="assets/icon/SILVER_SHIELD.png">
+      <label>Prêmio de prata</label>
+      <label>75 pontos</label>
+    </div>
+
+    <div (click)="selectAward(3)" class="award-card unavailable">
+      <img src="assets/icon/BRONZE_SHIELD.png">
+      <label>Prêmio de bronze</label>
+      <label>50 pontos</label>
+    </div>
+  </main>
+  <footer>
+    <button (click)="confirm()"><i class="material-icons">add</i>Recompensar</button>
+
+  </footer>
+</ion-content>

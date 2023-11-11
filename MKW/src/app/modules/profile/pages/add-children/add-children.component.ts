@@ -36,6 +36,8 @@ export class AddChildrenComponent implements OnInit {
               initialAge: ageRange.initialAge,
               finalAge: ageRange.finalAge
             });
+
+            console.log(ageRange);
         })
       },
       error: (err) =>{

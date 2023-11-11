@@ -22,8 +22,13 @@ export class ActivateEmailComponent  implements OnInit {
 
     let userData = this.userFacade.getUserState();
 
-    if(!!userData)
-      this.isUserEmailVerified = userData.isEmailVerified!;
+    if(userData == undefined || !userData)
+      return;
+
+    if(userData.isEmailVerified == true)
+      this.router.navigate(['home/feed']);
+
+    this.isUserEmailVerified = userData.isEmailVerified!;
   }
 
   ionViewDidEnter() {

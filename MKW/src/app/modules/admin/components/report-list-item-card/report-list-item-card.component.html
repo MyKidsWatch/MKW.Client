@@ -1,0 +1,15 @@
+<ion-item *ngIf="reportListItem" (click)="selectReport()">
+  <div slot="start" [ngClass]="'dot ' + mapStatusToDot(reportListItem.reportStatusId)"></div>
+  <ion-label class="ion-text-wrap">
+    <h3>
+      {{reportListItem.reportType}} - {{reportListItem.reportReason}}
+      <span class="date">
+        <ion-note>{{ reportListItem.reportDate| date: 'shortDate' }}</ion-note>
+      </span>
+    </h3>
+    <h3>Status: {{reportListItem.reportStatus}}</h3>
+    <h3>Autor: {{reportListItem.reportAuthor}}</h3>
+
+    <label class="report-preview" *ngIf="reportListItem.reportPreview">"{{reportListItem.reportPreview}}"</label>
+  </ion-label>
+</ion-item>

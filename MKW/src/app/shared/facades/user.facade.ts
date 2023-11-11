@@ -11,6 +11,7 @@ import { UserSelectors } from '../store/user/user.selectors';
 import { TokenInfo, UserData } from '../store/user/user.model';
 import { UserStateModel } from '../store/user/user.state';
 import { ActivateEmailComponent } from 'src/app/modules/home/activate-email/activate-email.component';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -31,6 +32,16 @@ export class UserFacade{
         return this.store.selectSnapshot(UserSelectors.getUser);
     }
 
+    public getUserAdminState() : Observable<boolean>
+    {   
+        return this.store.select(UserSelectors.getUserAdminInformation);
+    }
+
+    public getUserCurrentCoinCount() : Observable<number | undefined>
+    {
+        return this.store.select(UserSelectors.getUserCoins);
+    }
+    
     public loginUser(credentials: string, password: string)
     {
         return this.store.dispatch(new LoginUser(credentials, password));

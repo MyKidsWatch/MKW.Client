@@ -1,6 +1,7 @@
 
 
 export interface CommentModel{
+    personId: number;
     id: number;
     parentId?: number;
     commentText: string;

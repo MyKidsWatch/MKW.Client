@@ -37,7 +37,11 @@ const routes: Routes = [
         path: 'feed',
         canActivate: [AuthGuard, EmailVerifiedGuard],
         loadChildren: () => import('./../feed/feed.module').then(m => m.FeedModule)
-
+      },
+      {
+        path: 'admin',
+        canActivate: [AuthGuard, EmailVerifiedGuard],
+        loadChildren: () => import('./../admin/admin.module').then(m => m.AdminModule)
       }
     ],
     resolve: [ProfileResolver]

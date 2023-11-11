@@ -28,6 +28,8 @@ import { ReportReviewModalComponent } from './components/report-review-modal/rep
 import { ReportProfileModalComponent } from './components/report-profile-modal/report-profile-modal.component';
 import { ReviewEditModalComponent } from './components/review-edit-modal/review-edit-modal.component';
 import { ReviewAddModalComponent } from './components/review-add-modal/review-add-modal.component';
+import { ReviewResolver } from 'src/app/core/resolvers/review.resolver';
+import { AwardReviewModalComponent } from './components/award-review-modal/award-review-modal.component';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { ShortContentReviewCardComponent } from 'src/app/shared/components/short-content-review-card/short-content-review-card.component';
 import { KebabMenuComponent } from 'src/app/shared/components/kebab-menu/kebab-menu.component';
@@ -39,7 +41,8 @@ const routes: Routes = [
   },
   {
     path: 'review/:id',
-    component: ContentReviewPageComponent
+    component: ContentReviewPageComponent,
+    resolve: [ReviewResolver]
   },
   {
     path: 'reviewer/:username',
@@ -57,22 +60,23 @@ const parentRoute: Routes = [
 
 @NgModule({
   declarations: [
-    ContentComponent, 
-    StarsRatingComponent, 
-    ContentReviewPageComponent, 
-    ContentFeedPageComponent, 
-    ContentReviewerPageComponent, 
+    ContentComponent,
+    StarsRatingComponent,
+    ContentReviewPageComponent,
+    ContentFeedPageComponent,
+    ContentReviewerPageComponent,
     CommentCardComponent,
     EditCommentModalComponent,
     ReportCommentModalComponent,
     ReportReviewModalComponent,
     ReportProfileModalComponent,
     ReviewEditModalComponent,
-    ReviewAddModalComponent
+    ReviewAddModalComponent,
+    AwardReviewModalComponent
   ],
   imports: [
-    CommonModule, 
-    IonicModule, 
+    CommonModule,
+    IonicModule,
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,
@@ -96,6 +100,7 @@ const parentRoute: Routes = [
     CommentService,
     ReportClient,
     ReportService,
+    ReviewResolver
     ProfileClient,
     ProfileService,
   ]

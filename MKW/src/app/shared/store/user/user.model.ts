@@ -5,7 +5,8 @@ export class UserData{
     birthDate?: Date;
     username?: string;
     isEmailVerified?: boolean;
-    isPremium?: boolean;
+    isAdmin?: boolean;
+    coinCount?: number;
 }
 
 export class TokenInfo{

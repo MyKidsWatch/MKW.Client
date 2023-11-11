@@ -16,4 +16,21 @@ export class UserSelectors{
         return state.token;
     }
 
+    @Selector([UserState])
+    static getUserCoins(state: UserStateModel)
+    {
+        return state.user?.coinCount;
+    }
+
+    @Selector([UserState])
+    static getUserAdminInformation(state: UserStateModel)
+    {
+        if(!!state && !!state.user && state.user.isAdmin != undefined)
+            return state.user.isAdmin;
+
+        return false;
+    }
+
+
+    
 }

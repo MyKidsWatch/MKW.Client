@@ -5,15 +5,27 @@ import { CreateReportDto, CreateReviewDto, PlatformClient, ReportClient, ReviewC
   providedIn: 'root'
 })
 export class ReportService {
-  constructor(private reportClient: ReportClient) {  }
+
+  constructor(private reportClient: ReportClient) {
+  }
+
 
   report(request: CreateReportDto) {
     let res = this.reportClient.reportPost(request);
     return res;
   }
 
+
+
+
   getReportOptions() {
     let res = this.reportClient.reason();
+    return res;
+  }
+
+
+  getReportFeed(page: number = 1, size: number = 10, reasonId?: number) {
+    let res = this.reportClient.reportGet(page, size, reasonId, "CreateDate", true);
     return res;
   }
 }

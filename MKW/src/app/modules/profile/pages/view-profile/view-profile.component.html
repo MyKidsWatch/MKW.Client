@@ -2,6 +2,7 @@
   <i class="material-icons">account_circle</i>
   <div>
     <h3>{{userData!.firstName}} {{userData!.lastName}}</h3>
+    <h4 *ngIf="coinCount != undefined">Moedas: {{this.coinCount}}</h4>
   </div>
 </header>
 
@@ -11,6 +12,10 @@
       <!-- <label routerLink="edit-profile">Editar Perfil <i class="material-icons">edit</i></label> -->
       <label class=menu-item routerLink="children">
         {{ 'profile.editChildren' | translate }} <i class="material-icons">supervisor_account</i>
+      </label>
+
+      <label class=menu-item routerLink="children">
+        Adicionar fundos <i class="material-icons">payments</i>
       </label>
   </aside>
 </main>

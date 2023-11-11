@@ -6,6 +6,7 @@ import { error } from 'console';
 import { Route, Router } from '@angular/router';
 import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -44,6 +45,7 @@ export class LoginComponent  implements OnInit, OnDestroy {
       let credentials: ILoginRequestDTO = {credential: this.loginForm.controls['credential'].value!, password: this.loginForm.controls['password'].value!}
       
       this.userFacade.loginUser(credentials.credential, credentials.password)
+      .pipe(switchMap(res => this.userFacade.updateUserInformation()))
       .subscribe({
         next: () =>{
           this.router.navigate(['home/feed']);

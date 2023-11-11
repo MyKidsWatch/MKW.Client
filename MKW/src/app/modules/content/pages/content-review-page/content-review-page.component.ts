@@ -4,7 +4,7 @@ import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
 import { ContentReviewPage } from '../../models/content-review-page.model';
-import { Observable, Subscription, take, tap } from 'rxjs';
+import { Observable, Subscription, catchError, take, tap } from 'rxjs';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { AnswerCommentDto, CreateCommentDto, CreateReportDto, ICreateCommentDto, ReviewDetailsDtoBaseResponseDTO, UpdateCommentDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { CommentService } from 'src/app/core/services/comment.service';
@@ -16,19 +16,26 @@ import { ReviewFacade } from 'src/app/shared/facades/review.facade';
 import { ReviewEditModalComponent } from '../../components/review-edit-modal/review-edit-modal.component';
 import { ReportReview } from 'src/app/shared/store/review/review.actions';
 import { ReportReviewModalComponent } from '../../components/report-review-modal/report-review-modal.component';
+import { Store } from '@ngxs/store';
+import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
+import { UserFacade } from 'src/app/shared/facades/user.facade';
+import { AwardReviewModalComponent } from '../../components/award-review-modal/award-review-modal.component';
 
 @Component({
   selector: 'app-content-review-page',
   templateUrl: './content-review-page.component.html',
   styleUrls: ['./content-review-page.component.scss'],
 })
-export class ContentReviewPageComponent  implements OnInit {
+export class ContentReviewPageComponent implements OnInit {
 
 
   public reviewId?: number;
+  public canAward: boolean = false;
+
   public contentObject: ContentReviewPage = {
     reviewAuthor: {
       userName: '',
+      creatorId: 0
     },
     reviewCreationDate: new Date(),
     reviewedContentInformation: {
@@ -41,14 +48,19 @@ export class ContentReviewPageComponent  implements OnInit {
     reviewId: 0,
     reviewRating: 0,
     reviewTitle: '',
-    reviewDescription: ''
+    reviewDescription: '',
+    reviewAwardInformation: {
+      bronzeAwardCount: 0,
+      goldenAwardCount: 0,
+      silverAwardCount: 0
+    }
   };
   public loading: boolean = true;
 
 
   public reviewComments: ContentReviewComment[] = [];
 
-  
+
   private reviewSubscription?: Subscription;
   private commentSubscription?: Subscription;
   public newComment = '';
@@ -58,7 +70,8 @@ export class ContentReviewPageComponent  implements OnInit {
     private router: Router,
     private commentFacade: CommentFacade,
     private modalController: ModalController,
-    private reviewFacade: ReviewFacade) {
+    private reviewFacade: ReviewFacade,
+    private userFacade: UserFacade) {
   }
 
   ngOnInit() {
@@ -69,62 +82,61 @@ export class ContentReviewPageComponent  implements OnInit {
     this.commentFacade.setReviewComments(this.reviewId);
 
     this.reviewSubscription = this.reviewFacade.getCurrentReviewViewModel()
-    .subscribe({
-      next: (res: ContentReviewPage) =>{
-        console.log(res);
-        this.contentObject = res;
-        this.loading = false;
-        console.log(this.contentObject)
-      },
-      error: (err) =>{
+      .subscribe({
+        next: (res: ContentReviewPage) => {
 
-      }
-    });
+          this.contentObject = res;
+          this.loading = false;
+
+          let username = this.userFacade.getUserState()?.username!
+          this.actionSheetButtons = username == this.contentObject.reviewAuthor.userName ? this.actionSheetOp : this.actionSheetNotOp;
+          this.canAward = username !== this.contentObject.reviewAuthor.userName
+        },
+        error: (err) => {
+
+        }
+      });
 
     this.commentSubscription = this.commentFacade.getCurrentReviewCommentViewModel()
-    .subscribe({
-      next: (res: ContentReviewComment[]) =>{
-        console.log(res)
-        this.reviewComments = res;
-      },
-      error: (err) =>{
-        alert("Erro buscando os comentários dessa análise")
-      }
-    });
+      .subscribe({
+        next: (res: ContentReviewComment[]) => {
+          console.log(res)
+          this.reviewComments = res;
+        },
+        error: (err) => {
+          alert("Erro buscando os comentários dessa análise")
+        }
+      });
   }
 
   goBack() {
-    this.router.navigate([".."]);  
+    this.router.navigate([".."]);
     this.commentSubscription?.unsubscribe();
     this.reviewSubscription?.unsubscribe();
 
   }
 
-  goToContentPage(contentId: any, platformId: any)
-  {
+  goToContentPage(contentId: any, platformId: any) {
 
     this.router.navigate(['home/content/feed', contentId, platformId])
   }
 
-  addCommentToReview()
-  {
+  addCommentToReview() {
     this.commentFacade.createComment(this.newComment, this.reviewId!)
-    .pipe(take(1))
-    .subscribe(res => console.log);
+      .pipe(take(1))
+      .subscribe(res => console.log);
     this.newComment = '';
   }
 
+  actionSheetEvent(event: any, commentId: number) {
+    if (!event.detail.data || !event.detail.data.action)
+      return;
 
-
-
-  actionSheetEvent(event: any, commentId: number)
-  {
     let action = event.detail?.data?.action;
 
-    if(!action)
+    if (!action)
       return;
-    switch(action)
-    {
+    switch (action) {
       case 'delete':
         this.deleteReview();
         break;
@@ -137,68 +149,73 @@ export class ContentReviewPageComponent  implements OnInit {
     }
   }
 
-  deleteReview()
-  {
+  deleteReview() {
 
     this.reviewFacade.deleteReview(this.reviewId!)
-    .subscribe({
-      next: (res) =>{
-        alert("Review excluída com sucesso");
-        this.router.navigate(['home/feed']);
-      },
-      error: (err) =>{ 
-        alert("Erro ao excluir review");
-      }
-    })
+      .subscribe({
+        next: (res) => {
+          alert("Review excluída com sucesso");
+          this.router.navigate(['home/feed']);
+        },
+        error: (err) => {
+          alert("Erro ao excluir review");
+        }
+      })
   }
 
-  async openEditModal()
-  {
-    const modal = await this.modalController.create({component: ReviewEditModalComponent})
+  async openEditModal() {
+    const modal = await this.modalController.create({ component: ReviewEditModalComponent })
 
     modal.present();
 
     let result = await modal.onWillDismiss();
-  
 
-    if(result.data === null || result.role != 'edit')
+
+    if (result.data === null || result.role != 'edit')
       return;
 
     this.reviewFacade.editReview(this.reviewId!, result.data.title, result.data.stars, result.data.text)
-    .subscribe({
-      next: (res) =>{
-        alert("Review editada com sucesso")
-      },
-      error: (err) =>{ 
-        alert("Erro ao editar review");
-      }
-    })
+      .subscribe({
+        next: (res) => {
+          alert("Review editada com sucesso")
+        },
+        error: (err) => {
+          alert("Erro ao editar review");
+        }
+      })
   }
 
-  async openReportModal()
-  {
-    const modal = await this.modalController.create({component: ReportReviewModalComponent})
+  async openReportModal() {
+    const modal = await this.modalController.create({ component: ReportReviewModalComponent })
 
     modal.present();
 
     let result = await modal.onWillDismiss();
-  
 
-    if(result.data === null || result.role != 'report')
+
+    if (result.data === null || result.role != 'report')
       return;
 
-    this.reviewFacade.reportReview(result.data, this.reviewId!)
-    .subscribe({
-      next: (res) =>{
-        alert("Review denunciada com sucesso")
-      },
-      error: (err) =>{ 
-        alert("Erro ao denunciar review");
-      }
-    })  
+    this.reviewFacade.reportReview(result.data, this.reviewId!, this.contentObject.reviewAuthor.creatorId)
+      .subscribe({
+        next: (res) => {
+          alert("Review denunciada com sucesso")
+        },
+        error: (err) => {
+          alert("Erro ao denunciar review");
+        }
+      })
   }
 
-  public actionSheetButtons = [
+
+  async openAwardModal() {
+    const modal = await this.modalController.create({ component: AwardReviewModalComponent })
+
+    modal.present();
+  }
+  public actionSheetButtons: any[] = [];
+
+  private actionSheetOp = [
     {
       text: 'Deletar',
       role: 'destructive',
@@ -212,6 +229,17 @@ export class ContentReviewPageComponent  implements OnInit {
         action: 'edit',
       }
     },
+
+    {
+      text: 'Cancelar',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      }
+    }
+  ]
+
+  private actionSheetNotOp = [
     {
       text: 'Denunciar',
       data: {
@@ -224,6 +252,7 @@ export class ContentReviewPageComponent  implements OnInit {
       data: {
         action: 'cancel',
       }
-    },
-  ];
+    }
+  ]
+
 }

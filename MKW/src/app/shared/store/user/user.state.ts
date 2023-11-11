@@ -31,7 +31,7 @@ export class UserState{
 
 
     @Action(LogUserOff)
-    logOffUser(ctx: StateContext<UserStateModel>){ctx.setState(defaultUserState);}
+    logOffUser(ctx: StateContext<UserStateModel>){ctx.setState({});}
 
 
     @Action(LoginUser)
@@ -94,7 +94,9 @@ export class UserState{
                 firstName: response.firstName!,
                 isEmailVerified: response.emailConfirmed!,
                 userId: response.id!,
-                lastName: response.lastName!
+                lastName: response.lastName!,
+                isAdmin: response.isAdminUser,
+                coinCount: 0
             }
             
 
