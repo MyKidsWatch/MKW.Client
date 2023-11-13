@@ -3292,6 +3292,156 @@ export class MovieClient {
 }
 
 @Injectable()
+export class OperationClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    operation(operationId: number): Observable<AwardPurchaseDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Operation/{operationId}";
+        if (operationId === undefined || operationId === null)
+            throw new Error("The parameter 'operationId' must be defined.");
+        url_ = url_.replace("{operationId}", encodeURIComponent("" + operationId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processOperation(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processOperation(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AwardPurchaseDtoBaseResponseDTO>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AwardPurchaseDtoBaseResponseDTO>;
+        }));
+    }
+
+    protected processOperation(response: HttpResponseBase): Observable<AwardPurchaseDtoBaseResponseDTO> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = AwardPurchaseDtoBaseResponseDTO.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result404: any = null;
+                let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+                return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result500: any = null;
+                let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+                return throwException("Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    funds(body: AddFundDto | undefined): Observable<AwardPurchaseDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Operation/Funds";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processFunds(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processFunds(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<AwardPurchaseDtoBaseResponseDTO>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<AwardPurchaseDtoBaseResponseDTO>;
+        }));
+    }
+
+    protected processFunds(response: HttpResponseBase): Observable<AwardPurchaseDtoBaseResponseDTO> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = AwardPurchaseDtoBaseResponseDTO.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result404: any = null;
+                let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+                return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result500: any = null;
+                let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+                return throwException("Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class PaymentClient {
     private http: HttpClient;
     private baseUrl: string;
@@ -3945,6 +4095,76 @@ export class ReportClient {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    response(body: ReportResponseDto | undefined): Observable<ReportDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Report/Response";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processResponse(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processResponse(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReportDtoBaseResponseDTO>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReportDtoBaseResponseDTO>;
+        }));
+    }
+
+    protected processResponse(response: HttpResponseBase): Observable<ReportDtoBaseResponseDTO> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = ReportDtoBaseResponseDTO.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result404: any = null;
+                let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+                return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result500: any = null;
+                let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+                return throwException("Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -4472,6 +4692,42 @@ export class ReviewClient {
         }
         return _observableOf(null as any);
     }
+}
+
+export class AddFundDto implements IAddFundDto {
+    coins?: number;
+
+    constructor(data?: IAddFundDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.coins = _data["coins"] !== undefined ? _data["coins"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): AddFundDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddFundDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["coins"] = this.coins !== undefined ? this.coins : <any>null;
+        return data;
+    }
+}
+
+export interface IAddFundDto {
+    coins?: number;
 }
 
 export class AddUserToRoleDTO implements IAddUserToRoleDTO {
@@ -8439,6 +8695,7 @@ export class Operation implements IOperation {
     personId?: number;
     operationTypeId?: number;
     coins?: number;
+    stripeId?: string | null;
     person?: Person;
     operationType?: OperationType;
 
@@ -8461,6 +8718,7 @@ export class Operation implements IOperation {
             this.personId = _data["personId"] !== undefined ? _data["personId"] : <any>null;
             this.operationTypeId = _data["operationTypeId"] !== undefined ? _data["operationTypeId"] : <any>null;
             this.coins = _data["coins"] !== undefined ? _data["coins"] : <any>null;
+            this.stripeId = _data["stripeId"] !== undefined ? _data["stripeId"] : <any>null;
             this.person = _data["person"] ? Person.fromJS(_data["person"]) : <any>null;
             this.operationType = _data["operationType"] ? OperationType.fromJS(_data["operationType"]) : <any>null;
         }
@@ -8483,6 +8741,7 @@ export class Operation implements IOperation {
         data["personId"] = this.personId !== undefined ? this.personId : <any>null;
         data["operationTypeId"] = this.operationTypeId !== undefined ? this.operationTypeId : <any>null;
         data["coins"] = this.coins !== undefined ? this.coins : <any>null;
+        data["stripeId"] = this.stripeId !== undefined ? this.stripeId : <any>null;
         data["person"] = this.person ? this.person.toJSON() : <any>null;
         data["operationType"] = this.operationType ? this.operationType.toJSON() : <any>null;
         return data;
@@ -8498,6 +8757,7 @@ export interface IOperation {
     personId?: number;
     operationTypeId?: number;
     coins?: number;
+    stripeId?: string | null;
     person?: Person;
     operationType?: OperationType;
 }
@@ -10657,6 +10917,62 @@ export interface IReportReasonDtoPagedList {
     page?: number;
     hasPreviousPage?: boolean;
     hasNextPage?: boolean;
+}
+
+export class ReportResponseDto implements IReportResponseDto {
+    reportId?: number;
+    statusId?: number | null;
+    deleteComment?: boolean;
+    deleteReview?: boolean;
+    deletePerson?: boolean;
+    closeReport?: boolean;
+
+    constructor(data?: IReportResponseDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.reportId = _data["reportId"] !== undefined ? _data["reportId"] : <any>null;
+            this.statusId = _data["statusId"] !== undefined ? _data["statusId"] : <any>null;
+            this.deleteComment = _data["deleteComment"] !== undefined ? _data["deleteComment"] : <any>null;
+            this.deleteReview = _data["deleteReview"] !== undefined ? _data["deleteReview"] : <any>null;
+            this.deletePerson = _data["deletePerson"] !== undefined ? _data["deletePerson"] : <any>null;
+            this.closeReport = _data["closeReport"] !== undefined ? _data["closeReport"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): ReportResponseDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReportResponseDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["reportId"] = this.reportId !== undefined ? this.reportId : <any>null;
+        data["statusId"] = this.statusId !== undefined ? this.statusId : <any>null;
+        data["deleteComment"] = this.deleteComment !== undefined ? this.deleteComment : <any>null;
+        data["deleteReview"] = this.deleteReview !== undefined ? this.deleteReview : <any>null;
+        data["deletePerson"] = this.deletePerson !== undefined ? this.deletePerson : <any>null;
+        data["closeReport"] = this.closeReport !== undefined ? this.closeReport : <any>null;
+        return data;
+    }
+}
+
+export interface IReportResponseDto {
+    reportId?: number;
+    statusId?: number | null;
+    deleteComment?: boolean;
+    deleteReview?: boolean;
+    deletePerson?: boolean;
+    closeReport?: boolean;
 }
 
 export class ReportStatus implements IReportStatus {
