@@ -100,9 +100,9 @@ const parentRoute: Routes = [
     CommentService,
     ReportClient,
     ReportService,
-    ReviewResolver
+    ReviewResolver,
     ProfileClient,
-    ProfileService,
+    ProfileService
   ]
 })
 

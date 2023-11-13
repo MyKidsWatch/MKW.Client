@@ -69,45 +69,21 @@ export class ContentUtils {
 
   static ContentDTOResponseToContentCard(content: ContentListItemDTO): ContentCard | null {
 
-      if(!content)
-        return null;
+    if (!content)
+      return null;
 
-      const contentCard: ContentCard = {
-        title: content.name!,
-        releaseDate: new Date(content.releaseDate!),
-        averageRating: Math.round(content.averageRating! * 5) / 10,
-        description: content.description!,
-        genre: content.tags?.map((x: any) => x.name),
-        platformId: content.platformId!,
-        platformName: this.getPlatformString(content.platformId!),
-        externalContentId: content.externalId!,
-        contentId: content.id!,
-        picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined
-      }
-
-      return contentCard;
-  }
-
-  static ContentReviewToPage(reviewDTO: ReviewDetailsDto) : ContentReviewPage | null {
-      const contentReviewPage: ContentReviewPage = {
-        reviewId: reviewDTO.id!,
-        reviewTitle: reviewDTO.title!,
-        reviewDescription: reviewDTO.text!,
-        reviewAuthor: {
-          userName: reviewDTO.person!.username!,
-          profilePictureUrl: "assets/icon/default.jpg"
-        },
-        reviewedContentInformation: {
-          title: reviewDTO!.content!.name!,
-          picturePath: reviewDTO!.content!.imageUrl ? 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + reviewDTO!.content!.imageUrl : undefined,
-          contentId: reviewDTO!.content!.id!,
-          platformId: reviewDTO!.content!.platformId!,
-          externalContentId: reviewDTO!.content!.externalId!
-        },
-        reviewRating: reviewDTO!.stars!,
-        reviewCreationDate: reviewDTO.createDate!
-      }
-
+    const contentCard: ContentCard = {
+      title: content.name!,
+      releaseDate: new Date(content.releaseDate!),
+      averageRating: Math.round(content.averageRating! * 5) / 10,
+      description: content.description!,
+      genre: content.tags?.map((x: any) => x.name),
+      platformId: content.platformId!,
+      platformName: this.getPlatformString(content.platformId!),
+      externalContentId: content.externalId!,
+      contentId: content.id!,
+      picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined
+    }
 
     return contentCard;
   }
@@ -120,13 +96,15 @@ export class ContentUtils {
       title: content.name!,
       releaseDate: new Date(content.releaseDate!),
       averageRating: Math.round(content.averageRating! * 5) / 10,
-      contentType: 'Movie',
       description: content.description!,
-      genre: content.tags?.map((x: any) => x.name),
+      genre: content.tags || [],
       platformId: content.platformId!,
+      platformName: this.getPlatformString(content.platformId!),
       externalContentId: content.externalId!,
       contentId: content.id,
-      picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined
+      picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined,
+      platformIconPath: this.getPlatformIcon(content.platformId!)
+    }
 
     return contentCard;
   }
@@ -159,7 +137,7 @@ export class ContentUtils {
     };
 
     return contentReviewCard;
-  }
+
   }
 
   static TMDBGenreToText(genreId: number): string {

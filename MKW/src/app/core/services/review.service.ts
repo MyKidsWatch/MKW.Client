@@ -7,8 +7,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ReviewService {
   private language: string;
-  
-  constructor(private reviewClient: ReviewClient, private translateService: TranslateService) { 
+
+  constructor(private reviewClient: ReviewClient, private translateService: TranslateService) {
     this.language = this.translateService.currentLang;
   }
 
@@ -21,22 +21,19 @@ export class ReviewService {
   }
 
 
-  editReview(updateReviewDTO: UpdateReviewDto)
-  {
+  editReview(updateReviewDTO: UpdateReviewDto) {
     return this.reviewClient.reviewPut(updateReviewDTO);
   }
 
-  deleteReview(reviewId: number)
-  {
+  deleteReview(reviewId: number) {
     return this.reviewClient.reviewDelete(reviewId);
   }
-  
-  getReviewById(id: number, language: string = "pt-br" )
-  {
+
+  getReviewById(id: number, language: string = "pt-br") {
     return this.reviewClient.id(id, language);
   }
 
   getReviewByUserId(userId: number, language: string = "pt-br") {
-    return this.reviewClient.getByUserId(userId, language);
+    return this.reviewClient.user(userId, language);
   }
 }
