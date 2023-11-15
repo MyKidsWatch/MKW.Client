@@ -212,6 +212,25 @@ export class ContentReviewPageComponent implements OnInit {
     const modal = await this.modalController.create({ component: AwardReviewModalComponent })
 
     modal.present();
+
+
+    let result = await modal.onWillDismiss();
+
+    console.log(result);
+    if (result.data === null || result.role != 'award')
+      return;
+
+    this.reviewFacade.giveCurrentReviewAward(result.data!)
+      .subscribe({
+        next: (res) => {
+          alert("Award dado com sucesso!")
+        },
+        error: (err) => {
+          alert("Erro ao dar award!");
+        }
+      })
+
+
   }
   public actionSheetButtons: any[] = [];
 

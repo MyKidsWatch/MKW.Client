@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
@@ -8,18 +8,7 @@ import { OperationService } from 'src/app/core/services/operation.service';
 import { switchMap } from 'rxjs/operators';
 import { RedirectToCheckoutClientOptions } from '@stripe/stripe-js';
 
-import {
-  StripeService,
-  StripePaymentElementComponent,
-  NgxStripeModule,
-  NGX_STRIPE_VERSION
-} from 'ngx-stripe';
-import {
-  StripeElementsOptions,
-  PaymentIntent
-} from '@stripe/stripe-js';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { StripeService } from 'ngx-stripe';
 import { UserFacade } from '../../facades/user.facade';
 
 
@@ -33,44 +22,49 @@ import { UserFacade } from '../../facades/user.facade';
     IonicModule,
     TranslateModule,
     RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
   ],
 
   providers: [
     OperationClient,
     OperationService,
-    FormsModule,
-    ReactiveFormsModule,
-    StripeService,
-
-
+    StripeService
   ]
 })
-export class AddFundsModalComponent implements OnInit {
+export class AddFundsModalComponent implements OnInit, OnDestroy {
 
   private stripe: any;
   private internalCheckout: any;
   private operationId?: number;
 
   public isBuyingFunds: boolean = false;
+  public fundsBoughtSuccessfully: boolean = false;
   public amountUserIsBuying?: number = 0;
   public userBalance?: number = 0;
 
 
-  public checkoutUrl?: SafeHtml | null;
+  private isCheckoutMounted: boolean = false;
+
   constructor(
     private modalController: ModalController,
     private operationService: OperationService,
     private userFacade: UserFacade) { }
 
   ngOnInit(): void {
+
+    this.observeCointCount();
     // Include the Stripe JavaScript library
     const script = document.createElement('script');
     script.src = 'https://js.stripe.com/v3/';
     script.type = 'text/javascript';
     script.onload = () => this.initializeStripe();
     document.head.appendChild(script);
+  }
+
+  ngOnDestroy(): void {
+    if (this.internalCheckout) {
+      this.internalCheckout.destroy('#checkout');
+      this.internalCheckout = undefined;
+    }
   }
 
   observeCointCount() {
@@ -83,6 +77,7 @@ export class AddFundsModalComponent implements OnInit {
   }
 
   cancel() {
+    this.unmountCheckout();
     this.modalController.dismiss(null, 'cancel')
   }
 
@@ -91,8 +86,8 @@ export class AddFundsModalComponent implements OnInit {
     if (!this.amountUserIsBuying)
       return;
 
-    this.isBuyingFunds = false;
-    this.operationService.addFunds(new AddFundDto({ coins: 1000 }))
+    this.isBuyingFunds = true;
+    this.operationService.addFunds(new AddFundDto({ coins: this.amountUserIsBuying! }))
       .subscribe((async (res) => {
 
         let checkoutUrl = res.content![0].checkoutUrl;
@@ -106,10 +101,24 @@ export class AddFundsModalComponent implements OnInit {
         });
         this.internalCheckout = checkout;
         this.internalCheckout.mount('#checkout');
-      }))
+        this.isCheckoutMounted = true;
 
+        document.querySelectorAll('iframe').forEach(element => {
+          new ResizeObserver(() => {
+            if (element.style.height != '100%')
+              element.style.height = '100%';
+          }).observe(element)
+        })
+      }));
   }
 
+
+  unmountCheckout() {
+    if (this.internalCheckout && this.isCheckoutMounted) {
+      this.internalCheckout.unmount('#checkout');
+      this.isCheckoutMounted = false;
+    }
+  }
 
   completedStripe() {
 
@@ -117,19 +126,17 @@ export class AddFundsModalComponent implements OnInit {
       .pipe(switchMap(() => {
         return this.userFacade.updateUserInformation()
       })).subscribe((res) => {
-        this.stripe.unmount('#checkout');
-        alert("Compra realizada com sucesso. Novo saldo: " + this.userBalance);
+        this.unmountCheckout();
+        this.isBuyingFunds = false;
+        this.fundsBoughtSuccessfully = true;
       })
   }
-
 
   selectAmountToBuy(coinAmount: number) {
     this.amountUserIsBuying = coinAmount;
   }
 
   getCoinCardClass(coinAmout: number) {
-    console.log(coinAmout);
-    console.log(this.amountUserIsBuying);
     return this.amountUserIsBuying == coinAmout ? 'selected' : '';
   }
 

@@ -12,28 +12,45 @@
 <ion-content>
 
 
-  <h2>Saldo atual: {{this.userBalance ? this.userBalance : 0}}</h2>
-  <main>
-
-    <div (click)="selectAmountToBuy(1000)" [ngClass]="'coin-card ' + getCoinCardClass(1000)">
-      <label>1000 moedas</label>
-    </div>
+  <h2 *ngIf="!isBuyingFunds && !fundsBoughtSuccessfully">Saldo atual: {{this.userBalance ? this.userBalance : 0}}</h2>
+  <main *ngIf="!isBuyingFunds && !fundsBoughtSuccessfully">
 
     <div (click)="selectAmountToBuy(100)" [ngClass]="'coin-card ' + getCoinCardClass(100)">
+      <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
       <label>100 moedas</label>
+      <label>R$ 34,99</label>
     </div>
 
     <div (click)="selectAmountToBuy(50)" [ngClass]="'coin-card ' + getCoinCardClass(50)">
+      <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
       <label>50 moedas</label>
+      <label>R$ 19,99</label>
+    </div>
+
+    <div (click)="selectAmountToBuy(20)" [ngClass]="'coin-card ' + getCoinCardClass(20)">
+      <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
+      <label>20 moedas</label>
+      <label>R$ 9,99</label>
     </div>
   </main>
-  <footer>
+  <footer *ngIf="!isBuyingFunds && !fundsBoughtSuccessfully">
     <button [disabled]="!this.amountUserIsBuying" (click)="initializeStripeCheckout()">
       <i class="material-icons">add</i>Comprar
     </button>
   </footer>
-  <div id="checkout">
 
+  <div id="checkout" [style]="isBuyingFunds ? '' : 'display: none'">
+
+  </div>
+
+  <div class="success" *ngIf="this.fundsBoughtSuccessfully">
+    <div class="information">
+      <h2>Fundos adicionados com sucesso</h2>
+      <img src="assets/images/approve-email.png">
+      <p class="thanks-for-buying">Sua compra foi realizada com sucesso!</p>
+      <p class="thanks-for-buying">Seu novo saldo é de {{this.userBalance}} moedas</p>
+      <button (click)="cancel()">Voltar</button>
+    </div>
   </div>
 
 </ion-content>

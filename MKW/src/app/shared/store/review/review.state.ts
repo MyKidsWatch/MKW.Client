@@ -4,11 +4,12 @@ import { Injectable } from '@angular/core';
 
 import { State, StateContext, Action } from '@ngxs/store';
 import { ReviewService } from "src/app/core/services/review.service";
-import { CreateReview, DeleteReview, EditReview, ReportReview, SetReviewState } from "./review.actions";
+import { CreateReview, DeleteReview, EditReview, GiveCurrentReviewAward, ReportReview, SetReviewState } from "./review.actions";
 import { catchError, of, take, tap } from "rxjs";
 import { get } from "http";
-import { CreateReviewDto, ICreateReviewDto, IUpdateReviewDto, ReviewDetailsDto, UpdateReviewDto } from "src/app/core/proxies/mkw-api.proxy";
+import { AwardPurchaseDto, CreateReviewDto, GiveAwardDto, ICreateReviewDto, IUpdateReviewDto, ReviewDetailsDto, UpdateReviewDto } from "src/app/core/proxies/mkw-api.proxy";
 import { patch } from "@ngxs/store/operators";
+import { AwardService } from "src/app/core/services/award.service";
 
 
 const defautlState: ReviewStateModel = {
@@ -34,7 +35,7 @@ const defautlState: ReviewStateModel = {
 @Injectable()
 export class ReviewState {
 
-    constructor(private reviewService: ReviewService) { }
+    constructor(private reviewService: ReviewService, private awardService: AwardService) { }
 
     @Action(SetReviewState)
     SetReviewState({ getState, patchState }: StateContext<ReviewStateModel>, { reviewId }: SetReviewState) {
@@ -187,6 +188,31 @@ export class ReviewState {
                 setState(defautlState);
             }));
     }
+
+    @Action(GiveCurrentReviewAward)
+    GiveCurrentReviewAward({ getState, setState }: StateContext<ReviewStateModel>, { awardId }: GiveCurrentReviewAward) {
+
+        let currentReview = getState();
+
+        let request: GiveAwardDto = new GiveAwardDto();
+        request.awardId = awardId;
+        request.reviewId = currentReview.reviewDetails.id!;
+
+        return this.awardService.giveReviewAward(request)
+            .pipe(take(1))
+            .pipe(tap(res => {
+
+                let response: AwardPurchaseDto = res.content![0];
+                let reviewInformation = response.award!.review!;
+
+                currentReview.reviewAwards.bronzeAwards = reviewInformation.bronzeAwards!;
+                currentReview.reviewAwards.silverAwards = reviewInformation.silverAwards!;
+                currentReview.reviewAwards.goldenAwards = reviewInformation.goldenAwards!;
+
+                setState(currentReview)
+            }))
+    }
+
 
     private ReviewDetailsDtoToState(reviewDTO: ReviewDetailsDto, state: ReviewStateModel) {
         let reviewDetails: ReviewDetailsModel = {

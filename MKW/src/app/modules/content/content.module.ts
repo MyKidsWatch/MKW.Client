@@ -10,7 +10,7 @@ import { ContentReviewPageComponent } from './pages/content-review-page/content-
 import { ContentFeedPageComponent } from './pages/content-feed-page/content-feed-page.component';
 import { ContentReviewerPageComponent } from './pages/content-reviewer-page/content-reviewer-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommentClient, ContentClient, ProfileClient, ReportClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { AwardClient, CommentClient, ContentClient, ProfileClient, ReportClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { HeaderBackComponent } from 'src/app/shared/components/header-back/header-back.component';
 import { ContentService } from 'src/app/core/services/content.service';
@@ -33,6 +33,7 @@ import { AwardReviewModalComponent } from './components/award-review-modal/award
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { ShortContentReviewCardComponent } from 'src/app/shared/components/short-content-review-card/short-content-review-card.component';
 import { KebabMenuComponent } from 'src/app/shared/components/kebab-menu/kebab-menu.component';
+import { AwardService } from 'src/app/core/services/award.service';
 
 const routes: Routes = [
   {
@@ -90,6 +91,8 @@ const parentRoute: Routes = [
   ],
   exports: [ContentComponent],
   providers: [
+    AwardClient,
+    AwardService,
     ReviewClient,
     ReviewService,
     ReviewFacade,
