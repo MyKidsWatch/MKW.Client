@@ -72,13 +72,17 @@
     "whatToDo": "What do you want to do?",
     "editChildren": "Edit my children",
     "logout": "Logout from my account",
+    "addBalance": "Buy coins",
     "awards": {
       "goldenTitle": "Shining Gold!",
       "goldenDescription": "{{name}} has {{goldenAwards}} gold medals, {{silverAwards}} silver medals, and {{bronzeAwards}} bronze medals.",
+      "my-goldenDescription": "You have {{goldenAwards}} gold medals, {{silverAwards}} silver medals, and {{bronzeAwards}} bronze medals.",
       "silverTitle": "Shining like Silver!",
       "silverDescription": "{{name}} has {{silverAwards}} silver medals, {{goldenAwards}} gold medals, and {{bronzeAwards}} bronze medals.",
+      "my-silverDescription": "You have {{silverAwards}} silver medals, {{goldenAwards}} gold medals, and {{bronzeAwards}} bronze medals.",
       "bronzeTitle": "Bronze with its own shine!",
-      "bronzeDescription": "{{name}} has {{bronzeAwards}} bronze medals, {{goldenAwards}} gold medals, and {{silverAwards}} silver medals."
+      "bronzeDescription": "{{name}} has {{bronzeAwards}} bronze medals, {{goldenAwards}} gold medals, and {{silverAwards}} silver medals.",
+      "my-bronzeDescription": "You have {{bronzeAwards}} bronze medals, {{goldenAwards}} gold medals, and {{silverAwards}} silver medals."
     }
   },
   "content": {

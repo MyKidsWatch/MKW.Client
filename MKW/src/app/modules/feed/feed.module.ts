@@ -5,12 +5,13 @@ import { FeedComponent } from './feed.component';
 import { IonicModule } from '@ionic/angular';
 import { ContentCardComponent } from '../../shared/components/content-card/content-card.component'
 import { TranslateModule } from '@ngx-translate/core';
-import { AlgorithmClient, ReportClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { AlgorithmClient, ChildClient, ReportClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { AlgorithmService } from 'src/app/core/services/algorithm.service';
 import { ReviewFeedComponent } from './pages/review-feed/review-feed.component';
 import { ContentFeedComponent } from './pages/content-feed/content-feed.component';
 import { ContentReviewCardComponent } from 'src/app/shared/components/content-review-card/content-review-card.component';
 import { ReviewService } from 'src/app/core/services/review.service';
+import { ChildService } from 'src/app/core/services/child.service';
 
 const childrenRoutes: Routes = [
   {
@@ -55,6 +56,8 @@ const routes: Routes = [
     ReportClient,
     ReviewClient,
     ReviewService,
+    ChildClient,
+    ChildService,
   ]
 })
 export class FeedModule { }

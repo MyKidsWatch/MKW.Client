@@ -12,8 +12,8 @@ export class ReviewService {
     this.language = this.translateService.currentLang;
   }
 
-  getRelevantReviews(page: number = 1, count: number = 10) {
-    return this.reviewClient.reviewGet(undefined, page, count, this.language);
+  getRelevantReviews(page: number = 1, count: number = 10, childId?:number) {
+    return this.reviewClient.reviewGet(childId, page, count, this.language);
   }
 
   registerReview(createReviewDTO: CreateReviewDto) {
