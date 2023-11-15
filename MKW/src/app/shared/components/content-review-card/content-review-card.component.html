@@ -7,47 +7,48 @@
         class="user-pfp" 
         [src]="contentData.reviewerInformation.reviewerPicturePath || 'assets/icon/default.jpg'"
       />
-      <label>{{ contentData.reviewerInformation.reviewerName }}</label>
+      <label class="user-name">{{ contentData.reviewerInformation.reviewerName }}</label>
     </div>
     <label>{{ contentData.reviewPublishDate.toLocaleDateString() }}</label>
   </header>
-  <section>
-    <article>
+  <section class="poster-and-content">
+    <article class="poster-and-rating">
       <img 
-      class="content-poster" 
-      [src]="this.contentData.reviewContentInformation.contentPosterPath || '../../../../assets/images/no-photo.png'"
+        class="content-poster" 
+        [class.square]="contentData.platformId === 2"
+        [src]="this.contentData.reviewContentInformation.contentPosterPath || '../../../../assets/images/no-photo.png'"
       >
-      <div class="grading" *ngIf="this.contentData.reviewRating">
+      <div class="grading">
         <i class="material-icons grade-icon">grade</i>
-        <label>{{ this.contentData.reviewRating }}</label>
+        <label class="grading-score">{{ this.contentData.reviewRating || '-' }}</label>
       </div>
     </article>
     
     <aside class="review-content">
-      <header>
+      <header class="review-content-header">
         <h2 class="content-title">{{this.contentData.reviewTitle}}</h2>
         <label class="content-type">{{this.contentData.reviewContentInformation.contentTitle}}</label>
       </header>
       <label class="content-description">{{this.contentData.reviewBody}}</label>
-      <footer>
+      <footer class="review-content-footer">
         <aside class="awards">
           <div class="award-details" *ngIf="this.contentData.reviewAwardInformation && this.contentData.reviewAwardInformation.reviewGoldAwardCount > 0">
-            <img src="assets/icon/GOLDEN_SHIELD.png">
-            <label>{{ this.contentData.reviewAwardInformation.reviewGoldAwardCount  }}</label>
+            <img class="award-icon"  src="assets/icon/GOLDEN_SHIELD.png">
+            <label class="award-count">{{ this.contentData.reviewAwardInformation.reviewGoldAwardCount  }}</label>
           </div>
           <div class="award-details" *ngIf="this.contentData.reviewAwardInformation && this.contentData.reviewAwardInformation.reviewSilverAwardCount > 0">
-            <img src="assets/icon/SILVER_SHIELD.png">
-            <label>{{ this.contentData.reviewAwardInformation.reviewSilverAwardCount}}</label>
+            <img class="award-icon" src="assets/icon/SILVER_SHIELD.png">
+            <label class="award-count">{{ this.contentData.reviewAwardInformation.reviewSilverAwardCount}}</label>
           </div>
           <div class="award-details" *ngIf="this.contentData.reviewAwardInformation && this.contentData.reviewAwardInformation.reviewBronzeAwardCount > 0">
-            <img src="assets/icon/BRONZE_SHIELD.png">
-            <label>{{ this.contentData.reviewAwardInformation.reviewBronzeAwardCount}}</label>
+            <img class="award-icon" src="assets/icon/BRONZE_SHIELD.png">
+            <label class="award-count">{{ this.contentData.reviewAwardInformation.reviewBronzeAwardCount}}</label>
           </div>
         </aside>
-        <nav (click)="redirectToContentReviewPage(this.contentData.reviewId!)"  >
-          <i class="material-icons">message</i>
-          <label>{{ this.contentData.reviewCommentCount }}</label>
-          <i class="material-icons">arrow_forward_ios</i>
+        <nav class="comments-and-link" (click)="redirectToContentReviewPage(this.contentData.reviewId!)"  >
+          <i class="material-icons comment-icon">message</i>
+          <label class="comment-count">{{ this.contentData.reviewCommentCount }}</label>
+          <i class="material-icons arrow-icon">arrow_forward_ios</i>
         </nav>
       </footer>
     </aside>

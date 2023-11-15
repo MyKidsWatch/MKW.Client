@@ -1,8 +1,6 @@
 import { ContentCard } from "src/app/shared/models/content-card.model";
 import { ContentDetailsDTO, ContentListItemDTO, ReviewDetailsDto } from "../proxies/mkw-api.proxy";
-import { ContentReviewPage } from "src/app/modules/content/models/content-review-page.model";
 import { ContentReviewCard } from "src/app/shared/models/content-review-card.model";
-import { TranslateService } from "@ngx-translate/core";
 
 export class ContentUtils {
   private static restrictedTerms = ['sex', 'porn', 'vagina', 'penis', 'anus', 'blowjob'];
@@ -11,7 +9,7 @@ export class ContentUtils {
     return this.restrictedTerms.some(term => text.toLowerCase().includes(term.toLowerCase()));
   }
 
-  static picturePathFromPlatformId(platformId: number) {
+  static basePicturePathFromPlatformId(platformId: number) {
     let picturePath = ''
     switch (platformId) {
       case 1:
@@ -82,7 +80,7 @@ export class ContentUtils {
       platformName: this.getPlatformString(content.platformId!),
       externalContentId: content.externalId!,
       contentId: content.id!,
-      picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined
+      picturePath: content.imageUrl ? this.basePicturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined
     }
 
     return contentCard;
@@ -102,7 +100,7 @@ export class ContentUtils {
       platformName: this.getPlatformString(content.platformId!),
       externalContentId: content.externalId!,
       contentId: content.id,
-      picturePath: content.imageUrl ? this.picturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined,
+      picturePath: content.imageUrl ? this.basePicturePathFromPlatformId(content.platformId!) + content.imageUrl : undefined,
       platformIconPath: this.getPlatformIcon(content.platformId!)
     }
 
@@ -131,9 +129,12 @@ export class ContentUtils {
       },
       reviewCommentCount: relevantReview.commentsQuantity ? relevantReview.commentsQuantity : 0,
       reviewContentInformation: {
-        contentPosterPath: relevantReview.content?.imageUrl ? 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2' + relevantReview.content?.imageUrl : undefined,
+        contentPosterPath: relevantReview.content?.imageUrl 
+          ? this.basePicturePathFromPlatformId(relevantReview.content?.platformId as number) + relevantReview.content?.imageUrl 
+          : undefined,
         contentTitle: relevantReview.content?.name!
-      }
+      },
+      platformId: relevantReview.content?.platformId!,
     };
 
     return contentReviewCard;
