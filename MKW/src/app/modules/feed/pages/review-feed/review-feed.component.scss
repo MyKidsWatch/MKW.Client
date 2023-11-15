@@ -64,6 +64,58 @@ ion-header {
 
 }
 
+div.child-option{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 5px 10px 0 5px;
+  justify-content: space-evenly;
+}
+ion-chip{
+  background-color: var(--mkw-color-primary);
+  color: var(--mkw-color-light);
+}
+
+ion-chip.not-selected{
+  color: var(--mkw-color-primary);
+  background-color: var(--mkw-color-light);
+  border: 1px solid var(--mkw-color-primary);
+}
+
+.boy.not-selected {
+  color: var(--mkw-color-secondary)!important;
+  background-color: var(--mkw-color-light);
+}
+
+.boy {
+  color: var(--mkw-color-light)!important;
+  background-color: var(--mkw-color-secondary);
+  border: 1px solid var(--mkw-color-secondary);
+}
+
+.girl.not-selected {
+  color: var(--mkw-color-purple)!important;
+  background-color: var(--mkw-color-light);
+}
+
+.girl {
+  color: var(--mkw-color-light)!important;
+  background-color: var(--mkw-color-purple);
+  border: 1px solid var(--mkw-color-purple);
+}
+
+.unassigned.not-selected {
+  color: var(--mkw-color-warning)!important;
+  background-color: var(--mkw-color-light);
+}
+
+.unassigned {
+  color: var(--mkw-color-light)!important;
+  background-color: var(--mkw-color-warning);
+  border: 1px solid var(--mkw-color-warning);
+}
+
 .header-md::after {
   background-image: none;
 }
