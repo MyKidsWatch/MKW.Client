@@ -15,7 +15,7 @@ export class AlgorithmService {
     this.language = this.translateService.currentLang;
   }
 
-  getUserFeed(page: number = 1, count: number = 10) {
-    return this.algorithmClient.algorithm(page, count, this.language);
+  getUserFeed(page: number = 1, count: number = 10, childId : number | null = null) {
+    return this.algorithmClient.algorithm(page, count, this.language, childId);
   }
 }

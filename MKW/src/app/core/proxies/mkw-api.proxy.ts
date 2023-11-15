@@ -1373,7 +1373,7 @@ export class AlgorithmClient {
      * @param language (optional) 
      * @return Success
      */
-    algorithm(page: number | undefined, count: number | undefined, language: string | undefined): Observable<ObjectBaseResponseDTO> {
+    algorithm(page: number | undefined, count: number | undefined, language: string | undefined, childId: number | null): Observable<ObjectBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Algorithm?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
@@ -1387,6 +1387,8 @@ export class AlgorithmClient {
             throw new Error("The parameter 'language' cannot be null.");
         else if (language !== undefined)
             url_ += "language=" + encodeURIComponent("" + language) + "&";
+        if(childId !== null)
+            url_ += "childId=" + encodeURIComponent("" + childId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: any = {

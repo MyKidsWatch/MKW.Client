@@ -47,4 +47,33 @@ export class AccountUtils {
         return ageRangeString;
 
     }
+
+    static getAgeRangeStringSimplified(ageRangeId?: number, translateService?: TranslateService)
+    {
+        let ageRangeString = '';
+        switch(ageRangeId)
+        {
+            case 1:
+                ageRangeString = '0 - 2 '
+                break;
+            case 2:
+                ageRangeString = '3 - 5 '
+                break;
+            case 3:
+                ageRangeString = '6 - 8 '
+                break;
+            case 4:
+                ageRangeString = '9 - 11 '
+                break;
+            case 5:
+                ageRangeString = '12 - 14 '
+                break;
+            case 6:
+                ageRangeString = '15 - 17 '
+                break;
+        }
+
+        return ageRangeString;
+
+    }
 }
