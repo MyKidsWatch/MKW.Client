@@ -3,7 +3,10 @@
 
   <header class="profile-header">
     <div class="profile-information" [routerLink]="['../../content/reviewer/' + this.contentData.reviewerInformation.reviewerName]" >
-      <img class="user-pfp" [src]="contentData.reviewerInformation.reviewerPicturePath"/>
+      <img 
+        class="user-pfp" 
+        [src]="contentData.reviewerInformation.reviewerPicturePath || 'assets/icon/default.jpg'"
+      />
       <label>{{ contentData.reviewerInformation.reviewerName }}</label>
     </div>
     <label>{{ contentData.reviewPublishDate.toLocaleDateString() }}</label>
