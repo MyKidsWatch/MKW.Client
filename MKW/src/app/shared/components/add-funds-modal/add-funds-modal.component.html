@@ -6,3 +6,34 @@
     <ion-title>Adicionar fundos</ion-title>
   </ion-toolbar>
 </ion-header>
+
+
+
+<ion-content>
+
+
+  <h2>Saldo atual: {{this.userBalance ? this.userBalance : 0}}</h2>
+  <main>
+
+    <div (click)="selectAmountToBuy(1000)" [ngClass]="'coin-card ' + getCoinCardClass(1000)">
+      <label>1000 moedas</label>
+    </div>
+
+    <div (click)="selectAmountToBuy(100)" [ngClass]="'coin-card ' + getCoinCardClass(100)">
+      <label>100 moedas</label>
+    </div>
+
+    <div (click)="selectAmountToBuy(50)" [ngClass]="'coin-card ' + getCoinCardClass(50)">
+      <label>50 moedas</label>
+    </div>
+  </main>
+  <footer>
+    <button [disabled]="!this.amountUserIsBuying" (click)="initializeStripeCheckout()">
+      <i class="material-icons">add</i>Comprar
+    </button>
+  </footer>
+  <div id="checkout">
+
+  </div>
+
+</ion-content>

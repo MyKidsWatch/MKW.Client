@@ -11,7 +11,7 @@ import { get } from "http";
 import { ConfirmAccountEmailDTO } from "src/app/core/proxies/mkw-api.proxy";
 import { stat } from "fs";
 
-export class UserStateModel{
+export class UserStateModel {
     user?: UserData;
     token?: TokenInfo;
 }
@@ -25,102 +25,98 @@ const defaultUserState: UserStateModel = {}
 })
 
 @Injectable()
-export class UserState{
+export class UserState {
 
-    constructor(private authService: AuthService, private accountService: AccountService){}
+    constructor(private authService: AuthService, private accountService: AccountService) { }
 
 
     @Action(LogUserOff)
-    logOffUser(ctx: StateContext<UserStateModel>){ctx.setState({});}
+    logOffUser(ctx: StateContext<UserStateModel>) { ctx.setState({}); }
 
 
     @Action(LoginUser)
-    public loginUser({getState, patchState}: StateContext<UserStateModel>, {credentials, password} : LoginUser)
-    {
+    public loginUser({ getState, patchState }: StateContext<UserStateModel>, { credentials, password }: LoginUser) {
         let loginRequest: ILoginRequestDTO = {
             credential: credentials,
             password: password
         }
 
         return this.authService.authenticate(loginRequest)
-        .pipe(take(1))
-        .pipe(tap(res =>{
-            const state = getState();
+            .pipe(take(1))
+            .pipe(tap(res => {
+                const state = getState();
 
-            let tokenInfo = res.content![0];
+                let tokenInfo = res.content![0];
 
-            state.token = {
-                accessToken: tokenInfo.accessToken!,
-                expiresAt: tokenInfo.accessTokenExpiration!,
-                refreshToken: tokenInfo.refreshToken!
-            }
+                state.token = {
+                    accessToken: tokenInfo.accessToken!,
+                    expiresAt: tokenInfo.accessTokenExpiration!,
+                    refreshToken: tokenInfo.refreshToken!
+                }
 
-            patchState(state);
-        }))
+                patchState(state);
+            }))
     }
-    
-    @Action(RefreshCurrentUserToken)
-    public refreshUserToken({getState, patchState}: StateContext<UserStateModel>)
-    {
-        return this.authService.refresh()
-        .pipe(take(1))
-        .pipe(tap(res =>{
-            const state = getState();
-            
-            let tokenInfo = res.content![0];
-            
-            state.token = {
-                accessToken: tokenInfo.accessToken!,
-                expiresAt: tokenInfo.accessTokenExpiration!,
-                refreshToken: tokenInfo.refreshToken!
-            }
 
-            patchState(state);
-        }))
+    @Action(RefreshCurrentUserToken)
+    public refreshUserToken({ getState, patchState }: StateContext<UserStateModel>) {
+        return this.authService.refresh()
+            .pipe(take(1))
+            .pipe(tap(res => {
+                const state = getState();
+
+                let tokenInfo = res.content![0];
+
+                state.token = {
+                    accessToken: tokenInfo.accessToken!,
+                    expiresAt: tokenInfo.accessTokenExpiration!,
+                    refreshToken: tokenInfo.refreshToken!
+                }
+
+                patchState(state);
+            }))
     }
 
     @Action(UpdateCurrentUserInformation)
-    public updateUserInformation({getState, patchState}: StateContext<UserStateModel>)
-    {
+    public updateUserInformation({ getState, patchState }: StateContext<UserStateModel>) {
         return this.accountService.getUserInfo()
-        .pipe(take(1))
-        .pipe(tap(res =>{
+            .pipe(take(1))
+            .pipe(tap(res => {
 
-            const state = getState();
-            let response = res.content![0];
+                const state = getState();
+                let response = res.content![0];
 
-            state.user = {
-                username: response.userName!,
-                firstName: response.firstName!,
-                isEmailVerified: response.emailConfirmed!,
-                userId: response.id!,
-                lastName: response.lastName!,
-                isAdmin: response.isAdminUser,
-                coinCount: 0
-            }
-            
+                state.user = {
+                    username: response.userName!,
+                    firstName: response.firstName!,
+                    isEmailVerified: response.emailConfirmed!,
+                    userId: response.id!,
+                    lastName: response.lastName!,
+                    isAdmin: response.isAdminUser,
+                    coinCount: response.associatedWithPerson!.balance!
+                }
 
-            patchState(state);
-        }))
+
+                patchState(state);
+            }))
     }
 
 
     @Action(ActivateUserEmail)
-    public activateUserEmail({getState, patchState}: StateContext<UserStateModel>, {keycode} : ActivateUserEmail)
-    {
+    public activateUserEmail({ getState, patchState }: StateContext<UserStateModel>, { keycode }: ActivateUserEmail) {
         const state = getState();
         let confirmEmailRequest: ConfirmAccountEmailDTO = new ConfirmAccountEmailDTO();
 
         confirmEmailRequest.keycode = Number(keycode);
-        confirmEmailRequest.userId = state.user?.userId! 
+        confirmEmailRequest.userId = state.user?.userId!
 
         console.log(confirmEmailRequest);
         return this.accountService.activateEmail(confirmEmailRequest)
-        .pipe(take(1))
-        .pipe(tap(res =>{
-            state.user!.isEmailVerified = true;
-            patchState(state);
-        }))
+            .pipe(take(1))
+            .pipe(tap(res => {
+                state.user!.isEmailVerified = true;
+                patchState(state);
+            }))
     }
 
 }

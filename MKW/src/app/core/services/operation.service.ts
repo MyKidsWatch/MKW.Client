@@ -12,4 +12,9 @@ export class OperationService {
     let res = this.operationClient.funds(addFundsRequest);
     return res;
   }
+
+  public getOperationCurrentStatus(transactionId: number) {
+    let res = this.operationClient.operation(transactionId);
+    return res;
+  }
 }

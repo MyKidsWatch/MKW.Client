@@ -16,8 +16,9 @@ export class AwardReviewModalComponent implements OnInit {
   public selectedAwardId?: number;
 
   ngOnInit() {
+    this.userFacade.updateUserInformation();
     this.userFacade.getUserCurrentCoinCount()
-      .subscribe(res => this.userBalance = 100);
+      .subscribe(res => this.userBalance = res);
   }
 
 

@@ -3374,7 +3374,7 @@ export class OperationClient {
      * @param body (optional) 
      * @return Success
      */
-    funds(body: AddFundDto | undefined): Observable<AwardPurchaseDtoBaseResponseDTO> {
+    funds(body: AddFundDto | undefined): Observable<OperationDtoBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Operation/Funds";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -3397,14 +3397,14 @@ export class OperationClient {
                 try {
                     return this.processFunds(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<AwardPurchaseDtoBaseResponseDTO>;
+                    return _observableThrow(e) as any as Observable<OperationDtoBaseResponseDTO>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<AwardPurchaseDtoBaseResponseDTO>;
+                return _observableThrow(response_) as any as Observable<OperationDtoBaseResponseDTO>;
         }));
     }
 
-    protected processFunds(response: HttpResponseBase): Observable<AwardPurchaseDtoBaseResponseDTO> {
+    protected processFunds(response: HttpResponseBase): Observable<OperationDtoBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3415,7 +3415,7 @@ export class OperationClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = AwardPurchaseDtoBaseResponseDTO.fromJS(resultData200);
+                result200 = OperationDtoBaseResponseDTO.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status === 404) {
@@ -8760,6 +8760,199 @@ export interface IOperation {
     stripeId?: string | null;
     person?: Person;
     operationType?: OperationType;
+}
+
+export class OperationDto implements IOperationDto {
+    id?: number;
+    personId?: number;
+    finished?: boolean;
+    stripeId?: string | null;
+    checkoutUrl?: string | null;
+    paymentStatus?: string | null;
+
+    constructor(data?: IOperationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.personId = _data["personId"] !== undefined ? _data["personId"] : <any>null;
+            this.finished = _data["finished"] !== undefined ? _data["finished"] : <any>null;
+            this.stripeId = _data["stripeId"] !== undefined ? _data["stripeId"] : <any>null;
+            this.checkoutUrl = _data["checkoutUrl"] !== undefined ? _data["checkoutUrl"] : <any>null;
+            this.paymentStatus = _data["paymentStatus"] !== undefined ? _data["paymentStatus"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): OperationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OperationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["personId"] = this.personId !== undefined ? this.personId : <any>null;
+        data["finished"] = this.finished !== undefined ? this.finished : <any>null;
+        data["stripeId"] = this.stripeId !== undefined ? this.stripeId : <any>null;
+        data["checkoutUrl"] = this.checkoutUrl !== undefined ? this.checkoutUrl : <any>null;
+        data["paymentStatus"] = this.paymentStatus !== undefined ? this.paymentStatus : <any>null;
+        return data;
+    }
+}
+
+export interface IOperationDto {
+    id?: number;
+    personId?: number;
+    finished?: boolean;
+    stripeId?: string | null;
+    checkoutUrl?: string | null;
+    paymentStatus?: string | null;
+}
+
+export class OperationDtoBaseResponseDTO implements IOperationDtoBaseResponseDTO {
+    readonly isSuccess?: boolean;
+    readonly content?: OperationDto[] | null;
+    pagedContent?: OperationDtoPagedList;
+    readonly errors?: string[] | null;
+
+    constructor(data?: IOperationDtoBaseResponseDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).isSuccess = _data["isSuccess"] !== undefined ? _data["isSuccess"] : <any>null;
+            if (Array.isArray(_data["content"])) {
+                (<any>this).content = [] as any;
+                for (let item of _data["content"])
+                    (<any>this).content!.push(OperationDto.fromJS(item));
+            }
+            else {
+                (<any>this).content = <any>null;
+            }
+            this.pagedContent = _data["pagedContent"] ? OperationDtoPagedList.fromJS(_data["pagedContent"]) : <any>null;
+            if (Array.isArray(_data["errors"])) {
+                (<any>this).errors = [] as any;
+                for (let item of _data["errors"])
+                    (<any>this).errors!.push(item);
+            }
+            else {
+                (<any>this).errors = <any>null;
+            }
+        }
+    }
+
+    static fromJS(data: any): OperationDtoBaseResponseDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new OperationDtoBaseResponseDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isSuccess"] = this.isSuccess !== undefined ? this.isSuccess : <any>null;
+        if (Array.isArray(this.content)) {
+            data["content"] = [];
+            for (let item of this.content)
+                data["content"].push(item.toJSON());
+        }
+        data["pagedContent"] = this.pagedContent ? this.pagedContent.toJSON() : <any>null;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IOperationDtoBaseResponseDTO {
+    isSuccess?: boolean;
+    content?: OperationDto[] | null;
+    pagedContent?: OperationDtoPagedList;
+    errors?: string[] | null;
+}
+
+export class OperationDtoPagedList implements IOperationDtoPagedList {
+    results?: OperationDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    readonly hasPreviousPage?: boolean;
+    readonly hasNextPage?: boolean;
+
+    constructor(data?: IOperationDtoPagedList) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["results"])) {
+                this.results = [] as any;
+                for (let item of _data["results"])
+                    this.results!.push(OperationDto.fromJS(item));
+            }
+            else {
+                this.results = <any>null;
+            }
+            this.pageCount = _data["pageCount"] !== undefined ? _data["pageCount"] : <any>null;
+            this.pageSize = _data["pageSize"] !== undefined ? _data["pageSize"] : <any>null;
+            this.page = _data["page"] !== undefined ? _data["page"] : <any>null;
+            (<any>this).hasPreviousPage = _data["hasPreviousPage"] !== undefined ? _data["hasPreviousPage"] : <any>null;
+            (<any>this).hasNextPage = _data["hasNextPage"] !== undefined ? _data["hasNextPage"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): OperationDtoPagedList {
+        data = typeof data === 'object' ? data : {};
+        let result = new OperationDtoPagedList();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.results)) {
+            data["results"] = [];
+            for (let item of this.results)
+                data["results"].push(item.toJSON());
+        }
+        data["pageCount"] = this.pageCount !== undefined ? this.pageCount : <any>null;
+        data["pageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
+        data["page"] = this.page !== undefined ? this.page : <any>null;
+        data["hasPreviousPage"] = this.hasPreviousPage !== undefined ? this.hasPreviousPage : <any>null;
+        data["hasNextPage"] = this.hasNextPage !== undefined ? this.hasNextPage : <any>null;
+        return data;
+    }
+}
+
+export interface IOperationDtoPagedList {
+    results?: OperationDto[] | null;
+    pageCount?: number;
+    pageSize?: number;
+    page?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class OperationType implements IOperationType {
