@@ -72,13 +72,17 @@
     "whatToDo": "O que você deseja fazer?",
     "editChildren": "Editar minhas crianças",
     "logout": "Sair da minha conta",
+    "addBalance": "Comprar moedas",
     "awards": {
       "goldenTitle": "Ouro reluzente!",
-      "goldenDescription": "{{name} tem {{goldenAwards}} medalhas de ouro, {{silverAwards}} de prata e {{bronzeAwards}} de bronze.",
+      "goldenDescription": "{{name}} tem {{goldenAwards}} medalhas de ouro, {{silverAwards}} de prata e {{bronzeAwards}} de bronze.",
+      "my-goldenDescription": "{Você tem {{goldenAwards}} medalhas de ouro, {{silverAwards}} de prata e {{bronzeAwards}} de bronze.",
       "silverTitle": "Brilhando como a prata!",
-      "silverDescription": "{{name} tem {{silverAwards}} medalhas de prata, {{goldenAwards}} de ouro e {{bronzeAwards}} de bronze.",
+      "silverDescription": "{{name}} tem {{silverAwards}} medalhas de prata, {{goldenAwards}} de ouro e {{bronzeAwards}} de bronze.",
+      "my-silverDescription": "Você tem {{silverAwards}} medalhas de prata, {{goldenAwards}} de ouro e {{bronzeAwards}} de bronze.",
       "bronzeTitle": "Bronze com brilho próprio!",
-      "bronzeDescription": "{{name} tem {{bronzeAwards}} medalhas de bronze, {{goldenAwards}} de ouro e {{silverAwards}} de prata."
+      "bronzeDescription": "{{name}} tem {{bronzeAwards}} medalhas de bronze, {{goldenAwards}} de ouro e {{silverAwards}} de prata.",
+      "my-bronzeDescription": "Você tem {{bronzeAwards}} medalhas de bronze, {{goldenAwards}} de ouro e {{silverAwards}} de prata."
     }
   },
   "content": {

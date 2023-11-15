@@ -11,23 +11,27 @@ import { HeaderBackComponent } from 'src/app/shared/components/header-back/heade
 import { AddChildrenComponent } from './pages/add-children/add-children.component';
 import { EditChildrenComponent } from './pages/edit-children/edit-children.component';
 import { ChildrenCardComponent } from 'src/app/shared/components/children-card/children-card.component';
-import { AccountClient, AgeRangeClient, ChildClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { AccountClient, AgeRangeClient, ChildClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { ChildService } from 'src/app/core/services/child.service';
 import { AgeRangeService } from 'src/app/core/services/age-range.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { ProfileResolver } from 'src/app/core/resolvers/profile.resolver';
+import { ProfileClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { ProfileService } from 'src/app/core/services/profile.service';
 import { AccountService } from 'src/app/core/services/account.service';
+import { ReviewService } from 'src/app/core/services/review.service';
+import { ShortContentReviewCardComponent } from 'src/app/shared/components/short-content-review-card/short-content-review-card.component';
+import { KebabMenuComponent } from 'src/app/shared/components/kebab-menu/kebab-menu.component';
 
 const childrenRoutes: Routes = [
   {
-      path: '',
-      component: ViewProfileComponent,
-      canActivate: []
+    path: '',
+    component: ViewProfileComponent,
+    canActivate: []
   },
   {
     path: 'children',
     component: ViewChildrenComponent,
-
   },
   {
     path: 'add-children',
@@ -44,10 +48,10 @@ const childrenRoutes: Routes = [
 ]
 const routes: Routes = [
   {
-      path: '',
-      component: ProfileComponent,
-      resolve: [ProfileResolver],
-      children: childrenRoutes
+    path: '',
+    component: ProfileComponent,
+    resolve: [ProfileResolver],
+    children: childrenRoutes
   }
 ];
 
@@ -69,8 +73,9 @@ const routes: Routes = [
     RouterModule,
     RouterModule.forChild(routes),
     HeaderBackComponent,
-    ChildrenCardComponent
-    
+    ChildrenCardComponent,
+    ShortContentReviewCardComponent,
+    KebabMenuComponent,
   ],
   providers: [
     ProfileResolver,
@@ -79,7 +84,11 @@ const routes: Routes = [
     ChildClient,
     ChildService,
     AgeRangeClient,
-    AgeRangeService
+    AgeRangeService,
+    ProfileClient,
+    ProfileService,
+    ReviewClient,
+    ReviewService,
   ]
 })
 export class ProfileModule { }
