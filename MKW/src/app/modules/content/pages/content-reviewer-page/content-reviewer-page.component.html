@@ -4,7 +4,11 @@
 <ion-content *ngIf="!loading">
   <div class="content">
     <div class="profile-header">
-      <img alt="Profile picture" [src]="profile?.imageURL" class="profile-picture">
+      <img 
+        alt="Profile picture" 
+        class="profile-picture"
+        [src]="profile?.imageURL || 'assets/icon/default.jpg'" 
+      >
       <div class="profile-info">
         <h2 class="profile-name">{{ profile?.name }}</h2>
         <p class="profile-username">&#64;{{ profile?.username }}</p>

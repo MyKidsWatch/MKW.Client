@@ -64,7 +64,7 @@ export class ReviewState {
                 let reviewOwner: ReviewOwnerModel = {
                     id: reviewDTO.person!.id!,
                     userName: reviewDTO.person!.username!,
-                    profilePictureUrl: 'assets/icon/default.jpg'
+                    profilePictureUrl: reviewDTO.person!.imageURL!,
                 };
 
                 let reviewAwards: ReviewAwardInformation = {
@@ -118,7 +118,7 @@ export class ReviewState {
                 let reviewOwner: ReviewOwnerModel = {
                     id: reviewDTO.person!.id!,
                     userName: reviewDTO.person!.username!,
-                    profilePictureUrl: 'assets/icon/default.jpg'
+                    profilePictureUrl: reviewDTO.person!.imageURL!,
                 };
 
                 state.reviewContent = reviewContent;
@@ -166,7 +166,7 @@ export class ReviewState {
                 let reviewOwner: ReviewOwnerModel = {
                     id: reviewDTO.person!.id!,
                     userName: reviewDTO.person!.username!,
-                    profilePictureUrl: 'assets/icon/default.jpg'
+                    profilePictureUrl: reviewDTO.person!.imageURL!,
                 };
 
                 state.reviewContent = reviewContent;
@@ -208,7 +208,7 @@ export class ReviewState {
         let reviewOwner: ReviewOwnerModel = {
             id: reviewDTO.person!.id!,
             userName: reviewDTO.person!.username!,
-            profilePictureUrl: 'assets/icon/default.jpg'
+            profilePictureUrl: reviewDTO.person!.imageURL!,
         };
 
         state.reviewContent = reviewContent;

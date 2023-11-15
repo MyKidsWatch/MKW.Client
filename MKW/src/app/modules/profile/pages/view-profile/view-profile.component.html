@@ -1,7 +1,11 @@
 <ion-content>
   <div class="content">
     <div class="profile-header">
-      <img alt="Profile picture" [src]="profileData?.imageURL" class="profile-picture">
+      <img 
+        alt="Profile picture" 
+        class="profile-picture"
+        [src]="profileData?.imageURL || 'assets/icon/default.jpg'" 
+      >
       <div class="profile-info">
         <h2 class="profile-name">{{ profileData?.name }}</h2>
         <p class="profile-username">&#64;{{ profileData?.username }}</p>

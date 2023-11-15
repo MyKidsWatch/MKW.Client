@@ -1,8 +1,7 @@
 <div class="comment-modal">
 
   <div class="main-comment-content">
-    <img [src]="commentModel.commentAuthor.profilePictureUrl !== '' ? 
-    commentModel.commentAuthor.profilePictureUrl : ''" 
+    <img [src]="commentModel.commentAuthor.profilePictureUrl || 'assets/icon/default.jpg'"
     class="comment-pfp">
     <div class="comment-content">
       <div class="comment-header">

@@ -120,7 +120,7 @@ export class ContentUtils {
       reviewerInformation: {
         reviewerId: relevantReview.person!.id!,
         reviewerName: relevantReview.person!.username!,
-        reviewerPicturePath: "assets/icon/default.jpg"
+        reviewerPicturePath: relevantReview.person!.imageURL!
       },
       reviewRating: relevantReview.stars,
       reviewTitle: relevantReview.title,

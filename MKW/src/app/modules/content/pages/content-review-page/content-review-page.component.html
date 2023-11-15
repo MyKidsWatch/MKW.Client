@@ -22,7 +22,10 @@
       <div class="review-user-information">
 
         <div class="profile-information">
-          <img class="user-pfp" [src]="contentObject.reviewAuthor.profilePictureUrl" />
+          <img 
+            class="user-pfp" 
+            [src]="contentObject.reviewAuthor.profilePictureUrl || 'assets/icon/default.jpg'" 
+          />
           <label>{{ contentObject.reviewAuthor.userName }}</label>
         </div>
 
