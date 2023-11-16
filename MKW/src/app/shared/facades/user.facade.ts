@@ -16,54 +16,50 @@ import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
-  })
-  
-export class UserFacade{
-  
-    constructor(private store: Store){}
+})
 
-    public getUserToken() : TokenInfo | undefined
-    {
+export class UserFacade {
+
+    constructor(private store: Store) { }
+
+    public getUserToken(): TokenInfo | undefined {
         return this.store.selectSnapshot(UserSelectors.getTokenInfo);
     }
 
-    public getUserState() : UserData | undefined
-    {
+    public getUserState(): UserData | undefined {
         return this.store.selectSnapshot(UserSelectors.getUser);
     }
 
-    public getUserAdminState() : Observable<boolean>
-    {   
+    public getUserAdminState(): Observable<boolean> {
         return this.store.select(UserSelectors.getUserAdminInformation);
     }
 
-    public getUserCurrentCoinCount() : Observable<number | undefined>
-    {
+    public getUserCurrentCoinCount(): Observable<number | undefined> {
         return this.store.select(UserSelectors.getUserCoins);
     }
-    
-    public loginUser(credentials: string, password: string)
-    {
+
+    public getUserCurrentCoinCountSnapshot(): number | undefined {
+        return this.store.selectSnapshot(UserSelectors.getUserCoins);
+    }
+
+    public loginUser(credentials: string, password: string) {
         return this.store.dispatch(new LoginUser(credentials, password));
     }
 
-    public updateUserInformation(){
+    public updateUserInformation() {
         return this.store.dispatch(new UpdateCurrentUserInformation());
     }
 
 
-    public refreshUserToken()
-    {
+    public refreshUserToken() {
         return this.store.dispatch(new RefreshCurrentUserToken());
     }
 
-    public logOffUser()
-    {
+    public logOffUser() {
         return this.store.dispatch(new LogUserOff());
     }
 
-    public activateUserEmail(keycode: string)
-    {
+    public activateUserEmail(keycode: string) {
         return this.store.dispatch(new ActivateUserEmail(keycode))
     }
 

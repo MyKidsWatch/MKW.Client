@@ -8,65 +8,61 @@ import { ReportService } from 'src/app/core/services/report.service';
 import { CommentSelectors } from '../store/comments/comment.selectors';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { ReviewSelectors } from '../store/review/review.selectors';
-import { CreateReview, DeleteReview, EditReview, SetReviewState } from '../store/review/review.actions';
+import { CreateReview, DeleteReview, EditReview, GiveCurrentReviewAward, SetReviewState } from '../store/review/review.actions';
 import { title } from 'process';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class ReviewFacade{
+export class ReviewFacade {
 
-    constructor(
-      private store: Store, 
-      private reviewService: ReviewService,
-      private reportService: ReportService){}
+  constructor(
+    private store: Store,
+    private reviewService: ReviewService,
+    private reportService: ReportService) { }
 
 
-    getCurrentReview()
-    {
-      return this.store.select(ReviewSelectors.GetCurrentReview);
-    }
+  getCurrentReview() {
+    return this.store.select(ReviewSelectors.GetCurrentReview);
+  }
 
-    getCurrentReviewId()
-    {
-      return this.store.selectSnapshot(ReviewSelectors.GetCurrentReviewId);
-    }
+  getCurrentReviewId() {
+    return this.store.selectSnapshot(ReviewSelectors.GetCurrentReviewId);
+  }
 
-    getCurrentReviewViewModel()
-    {
-      return this.store.select(ReviewSelectors.GetReviewViewModel);
-    }
+  getCurrentReviewViewModel() {
+    return this.store.select(ReviewSelectors.GetReviewViewModel);
+  }
 
-    setCurrentReview(reviewId: number)
-    {
-      return this.store.dispatch(new SetReviewState(reviewId))
-    }
+  setCurrentReview(reviewId: number) {
+    return this.store.dispatch(new SetReviewState(reviewId))
+  }
 
-    createReview(contentId: string, platformId: number, reviewTitle: string, rating: number, text?: string)
-    {
-      return this.store.dispatch(new CreateReview(reviewTitle, rating, platformId, contentId, text))
-    }
+  createReview(contentId: string, platformId: number, reviewTitle: string, rating: number, text?: string) {
+    return this.store.dispatch(new CreateReview(reviewTitle, rating, platformId, contentId, text))
+  }
 
-    editReview(reviewId: number, title: string, rating: number, text: string)
-    {
-      return this.store.dispatch(new EditReview(reviewId, title, text, rating))
-    }
+  editReview(reviewId: number, title: string, rating: number, text: string) {
+    return this.store.dispatch(new EditReview(reviewId, title, text, rating))
+  }
 
-    deleteReview(reviewId: number)
-    {
-      return this.store.dispatch(new DeleteReview(reviewId));
-    }
+  deleteReview(reviewId: number) {
+    return this.store.dispatch(new DeleteReview(reviewId));
+  }
 
-    reportReview(reportReasonId: number, reviewId: number, creatorId: number)
-    {
-        let reportDto: CreateReportDto = new CreateReportDto();
+  reportReview(reportReasonId: number, reviewId: number, creatorId: number) {
+    let reportDto: CreateReportDto = new CreateReportDto();
 
-        reportDto.reasonId = reportReasonId;
-        reportDto.reviewId = reviewId;
-        reportDto.reportedPersonId = creatorId;
+    reportDto.reasonId = reportReasonId;
+    reportDto.reviewId = reviewId;
+    reportDto.reportedPersonId = creatorId;
 
-        return this.reportService.report(reportDto);
-    }
+    return this.reportService.report(reportDto);
+  }
+
+  giveCurrentReviewAward(awardId: number) {
+    return this.store.dispatch(new GiveCurrentReviewAward(awardId));
+  }
 
 }

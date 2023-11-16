@@ -8,27 +8,27 @@
 </ion-header>
 
 <ion-content>
-  <h2>Saldo atual: 0</h2>
-  <label class="add-funds">Adicionar fundos?</label>
+  <h2>Saldo atual: {{this.userBalance ? this.userBalance : 0}}</h2>
+  <label class="add-funds" (click)="addFunds()">Adicionar fundos?</label>
 
   <main>
 
-    <div (click)="selectAward(1)" class="award-card selected">
+    <div (click)="selectAward(1, 100)" [ngClass]="'award-card ' + getAwardCardClass(1, 100)">
       <img src="assets/icon/GOLDEN_SHIELD.png">
       <label>Prêmio de ouro</label>
-      <label>150 pontos</label>
+      <label>100 moedas</label>
     </div>
 
-    <div (click)="selectAward(2)" class="award-card">
+    <div (click)="selectAward(2, 50)" [ngClass]="'award-card ' + getAwardCardClass(2, 50)">
       <img src="assets/icon/SILVER_SHIELD.png">
       <label>Prêmio de prata</label>
-      <label>75 pontos</label>
+      <label>50 moedas</label>
     </div>
 
-    <div (click)="selectAward(3)" class="award-card unavailable">
+    <div (click)="selectAward(3, 20)" [ngClass]="'award-card ' + getAwardCardClass(3, 20)">
       <img src="assets/icon/BRONZE_SHIELD.png">
       <label>Prêmio de bronze</label>
-      <label>50 pontos</label>
+      <label>20 moedas</label>
     </div>
   </main>
   <footer>
