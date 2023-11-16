@@ -9,6 +9,7 @@ export interface ContentReviewCard{
     reviewContentInformation: ContentInformation;
     reviewerInformation: ContentReviewer;
     reviewAwardInformation: ContentReviewAwardInformation;
+    platformId?: number;
 }
 
 export interface ContentInformation{

@@ -1,59 +1,77 @@
-div.comment-modal{
+.comment-modal {  
+  font-family: 'Poppins', sans-serif;	
 
-    div.main-comment-content{
-        display: flex;
-        flex-direction: row;
-        padding: 10px;
-    }
-    
-    div.responses-content{
-        padding-left: 50px;
-    }
+  .main-comment-content {
+    font-family: inherit;
+    display: flex;
+    flex-direction: row;
+    margin: .5rem 0;
+  }
 
-    img.comment-pfp{
+  .responses-content {
+    padding-left: 50px;
+  }
 
-        border-radius: 50%;
-        height: 2.5em;
-    }
+  .comment-pfp {
+    border-radius: 50%;
+    height: 2.5em;
+  }
 
-    div.comment-content{
+  .comment-content {
+    display: flex;
+    flex-direction: column;
+    padding: .5rem 1rem;
+    margin-left: .5rem;
+    border-radius: 0 15px 15px 15px;
+    width: 100%;
+    font-family: inherit;
+    background: #D9D9D9;
 
-        display: flex;
-        flex-direction: column;
-        padding-left: 15px;
-        width: 100%;
+    .comment-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
 
-
-        div.comment-header{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            label.comment-username{
-                font-weight: 600;
-            }
-
-        }
-
-        label.comment-text{
-            font-weight: 300  ;
-        }
-
-        button.answer-button{
-            align-self: self-end;
-        }
+      .comment-username {
+        font-weight: 600;
+        font-size: 1rem;
+      }
     }
 
+    .comment-text {
+      font-weight: 300;
+      font-size: .8rem;
+      line-height: 1.2;
+      font-family: inherit;
+      line-break: anywhere;
+      margin: .75rem 0;
+    }
+
+    .answer-button {
+      font-family: inherit;
+      font-weight: lighter;
+      align-self: self-end;
+      background: transparent;
+      color: var(--mkw-color-primary);
+      position: relative;
+      right: .5rem;
+    }
+
+    .kebab-menu {
+      font-size: 1.25rem;
+    }
+  }
 }
 
 .dropdown-menu {
-    background-color: #fff;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+  background-color: var(--mkw-color-light);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
 .menu-item {
-    padding: 10px;
-    text-decoration: none;
-    display: block;
-    color: #333;
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+  color: var(--mkw-color-dark-medium);
 }

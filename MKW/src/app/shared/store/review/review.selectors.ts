@@ -34,7 +34,7 @@ export class ReviewSelectors {
         title: reviewState.reviewContent.title!,
         picturePath:
           reviewState.reviewContent.picturePath ?
-            ContentUtils.picturePathFromPlatformId(reviewState.reviewContent.platformId as number) + reviewState!.reviewContent!.picturePath :
+            ContentUtils.basePicturePathFromPlatformId(reviewState.reviewContent.platformId as number) + reviewState!.reviewContent!.picturePath :
             undefined,
         contentId: reviewState.reviewContent.contentId!,
         platformId: reviewState.reviewContent.platformId!,

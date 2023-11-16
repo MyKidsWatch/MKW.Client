@@ -3,63 +3,78 @@
     <ion-icon name="arrow-back-outline" class="go-back-button" color="primary" role="button" (click)="goBack()">
     </ion-icon>
 
+    <ion-icon 
+      name="ellipsis-vertical-outline" 
+      class="review-options-button" 
+      color="primary" 
+      role="button"
+      [id]="'click-trigger-'+ contentObject.reviewId"
+    ></ion-icon>
 
-    <ion-icon name="ellipsis-vertical-outline" class="review-options-button" color="primary" role="button"
-      [id]="'click-trigger-'+ contentObject.reviewId"></ion-icon>
+    <ion-action-sheet 
+      (didDismiss)="actionSheetEvent($event, contentObject.reviewId!)"
+      [trigger]="'click-trigger-'+ contentObject.reviewId" 
+      [buttons]="actionSheetButtons">
+    </ion-action-sheet>
 
-    <ion-action-sheet (didDismiss)="actionSheetEvent($event, contentObject.reviewId!)"
-      [trigger]="'click-trigger-'+ contentObject.reviewId" [buttons]="actionSheetButtons"></ion-action-sheet>
-
-    <div class="content-poster"
-      style="background: linear-gradient(180deg, #f5f5f500 0%, #f5f5f500 52.92%, #f5f5f5 90%), url('{{  contentObject.reviewedContentInformation.picturePath }}') no-repeat center center fixed; background-size: cover;">
-    </div>
+    <div 
+      class="content-poster"
+      style="background: linear-gradient(180deg, #f5f5f500 0%, #f5f5f500 52.92%, #f5f5f5 90%), url('{{  contentObject.reviewedContentInformation.picturePath }}') no-repeat center center fixed; background-size: cover;"
+    ></div>
     <div class="content-info">
       <div class="content-title-container">
-        <h1 class="content-title">{{ contentObject.reviewedContentInformation.title }}</h1>
+        <h1 class="content-title">{{ contentObject.reviewTitle }}</h1>
         <app-stars-rating [rating]="contentObject.reviewRating || 0" />
       </div>
 
+      <p
+        class="content-link" 
+        (click)="goToContentPage(contentObject.reviewedContentInformation.externalContentId, contentObject.reviewedContentInformation.platformId)"
+      >
+        {{ contentObject.reviewedContentInformation.title }}
+      </p>
+
       <div class="review-user-information">
-
         <div class="profile-information">
-          <img class="user-pfp" [src]="contentObject.reviewAuthor.profilePictureUrl" />
-          <label>{{ contentObject.reviewAuthor.userName }}</label>
+          <img 
+            class="user-pfp" 
+            [src]="contentObject.reviewAuthor.profilePictureUrl || 'assets/icon/default.jpg'" 
+          />
+          <label class="username">{{ contentObject.reviewAuthor.userName }}</label>
         </div>
 
-        <label>1 ano atrás</label>
-      </div>
-
-      <div class="review-awards" *ngIf="canAward">
-
-        <div class="award-count">
-          <img src="assets/icon/GOLDEN_SHIELD.png">
-          <label>{{ this.contentObject.reviewAwardInformation.goldenAwardCount}}</label>
-
-          <img src="assets/icon/SILVER_SHIELD.png">
-          <label>{{ this.contentObject.reviewAwardInformation.silverAwardCount}}</label>
-
-          <img src="assets/icon/BRONZE_SHIELD.png">
-          <label>{{ this.contentObject.reviewAwardInformation.bronzeAwardCount}}</label>
-        </div>
-
-
-        <div class="award-button" (click)="openAwardModal()">
-          <i class="material-icons">emoji_events</i>
-          Recompensar
-        </div>
+        <label class="publish-timestamp">{{ contentObject.reviewCreationDate.toLocaleDateString() }}</label>
       </div>
 
       <div class="review-content">
-        <label class="review-title">{{contentObject.reviewTitle}}</label>
         <p class="review-text">
           {{contentObject.reviewDescription}}
         </p>
+      </div>
 
-        <div class="see-more">
-          <label
-            (click)="goToContentPage(contentObject.reviewedContentInformation.externalContentId, contentObject.reviewedContentInformation.platformId)">Ver
-            mais informações e outras análises</label>
-          <i class="material-icons">arrow_forward_ios</i>
+      <div class="awards">
+        <div class="review-awards" *ngIf="canAward">
+          <div class="award-count">
+            <div class="award gold-award">
+              <img class='award-icon' src="assets/icon/GOLDEN_SHIELD.png">
+              <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.goldenAwardCount}}</label>
+            </div>
+            
+            <div class="award silver-award">
+              <img class='award-icon' src="assets/icon/SILVER_SHIELD.png">
+              <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.silverAwardCount}}</label>
+            </div>
+
+            <div class="award bronze-award">
+              <img class='award-icon' src="assets/icon/BRONZE_SHIELD.png">
+              <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.bronzeAwardCount}}</label>
+            </div>
+          </div>  
+        
+          <div class="award-button" (click)="openAwardModal()">
+            <i class="material-icons award-button-icon">emoji_events</i>
+            Recompensar
+          </div>
         </div>
       </div>
     </div>
@@ -71,11 +86,13 @@
         <label>{{reviewComments.length}} commments</label>
       </div>
 
+      <div class="divider"></div>
+
       <app-comment-card *ngFor="let comment of reviewComments" [commentModel]="comment"></app-comment-card>
 
       <ion-item>
         <ion-input type="text" placeholder="Escreva seu comentário" [(ngModel)]="newComment"></ion-input>
-        <button clear item-right (click)="addCommentToReview()"><i class="material-icons">send</i></button>
+        <button clear item-right (click)="addCommentToReview()"><i class="material-icons send-icon">send</i></button>
       </ion-item>
     </div>
   </div>
