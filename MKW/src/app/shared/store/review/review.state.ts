@@ -190,7 +190,7 @@ export class ReviewState {
     }
 
     @Action(GiveCurrentReviewAward)
-    GiveCurrentReviewAward({ getState, setState }: StateContext<ReviewStateModel>, { awardId }: GiveCurrentReviewAward) {
+    GiveCurrentReviewAward({ getState, patchState }: StateContext<ReviewStateModel>, { awardId }: GiveCurrentReviewAward) {
 
         let currentReview = getState();
 
@@ -205,11 +205,20 @@ export class ReviewState {
                 let response: AwardPurchaseDto = res.content![0];
                 let reviewInformation = response.award!.review!;
 
+                console.log(reviewInformation)
                 currentReview.reviewAwards.bronzeAwards = reviewInformation.bronzeAwards!;
                 currentReview.reviewAwards.silverAwards = reviewInformation.silverAwards!;
                 currentReview.reviewAwards.goldenAwards = reviewInformation.goldenAwards!;
+                console.log(currentReview)
 
-                setState(currentReview)
+                patchState(
+                    {
+                        reviewAwards: {
+                            bronzeAwards: reviewInformation.bronzeAwards!,
+                            silverAwards: reviewInformation.silverAwards!,
+                            goldenAwards: reviewInformation.goldenAwards!
+                        }
+                    })
             }))
     }
 
