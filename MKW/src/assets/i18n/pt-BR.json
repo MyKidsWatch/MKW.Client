@@ -76,7 +76,7 @@
     "awards": {
       "goldenTitle": "Ouro reluzente!",
       "goldenDescription": "{{name}} tem {{goldenAwards}} medalhas de ouro, {{silverAwards}} de prata e {{bronzeAwards}} de bronze.",
-      "my-goldenDescription": "{Você tem {{goldenAwards}} medalhas de ouro, {{silverAwards}} de prata e {{bronzeAwards}} de bronze.",
+      "my-goldenDescription": "Você tem {{goldenAwards}} medalhas de ouro, {{silverAwards}} de prata e {{bronzeAwards}} de bronze.",
       "silverTitle": "Brilhando como a prata!",
       "silverDescription": "{{name}} tem {{silverAwards}} medalhas de prata, {{goldenAwards}} de ouro e {{bronzeAwards}} de bronze.",
       "my-silverDescription": "Você tem {{silverAwards}} medalhas de prata, {{goldenAwards}} de ouro e {{bronzeAwards}} de bronze.",
@@ -118,5 +118,6 @@
   "Thriller": "Suspense",
   "War": "Guerra",
   "Western": "Faroeste",
-  "add-review": "Adicionar análise"
+  "add-review": "Adicionar análise",
+  "coins": "moedas"
 }

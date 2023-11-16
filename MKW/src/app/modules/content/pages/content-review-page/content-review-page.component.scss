@@ -41,8 +41,21 @@
       max-width: 75%;
       font-family: 'Poppins', 'sans-serif';
       font-weight: 900;
-      font-size: 2rem;
-      line-height: 1;
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+  }
+
+  .content-link {
+    font-family: 'Poppins', sans-serif;
+    color: var(--mkw-color-primary);
+    font-size: .9rem;
+    margin: unset;
+    padding: unset;
+
+    label,
+    i {
+      color: var(--mkw-color-primary);
     }
   }
 
@@ -67,106 +80,138 @@
       margin-top: 1rem;
       width: 100%;
       display: flex;
-      flex-direction: row;
+      
       justify-content: space-between;
       align-items: center;
 
       .profile-information {
-
         display: flex;
         align-items: center;
+        max-width: 70%;
 
         img {
           border-radius: 50%;
-          height: 2.5em;
+          height: 2rem;
         }
 
-        label {
-          font-family: 'Poppins', 'sans-serif';
-          font-weight: 450;
-          font-size: 1rem;
-          line-height: 1;
+        .username {
+          font-weight: medium;
+          font-size: .9rem;
           padding-left: 0.4em;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis; 
         }
+      }
+
+      .publish-timestamp {
+        font-family: 'Poppins', sans-serif;
+        font-size: .75rem;
+        text-align: end;
+        max-width: 30%;
+        font-weight: lighter;
+        color: var(--mkw-color-dark-medium);
       }
     }
 
-    .review-awards {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      margin-top: 10px;
-      justify-content: space-between;
+    .awards {
+      margin: .5rem 0;
 
-      .award-count {
+      .review-awards {
         display: flex;
-        flex-direction: row;
         align-items: center;
+        justify-content: space-between;
+        
+        .award-count {
+          display: flex;
+          align-items: center;
+          
+          .award {
+            display: flex;
+            align-items: center;
+            margin: 0 .35rem;
+            width: 3.25rem;
+            height: 1.75rem;
+            border-radius: 10px 4px 4px 10px;
+            border: 2px solid var(--mkw-color-dark-medium);
 
-        img {
-          width: 2em;
-        }
+            &.gold-award {
+              background: #FFD700;
+            }
 
-        label {
-          padding-right: 10px;
+            &.silver-award {
+              background: #C0C0C0;
+            }
+
+            &.bronze-award {
+              background: #986634;
+
+              color: var(--mkw-color-light);
+            }
+
+            .award-icon {
+              height: 2rem;
+              position: relative;
+              left: -15%;
+            }
+            
+            .award-count-value {
+              font-family: 'Poppins', sans-serif;
+              font-weight: lighter;
+              position: relative;
+              left: -5%;
+              font-size: .75rem;
+            }
+          }
         }
       }
 
       .award-button {
         display: flex;
-        flex-direction: row;
         align-items: center;
+        font-family: 'Poppins', sans-serif;
+        font-size: .75rem;
         background-color: var(--mkw-color-primary);
         color: var(--mkw-color-light);
-
-        padding: 7px;
-        border: 1px solid;
+        
+        padding: .35rem .75rem;
         border-radius: 6px;
-
+        
         i {
-          color: yellow;
+          color: var(--mkw-color-warning);
+          font-size: 1.25rem;
+          margin-right: .15rem;
         }
       }
-
-      // .award-details {
-      //   display: flex;
-      //   align-items: center;
-      // }
     }
 
     .review-content {
-      margin-top: 2em;
+      margin: 1.25rem 0;
 
-      label.review-title {
-        font-family: 'Poppins', 'sans-serif';
-        font-weight: 900;
-        font-size: 1.2rem;
-        line-height: 1;
-      }
-
-      p.review-text {
+      .review-text {
         font-family: 'Poppins', sans-serif;
-        margin-top: 0.5em;
-      }
-
-      .see-more {
-        display: flex;
-        font-size: 0.9rem;
-        align-items: center;
-        flex-direction: row;
-        justify-content: flex-end;
-
-        label,
-        i {
-          color: var(--mkw-color-primary);
-        }
+        font-weight: lighter;
+        font-size: .85rem;
+        line-height: 1rem;
+        margin-top: .75rem;
       }
     }
   }
 
   .review-comments {
+    width: calc(100% - 4.4% * 2);
+    margin: auto;
+    margin-top: -3rem;
+
+    .divider {
+      width: 100%;
+      border-bottom: 3px solid #e2e2e2;
+      margin: 1rem auto;
+    }
+
     .comment-information {
       width: 100%;
+      padding: 0 4.4%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -176,5 +221,10 @@
       }
     }
 
+    .send-comment-button {
+      background: var(--mkw-color-light);
+      outline: none;
+      box-shadow: none;
+    }
   }
 }
