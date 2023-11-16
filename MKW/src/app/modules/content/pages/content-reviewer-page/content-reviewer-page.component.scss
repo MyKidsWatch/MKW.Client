@@ -22,7 +22,6 @@ ion-header {
     margin: 1rem 0;
     position: relative;
     display: flex;
-    align-items: center;
 
     .profile-picture {
       width: 4rem;
@@ -46,8 +45,9 @@ ion-header {
       .profile-username {
         color: var(--mkw-color-dark-medium);
         word-wrap: break-word;
-        line-height: 0;
+        line-height: 1;
         margin-top: -.1rem;
+        line-break: anywhere;
       }
     }
 
