@@ -6,13 +6,14 @@
     <div class="comment-content">
       <div class="comment-header">
         <label class="comment-username">{{commentModel.commentAuthor.userName}}</label>
-        <i class="material-icons" [id]="'click-trigger-'+ commentModel.commentId">more_vert</i>
+        <i class="material-icons kebab-menu" [id]="'click-trigger-'+ commentModel.commentId">more_vert</i>
 
         <ion-action-sheet 
           (didDismiss)="actionSheetEvent($event, commentModel.commentId)" 
           [trigger]="'click-trigger-'+ commentModel.commentId" 
-          [buttons]="actionSheetButtons"></ion-action-sheet>
-
+          [buttons]="actionSheetButtons"
+        >
+        </ion-action-sheet>
         
       </div>
       <label class="comment-text">{{commentModel.commentText}}</label>
@@ -24,10 +25,9 @@
   <div class="responses-content" *ngIf="commentModel.parentCommentId == null">
     <app-comment-card class="comment-response-modal" *ngFor="let response of commentModel.commentResponses" [commentModel]="response"></app-comment-card>
     
-    
     <ion-item [style]="isAnswering ? 'display: block' : 'display: none'" >
       <ion-input [(ngModel)]="newComment" type="text" #answer pldaceholder="Escreva seu comentário" (focusout)="stopAnswering()" ></ion-input>
-      <button clear item-right (click)="answerComment()"><i class="material-icons">send</i></button>
+      <button class="send-comment-button" clear item-right (click)="answerComment()"><i class="material-icons">send</i></button>
     </ion-item>
   </div>
 
