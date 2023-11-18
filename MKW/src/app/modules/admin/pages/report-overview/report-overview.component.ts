@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './report-overview.component.html',
   styleUrls: ['./report-overview.component.scss'],
 })
-export class ReportOverviewComponent  implements OnInit {
+export class ReportOverviewComponent implements OnInit {
 
 
   public reportOverview?: ReportOverviewInformation;
@@ -18,7 +18,7 @@ export class ReportOverviewComponent  implements OnInit {
   ngOnInit() {
 
     this.reportFacade.getCurrentReportOverview()
-    .subscribe(res => this.reportOverview = res);
+      .subscribe(res => this.reportOverview = res);
   }
 
 
@@ -27,5 +27,29 @@ export class ReportOverviewComponent  implements OnInit {
 
   }
 
+  discardReport() {
+    this.reportFacade.discardCurrentReport()
+      .subscribe(res => {
+        this.goBack();
+        alert("Report descartado com sucesso!")
+      });
+  }
+
+  removeProfile() {
+
+    this.reportFacade.deleteProfileFromCurrentReport()
+      .subscribe(res => {
+        this.goBack();
+        alert("Perfil deletado com sucesso!")
+      });
+  }
+
+  removeContent() {
+    this.reportFacade.deleteContentFromCurrentReport()
+      .subscribe(res => {
+        this.goBack();
+        alert("Conteúdo deletado com sucesso!")
+      });
+  }
 
 }

@@ -13,60 +13,55 @@ import { UserStateModel } from '../store/user/user.state';
 import { ActivateEmailComponent } from 'src/app/modules/home/activate-email/activate-email.component';
 import { Observable } from 'rxjs';
 import { ReportSelectors } from '../store/report/report.selectors';
-import { SetIndividualReport, SetReportList } from '../store/report/report.action';
+import { RespondToCurrentReport, SetIndividualReport, SetReportList } from '../store/report/report.action';
 
 
 @Injectable({
     providedIn: 'root'
-  })
-  
-export class ReportFacade{
-  
-    constructor(private store: Store){}
+})
+
+export class ReportFacade {
+
+    constructor(private store: Store) { }
 
 
-    
-    setReportList(pageSize: number = 10, pageIndex: number = 1, reportReason?: number)
-    {
-        return this.store.dispatch(new SetReportList(pageSize, pageIndex, reportReason));
+
+    setReportList(pageSize: number = 10,
+        pageIndex: number = 1,
+        reportReason?: number,
+        statusId?: number,
+        ascending?: boolean) {
+        return this.store.dispatch(new SetReportList(pageSize, pageIndex, reportReason, statusId, ascending));
     }
 
-    setCurrentReport(reportId: number)
-    {
+    setCurrentReport(reportId: number) {
         return this.store.dispatch(new SetIndividualReport(reportId));
     }
 
-    getReportList()
-    {
+    getReportList() {
         return this.store.select(ReportSelectors.GetReportList);
     }
 
-    getCurrentReport()
-    {
+    getCurrentReport() {
         return this.store.select(ReportSelectors.GetCurrentReport);
     }
 
-    getCurrentReportOverview()
-    {
+    getCurrentReportOverview() {
         return this.store.select(ReportSelectors.GetReportOverview);
     }
-    getPaginationData()
-    {
+    getPaginationData() {
         return this.store.select(ReportSelectors.GetPaginationData)
     }
 
-    discardCurrentReport()
-    {
-
+    discardCurrentReport() {
+        return this.store.dispatch(new RespondToCurrentReport(3, false, false, false))
     }
 
-    deleteContentFromCurrentReport()
-    {
-
+    deleteContentFromCurrentReport() {
+        return this.store.dispatch(new RespondToCurrentReport(2, true, true, false))
     }
 
-    deleteProfileFromCurrentReport()
-    {
-
+    deleteProfileFromCurrentReport() {
+        return this.store.dispatch(new RespondToCurrentReport(2, true, true, true))
     }
 }

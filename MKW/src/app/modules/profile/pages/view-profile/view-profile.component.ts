@@ -12,13 +12,15 @@ import { ContentReviewCard } from 'src/app/shared/models/content-review-card.mod
 import { KebabMenuItem } from 'src/app/shared/models/kebab-menu-item.model';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { ContentUtils } from 'src/app/core/Util/ContentUtils';
+import { ModalController } from '@ionic/angular';
+import { AddFundsModalComponent } from 'src/app/shared/components/add-funds-modal/add-funds-modal.component';
 
 @Component({
   selector: 'app-view-profile',
   templateUrl: './view-profile.component.html',
   styleUrls: ['./view-profile.component.scss'],
 })
-export class ViewProfileComponent  implements OnInit {
+export class ViewProfileComponent implements OnInit {
   public userData?: UserData;
   public profileData?: ProfileModel;
   public coinCount?: number;
@@ -39,7 +41,7 @@ export class ViewProfileComponent  implements OnInit {
     },
     {
       label: this.translateService.instant('profile.addBalance'),
-      callback: () => console.log('add balance')
+      callback: () => this.addFunds()
     },
     {
       label: this.translateService.instant('profile.logout'),
@@ -48,21 +50,22 @@ export class ViewProfileComponent  implements OnInit {
   ];
 
   constructor(
-    private userFacade: UserFacade, 
+    private userFacade: UserFacade,
     private router: Router,
     private profileService: ProfileService,
     private reviewService: ReviewService,
     private translateService: TranslateService,
+    private modalController: ModalController
   ) { }
 
   ngOnInit() {
     this.userData = this.userFacade.getUserState();
 
     this.userFacade.getUserCurrentCoinCount()
-    .subscribe(res => {
-      console.log(res)
-      this.coinCount = res
-    });
+      .subscribe(res => {
+        console.log(res)
+        this.coinCount = res
+      });
 
     const username = this.userData?.username || '';
 
@@ -73,7 +76,7 @@ export class ViewProfileComponent  implements OnInit {
           const profileDto = res.content![0][0];
 
           this.profileData = this.mapProfile(profileDto);
-          
+
           if (this.profileData?.userId) {
             this.getUserReviews(this.profileData.userId);
           }
@@ -84,6 +87,17 @@ export class ViewProfileComponent  implements OnInit {
       });
   }
 
+
+
+  async addFunds() {
+    let fundsModal = await this.modalController.create({ component: AddFundsModalComponent });
+
+    fundsModal.present()
+
+    let result = await fundsModal.onWillDismiss();
+  }
+
+
   getUserReviews(userId: number) {
     this.reviewService.getReviewByUserId(userId)
       .pipe(take(1))
@@ -93,7 +107,7 @@ export class ViewProfileComponent  implements OnInit {
 
           if (this.reviews?.length > 0) {
             this.shouldShowReviews = true;
-          } 
+          }
         },
         error: (err: any) => {
           console.log(err);
@@ -111,13 +125,13 @@ export class ViewProfileComponent  implements OnInit {
       genderId: child.genderId,
       gender: AccountUtils.getGenderString(child.genderId) || '',
     }));
-  
+
     const awards = profileDto.awards || [];
     const goldenAwards = awards.filter(award => award.name?.toLowerCase() === 'gold')[0]?.quantity || 0;
     const silverAwards = awards.filter(award => award.name?.toLowerCase() === 'silver')[0]?.quantity || 0;
     const bronzeAwards = awards.filter(award => award.name?.toLowerCase() === 'bronze')[0]?.quantity || 0;
     const hasAnyAward = goldenAwards > 0 || silverAwards > 0 || bronzeAwards > 0;
-  
+
     this.shouldShowAwards = hasAnyAward;
     this.goldenAwards = goldenAwards;
     this.silverAwards = silverAwards;
@@ -140,8 +154,8 @@ export class ViewProfileComponent  implements OnInit {
   logOffUser() {
     this.userFacade.logOffUser()
       .pipe(take(1))
-      .subscribe(res =>{
-        this.router.navigateByUrl('auth', {replaceUrl: true})
+      .subscribe(res => {
+        this.router.navigateByUrl('auth', { replaceUrl: true })
       });
   }
 }

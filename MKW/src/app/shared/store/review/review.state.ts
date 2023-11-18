@@ -207,11 +207,9 @@ export class ReviewState {
                 let response: AwardPurchaseDto = res.content![0];
                 let reviewInformation = response.award!.review!;
 
-                console.log(reviewInformation)
                 currentReview.reviewAwards.bronzeAwards = reviewInformation.bronzeAwards!;
                 currentReview.reviewAwards.silverAwards = reviewInformation.silverAwards!;
                 currentReview.reviewAwards.goldenAwards = reviewInformation.goldenAwards!;
-                console.log(currentReview)
 
                 patchState(
                     {

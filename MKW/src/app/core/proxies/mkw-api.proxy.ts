@@ -1373,7 +1373,7 @@ export class AlgorithmClient {
      * @param language (optional) 
      * @return Success
      */
-    algorithm(page: number | undefined, count: number | undefined, language: string | undefined, childId: number | null): Observable<ObjectBaseResponseDTO> {
+    algorithm(page: number | undefined, count: number | undefined, language: string | undefined): Observable<MovieDTOBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Algorithm?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
@@ -1387,8 +1387,6 @@ export class AlgorithmClient {
             throw new Error("The parameter 'language' cannot be null.");
         else if (language !== undefined)
             url_ += "language=" + encodeURIComponent("" + language) + "&";
-        if(childId !== null)
-            url_ += "childId=" + encodeURIComponent("" + childId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: any = {
@@ -1406,14 +1404,14 @@ export class AlgorithmClient {
                 try {
                     return this.processAlgorithm(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ObjectBaseResponseDTO>;
+                    return _observableThrow(e) as any as Observable<MovieDTOBaseResponseDTO>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ObjectBaseResponseDTO>;
+                return _observableThrow(response_) as any as Observable<MovieDTOBaseResponseDTO>;
         }));
     }
 
-    protected processAlgorithm(response: HttpResponseBase): Observable<ObjectBaseResponseDTO> {
+    protected processAlgorithm(response: HttpResponseBase): Observable<MovieDTOBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1424,7 +1422,7 @@ export class AlgorithmClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = ObjectBaseResponseDTO.fromJS(resultData200);
+                result200 = MovieDTOBaseResponseDTO.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status === 404) {
@@ -1455,7 +1453,7 @@ export class AlgorithmClient {
      * @param language (optional) 
      * @return Success
      */
-    trending(page: number | undefined, count: number | undefined, language: string | undefined): Observable<ObjectBaseResponseDTO> {
+    trending(page: number | undefined, count: number | undefined, language: string | undefined): Observable<MovieDTOBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Algorithm/Trending?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
@@ -1486,14 +1484,14 @@ export class AlgorithmClient {
                 try {
                     return this.processTrending(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ObjectBaseResponseDTO>;
+                    return _observableThrow(e) as any as Observable<MovieDTOBaseResponseDTO>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ObjectBaseResponseDTO>;
+                return _observableThrow(response_) as any as Observable<MovieDTOBaseResponseDTO>;
         }));
     }
 
-    protected processTrending(response: HttpResponseBase): Observable<ObjectBaseResponseDTO> {
+    protected processTrending(response: HttpResponseBase): Observable<MovieDTOBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1504,7 +1502,7 @@ export class AlgorithmClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = ObjectBaseResponseDTO.fromJS(resultData200);
+                result200 = MovieDTOBaseResponseDTO.fromJS(resultData200);
                 return _observableOf(result200);
             }));
         } else if (status === 404) {
@@ -3524,69 +3522,6 @@ export class OperationClient {
 }
 
 @Injectable()
-export class PaymentClient {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
-    }
-
-    /**
-     * @return Success
-     */
-    payment(): Observable<StringBaseResponseDTO> {
-        let url_ = this.baseUrl + "/v1/Payment";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "text/plain"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
-            return this.processPayment(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processPayment(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<StringBaseResponseDTO>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<StringBaseResponseDTO>;
-        }));
-    }
-
-    protected processPayment(response: HttpResponseBase): Observable<StringBaseResponseDTO> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-                (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-                let result200: any = null;
-                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = StringBaseResponseDTO.fromJS(resultData200);
-                return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-}
-
-@Injectable()
 export class PlatformClient {
     private http: HttpClient;
     private baseUrl: string;
@@ -3883,6 +3818,71 @@ export class ReportClient {
     /**
      * @return Success
      */
+    status(): Observable<ReportReasonDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Report/Status";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processStatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processStatus(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReportReasonDtoBaseResponseDTO>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ReportReasonDtoBaseResponseDTO>;
+        }));
+    }
+
+    protected processStatus(response: HttpResponseBase): Observable<ReportReasonDtoBaseResponseDTO> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = ReportReasonDtoBaseResponseDTO.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result404: any = null;
+                let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+                return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result500: any = null;
+                let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+                return throwException("Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Success
+     */
     id(reasonId: number): Observable<ReportReasonDtoBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Report/Reason/id/{reasonId}";
         if (reasonId === undefined || reasonId === null)
@@ -3952,11 +3952,12 @@ export class ReportClient {
      * @param page (optional) 
      * @param pageSize (optional) 
      * @param reasonId (optional) 
+     * @param statusId (optional) 
      * @param orderBy (optional) 
      * @param orderByAscending (optional) 
      * @return Success
      */
-    reportGet(page: number | undefined, pageSize: number | undefined, reasonId: number | undefined, orderBy: string | undefined, orderByAscending: boolean | undefined): Observable<ReportDtoBaseResponseDTO> {
+    reportGet(page: number | undefined, pageSize: number | undefined, reasonId: number | undefined, statusId: number | undefined, orderBy: string | undefined, orderByAscending: boolean | undefined): Observable<ReportDtoBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Report?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
@@ -3970,6 +3971,10 @@ export class ReportClient {
             throw new Error("The parameter 'reasonId' cannot be null.");
         else if (reasonId !== undefined)
             url_ += "reasonId=" + encodeURIComponent("" + reasonId) + "&";
+        if (statusId === null)
+            throw new Error("The parameter 'statusId' cannot be null.");
+        else if (statusId !== undefined)
+            url_ += "statusId=" + encodeURIComponent("" + statusId) + "&";
         if (orderBy === null)
             throw new Error("The parameter 'orderBy' cannot be null.");
         else if (orderBy !== undefined)
