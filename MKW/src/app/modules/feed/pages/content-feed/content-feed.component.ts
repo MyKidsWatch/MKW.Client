@@ -41,7 +41,7 @@ export class ContentFeedComponent  implements OnInit {
 
   searchAlgorithm()
   {
-    this.algorithmService.getUserFeed(this.page, this.pageSize).pipe(take(1)).subscribe({
+    this.algorithmService.getTrending(this.page, this.pageSize).pipe(take(1)).subscribe({
       next: (response) =>{
 
           if(!response.content || response.content!.length == 0 && this.contentCards.length == 0)

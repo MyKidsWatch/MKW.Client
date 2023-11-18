@@ -1448,6 +1448,86 @@ export class AlgorithmClient {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @param page (optional) 
+     * @param count (optional) 
+     * @param language (optional) 
+     * @return Success
+     */
+    trending(page: number | undefined, count: number | undefined, language: string | undefined): Observable<ObjectBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Algorithm/Trending?";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (count === null)
+            throw new Error("The parameter 'count' cannot be null.");
+        else if (count !== undefined)
+            url_ += "count=" + encodeURIComponent("" + count) + "&";
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processTrending(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processTrending(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ObjectBaseResponseDTO>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ObjectBaseResponseDTO>;
+        }));
+    }
+
+    protected processTrending(response: HttpResponseBase): Observable<ObjectBaseResponseDTO> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = ObjectBaseResponseDTO.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result404: any = null;
+                let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+                return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result500: any = null;
+                let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+                return throwException("Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
