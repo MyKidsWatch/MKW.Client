@@ -53,7 +53,8 @@ export class ContentReviewPageComponent implements OnInit {
       bronzeAwardCount: 0,
       goldenAwardCount: 0,
       silverAwardCount: 0
-    }
+    },
+    reviewIsEdited: false
   };
   public loading: boolean = true;
 
@@ -88,8 +89,17 @@ export class ContentReviewPageComponent implements OnInit {
           this.contentObject = res;
           this.loading = false;
 
-          let username = this.userFacade.getUserState()?.username!
-          this.actionSheetButtons = username == this.contentObject.reviewAuthor.userName ? this.actionSheetOp : this.actionSheetNotOp;
+          let username = this.userFacade.getUserState()?.username!;
+
+          let isOp = username == this.contentObject.reviewAuthor.userName;
+
+          if (!isOp) {
+            this.actionSheetButtons = this.actionSheetNotOp;
+          }
+          else {
+            this.actionSheetButtons = this.contentObject.reviewIsEdited ? this.actionSheetOpNotEditable : this.actionSheetOp;
+          }
+
           this.canAward = username !== this.contentObject.reviewAuthor.userName
         },
         error: (err) => {
@@ -233,6 +243,23 @@ export class ContentReviewPageComponent implements OnInit {
 
   }
   public actionSheetButtons: any[] = [];
+
+  private actionSheetOpNotEditable = [
+    {
+      text: 'Deletar',
+      role: 'destructive',
+      data: {
+        action: 'delete',
+      }
+    },
+    {
+      text: 'Cancelar',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      }
+    }
+  ]
 
   private actionSheetOp = [
     {

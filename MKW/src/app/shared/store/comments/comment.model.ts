@@ -1,17 +1,18 @@
 
 
-export interface CommentModel{
+export interface CommentModel {
     personId: number;
     id: number;
     parentId?: number;
     commentText: string;
     commentAuthor: string;
     commentAnswers?: CommentModel[];
+    isEdited: boolean;
 }
 
 
 
-export interface CommentStateModel{
+export interface CommentStateModel {
 
-    comments: CommentModel[]; 
+    comments: CommentModel[];
 }

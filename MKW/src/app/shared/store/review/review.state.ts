@@ -51,7 +51,8 @@ export class ReviewState {
                     creationDate: reviewDTO.createDate!,
                     description: reviewDTO.text!,
                     rating: reviewDTO.stars,
-                    title: reviewDTO.title!
+                    title: reviewDTO.title!,
+                    isEdited: reviewDTO.edited!
                 };
 
                 let reviewContent: ReviewContentModel = {
@@ -153,7 +154,8 @@ export class ReviewState {
                     creationDate: reviewDTO.createDate!,
                     description: reviewDTO.text!,
                     rating: reviewDTO.stars,
-                    title: reviewDTO.title!
+                    title: reviewDTO.title!,
+                    isEdited: true
                 };
 
                 let reviewContent: ReviewContentModel = {
@@ -229,7 +231,8 @@ export class ReviewState {
             creationDate: reviewDTO.createDate!,
             description: reviewDTO.text!,
             rating: reviewDTO.stars,
-            title: reviewDTO.title!
+            title: reviewDTO.title!,
+            isEdited: reviewDTO.edited!
         };
 
         let reviewContent: ReviewContentModel = {

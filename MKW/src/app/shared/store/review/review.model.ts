@@ -4,6 +4,7 @@ export interface ReviewDetailsModel {
     description?: string | null;
     rating?: number;
     creationDate?: Date;
+    isEdited?: boolean;
 }
 
 export interface ReviewContentModel {
