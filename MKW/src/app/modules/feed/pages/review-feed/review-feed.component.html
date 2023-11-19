@@ -11,8 +11,12 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="child-option" *ngIf="children.length > 1">
-    <ion-chip [ngClass]="!childId ? 'selected' : ''"(click)="selectChildId()">Todas</ion-chip>
-    <ion-chip *ngFor="let child of children" (click)="selectChildId(child.id)"  [ngClass]="[childId === child.id ? 'selected' : '', child.style]">{{child.gender! | translate }} | {{child.ageRange | translate}}</ion-chip>
+    <ion-chip [ngClass]="!childId ? 'selected' : 'not-selected '" (click)="selectChildId()">Todas</ion-chip>
+    <ion-chip *ngFor="let child of children" (click)="selectChildId(child.id)"
+      [ngClass]="[childId === child.id ? 'selected ' + child.gender : 'not-selected ' + child.gender]">{{child.gender! |
+      translate }}
+      |
+      {{child.ageRange | translate}}</ion-chip>
   </div>
   <app-content-review-card *ngFor="let contentCard of contentCards"
     [contentData]="contentCard"></app-content-review-card>
