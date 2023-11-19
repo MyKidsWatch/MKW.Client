@@ -1,0 +1,33 @@
+<ion-content>
+  <div class="add-children">
+
+    <div (click)="cancel()" class="go-back">
+      <i class="material-icons">arrow_back</i>
+      <p>{{ 'return' | translate }}</p>
+    </div>
+
+    <h2>{{ 'profile.addChildTitle' | translate }}</h2>
+
+    <form [formGroup]="registrationForm" class="form-content">
+      <label class="mandatory">{{ 'profile.mandatoryField' | translate }}</label>
+      <div class="signup-form">
+        <ion-select [placeholder]="'profile.ageRangePlaceholder' | translate" formControlName="ageRange">
+          <ion-select-option *ngFor="let ageRange of ageRanges" [value]="ageRange.id">
+            {{ageRange.initialAge}} {{ 'profile.to' | translate }} {{ageRange.finalAge}} {{ 'profile.yearsOld' |
+            translate }}
+          </ion-select-option>
+        </ion-select>
+
+        <ion-select [placeholder]="'profile.genderPlaceholder' | translate" formControlName="gender">
+          <ion-select-option [value]="1">{{ 'profile.maleOption' | translate }}</ion-select-option>
+          <ion-select-option [value]="2">{{ 'profile.femaleOption' | translate }}</ion-select-option>
+          <ion-select-option [value]="3">{{ 'profile.unspecifiedOption' | translate }}</ion-select-option>
+        </ion-select>
+      </div>
+    </form>
+    <button [ngClass]="this.registrationForm.valid ? 'add-button' : 'add-button invalid' "
+      [disabled]="!this.registrationForm.valid" (click)="addChild()"><i class="material-icons">save</i>{{
+      'profile.saveChanges' |
+      translate }}</button>
+  </div>
+</ion-content>

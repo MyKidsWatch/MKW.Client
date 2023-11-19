@@ -23,6 +23,8 @@ import { ReviewService } from 'src/app/core/services/review.service';
 import { ShortContentReviewCardComponent } from 'src/app/shared/components/short-content-review-card/short-content-review-card.component';
 import { KebabMenuComponent } from 'src/app/shared/components/kebab-menu/kebab-menu.component';
 import { ChildResolver } from 'src/app/core/resolvers/child.resolver';
+import { AddChildModalComponent } from './components/add-child-modal/add-child-modal.component';
+import { EditChildModalComponent } from './components/edit-child-modal/edit-child-modal.component';
 
 const childrenRoutes: Routes = [
   {
@@ -64,7 +66,9 @@ const routes: Routes = [
     EditProfileComponent,
     ProfileComponent,
     ViewProfileComponent,
-    ViewChildrenComponent
+    ViewChildrenComponent,
+    AddChildModalComponent,
+    EditChildModalComponent
   ],
   imports: [
     CommonModule,

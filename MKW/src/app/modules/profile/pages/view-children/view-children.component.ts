@@ -12,61 +12,54 @@ import { ChildrenCard } from 'src/app/shared/models/children-card.model';
   templateUrl: './view-children.component.html',
   styleUrls: ['./view-children.component.scss'],
 })
-export class ViewChildrenComponent  implements OnInit {
+export class ViewChildrenComponent implements OnInit {
 
   public childrenCards: ChildrenCard[] = [];
   public isLoadingContent: boolean = false;
-  
+
   constructor(
-    private childService: ChildService, 
+    private childService: ChildService,
     private loadingBarService: LoadingBarService,
     private ageRangeService: AgeRangeService
-  ) {}
+  ) { }
 
-  ngOnInit() {   
-    this.setLoadingBar();   
-    
-  } 
+  ngOnInit() {
+    this.setLoadingBar();
 
-  setLoadingBar()
-  {
-    this.loadingBarService.getLoadingBar().subscribe((response) =>{
+  }
+
+  setLoadingBar() {
+    this.loadingBarService.getLoadingBar().subscribe((response) => {
       this.isLoadingContent = response as boolean;
     })
   }
-  
-  ionViewDidEnter(){
+
+  ionViewDidEnter() {
     this.childrenCards = [];
     this.childService.getChildren().pipe(take(1)).subscribe({
-      next: (response) =>{
+      next: (response) => {
         this.buildChildrenCards(response)
       },
-      error: (err) =>{
+      error: (err) => {
         console.log(err);
       }
     })
   }
 
-  buildChildrenCards(childrenResponse: ChildDtoBaseResponseDTO)
-  {
-      childrenResponse.content?.forEach(children =>{
-        let gender = AccountUtils.getGenderString(children.genderId);
+  buildChildrenCards(childrenResponse: ChildDtoBaseResponseDTO) {
+    childrenResponse.content?.forEach(children => {
+      let gender = AccountUtils.getGenderString(children.genderId);
 
-        this.childrenCards.push(
-          {
-            ageRange: AccountUtils.getAgeRangeString(children.ageRangeId), 
-            id: children.id!, 
-            style: gender ? gender : 'unassigned', 
-            gender
-          })
-      });
+      // this.childrenCards.push(
+      //   {
+      //     ageRange: AccountUtils.getAgeRangeString(children.ageRangeId),
+      //     id: children.id!,
+      //     style: gender ? gender : 'unassigned',
+      //     gender
+      //   })
+    });
   }
 
 }
 
 
-export interface AgeRangeData{
-    id?: number;
-    initialAge?: number;
-    finalAge?: number;
-}

@@ -46,6 +46,8 @@ export class UserSelectors {
                     ageRange: this.getAgeRangeString(child.ageRangeId, translateService),
                     id: child.childId,
                     gender: this.getGenderString(child.genderId) || '',
+                    genderId: child.genderId,
+                    ageRangeId: child.ageRangeId,
                     style: this.getGenderString(child.childId) || 'unassigned'
                 })
             });
@@ -80,6 +82,8 @@ export class UserSelectors {
                 childrenCard.push({
                     ageRange: this.getAgeRangeString(child.ageRangeId, translateService),
                     id: child.childId,
+                    genderId: child.genderId,
+                    ageRangeId: child.ageRangeId,
                     gender: this.getGenderString(child.genderId) || '',
                     style: this.getGenderString(child.childId) || 'unassigned'
                 })

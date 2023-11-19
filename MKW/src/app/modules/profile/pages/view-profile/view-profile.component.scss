@@ -16,7 +16,7 @@ ion-header {
 .content {
   width: 100%;
   padding: 0 4.4% !important;
-  
+
   .profile-header {
     width: 100%;
     margin: 1rem 0;
@@ -26,7 +26,8 @@ ion-header {
     .profile-picture {
       width: 4rem;
       height: 4rem;
-      border-radius: 50%;;
+      border-radius: 50%;
+      ;
     }
 
     .profile-info {
@@ -41,7 +42,7 @@ ion-header {
         word-wrap: break-word;
         line-height: 1;
       }
-      
+
       .profile-username {
         color: var(--mkw-color-dark-medium);
         word-wrap: break-word;
@@ -69,7 +70,7 @@ ion-header {
 
   .profile-balance {
     width: 100%;
-    margin: .25rem 0; 
+    margin: .25rem 0;
     position: relative;
     display: flex;
     align-items: center;
@@ -117,7 +118,7 @@ ion-header {
       margin-bottom: .25rem;
     }
 
-    .awards-description{
+    .awards-description {
       margin: unset;
       font-family: 'Poppins', sans-serif;
       font-size: .8rem;
@@ -140,16 +141,17 @@ ion-header {
     .children {
       display: flex;
       justify-content: flex-start;
-      align-items: center;
-      
-      .child {
+      align-items: flex-start;
+      overflow-x: scroll;
+
+      .child-chip {
         max-width: 3rem;
         margin: 0 .5rem;
         display: flex;
         flex-direction: column;
         align-items: center;
-      
-        p{
+
+        p {
           font-family: Poppins;
           font-size: .6rem;
           line-height: 1.2;
@@ -157,7 +159,7 @@ ion-header {
           margin-top: .5rem;
           text-align: center;
         }
-        
+
         .child-icon {
           border-radius: 50%;
           background: var(--mkw-color-warning);
@@ -166,12 +168,43 @@ ion-header {
           display: flex;
           justify-content: center;
           align-items: center;
-          
-          i{
+
+          &.boy {
+            color: var(--mkw-color-light);
+            background: var(--mkw-color-primary);
+
+            i {
+              color: var(--mkw-color-light) !important;
+            }
+          }
+
+          &.add {
+            color: var(--mkw-color-light);
+            background: var(--mkw-color-secondary);
+
+            i {
+              color: var(--mkw-color-light) !important;
+            }
+          }
+
+          &.girl {
+            color: var(--mkw-color-light);
+            background: var(--mkw-color-purple);
+
+            i {
+              color: var(--mkw-color-light) !important;
+            }
+          }
+
+          i {
             font-size: 2.5rem;
             color: var(--mkw-color-dark-medium);
           }
         }
+
+
+
+
       }
     }
   }

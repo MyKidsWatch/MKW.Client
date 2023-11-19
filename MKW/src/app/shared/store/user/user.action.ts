@@ -38,3 +38,8 @@ export class UpdateChildList {
     static readonly type = '[USER] Update user children list';
     constructor() { }
 }
+
+export class UpdateUserChild {
+    static readonly type = '[USER] Update user child';
+    constructor(public childId: number, public genderId: number, public ageRangeId: number) { }
+}
