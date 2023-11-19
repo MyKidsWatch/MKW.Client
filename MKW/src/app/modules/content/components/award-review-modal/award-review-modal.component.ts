@@ -45,14 +45,4 @@ export class AwardReviewModalComponent implements OnInit {
     let result = await fundsModal.onWillDismiss();
   }
 
-  getAwardCardClass(awardId: number, awardCost: number) {
-
-    if (awardId == this.selectedAwardId)
-      return 'selected'
-
-    if (!this.userBalance || this.userBalance < awardCost)
-      return 'unavailable'
-
-    return '';
-  }
 }
