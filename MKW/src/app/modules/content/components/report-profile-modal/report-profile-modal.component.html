@@ -1,22 +1,19 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="cancel()"><i class="material-icons">arrow_back</i></ion-button>
-    </ion-buttons>
-    <ion-title>Denunciar Perfil</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content class="ion-padding">
+<div class="container">
+  <div (click)="cancel()" class="go-back">
+    <i class="material-icons">arrow_back</i>
+    <p>{{ 'return' | translate }}</p>
+  </div>
 
-  <ion-select 
-    [placeholder]="'Selecione o motivo'" 
-    [ngModel]="reportReasonId"
-    (ionChange)="handleChange($event)"
-  >
-    <ion-select-option *ngFor="let reportReason of reportReasons" [value]="reportReason.id">
-      {{reportReason.reasonTitle}}
-    </ion-select-option>
-  </ion-select>
+  <div class="content">
+    <h2 class="content-title">Selecione um motivo para essa denúncia</h2>
+    <ion-radio-group class="report-reasons" [(ngModel)]="reportReasonId" (ionChange)="handleChange($event)">
+      <ion-item class="reason-item" *ngFor="let reportReason of reportReasons">
+        <ion-radio class="reason-radio" [value]="reportReason.id">
+          {{reportReason.reasonTitle}}
+        </ion-radio>
+      </ion-item>
+    </ion-radio-group>
 
-  <ion-button [disabled]="!reportReasonId" (click)="confirm()">Editar</ion-button>
-</ion-content>
+    <button class="submit-button" [disabled]="!reportReasonId" (click)="confirm()">Denunciar</button>
+  </div>
+</div>
