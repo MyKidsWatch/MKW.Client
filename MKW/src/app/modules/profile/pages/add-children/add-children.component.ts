@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateChildDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { ChildService } from 'src/app/core/services/child.service';
-import { AgeRangeData } from '../view-children/view-children.component';
 import { AgeRangeService } from 'src/app/core/services/age-range.service';
 import { Location } from '@angular/common';
 import { take } from 'rxjs';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
+import { AgeRangeData } from '../../model/age-range.model';
 
 @Component({
   selector: 'app-add-children',

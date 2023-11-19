@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, getStoreMetadata } from "@ngxs/store";
 import { ChildInformation, TokenInfo, UserData } from "./user.model";
-import { ActivateUserEmail, AddChildToUser, LogUserOff, LoginUser, RefreshCurrentUserToken, RemoveUserChild, UpdateChildList, UpdateCurrentUserInformation } from "./user.action";
+import { ActivateUserEmail, AddChildToUser, LogUserOff, LoginUser, RefreshCurrentUserToken, RemoveUserChild, UpdateChildList, UpdateCurrentUserInformation, UpdateUserChild } from "./user.action";
 import { Injectable } from '@angular/core';
 import { AuthService } from "src/app/core/services/auth.service";
 import { ILoginRequestDTO } from "src/app/modules/auth/models/login-request";
@@ -8,7 +8,7 @@ import { log, table } from "console";
 import { map, switchMap, take, tap } from "rxjs";
 import { AccountService } from "src/app/core/services/account.service";
 import { get } from "http";
-import { ConfirmAccountEmailDTO, CreateChildDto } from "src/app/core/proxies/mkw-api.proxy";
+import { ChildDto, ConfirmAccountEmailDTO, CreateChildDto } from "src/app/core/proxies/mkw-api.proxy";
 import { stat } from "fs";
 import { ChildService } from "src/app/core/services/child.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -161,18 +161,6 @@ export class UserState {
         return this.childService.deleteChild(childId)
             .pipe(take(1))
             .pipe(tap(res => {
-                let addedChild = res.content![0];
-
-                if (user.childrenInformation == undefined)
-                    user.childrenInformation = [];
-
-                let newChild: ChildInformation = {
-                    ageRangeId: addedChild.ageRangeId!,
-                    childId: addedChild.id!,
-                    genderId: addedChild.genderId!
-                }
-                user.childrenInformation.push(newChild);
-
                 user.childrenInformation = user.childrenInformation.filter(child => child.childId != childId);
                 patchState({ user })
             }));
@@ -204,4 +192,26 @@ export class UserState {
             }));
     }
 
+    @Action(UpdateUserChild)
+    public updateChildFromUser({ getState, patchState }: StateContext<UserStateModel>, { childId, ageRangeId, genderId }: UpdateUserChild) {
+        let user = getState().user!;
+
+        let request: ChildDto = new ChildDto();
+        request.ageRangeId = ageRangeId;
+        request.genderId = genderId;
+        request.id = childId;
+        request.personId = 0;
+
+        return this.childService.updateChild(request)
+            .pipe(take(1))
+            .pipe(tap(res => {
+                user.childrenInformation.forEach(el => {
+                    if (el.childId == childId) {
+                        el.ageRangeId = ageRangeId;
+                        el.genderId = genderId;
+                    }
+                })
+                patchState({ user })
+            }));
+    }
 }

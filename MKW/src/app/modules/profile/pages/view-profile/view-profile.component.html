@@ -49,12 +49,20 @@
     <div class="profile-children">
       <h3>{{ 'profile.myChildren' | translate }}</h3>
       <div class="children">
-        <div class="child" *ngFor="let child of childrenCard">
-          <div class="child-icon">
+        <div class="child-chip" *ngFor="let child of childrenCard"
+          (click)="editChild(child.id, child.ageRangeId, child.genderId)">
+          <div [ngClass]="'child-icon ' + child.gender">
             <i class="material-icons">child_care</i>
           </div>
           <p>{{ child.gender! | translate }} {{ 'of' | translate}} {{ child.ageRange }}</p>
         </div>
+        <div class="child-chip" (click)="addChild()">
+          <div class="child-icon add">
+            <i class="material-icons">add</i>
+          </div>
+          <p>Adicionar criança</p>
+        </div>
+
       </div>
     </div>
 

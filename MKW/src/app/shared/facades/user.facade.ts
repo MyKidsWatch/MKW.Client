@@ -6,7 +6,7 @@ import { CommentService } from 'src/app/core/services/comment.service';
 import { AddComment, AnswerComment, DeleteComment, EditComment, ReportComment, UpdateCommentList } from '../store/comments/comment.actions';
 import { ReportService } from 'src/app/core/services/report.service';
 import { CommentSelectors } from '../store/comments/comment.selectors';
-import { ActivateUserEmail, AddChildToUser, LogUserOff, LoginUser, RefreshCurrentUserToken, RemoveUserChild, UpdateChildList, UpdateCurrentUserInformation } from '../store/user/user.action';
+import { ActivateUserEmail, AddChildToUser, LogUserOff, LoginUser, RefreshCurrentUserToken, RemoveUserChild, UpdateChildList, UpdateCurrentUserInformation, UpdateUserChild } from '../store/user/user.action';
 import { UserSelectors } from '../store/user/user.selectors';
 import { TokenInfo, UserData } from '../store/user/user.model';
 import { UserStateModel } from '../store/user/user.state';
@@ -70,6 +70,10 @@ export class UserFacade {
 
     public removeChild(childId: number) {
         return this.store.dispatch(new RemoveUserChild(childId))
+    }
+
+    public updateChild(childId: number, genderId: number, ageRangeId: number) {
+        return this.store.dispatch(new UpdateUserChild(childId, genderId, ageRangeId))
     }
 
     public updateUserChildren() {

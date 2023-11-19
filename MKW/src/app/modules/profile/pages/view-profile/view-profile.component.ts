@@ -15,6 +15,8 @@ import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { ModalController } from '@ionic/angular';
 import { AddFundsModalComponent } from 'src/app/shared/components/add-funds-modal/add-funds-modal.component';
 import { ChildrenCard } from 'src/app/shared/models/children-card.model';
+import { AddChildModalComponent } from '../../components/add-child-modal/add-child-modal.component';
+import { EditChildModalComponent } from '../../components/edit-child-modal/edit-child-modal.component';
 
 @Component({
   selector: 'app-view-profile',
@@ -40,10 +42,6 @@ export class ViewProfileComponent implements OnInit {
 
   public menuItems: KebabMenuItem[] = [
     {
-      label: this.translateService.instant('profile.editChildren'),
-      callback: () => this.router.navigate(['home/profile/children'])
-    },
-    {
       label: this.translateService.instant('profile.addBalance'),
       callback: () => this.addFunds()
     },
@@ -64,12 +62,8 @@ export class ViewProfileComponent implements OnInit {
 
   ngOnInit() {
     this.userData = this.userFacade.getUserState();
-    console.log("entrou no init")
-    this.userFacade.getUserCurrentCoinCount()
-      .subscribe(res => {
-        console.log(res)
-        this.coinCount = res
-      });
+
+    this.userFacade.getUserCurrentCoinCount().subscribe(res => { this.coinCount = res });
 
     const username = this.userData?.username || '';
 
@@ -90,15 +84,7 @@ export class ViewProfileComponent implements OnInit {
         },
       });
 
-    this.userFacade.getUserChildren().subscribe(res => {
-      console.log(res);
-    })
-    this.userFacade.getUserChildrenCards(this.translateService)
-      .subscribe(res => this.childrenCard = res);
-  }
-
-  ionViewDidEnter() {
-    console.log("Entrou na view");
+    this.userFacade.getUserChildrenCards(this.translateService).subscribe(res => this.childrenCard = res);
   }
 
   async addFunds() {
@@ -109,6 +95,50 @@ export class ViewProfileComponent implements OnInit {
     let result = await fundsModal.onWillDismiss();
   }
 
+
+  async addChild() {
+    let addChildModal = await this.modalController.create(
+      { component: AddChildModalComponent });
+
+    addChildModal.present();
+
+    let result = await addChildModal.onWillDismiss();
+
+    if (result.role === 'cancel')
+      return;
+
+    if (result.role === 'add') {
+      let { ageRangeId, genderId } = result.data;
+
+      this.userFacade.addChild(genderId, ageRangeId);
+    }
+  }
+
+
+  async editChild(childId: number, ageRangeId: number, genderId: number) {
+
+    let editChildModal = await this.modalController.create(
+      {
+        component: EditChildModalComponent,
+        componentProps: {
+          ageRange: ageRangeId,
+          gender: genderId
+        }
+      });
+
+    editChildModal.present();
+
+    let result = await editChildModal.onWillDismiss();
+
+    if (result.role === 'delete')
+      this.userFacade.removeChild(childId);
+
+    if (result.role === 'update') {
+      let { ageRangeId, genderId } = result.data;
+
+      this.userFacade.updateChild(childId, genderId, ageRangeId);
+    }
+  }
 
   getUserReviews(userId: number) {
     this.reviewService.getReviewByUserId(userId)
