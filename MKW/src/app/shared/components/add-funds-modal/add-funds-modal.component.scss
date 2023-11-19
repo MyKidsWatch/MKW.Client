@@ -1,62 +1,163 @@
-ion-content {
-    text-align: center;
-
-
-    main {
+.container {
+    width: 100%;
+    padding: 0 4.4%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  
+    .go-back {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+  
+      i {
+        margin-right: 5px;
+      }
+    }
+  
+    .content {
+      flex-grow: 1; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start; 
+  
+      .wallet {
+        width: 100%;
+        margin: 1rem 0;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        height: 6rem;
+        background: #D5A473;
+  
+        .wallet-icon {
+          max-height: 4rem;
+          margin-right: 1.25rem;
+        }
+  
+        .wallet-text {
+          text-align: left;
+  
+          .wallet-title {
+            font-size: 1rem;
+            font-weight: bold;
+            line-height: 1;
+            margin: unset;
+            margin-bottom: .25rem;
+          }
+  
+          .wallet-subtitle {
+            margin: unset;
+            font-family: 'Poppins', sans-serif;
+            font-size: .8rem;
+            line-height: 1.25;
+            width: 100%;
+            color: var(--mkw-color-dark-medium);
+          }
+        }
+  
+        
+      }
+  
+      .awards {
         display: flex;
         flex-direction: column;
-        height: 80%;
-        justify-content: space-evenly;
         align-items: center;
-
-        div.coin-card {
+        width: 100%;
+        margin: 2rem 0;
+  
+        .award-item {
+          align-self: flex-end;
+          width: calc(100% - 1rem);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin: .5rem 0;
+          padding: .25rem 0;
+          transition: .3s;
+  
+          &.selected {
+            .award {
+              transform: scale(1.1);
+            }
+  
+            .award-price {
+              color: var(--mkw-color-primary);
+            }
+          }
+  
+          &.unavailable {
+            opacity: .5;
+          }
+  
+          .award {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            max-width: 40%;
-            min-width: 40%;
-            height: 25%;
-            padding: 12px;
-            border: 2px solid var(--mkw-color-primary);
-            text-align: center;
+            width: 60%;
+            padding: 0 .25rem;
+            border-radius: 10px 4px 4px 10px;
+            transition: inherit;
+
+            .coins-icon {
+                height: 3rem;
+                margin: -.25rem;
+            }
+  
+            .award-label {
+              position: relative;
+              font-weight: bold;
+              margin: unset;
+              line-height: 1;
+              font-size: 1rem;
+            }
+          }
+  
+          .award-price {
+            display: flex;
+            align-items: center;
+  
+            .award-value {
+              font-family: 'Poppins', sans-serif;
+              margin: unset;
+            }            
+          }
         }
+      }
 
-
-        div.coin-card.selected {
-            background-color: var(--mkw-color-primary);
-            color: var(--mkw-color-light);
-        }
-
-    }
-
-    footer {
+      .submit-button {
         display: flex;
-        flex-direction: row;
+        align-items: center;
         justify-content: center;
-
-        button {
-            display: flex;
-            align-items: center;
-            background-color: var(--mkw-color-primary);
-            color: var(--mkw-color-light);
-            padding: 10px;
-            width: 70%;
-            justify-content: center;
+        margin-top: auto;
+        margin-bottom: 1rem;
+        justify-self: flex-end;
+        width: 100%;
+        background-color: var(--mkw-color-primary);
+        color: var(--mkw-color-light);
+        padding: .75rem 0;
+        font-size: 1.2rem;
+        font-weight: 500;
+        filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
+  
+        position: relative;
+        bottom: 2rem;
+  
+        i {
+          margin-right: .5rem;
         }
+  
+        &[disabled] {
+          background-color: #2C2C2C75;
+        }
+      }
     }
 
-    div#checkout {
-        height: 100vh;
-
-        iframe {
-            height: 100% !important;
-        }
-    }
-
-    div.success {
-
-        margin: auto 40px;
+    .success {
+        margin: auto;
         text-align: center;
         font-size: 1.6rem;
         height: 100%;
@@ -69,11 +170,14 @@ ion-content {
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            line-height: 1;
 
             .thanks-for-buying {
                 font-family: 'Poppins', sans-serif;
                 text-align: center;
                 font-size: 1rem;
+                margin: unset;
+                line-height: 1.25;
             }
 
             button {
@@ -86,7 +190,8 @@ ion-content {
                 font-size: 1.2rem;
                 margin-top: 10%;
                 width: 100%;
+                font-weight: bold;
             }
         }
     }
-}
+  }

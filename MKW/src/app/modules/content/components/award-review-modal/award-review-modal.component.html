@@ -1,38 +1,75 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="cancel()"><i class="material-icons">arrow_back</i></ion-button>
-    </ion-buttons>
-    <ion-title>Recompensar review</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="container">
+  <div (click)="cancel()" class="go-back">
+    <i class="material-icons">arrow_back</i>
+    <p>{{ 'return' | translate }}</p>
+  </div>
 
-<ion-content>
-  <h2>Saldo atual: {{this.userBalance ? this.userBalance : 0}}</h2>
-  <label class="add-funds" (click)="addFunds()">Adicionar fundos?</label>
-
-  <main>
-
-    <div (click)="selectAward(1, 100)" [ngClass]="'award-card ' + getAwardCardClass(1, 100)">
-      <img src="assets/icon/GOLDEN_SHIELD.png">
-      <label>Prêmio de ouro</label>
-      <label>100 moedas</label>
+  <main class="content">
+    <div class="wallet">
+      <img class="wallet-icon" src="assets/icon/wallet.png" alt="Wallet">
+      <div class="wallet-text">
+        <h2 class="wallet-title">{{this.userBalance ? this.userBalance : 0}} moedas</h2>
+        <label class="add-funds" (click)="addFunds()">Obter mais moedas</label>
+      </div>
     </div>
+    <div class="awards">
+      <button 
+        (click)="selectAward(1, 100)" 
+        class="award-item"
+        [class.selected]="selectedAwardId === 1"
+        [class.unavailable]="!userBalance || userBalance < 100" 
+        [disabled]="!userBalance || userBalance < 100"
+      >
+        <div class="award gold-award">
+          <img class="award-icon" src="assets/icon/GOLDEN_SHIELD.png">
+          <p class="award-label">Prêmio de ouro</p>
+        </div>
+        <div class="award-price">
+          <p class="award-value">100</p>
+          <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
+        </div>
+      </button>
 
-    <div (click)="selectAward(2, 50)" [ngClass]="'award-card ' + getAwardCardClass(2, 50)">
-      <img src="assets/icon/SILVER_SHIELD.png">
-      <label>Prêmio de prata</label>
-      <label>50 moedas</label>
-    </div>
+      <button 
+        (click)="selectAward(2, 75)" 
+        class="award-item"
+        [class.selected]="selectedAwardId === 2"
+        [class.unavailable]="!userBalance || userBalance < 75" 
+        [disabled]="!userBalance || userBalance < 75"
+      >
+        <div class="award silver-award">
+          <img class="award-icon" src="assets/icon/SILVER_SHIELD.png">
+          <p class="award-label">Prêmio de prata</p>
+        </div>
+        <div class="award-price">
+          <p class="award-value">75</p>
+          <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
+        </div>
+      </button>
 
-    <div (click)="selectAward(3, 20)" [ngClass]="'award-card ' + getAwardCardClass(3, 20)">
-      <img src="assets/icon/BRONZE_SHIELD.png">
-      <label>Prêmio de bronze</label>
-      <label>20 moedas</label>
+      <button 
+        (click)="selectAward(3, 50)" 
+        class="award-item"
+        [class.selected]="selectedAwardId === 3"
+        [class.unavailable]="!userBalance || userBalance < 50" 
+        [disabled]="!userBalance || userBalance < 50"
+      >
+        <div class="award bronze-award">
+          <img class="award-icon" src="assets/icon/BRONZE_SHIELD.png">
+          <p class="award-label">Prêmio de bronze</p>
+        </div>
+        <div class="award-price">
+          <p class="award-value">50</p>
+          <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
+        </div>
+      </button>
+
     </div>
   </main>
   <footer>
-    <button (click)="confirm()"><i class="material-icons">add</i>Recompensar</button>
-
+    <button class="submit-button" (click)="confirm()" [disabled]="!(selectedAwardId || 0 > 0)">
+      <i class="material-icons">add</i>
+      Recompensar
+    </button>
   </footer>
-</ion-content>
+</div>

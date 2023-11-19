@@ -37,7 +37,10 @@
         </div>
       </div>
     </div>
-    <button class="add-button" (click)="goToReviewPage(contentObject?.externalContentId, contentObject?.platformId)" ><i class="material-icons">add</i> {{ 'add-review' | translate }}</button>
+    <button class="add-button" (click)="goToReviewPage(contentObject?.externalContentId, contentObject?.platformId)" >
+      <i class="material-icons">create</i>
+      {{ 'add-review' | translate }}
+    </button>
   </div>
   
 

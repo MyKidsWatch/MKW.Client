@@ -1,4 +1,7 @@
 .movie-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   margin: auto;
   max-width: 800px;
@@ -111,14 +114,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: calc(100% - 4.4% * 2);
     background-color: var(--mkw-color-primary);
     color: var(--mkw-color-light);
     padding: .75rem 0;
-    margin: unset;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 1rem;
     font-size: 1.2rem;
     font-weight: 500;
-    filter: drop-shadow(1px 4px 4px rgba(0, 0, 0, 0.15));
+    box-shadow: 1px 4px 4px rgba(0, 0, 0, 0.15);
 
     i {
       margin-right: .5rem;

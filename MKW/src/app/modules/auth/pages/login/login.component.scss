@@ -14,7 +14,7 @@
     }
   }
 
-  form.login-form {
+  .login-form {
     ion-input,
     ion-textarea,
     ion-select {
@@ -24,6 +24,13 @@
       margin-bottom: 1rem;
       --placeholder-color: var(mkw-color-dark-medium);
       --placeholder-opacity: 1;
+    }
+
+    .reset-password {
+      color: var(--mkw-color-dark-medium);
+      padding: 1rem;
+      margin: -1rem 0;
+      font-weight: 500;
     }
   }
   
@@ -52,7 +59,7 @@
   }
 
   div,
-  form.login-form {
+  .login-form {
     display: flex;
     padding: 0 8.8%;
     flex-direction: column;
