@@ -64,56 +64,64 @@ ion-header {
 
 }
 
-div.child-option{
+.child-option {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   align-items: center;
-  margin: 5px 10px 0 5px;
-  justify-content: space-evenly;
-}
-ion-chip{
-  background-color: var(--mkw-color-primary);
-  color: var(--mkw-color-light);
-}
+  padding-left: 4.4%;
+  overflow-y: auto;
+  margin-top: 1rem;
+  -ms-overflow-style: none;  
+  scrollbar-width: none;
 
-ion-chip.not-selected{
-  color: var(--mkw-color-primary);
-  background-color: var(--mkw-color-light);
-  border: 1px solid var(--mkw-color-primary);
-}
+  ion-chip {
+    background-color: var(--mkw-color-primary);
+    color: var(--mkw-color-light);
+    min-width: 5rem;
+    text-align: center;
+    padding: .35rem 3rem;
+    height: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    margin: unset;
+    margin-right: .5rem;
+    color: var(--mkw-color-primary);
+    background-color: var(--mkw-color-light);
+    border: 1px solid var(--mkw-color-primary);
 
-.boy.not-selected {
-  color: var(--mkw-color-secondary)!important;
-  background-color: var(--mkw-color-light);
-}
+    &.selected {
+      color: var(--mkw-color-light);
+      background-color: var(--mkw-color-primary);
+    }
 
-.boy {
-  color: var(--mkw-color-light)!important;
-  background-color: var(--mkw-color-secondary);
-  border: 1px solid var(--mkw-color-secondary);
-}
+    &.boy {
+      border: 1px solid var(--mkw-color-secondary);
 
-.girl.not-selected {
-  color: var(--mkw-color-purple)!important;
-  background-color: var(--mkw-color-light);
-}
+      &.selected {
+        color: var(--mkw-color-light);
+      }
+    }
 
-.girl {
-  color: var(--mkw-color-light)!important;
-  background-color: var(--mkw-color-purple);
-  border: 1px solid var(--mkw-color-purple);
-}
+    &.girl {
+      border: 1px solid var(--mkw-color-purple);
 
-.unassigned.not-selected {
-  color: var(--mkw-color-warning)!important;
-  background-color: var(--mkw-color-light);
-}
+      &.selected {
+        background-color: var(--mkw-color-purple);
+      }
+    }
 
-.unassigned {
-  color: var(--mkw-color-light)!important;
-  background-color: var(--mkw-color-warning);
-  border: 1px solid var(--mkw-color-warning);
+    
+    &.unassigned {
+      border: 1px solid var(--mkw-color-warning);
+      color: var(--mkw-color-dark-medium);
+
+      &.selected {
+        background-color: var(--mkw-color-warning);
+      }
+    }
+    
+  }
 }
 
 .header-md::after {
