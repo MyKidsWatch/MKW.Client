@@ -64,13 +64,6 @@ ion-header {
 
 }
 
-
-div.child-option {
-  margin: 5px 10px 0 5px;
-  overflow-x: scroll;
-  white-space: nowrap;
-}
-
 ion-chip {
   background-color: var(--mkw-color-primary);
   color: var(--mkw-color-light);
@@ -124,6 +117,65 @@ ion-chip.not-selected {
   color: var(--mkw-color-light) !important;
   background-color: var(--mkw-color-warning);
   border: 1px solid var(--mkw-color-warning);
+  
+.child-option {
+  display: flex;
+  align-items: center;
+  padding-left: 4.4%;
+  overflow-y: auto;
+  margin-top: 1rem;
+  -ms-overflow-style: none;  
+  scrollbar-width: none;
+
+  ion-chip {
+    background-color: var(--mkw-color-primary);
+    color: var(--mkw-color-light);
+    min-width: 5rem;
+    text-align: center;
+    padding: .35rem 3rem;
+    height: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    margin: unset;
+    margin-right: .5rem;
+    color: var(--mkw-color-primary);
+    background-color: var(--mkw-color-light);
+    border: 1px solid var(--mkw-color-primary);
+
+    &.selected {
+      color: var(--mkw-color-light);
+      background-color: var(--mkw-color-primary);
+    }
+
+    &.boy {
+      border: 1px solid var(--mkw-color-secondary);
+
+      &.selected {
+        color: var(--mkw-color-light);
+      }
+    }
+
+    &.girl {
+      border: 1px solid var(--mkw-color-purple);
+
+      &.selected {
+        background-color: var(--mkw-color-purple);
+      }
+    }
+
+    
+    &.unassigned {
+      border: 1px solid var(--mkw-color-warning);
+      color: var(--mkw-color-dark-medium);
+
+      &.selected {
+        background-color: var(--mkw-color-warning);
+      }
+    }
+    
+  }
 }
 
 .header-md::after {
