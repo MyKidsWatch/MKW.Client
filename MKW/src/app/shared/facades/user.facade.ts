@@ -6,12 +6,12 @@ import { CommentService } from 'src/app/core/services/comment.service';
 import { AddComment, AnswerComment, DeleteComment, EditComment, ReportComment, UpdateCommentList } from '../store/comments/comment.actions';
 import { ReportService } from 'src/app/core/services/report.service';
 import { CommentSelectors } from '../store/comments/comment.selectors';
-import { ActivateUserEmail, LogUserOff, LoginUser, RefreshCurrentUserToken, UpdateCurrentUserInformation } from '../store/user/user.action';
+import { ActivateUserEmail, AddChildToUser, LogUserOff, LoginUser, RefreshCurrentUserToken, RemoveUserChild, UpdateChildList, UpdateCurrentUserInformation } from '../store/user/user.action';
 import { UserSelectors } from '../store/user/user.selectors';
 import { TokenInfo, UserData } from '../store/user/user.model';
 import { UserStateModel } from '../store/user/user.state';
 import { ActivateEmailComponent } from 'src/app/modules/home/activate-email/activate-email.component';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 
 @Injectable({
@@ -64,4 +64,32 @@ export class UserFacade {
     }
 
 
+    public addChild(genderId: number, ageRangeId: number) {
+        return this.store.dispatch(new AddChildToUser(genderId, ageRangeId))
+    }
+
+    public removeChild(childId: number) {
+        return this.store.dispatch(new RemoveUserChild(childId))
+    }
+
+    public updateUserChildren() {
+        return this.store.dispatch(new UpdateChildList());
+    }
+
+    public getUserChildren() {
+        return this.store.select(UserSelectors.getUserChildren)
+    }
+
+    public getUserUniqueChildren() {
+        return this.store.select(UserSelectors.getUserUniqueChildren)
+    }
+
+
+    public getUserChildrenCards(translateService: TranslateService) {
+        return this.store.select(UserSelectors.getUserChildrenCard).pipe(map(filterFn => filterFn(translateService)))
+    }
+
+    public getUserUniqueChildrenCards(translateService: TranslateService) {
+        return this.store.select(UserSelectors.getUserUniqueChildrenCards).pipe(map(filterFn => filterFn(translateService)))
+    }
 }

@@ -1,42 +1,41 @@
-
-
-div.report-type{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
+div.filter-list {
     margin: 5px 10px 0 5px;
-    justify-content: space-evenly;
-}
-ion-chip{
-    background-color: var(--mkw-color-primary);
-    color: var(--mkw-color-light);
+    overflow-x: scroll;
+    white-space: nowrap;
+
+    ion-chip {
+        background-color: var(--mkw-color-primary);
+        color: var(--mkw-color-light);
+    }
+
+    ion-chip.not-selected {
+        color: var(--mkw-color-primary);
+        background-color: var(--mkw-color-light);
+        border: 1px solid var(--mkw-color-primary);
+    }
+
 }
 
-ion-chip.not-selected{
-    color: var(--mkw-color-primary);
-    background-color: var(--mkw-color-light);
-    border: 1px solid var(--mkw-color-primary);
-}
 
-footer{
+footer {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     margin-top: 2em;
     margin-bottom: 2em;
 
-    label{
+    label {
         align-self: center;
     }
-    button{
+
+    button {
         background-color: var(--mkw-color-primary);
         color: var(--mkw-color-light);
         width: 20%;
         height: 100%;
     }
 
-    button.disabled{
+    button.disabled {
         color: var(--mkw-color-primary);
         background-color: var(--mkw-color-light);
         border: 1px solid var(--mkw-color-primary);

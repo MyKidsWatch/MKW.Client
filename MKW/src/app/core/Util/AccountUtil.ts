@@ -2,28 +2,27 @@ import { AgeRangeService } from "../services/age-range.service";
 import { TranslateService } from "@ngx-translate/core";
 
 export class AccountUtils {
-    static getGenderString(genderNumber?: number) : string | undefined
-    {
+    static getGenderString(genderNumber?: number): string | undefined {
         let gender;
 
-        switch(genderNumber)
-        {
+        switch (genderNumber) {
             case 1:
                 gender = 'boy'
-                break;  
+                break;
             case 2:
                 gender = 'girl'
+                break;
+            default:
+                gender = 'child'
                 break;
         }
 
         return gender;
     }
 
-    static getAgeRangeString(ageRangeId?: number, translateService?: TranslateService)
-    {
+    static getAgeRangeString(ageRangeId?: number, translateService?: TranslateService) {
         let ageRangeString = '';
-        switch(ageRangeId)
-        {
+        switch (ageRangeId) {
             case 1:
                 ageRangeString = '0 ' + translateService?.instant('to') + ' 2 ' + translateService?.instant('profile.yearsOld')
                 break;
@@ -48,11 +47,9 @@ export class AccountUtils {
 
     }
 
-    static getAgeRangeStringSimplified(ageRangeId?: number, translateService?: TranslateService)
-    {
+    static getAgeRangeStringSimplified(ageRangeId?: number, translateService?: TranslateService) {
         let ageRangeString = '';
-        switch(ageRangeId)
-        {
+        switch (ageRangeId) {
             case 1:
                 ageRangeString = '0 - 2 '
                 break;

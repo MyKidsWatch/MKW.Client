@@ -8,12 +8,14 @@ import { ReportPaginationInformation } from 'src/app/shared/store/report/report.
   templateUrl: './admin-feed.component.html',
   styleUrls: ['./admin-feed.component.scss'],
 })
-export class AdminFeedComponent  implements OnInit {
+export class AdminFeedComponent implements OnInit {
 
 
   private pageSize: number = 10;
   private pageIndex: number = 1;
   public selectedReportType?: number;
+  public isAscending?: boolean = true;
+  public selectedReportStatus?: number;
   public paginationData?: ReportPaginationInformation;
 
   constructor(private reportFacade: ReportFacade) { }
@@ -23,33 +25,39 @@ export class AdminFeedComponent  implements OnInit {
 
     this.reportFacade.getPaginationData().subscribe(res => this.paginationData = res);
   }
-  
-  ionViewDidEnter()
-  {
+
+  ionViewDidEnter() {
     this.updateReportList();
   }
 
-  updateReportList()
-  {
-    this.reportFacade.setReportList(this.pageSize, this.pageIndex, this.selectedReportType).subscribe(res =>{})
+  updateReportList() {
+    this.reportFacade.setReportList(this.pageSize, this.pageIndex, this.selectedReportType, this.selectedReportStatus, !this.isAscending).subscribe(res => { })
   }
 
-  selectReportType(reportType?: number)
-  {
+  selectReportType(reportType?: number) {
     this.selectedReportType = reportType;
     this.pageIndex = 1;
     this.updateReportList();
   }
-  
 
-  nextPage()
-  {
+  selectReportStatus(reportStatus?: number) {
+    this.selectedReportStatus = reportStatus;
+    this.pageIndex = 1;
+    this.updateReportList();
+  }
+
+  selectIsAscending(ascending: boolean) {
+    this.isAscending = ascending;
+    this.pageIndex = 1;
+    this.updateReportList();
+  }
+
+  nextPage() {
     this.pageIndex++;
     this.updateReportList();
   }
 
-  previousPage()
-  {
+  previousPage() {
     this.pageIndex--;
     this.updateReportList();
   }

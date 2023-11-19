@@ -1,6 +1,6 @@
 ion-header {
   height: 8vh;
-  
+
   .header-items {
     padding: 0 4.4%;
     display: flex;
@@ -64,6 +64,60 @@ ion-header {
 
 }
 
+ion-chip {
+  background-color: var(--mkw-color-primary);
+  color: var(--mkw-color-light);
+}
+
+ion-chip.not-selected {
+  color: var(--mkw-color-primary);
+  background-color: var(--mkw-color-light);
+  border: 1px solid var(--mkw-color-primary);
+}
+
+.boy.not-selected {
+  color: var(--mkw-color-secondary) !important;
+  background-color: var(--mkw-color-light);
+}
+
+.boy {
+  color: var(--mkw-color-light) !important;
+  background-color: var(--mkw-color-secondary);
+  border: 1px solid var(--mkw-color-secondary);
+}
+
+.girl.not-selected {
+  color: var(--mkw-color-purple) !important;
+  background-color: var(--mkw-color-light);
+}
+
+.girl {
+  color: var(--mkw-color-light) !important;
+  background-color: var(--mkw-color-purple);
+  border: 1px solid var(--mkw-color-purple);
+}
+
+.child.not-selected {
+  color: var(--mkw-color-warning) !important;
+  background-color: var(--mkw-color-dark-light);
+}
+
+.child {
+  color: var(--mkw-color-light) !important;
+  background-color: var(--mkw-color-warning);
+  border: 1px solid var(--mkw-color-warning);
+}
+
+.unassigned.not-selected {
+  color: var(--mkw-color-warning) !important;
+  background-color: var(--mkw-color-light);
+}
+
+.unassigned {
+  color: var(--mkw-color-light) !important;
+  background-color: var(--mkw-color-warning);
+  border: 1px solid var(--mkw-color-warning);
+  
 .child-option {
   display: flex;
   align-items: center;

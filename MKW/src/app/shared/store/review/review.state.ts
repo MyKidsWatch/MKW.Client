@@ -51,7 +51,8 @@ export class ReviewState {
                     creationDate: reviewDTO.createDate!,
                     description: reviewDTO.text!,
                     rating: reviewDTO.stars,
-                    title: reviewDTO.title!
+                    title: reviewDTO.title!,
+                    isEdited: reviewDTO.edited!
                 };
 
                 let reviewContent: ReviewContentModel = {
@@ -153,7 +154,8 @@ export class ReviewState {
                     creationDate: reviewDTO.createDate!,
                     description: reviewDTO.text!,
                     rating: reviewDTO.stars,
-                    title: reviewDTO.title!
+                    title: reviewDTO.title!,
+                    isEdited: true
                 };
 
                 let reviewContent: ReviewContentModel = {
@@ -205,11 +207,9 @@ export class ReviewState {
                 let response: AwardPurchaseDto = res.content![0];
                 let reviewInformation = response.award!.review!;
 
-                console.log(reviewInformation)
                 currentReview.reviewAwards.bronzeAwards = reviewInformation.bronzeAwards!;
                 currentReview.reviewAwards.silverAwards = reviewInformation.silverAwards!;
                 currentReview.reviewAwards.goldenAwards = reviewInformation.goldenAwards!;
-                console.log(currentReview)
 
                 patchState(
                     {
@@ -229,7 +229,8 @@ export class ReviewState {
             creationDate: reviewDTO.createDate!,
             description: reviewDTO.text!,
             rating: reviewDTO.stars,
-            title: reviewDTO.title!
+            title: reviewDTO.title!,
+            isEdited: reviewDTO.edited!
         };
 
         let reviewContent: ReviewContentModel = {

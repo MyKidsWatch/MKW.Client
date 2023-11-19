@@ -22,6 +22,7 @@ import { AccountService } from 'src/app/core/services/account.service';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { ShortContentReviewCardComponent } from 'src/app/shared/components/short-content-review-card/short-content-review-card.component';
 import { KebabMenuComponent } from 'src/app/shared/components/kebab-menu/kebab-menu.component';
+import { ChildResolver } from 'src/app/core/resolvers/child.resolver';
 
 const childrenRoutes: Routes = [
   {
@@ -50,7 +51,7 @@ const routes: Routes = [
   {
     path: '',
     component: ProfileComponent,
-    resolve: [ProfileResolver],
+    resolve: [ProfileResolver, ChildResolver],
     children: childrenRoutes
   }
 ];

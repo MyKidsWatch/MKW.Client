@@ -39,7 +39,7 @@
     "thanksForJoining": "Thank you for joining us! We have sent a confirmation email to the email address provided during registration. Please check your inbox and click the confirmation link to complete the registration process.",
     "continue": "Continue"
   },
-  "navTabs" : {
+  "navTabs": {
     "home": "Home",
     "search": "Search",
     "profile": "Profile"
@@ -93,6 +93,7 @@
   "channel": "Channel",
   "boy": "Boy",
   "girl": "Girl",
+  "child": "Child",
   "children": "children",
   "has": "has",
   "to": "to",

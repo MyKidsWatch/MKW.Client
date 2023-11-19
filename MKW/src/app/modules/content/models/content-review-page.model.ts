@@ -1,6 +1,7 @@
 
 export interface ContentReviewPage {
     reviewId: number;
+    reviewIsEdited: boolean;
     reviewTitle: string;
     reviewDescription?: string | null;
     reviewRating: number;
@@ -32,6 +33,7 @@ export interface UserInformation {
 
 export interface ContentReviewComment {
     commentId: number;
+    commentIsEdited: boolean;
     parentCommentId?: number;
     commentText: string;
     commentAuthor: UserInformation;

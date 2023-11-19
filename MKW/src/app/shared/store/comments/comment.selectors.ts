@@ -6,21 +6,19 @@ import { ContentReviewComment } from "src/app/modules/content/models/content-rev
 
 
 
-export class CommentSelectors{
+export class CommentSelectors {
 
     @Selector([CommentState])
-    static GetComments(state: CommentStateModel)
-    {
+    static GetComments(state: CommentStateModel) {
         return state;
     }
 
     @Selector([CommentState])
-    static GetCommentCardModel(state: CommentStateModel) : ContentReviewComment[]
-    {
+    static GetCommentCardModel(state: CommentStateModel): ContentReviewComment[] {
 
-        let contentReviewComments: ContentReviewComment[]  = [];
+        let contentReviewComments: ContentReviewComment[] = [];
 
-        state.comments.forEach(comment =>{
+        state.comments.forEach(comment => {
 
             let contentReviewComment: ContentReviewComment = {
                 commentAuthor: {
@@ -30,10 +28,11 @@ export class CommentSelectors{
                 },
                 commentId: comment.id,
                 commentText: comment.commentText,
-                commentResponses: []
+                commentResponses: [],
+                commentIsEdited: comment.isEdited
             }
 
-            comment.commentAnswers?.forEach(answer =>{
+            comment.commentAnswers?.forEach(answer => {
                 let commentAnswer: ContentReviewComment = {
                     commentAuthor: {
                         creatorId: comment.personId,
@@ -43,7 +42,8 @@ export class CommentSelectors{
                     commentId: answer.id,
                     commentText: answer.commentText,
                     commentResponses: [],
-                    parentCommentId: answer.parentId
+                    parentCommentId: answer.parentId,
+                    commentIsEdited: comment.isEdited
                 }
                 contentReviewComment.commentResponses!.push(commentAnswer)
             });

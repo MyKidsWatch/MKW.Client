@@ -39,7 +39,7 @@
     "thanksForJoining": "Agradecemos por se juntar a nós! Enviamos um email de confirmação para o endereço de email fornecido durante o cadastro. Verifique sua caixa de entrada e clique no link de confirmação para concluir o processo de registro.",
     "continue": "Continuar"
   },
-  "navTabs" : {
+  "navTabs": {
     "home": "Início",
     "search": "Buscar",
     "profile": "Perfil"
@@ -93,6 +93,7 @@
   "channel": "Canal",
   "boy": "Menino",
   "girl": "Menina",
+  "child": "Criança",
   "children": "crianças",
   "has": "tem",
   "to": "a",

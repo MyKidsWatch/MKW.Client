@@ -46,7 +46,8 @@ export class ReviewSelectors {
         bronzeAwardCount: reviewState.reviewAwards.bronzeAwards,
         goldenAwardCount: reviewState.reviewAwards.goldenAwards,
         silverAwardCount: reviewState.reviewAwards.silverAwards
-      }
+      },
+      reviewIsEdited: reviewState.reviewDetails.isEdited!
     }
 
 

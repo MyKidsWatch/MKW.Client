@@ -12,24 +12,27 @@ import { ContentFeedComponent } from './pages/content-feed/content-feed.componen
 import { ContentReviewCardComponent } from 'src/app/shared/components/content-review-card/content-review-card.component';
 import { ReviewService } from 'src/app/core/services/review.service';
 import { ChildService } from 'src/app/core/services/child.service';
+import { ChildResolver } from 'src/app/core/resolvers/child.resolver';
 
 const childrenRoutes: Routes = [
   {
     path: 'review-feed',
-    component: ReviewFeedComponent
+    component: ReviewFeedComponent,
+    resolve: [ChildResolver]
   },
   {
     path: 'content-feed',
     component: ContentFeedComponent
   },
-  { path: '', 
-    redirectTo: 'review-feed', 
-    pathMatch: 'full' 
+  {
+    path: '',
+    redirectTo: 'review-feed',
+    pathMatch: 'full'
   }
 ];
 
 const routes: Routes = [
-  { 
+  {
     path: '',
     component: FeedComponent,
     children: childrenRoutes
@@ -50,7 +53,7 @@ const routes: Routes = [
     ContentCardComponent,
     ContentReviewCardComponent,
   ],
-  providers:[
+  providers: [
     AlgorithmClient,
     AlgorithmService,
     ReportClient,
