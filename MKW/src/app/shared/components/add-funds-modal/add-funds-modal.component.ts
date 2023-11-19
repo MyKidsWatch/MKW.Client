@@ -31,7 +31,6 @@ import { UserFacade } from '../../facades/user.facade';
   ]
 })
 export class AddFundsModalComponent implements OnInit, OnDestroy {
-
   private stripe: any;
   private internalCheckout: any;
   private operationId?: number;
@@ -82,7 +81,6 @@ export class AddFundsModalComponent implements OnInit, OnDestroy {
   }
 
   async initializeStripeCheckout() {
-
     if (!this.amountUserIsBuying)
       return;
 
@@ -106,7 +104,13 @@ export class AddFundsModalComponent implements OnInit, OnDestroy {
         document.querySelectorAll('iframe').forEach(element => {
           new ResizeObserver(() => {
             if (element.style.height != '100%')
+              element.style.position = 'absolute';
+              element.style.top = '0';
+              element.style.left = '0';
+              element.style.width = '100%';
               element.style.height = '100%';
+              element.style.zIndex = '999';
+              element.style.margin = 'auto';
           }).observe(element)
         })
       }));
@@ -121,7 +125,6 @@ export class AddFundsModalComponent implements OnInit, OnDestroy {
   }
 
   completedStripe() {
-
     this.operationService.getOperationCurrentStatus(this.operationId!)
       .pipe(switchMap(() => {
         return this.userFacade.updateUserInformation()
@@ -134,10 +137,6 @@ export class AddFundsModalComponent implements OnInit, OnDestroy {
 
   selectAmountToBuy(coinAmount: number) {
     this.amountUserIsBuying = coinAmount;
-  }
-
-  getCoinCardClass(coinAmout: number) {
-    return this.amountUserIsBuying == coinAmout ? 'selected' : '';
   }
 
 }
