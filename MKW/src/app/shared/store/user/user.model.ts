@@ -1,4 +1,4 @@
-export class UserData{
+export interface UserData {
     userId?: number;
     firstName?: string;
     lastName?: string;
@@ -7,9 +7,17 @@ export class UserData{
     isEmailVerified?: boolean;
     isAdmin?: boolean;
     coinCount?: number;
+    childrenInformation: ChildInformation[];
 }
 
-export class TokenInfo{
+
+export interface ChildInformation {
+    childId: number;
+    ageRangeId: number;
+    genderId: number;
+}
+
+export interface TokenInfo {
     accessToken?: string;
     refreshToken?: string;
     expiresAt?: Date;

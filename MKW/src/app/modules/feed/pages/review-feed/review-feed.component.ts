@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { AccountUtils } from 'src/app/core/Util/AccountUtil';
 import { ContentUtils } from 'src/app/core/Util/ContentUtils';
@@ -9,6 +10,7 @@ import { ChildService } from 'src/app/core/services/child.service';
 import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
 import { MovieService } from 'src/app/core/services/movie.service';
 import { ReviewService } from 'src/app/core/services/review.service';
+import { UserFacade } from 'src/app/shared/facades/user.facade';
 import { ChildrenCard } from 'src/app/shared/models/children-card.model';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
 import { ContentReviewCard } from 'src/app/shared/models/content-review-card.model';
@@ -25,14 +27,15 @@ export class ReviewFeedComponent implements OnInit {
   public pageSize: number = 10;
   public isLoadingContent: boolean = false;
   public showContent: boolean = true;
-  public childId?:number;
-  public children:ChildrenCard[] = [];
+  public childId?: number;
+  public children: ChildrenCard[] = [];
 
   constructor(
     private reviewService: ReviewService,
-    private childService: ChildService,
-    public loadingBarService: LoadingBarService
-    ) { }
+    public loadingBarService: LoadingBarService,
+    private userFacade: UserFacade,
+    private translationService: TranslateService
+  ) { }
 
   ngOnInit() {
     this.setLoadingBar();
@@ -98,8 +101,7 @@ export class ReviewFeedComponent implements OnInit {
     event.target.complete();
   }
 
-  selectChildId(childId?: number)
-  {
+  selectChildId(childId?: number) {
     this.childId = childId;
     this.contentCards = [];
     this.page = 1;
@@ -107,29 +109,8 @@ export class ReviewFeedComponent implements OnInit {
   }
 
   getChildren() {
-    this.children = [];
-    this.childService.getChildren().pipe(take(1)).subscribe({
-      next: (response) =>{
-        this.buildChildrenCards(response)
-      },
-      error: (err) =>{
-        console.log(err);
-      }
-    })
+    this.userFacade.getUserUniqueChildrenCards(this.translationService)
+      .subscribe(res => this.children = res);
   }
 
-  buildChildrenCards(childrenResponse: ChildDtoBaseResponseDTO)
-  {
-      childrenResponse.content?.forEach(children =>{
-        let gender = AccountUtils.getGenderString(children.genderId);
-
-        this.children.push(
-          {
-            ageRange: AccountUtils.getAgeRangeStringSimplified(children.ageRangeId), 
-            id: children.id!, 
-            style: gender ? gender : 'unassigned', 
-            gender
-          })
-      });
-  }
 }

@@ -6,6 +6,7 @@ import { AgeRangeData } from '../view-children/view-children.component';
 import { AgeRangeService } from 'src/app/core/services/age-range.service';
 import { Location } from '@angular/common';
 import { take } from 'rxjs';
+import { UserFacade } from 'src/app/shared/facades/user.facade';
 
 @Component({
   selector: 'app-add-children',
@@ -21,43 +22,43 @@ export class AddChildrenComponent implements OnInit {
   });
 
   constructor(
-    private location: Location, 
-    private childService: ChildService, 
-    private formBuilder: FormBuilder, 
-    private ageRangeService: AgeRangeService
+    private location: Location,
+    private formBuilder: FormBuilder,
+    private ageRangeService: AgeRangeService,
+    private userFacade: UserFacade
   ) { }
 
   ngOnInit() {
     this.ageRangeService.getAgeRanges().subscribe({
-      next: (res) =>{
-        res.content?.forEach(ageRange =>{
-            this.ageRanges.push({
-              id: ageRange.id,
-              initialAge: ageRange.initialAge,
-              finalAge: ageRange.finalAge
-            });
+      next: (res) => {
+        res.content?.forEach(ageRange => {
+          this.ageRanges.push({
+            id: ageRange.id,
+            initialAge: ageRange.initialAge,
+            finalAge: ageRange.finalAge
+          });
 
-            console.log(ageRange);
+          console.log(ageRange);
         })
       },
-      error: (err) =>{
+      error: (err) => {
         console.log(err);
       }
     })
   }
 
   addChild() {
-    let createChild: CreateChildDto = new CreateChildDto();
-    createChild.genderId = this.registrationForm.controls['gender'].value;
-    createChild.ageRangeId = this.registrationForm.controls['ageRange'].value;
+    let genderId = this.registrationForm.controls['gender'].value;
+    let ageRangeId = this.registrationForm.controls['ageRange'].value;
 
-    this.childService.createChild(createChild).pipe(take(1)).subscribe({
-      next: (res) =>{
+    this.userFacade.addChild(genderId, ageRangeId)
+      .subscribe({
+        next: (res) => {
           this.location.back();
-      },  
-      error: (err) =>{
+        },
+        error: (err) => {
           alert("Erro durante o cadstro de sua criança, tente novamente mais tarde");
-      }
-    });
+        }
+      });
   }
 }

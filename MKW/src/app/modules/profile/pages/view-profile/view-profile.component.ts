@@ -14,6 +14,7 @@ import { ReviewService } from 'src/app/core/services/review.service';
 import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { ModalController } from '@ionic/angular';
 import { AddFundsModalComponent } from 'src/app/shared/components/add-funds-modal/add-funds-modal.component';
+import { ChildrenCard } from 'src/app/shared/models/children-card.model';
 
 @Component({
   selector: 'app-view-profile',
@@ -23,6 +24,9 @@ import { AddFundsModalComponent } from 'src/app/shared/components/add-funds-moda
 export class ViewProfileComponent implements OnInit {
   public userData?: UserData;
   public profileData?: ProfileModel;
+
+  public childrenCard: ChildrenCard[] = [];
+
   public coinCount?: number;
 
   public goldenAwards: number = 0;
@@ -60,7 +64,7 @@ export class ViewProfileComponent implements OnInit {
 
   ngOnInit() {
     this.userData = this.userFacade.getUserState();
-
+    console.log("entrou no init")
     this.userFacade.getUserCurrentCoinCount()
       .subscribe(res => {
         console.log(res)
@@ -85,9 +89,17 @@ export class ViewProfileComponent implements OnInit {
           console.log(err);
         },
       });
+
+    this.userFacade.getUserChildren().subscribe(res => {
+      console.log(res);
+    })
+    this.userFacade.getUserChildrenCards(this.translateService)
+      .subscribe(res => this.childrenCard = res);
   }
 
-
+  ionViewDidEnter() {
+    console.log("Entrou na view");
+  }
 
   async addFunds() {
     let fundsModal = await this.modalController.create({ component: AddFundsModalComponent });
