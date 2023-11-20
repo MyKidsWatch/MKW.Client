@@ -1,3 +1,5 @@
+import { ReviewAwardInformation, ReviewContentModel, ReviewDetailsModel, ReviewOwnerModel } from "../review/review.model";
+
 export interface UserData {
     userId?: number;
     firstName?: string;
@@ -8,8 +10,17 @@ export interface UserData {
     isAdmin?: boolean;
     coinCount?: number;
     childrenInformation: ChildInformation[];
+    userReviews: UserReview[];
 }
 
+
+export interface UserReview {
+    reviewOwner: ReviewOwnerModel;
+    reviewContent: ReviewContentModel;
+    reviewDetails: ReviewDetailsModel;
+    reviewAwards: ReviewAwardInformation;
+    commentCount: number;
+}
 
 export interface ChildInformation {
     childId: number;

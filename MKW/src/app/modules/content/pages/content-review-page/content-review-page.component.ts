@@ -164,8 +164,10 @@ export class ContentReviewPageComponent implements OnInit {
     this.reviewFacade.deleteReview(this.reviewId!)
       .subscribe({
         next: (res) => {
+
+          this.userFacade.updateUserReviews();
           alert("Review excluída com sucesso");
-          this.router.navigate(['home/feed']);
+          this.goBack();
         },
         error: (err) => {
           alert("Erro ao excluir review");
@@ -187,6 +189,7 @@ export class ContentReviewPageComponent implements OnInit {
     this.reviewFacade.editReview(this.reviewId!, result.data.title, result.data.stars, result.data.text)
       .subscribe({
         next: (res) => {
+          this.userFacade.updateUserReviews();
           alert("Review editada com sucesso")
         },
         error: (err) => {

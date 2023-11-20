@@ -43,3 +43,8 @@ export class UpdateUserChild {
     static readonly type = '[USER] Update user child';
     constructor(public childId: number, public genderId: number, public ageRangeId: number) { }
 }
+
+export class UpdateUserReviews {
+    static readonly type = '[USER] Update user reviews';
+    constructor() { }
+}

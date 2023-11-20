@@ -3,6 +3,7 @@ import { UserState, UserStateModel } from "./user.state";
 import { ChildInformation } from "./user.model";
 import { ChildrenCard } from "../../models/children-card.model";
 import { TranslateService } from "@ngx-translate/core";
+import { ContentReviewCard } from "../../models/content-review-card.model";
 
 
 export class UserSelectors {
@@ -91,7 +92,50 @@ export class UserSelectors {
 
             return childrenCard;
         }
+    }
 
+    @Selector([UserState])
+    static getUserReviews(state: UserStateModel) {
+        return state.user?.userReviews;
+    }
+
+    @Selector([UserState])
+    static getUserReviewsContentCard(state: UserStateModel): ContentReviewCard[] {
+        let contentReviewCards: ContentReviewCard[] = [];
+
+        state.user?.userReviews.forEach(userReview => {
+
+            let contentReviewCard: ContentReviewCard = {
+                reviewId: userReview.reviewDetails.id,
+                reviewTitle: userReview.reviewDetails.title,
+                reviewCommentCount: userReview.commentCount,
+                reviewAwardInformation: {
+                    reviewBronzeAwardCount: userReview.reviewAwards.bronzeAwards,
+                    reviewSilverAwardCount: userReview.reviewAwards.silverAwards,
+                    reviewGoldAwardCount: userReview.reviewAwards.goldenAwards
+                },
+                reviewContentInformation: {
+                    contentTitle: userReview.reviewContent.title!,
+                    contentPosterPath: this.basePicturePathFromPlatformId(userReview.reviewContent.platformId!) + userReview.reviewContent.picturePath
+                },
+                reviewerInformation: {
+                    reviewerId: userReview.reviewOwner.id,
+                    reviewerName: userReview.reviewOwner.userName,
+                    reviewerPicturePath: userReview.reviewOwner.profilePictureUrl!
+                },
+                reviewPublishDate: userReview.reviewDetails.creationDate!,
+                platformId: userReview.reviewContent.platformId,
+                reviewBody: userReview.reviewDetails.description,
+                reviewRating: userReview.reviewDetails.rating
+
+
+            }
+            console.log(contentReviewCard.reviewContentInformation.contentPosterPath)
+            contentReviewCards.push(contentReviewCard);
+
+        })
+
+        return contentReviewCards;
     }
 
     static getGenderString(genderNumber?: number): string | undefined {
@@ -110,6 +154,21 @@ export class UserSelectors {
         }
 
         return gender;
+    }
+
+    private static basePicturePathFromPlatformId(platformId: number) {
+        console.log(platformId)
+        let picturePath = ''
+        switch (platformId) {
+            case 1:
+                picturePath = 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2'
+                break;
+            case 2:
+                picturePath = ''
+                break;
+        }
+
+        return picturePath;
     }
 
     static getAgeRangeString(ageRangeId?: number, translateService?: TranslateService) {
