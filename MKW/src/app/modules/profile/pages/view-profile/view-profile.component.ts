@@ -65,6 +65,9 @@ export class ViewProfileComponent implements OnInit {
 
     this.userFacade.getUserCurrentCoinCount().subscribe(res => { this.coinCount = res });
 
+    this.userFacade.getUserReviews().subscribe(res => {
+      console.log(res);
+    })
     const username = this.userData?.username || '';
 
     this.profileService.getProfile(username)
@@ -74,16 +77,16 @@ export class ViewProfileComponent implements OnInit {
           const profileDto = res.content![0][0];
 
           this.profileData = this.mapProfile(profileDto);
-
-          if (this.profileData?.userId) {
-            this.getUserReviews(this.profileData.userId);
-          }
         },
         error: (err: any) => {
           console.log(err);
         },
       });
 
+    this.userFacade.getUserReviewsContentCard().subscribe(res => {
+      console.log(res);
+      this.reviews = res
+    });
     this.userFacade.getUserChildrenCards(this.translateService).subscribe(res => this.childrenCard = res);
   }
 
@@ -140,24 +143,6 @@ export class ViewProfileComponent implements OnInit {
     }
   }
 
-  getUserReviews(userId: number) {
-    this.reviewService.getReviewByUserId(userId)
-      .pipe(take(1))
-      .subscribe({
-        next: (res: any) => {
-          this.reviews = res.content?.map((review: ReviewDetailsDto) => this.mapReview(review)) || [];
-
-          if (this.reviews?.length > 0) {
-            this.shouldShowReviews = true;
-          }
-        },
-        error: (err: any) => {
-          console.log(err);
-        },
-      });
-  }
-
-  mapReview = (response: ReviewDetailsDto) => ContentUtils.relevantReviewToContentReviewCard(response);
 
   mapProfile = (profileDto: ReadProfileDTO): ProfileModel => {
     const children = profileDto.childrens?.map(child => ({

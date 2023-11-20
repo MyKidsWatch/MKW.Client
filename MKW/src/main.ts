@@ -6,7 +6,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
-import { API_BASE_URL, AccountClient, AuthenticationClient, ChildClient, MovieClient } from './app/core/proxies/mkw-api.proxy';
+import { API_BASE_URL, AccountClient, AuthenticationClient, ChildClient, MovieClient, ReviewClient } from './app/core/proxies/mkw-api.proxy';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './app/core/core.module';
 import { CommonModule } from '@angular/common';
@@ -32,6 +32,7 @@ bootstrapApplication(AppComponent, {
     { provide: AuthenticationClient },
     { provide: AccountClient },
     { provide: ChildClient },
+    { provide: ReviewClient },
     importProvidersFrom
       (
         IonicModule.forRoot({ animated: false }),

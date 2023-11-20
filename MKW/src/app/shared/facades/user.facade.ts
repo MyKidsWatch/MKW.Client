@@ -6,7 +6,7 @@ import { CommentService } from 'src/app/core/services/comment.service';
 import { AddComment, AnswerComment, DeleteComment, EditComment, ReportComment, UpdateCommentList } from '../store/comments/comment.actions';
 import { ReportService } from 'src/app/core/services/report.service';
 import { CommentSelectors } from '../store/comments/comment.selectors';
-import { ActivateUserEmail, AddChildToUser, LogUserOff, LoginUser, RefreshCurrentUserToken, RemoveUserChild, UpdateChildList, UpdateCurrentUserInformation, UpdateUserChild } from '../store/user/user.action';
+import { ActivateUserEmail, AddChildToUser, LogUserOff, LoginUser, RefreshCurrentUserToken, RemoveUserChild, UpdateChildList, UpdateCurrentUserInformation, UpdateUserChild, UpdateUserReviews } from '../store/user/user.action';
 import { UserSelectors } from '../store/user/user.selectors';
 import { TokenInfo, UserData } from '../store/user/user.model';
 import { UserStateModel } from '../store/user/user.state';
@@ -88,12 +88,23 @@ export class UserFacade {
         return this.store.select(UserSelectors.getUserUniqueChildren)
     }
 
-
     public getUserChildrenCards(translateService: TranslateService) {
         return this.store.select(UserSelectors.getUserChildrenCard).pipe(map(filterFn => filterFn(translateService)))
     }
 
     public getUserUniqueChildrenCards(translateService: TranslateService) {
         return this.store.select(UserSelectors.getUserUniqueChildrenCards).pipe(map(filterFn => filterFn(translateService)))
+    }
+
+    public updateUserReviews() {
+        return this.store.dispatch(new UpdateUserReviews());
+    }
+
+    public getUserReviews() {
+        return this.store.select(UserSelectors.getUserReviews);
+    }
+
+    public getUserReviewsContentCard() {
+        return this.store.select(UserSelectors.getUserReviewsContentCard);
     }
 }

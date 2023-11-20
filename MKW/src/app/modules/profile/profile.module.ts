@@ -25,6 +25,7 @@ import { KebabMenuComponent } from 'src/app/shared/components/kebab-menu/kebab-m
 import { ChildResolver } from 'src/app/core/resolvers/child.resolver';
 import { AddChildModalComponent } from './components/add-child-modal/add-child-modal.component';
 import { EditChildModalComponent } from './components/edit-child-modal/edit-child-modal.component';
+import { UserReviewResolver } from 'src/app/core/resolvers/user-review.resolver';
 
 const childrenRoutes: Routes = [
   {
@@ -53,7 +54,7 @@ const routes: Routes = [
   {
     path: '',
     component: ProfileComponent,
-    resolve: [ProfileResolver, ChildResolver],
+    resolve: [ProfileResolver, ChildResolver, UserReviewResolver],
     children: childrenRoutes
   }
 ];
