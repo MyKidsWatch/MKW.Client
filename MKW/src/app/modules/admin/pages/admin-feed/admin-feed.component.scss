@@ -1,43 +1,89 @@
-div.filter-list {
-    margin: 5px 10px 0 5px;
-    overflow-x: scroll;
-    white-space: nowrap;
+.header {
+  height: 8vh;
+  border: unset !important;
+  box-shadow: unset;
 
-    ion-chip {
-        background-color: var(--mkw-color-primary);
-        color: var(--mkw-color-light);
+  .header-items {
+    padding: 0 4.4%;
+    display: flex;
+    justify-content: flex-start;
+    font-size: 1.2rem;
+    font-weight: bold;
+    height: 100%;
+
+    .header-item {
+      margin-top: 3vh;
+      margin-right: 1.5rem;
+      font-weight: bold;
     }
 
-    ion-chip.not-selected {
-        color: var(--mkw-color-primary);
-        background-color: var(--mkw-color-light);
-        border: 1px solid var(--mkw-color-primary);
+    .underlined {
+      border-bottom: 3px solid var(--mkw-color-dark);
     }
+  }
+}
+
+.divider {
+  width: 100%;
+  border-bottom: 3px solid #e2e2e2;
+}
+
+.container { 
+  padding: 0 4.4%;
+  overflow-y: auto;
+}
+
+.filters {
+  margin: 1rem 0;
+}
+
+.filter-list {
+  margin: .25rem 0;
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  white-space: nowrap;
+
+  .filter-title {
+    font-family: 'Poppins', sans-serif;
+    color: var(--mkw-color-dark-medium);
+    font-size: .8rem;
+  }
+
+  ion-chip {
+    background-color: var(--mkw-color-primary);
+    color: var(--mkw-color-light);
+  }
+
+  .not-selected {
+    color: var(--mkw-color-primary);
+    background-color: var(--mkw-color-light);
+    border: 1px solid var(--mkw-color-primary);
+  }
 
 }
 
-
 footer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-top: 2em;
-    margin-bottom: 2em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1rem 0;
 
-    label {
-        align-self: center;
-    }
+  .pagination-label {
+    font-family: 'Poppins', sans-serif;
+    align-self: center;
+  }
 
-    button {
-        background-color: var(--mkw-color-primary);
-        color: var(--mkw-color-light);
-        width: 20%;
-        height: 100%;
-    }
+  button {
+    background-color: var(--mkw-color-primary);
+    color: var(--mkw-color-light);
+    width: 20%;
+    height: 100%;
+  }
 
-    button.disabled {
-        color: var(--mkw-color-primary);
-        background-color: var(--mkw-color-light);
-        border: 1px solid var(--mkw-color-primary);
-    }
+  button.disabled {
+    color: var(--mkw-color-primary);
+    background-color: var(--mkw-color-light);
+    border: 1px solid var(--mkw-color-primary);
+  }
 }

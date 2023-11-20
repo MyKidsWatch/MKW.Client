@@ -1,30 +1,36 @@
-<ion-content *ngIf="reportOverview" style="display: flex; flex-direction: column;">
+<div class="container" *ngIf="reportOverview">
+  <div (click)="goBack()" class="go-back">
+    <i class="material-icons">arrow_back</i>
+    <p>{{ 'return' | translate }}</p>
+  </div>
 
-  <ion-icon name="arrow-back-outline" class="go-back-button" color="primary" role="button" (click)="goBack()">
-  </ion-icon>
-
-  <main>
-
-    <h3>{{reportOverview.reportType}} - {{reportOverview.reportReason}}</h3>
-    <h4>Status: {{reportOverview.reportStatus}}</h4>
-    <h4>Autor: {{reportOverview.reportedPerson}}</h4>
-
-    <label>"{{reportOverview.reportText}}"</label>
+  <main class="content">
+    <h2 class="content-title">{{reportOverview.reportType}} - {{reportOverview.reportReason}}</h2>
+      <div class="report-detail">
+        <label>Status:</label>
+        <span>{{reportOverview.reportStatus}}</span>
+      </div>
+      <div class="report-detail">
+        <label>Autor:</label>
+        <span>{{reportOverview.reportedPerson}}</span>
+      </div>
+    <div class="report-content-wrapper">
+      <p class="report-label">Conteúdo denunciado:</p>
+      <p class="report-content">"{{reportOverview.reportText}}"</p>
+    </div>
   </main>
 
-  <footer>
-    <ion-button (click)="discardReport()">
-      Descartar
-    </ion-button>
-
-    <ion-button (click)="removeContent()" *ngIf="this.reportOverview.reportType != 'Profile'">
+  <div class="footer">
+    <button class="submit-button danger outlined" (click)="removeContent()" *ngIf="this.reportOverview.reportType != 'Profile'">
       Excluir {{this.reportOverview.reportType}}
-    </ion-button>
+    </button>
 
-    <ion-button (click)="removeProfile()">
+    <button class="submit-button danger outlined" (click)="removeProfile()">
       Excluir perfil
-    </ion-button>
+    </button>
 
-  </footer>
-
-</ion-content>
+    <button class="submit-button" (click)="discardReport()">
+      Descartar denúncia
+    </button>
+  </div>
+</div>

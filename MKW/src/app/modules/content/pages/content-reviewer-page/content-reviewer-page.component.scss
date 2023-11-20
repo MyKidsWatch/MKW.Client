@@ -124,6 +124,10 @@ ion-header {
       display: flex;
       justify-content: flex-start;
       align-items: center;
+      overflow-x: auto;
+      -ms-overflow-style: none;  
+      scrollbar-width: none;
+      
       
       .child {
         max-width: 3rem;

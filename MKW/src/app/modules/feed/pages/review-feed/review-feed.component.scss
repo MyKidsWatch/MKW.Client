@@ -64,10 +64,11 @@ ion-header {
 
 }
 
-
-div.child-option {
+.child-option {
   margin: 5px 10px 0 5px;
-  overflow-x: scroll;
+  overflow-x: auto;
+  -ms-overflow-style: none;  
+  scrollbar-width: none;
   white-space: nowrap;
 }
 
@@ -83,49 +84,47 @@ ion-chip.not-selected {
 }
 
 .boy.not-selected {
-  color: var(--mkw-color-secondary) !important;
+  color: var(--mkw-color-secondary);
   background-color: var(--mkw-color-light);
 }
 
 .boy {
-  color: var(--mkw-color-light) !important;
+  color: var(--mkw-color-light);
   background-color: var(--mkw-color-secondary);
   border: 1px solid var(--mkw-color-secondary);
 }
 
-
-
 .girl {
-  color: var(--mkw-color-light) !important;
+  color: var(--mkw-color-light);
   background-color: var(--mkw-color-purple);
   border: 1px solid var(--mkw-color-purple);
 }
 
 .girl.not-selected {
-  color: var(--mkw-color-purple) !important;
+  color: var(--mkw-color-purple);
   background-color: var(--mkw-color-light);
   border: 1px solid var(--mkw-color-purple);
 }
 
 .child.not-selected {
-  color: var(--mkw-color-warning) !important;
+  color: var(--mkw-color-dark-medium);
   background-color: var(--mkw-color-dark-light);
   border: 1px solid var(--mkw-color-warning);
 }
 
 .child {
-  color: var(--mkw-color-light) !important;
+  color: var(--mkw-color-dark-medium);
   background-color: var(--mkw-color-warning);
   border: 1px solid var(--mkw-color-warning);
 }
 
 .unassigned.not-selected {
-  color: var(--mkw-color-warning) !important;
+  color: var(--mkw-color-dark-medium);
   background-color: var(--mkw-color-light);
 }
 
 .unassigned {
-  color: var(--mkw-color-light) !important;
+  color: var(--mkw-color-dark-medium);
   background-color: var(--mkw-color-warning);
   border: 1px solid var(--mkw-color-warning);
 }

@@ -142,7 +142,9 @@ ion-header {
       display: flex;
       justify-content: flex-start;
       align-items: flex-start;
-      overflow-x: scroll;
+      overflow-x: auto;
+      -ms-overflow-style: none;  
+      scrollbar-width: none;
 
       .child-chip {
         max-width: 3rem;
