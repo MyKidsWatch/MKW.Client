@@ -2,7 +2,7 @@
   <ion-progress-bar *ngIf="isLoadingContent" type="indeterminate"></ion-progress-bar>
   <div class="header-items">
     <label class="underlined header-item">{{ 'feedComponent.forYourChildren' | translate }}</label>
-    <label class="header-item" routerLink="../content-feed">Em alta</label>
+    <label class="header-item" routerLink="../content-feed">{{ 'feedComponent.trending' | translate }}</label>
   </div>
 </ion-header>
 
@@ -15,7 +15,7 @@
       [ngClass]="!childId ? 'selected' : 'not-selected '" 
       (click)="selectChildId()"
     >
-      Todas
+      {{ 'all' | translate }}
     </ion-chip>
     <ion-chip 
       class="child-chip"

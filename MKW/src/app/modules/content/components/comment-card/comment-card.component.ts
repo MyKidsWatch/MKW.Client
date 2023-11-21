@@ -1,21 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { IonInput, IonicModule, ModalController, ViewDidEnter } from '@ionic/angular';
-import { TranslateModule } from '@ngx-translate/core';
-import { EventEmitter } from '@angular/core';
-import { Content } from 'src/app/core/proxies/mkw-api.proxy';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { IonInput, ModalController } from '@ionic/angular';
 import { ContentReviewComment } from 'src/app/modules/content/models/content-review-page.model';
-import { FormsModule } from '@angular/forms';
 import { Store } from '@ngxs/store';
-import { UserState } from 'src/app/shared/store/user/user.state';
 import { CommentFacade } from 'src/app/shared/facades/comment.facade';
-import { ReportService } from 'src/app/core/services/report.service';
-import { ReportComment } from 'src/app/shared/store/comments/comment.actions';
 import { ReportCommentModalComponent } from '../report-comment-modal/report-comment-modal.component';
 import { EditCommentModalComponent } from '../edit-comment-modal/edit-comment-modal.component';
 import { take } from 'rxjs';
 import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-comment-card',
@@ -33,14 +25,14 @@ export class CommentCardComponent implements OnInit {
 
   private actionSheetOpNoEdit = [
     {
-      text: 'Deletar',
+      text: this.translateService.instant('delete'),
       role: 'destructive',
       data: {
         action: 'delete',
       }
     },
     {
-      text: 'Cancelar',
+      text: this.translateService.instant('cancel'),
       role: 'cancel',
       data: {
         action: 'cancel',
@@ -49,21 +41,21 @@ export class CommentCardComponent implements OnInit {
   ]
   private actionSheetOp = [
     {
-      text: 'Deletar',
+      text: this.translateService.instant('delete'),
       role: 'destructive',
       data: {
         action: 'delete',
       }
     },
     {
-      text: 'Editar',
+      text: this.translateService.instant('edit'),
       data: {
         action: 'edit',
       }
     },
 
     {
-      text: 'Cancelar',
+      text: this.translateService.instant('cancel'),
       role: 'cancel',
       data: {
         action: 'cancel',
@@ -73,13 +65,13 @@ export class CommentCardComponent implements OnInit {
 
   private actionSheetNotOp = [
     {
-      text: 'Denunciar',
+      text: this.translateService.instant('report'),
       data: {
         action: 'report',
       }
     },
     {
-      text: 'Cancelar',
+      text: this.translateService.instant('cancel'),
       role: 'cancel',
       data: {
         action: 'cancel',
@@ -104,7 +96,9 @@ export class CommentCardComponent implements OnInit {
   constructor(
     private store: Store,
     private commentFacade: CommentFacade,
-    private modalController: ModalController) { }
+    private modalController: ModalController,
+    private translateService : TranslateService
+  ) { }
 
   ngOnInit() {
     this.currentUsername = this.store.selectSnapshot(UserSelectors.getUser)?.username;

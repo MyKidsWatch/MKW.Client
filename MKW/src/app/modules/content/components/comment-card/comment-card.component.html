@@ -17,7 +17,7 @@
         
       </div>
       <label class="comment-text">{{commentModel.commentText}}</label>
-      <button *ngIf="commentModel.parentCommentId == null" class="answer-button" (click)="startAnswering($event)" >Responder</button>
+      <button *ngIf="commentModel.parentCommentId == null" class="answer-button" (click)="startAnswering($event)" >{{ 'reply' | translate}}</button>
     </div>
 
   </div>
@@ -26,7 +26,7 @@
     <app-comment-card class="comment-response-modal" *ngFor="let response of commentModel.commentResponses" [commentModel]="response"></app-comment-card>
     
     <ion-item [style]="isAnswering ? 'display: block' : 'display: none'" >
-      <ion-input [(ngModel)]="newComment" type="text" #answer pldaceholder="Escreva seu comentário" (focusout)="stopAnswering()" ></ion-input>
+      <ion-input [(ngModel)]="newComment" type="text" #answer placeholder="{{ 'writeYourComment' | translate }}" (focusout)="stopAnswering()"></ion-input>
       <button class="send-comment-button" clear item-right (click)="answerComment()"><i class="material-icons">send</i></button>
     </ion-item>
   </div>

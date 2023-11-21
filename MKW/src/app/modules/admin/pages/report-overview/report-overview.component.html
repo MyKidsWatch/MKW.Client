@@ -6,31 +6,31 @@
 
   <main class="content">
     <h2 class="content-title">{{reportOverview.reportType}} - {{reportOverview.reportReason}}</h2>
-      <div class="report-detail">
-        <label>Status:</label>
-        <span>{{reportOverview.reportStatus}}</span>
-      </div>
-      <div class="report-detail">
-        <label>Autor:</label>
-        <span>{{reportOverview.reportedPerson}}</span>
-      </div>
+    <div class="report-detail">
+      <label>{{ 'status' | translate }}:</label>
+      <span>{{reportOverview.reportStatus}}</span>
+    </div>
+    <div class="report-detail">
+      <label>{{ 'author' | translate }}:</label>
+      <span>{{reportOverview.reportedPerson}}</span>
+    </div>
     <div class="report-content-wrapper">
-      <p class="report-label">Conteúdo denunciado:</p>
+      <p class="report-label">{{ 'reported-content' | translate }}:</p>
       <p class="report-content">"{{reportOverview.reportText}}"</p>
     </div>
   </main>
 
   <div class="footer">
-    <button class="submit-button danger outlined" (click)="removeContent()" *ngIf="this.reportOverview.reportType != 'Profile'">
-      Excluir {{this.reportOverview.reportType}}
+    <button class="submit-button danger outlined" (click)="removeContent()" *ngIf="this.reportOverview.reportType !== 'Profile'">
+      {{ 'delete' | translate }} {{reportOverview.reportType}}
     </button>
 
     <button class="submit-button danger outlined" (click)="removeProfile()">
-      Excluir perfil
+      {{ 'delete-profile' | translate }}
     </button>
 
     <button class="submit-button" (click)="discardReport()">
-      Descartar denúncia
+      {{ 'discard-report' | translate }}
     </button>
   </div>
 </div>

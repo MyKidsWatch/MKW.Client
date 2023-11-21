@@ -20,6 +20,7 @@ import { Store } from '@ngxs/store';
 import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 import { AwardReviewModalComponent } from '../../components/award-review-modal/award-review-modal.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-content-review-page',
@@ -72,8 +73,9 @@ export class ContentReviewPageComponent implements OnInit {
     private commentFacade: CommentFacade,
     private modalController: ModalController,
     private reviewFacade: ReviewFacade,
-    private userFacade: UserFacade) {
-  }
+    private userFacade: UserFacade,
+    private translateService: TranslateService
+  ) { }
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -226,7 +228,6 @@ export class ContentReviewPageComponent implements OnInit {
 
     modal.present();
 
-
     let result = await modal.onWillDismiss();
 
     console.log(result);
@@ -249,14 +250,14 @@ export class ContentReviewPageComponent implements OnInit {
 
   private actionSheetOpNotEditable = [
     {
-      text: 'Deletar',
+      text: this.translateService.instant('delete'),
       role: 'destructive',
       data: {
         action: 'delete',
       }
     },
     {
-      text: 'Cancelar',
+      text: this.translateService.instant('cancel'),
       role: 'cancel',
       data: {
         action: 'cancel',
@@ -266,21 +267,21 @@ export class ContentReviewPageComponent implements OnInit {
 
   private actionSheetOp = [
     {
-      text: 'Deletar',
+      text: this.translateService.instant('delete'),
       role: 'destructive',
       data: {
         action: 'delete',
       }
     },
     {
-      text: 'Editar',
+      text: this.translateService.instant('edit'),
       data: {
         action: 'edit',
       }
     },
 
     {
-      text: 'Cancelar',
+      text: this.translateService.instant('cancel'),
       role: 'cancel',
       data: {
         action: 'cancel',
@@ -290,13 +291,13 @@ export class ContentReviewPageComponent implements OnInit {
 
   private actionSheetNotOp = [
     {
-      text: 'Denunciar',
+      text: this.translateService.instant('report'),
       data: {
         action: 'report',
       }
     },
     {
-      text: 'Cancelar',
+      text: this.translateService.instant('cancel'),
       role: 'cancel',
       data: {
         action: 'cancel',
