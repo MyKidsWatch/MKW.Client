@@ -1,26 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ContentUtils } from 'src/app/core/Util/ContentUtils';
-import { MovieService } from 'src/app/core/services/movie.service';
-import { ContentCard } from 'src/app/shared/models/content-card.model';
 import { ContentReviewPage } from '../../models/content-review-page.model';
-import { Observable, Subscription, catchError, take, tap } from 'rxjs';
-import { ReviewService } from 'src/app/core/services/review.service';
-import { AnswerCommentDto, CreateCommentDto, CreateReportDto, ICreateCommentDto, ReviewDetailsDtoBaseResponseDTO, UpdateCommentDto } from 'src/app/core/proxies/mkw-api.proxy';
-import { CommentService } from 'src/app/core/services/comment.service';
+import { Subscription, take,  } from 'rxjs';
 import { ContentReviewComment } from "src/app/modules/content/models/content-review-page.model";
-import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 import { CommentFacade } from 'src/app/shared/facades/comment.facade';
 import { ModalController } from '@ionic/angular';
 import { ReviewFacade } from 'src/app/shared/facades/review.facade';
 import { ReviewEditModalComponent } from '../../components/review-edit-modal/review-edit-modal.component';
-import { ReportReview } from 'src/app/shared/store/review/review.actions';
 import { ReportReviewModalComponent } from '../../components/report-review-modal/report-review-modal.component';
-import { Store } from '@ngxs/store';
-import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 import { AwardReviewModalComponent } from '../../components/award-review-modal/award-review-modal.component';
 import { TranslateService } from '@ngx-translate/core';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-content-review-page',
@@ -28,8 +19,6 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./content-review-page.component.scss'],
 })
 export class ContentReviewPageComponent implements OnInit {
-
-
   public reviewId?: number;
   public canAward: boolean = false;
 
@@ -74,7 +63,8 @@ export class ContentReviewPageComponent implements OnInit {
     private modalController: ModalController,
     private reviewFacade: ReviewFacade,
     private userFacade: UserFacade,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -116,7 +106,7 @@ export class ContentReviewPageComponent implements OnInit {
           this.reviewComments = res;
         },
         error: (err) => {
-          alert(this.translateService.instant('genericError'));
+          this.toastService.showError(this.translateService.instant('genericError'));
         }
       });
   }
@@ -166,11 +156,11 @@ export class ContentReviewPageComponent implements OnInit {
     this.reviewFacade.deleteReview(this.reviewId!)
       .subscribe({
         next: (res) => {
-          alert("Review excluída com sucesso");
+          this.toastService.showSuccess(this.translateService.instant('reviewDeleted'));
           this.router.navigate(['home/feed']);
         },
         error: (err) => {
-          alert(this.translateService.instant('genericError'));
+          this.toastService.showError(this.translateService.instant('genericError'));
         }
       })
   }
@@ -189,10 +179,10 @@ export class ContentReviewPageComponent implements OnInit {
     this.reviewFacade.editReview(this.reviewId!, result.data.title, result.data.stars, result.data.text)
       .subscribe({
         next: (res) => {
-          alert("Review editada com sucesso")
+          this.toastService.showSuccess(this.translateService.instant('reviewEdited'));
         },
         error: (err) => {
-          alert(this.translateService.instant('genericError'));
+          this.toastService.showError(this.translateService.instant('genericError'));
         }
       })
   }
@@ -211,10 +201,10 @@ export class ContentReviewPageComponent implements OnInit {
     this.reviewFacade.reportReview(result.data, this.reviewId!, this.contentObject.reviewAuthor.creatorId)
       .subscribe({
         next: (res) => {
-          alert("Review denunciada com sucesso")
+          this.toastService.showSuccess(this.translateService.instant('reportSuccess'));
         },
         error: (err) => {
-          alert(this.translateService.instant('genericError'));
+          this.toastService.showError(this.translateService.instant('genericError'));
         }
       })
   }
@@ -234,10 +224,10 @@ export class ContentReviewPageComponent implements OnInit {
     this.reviewFacade.giveCurrentReviewAward(result.data!)
       .subscribe({
         next: (res) => {
-          alert("Award dado com sucesso!")
+          this.toastService.showSuccess(this.translateService.instant('awardSuccess'));
         },
         error: (err) => {
-          alert(this.translateService.instant('genericError'));
+          this.toastService.showError(this.translateService.instant('genericError'));
         }
       })
 

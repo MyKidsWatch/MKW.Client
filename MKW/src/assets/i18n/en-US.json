@@ -184,5 +184,11 @@
   "genericError": "There was an error while trying to perform this action. Please try again later.",
   "userOrPasswordIncorrect": "Username or password incorrect",
   "reportSuccess": "Report sent successfully, thank you for your feedback!",
-  "emailSendingError": "There was an error while trying to send the email. Please check if the email address is correct and try again."
+  "emailSendingError": "There was an error while trying to send the email. Please check if the email address is correct and try again.",
+  "reviewDeleted": "Review deleted successfully!",
+  "reviewEdited": "Review edited successfully!",
+  "childAdded": "Child added successfully!",
+  "childDeleted": "Child deleted successfully!",
+  "childEdited": "Child edited successfully!",
+  "awardGiven": "Award given successfully!"
 }

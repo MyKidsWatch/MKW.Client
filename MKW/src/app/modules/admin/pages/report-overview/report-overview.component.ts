@@ -3,6 +3,7 @@ import { ReportFacade } from 'src/app/shared/facades/report.facade';
 import { ReportOverviewInformation } from '../../model/report-overview-model';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-report-overview',
@@ -15,7 +16,8 @@ export class ReportOverviewComponent implements OnInit {
   constructor(
     private reportFacade: ReportFacade,
     private router: Router,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private toastService: ToastService
   ) {   }
 
   ngOnInit() {
@@ -29,21 +31,21 @@ export class ReportOverviewComponent implements OnInit {
   discardReport() {
     this.reportFacade.discardCurrentReport().subscribe((res) => {
       this.goBack();
-      alert(this.translateService.instant('reportDiscardedSuccessfully'));
+      this.toastService.showError(this.translateService.instant('reportDiscardedSuccessfully'));
     });
   }
 
   removeProfile() {
     this.reportFacade.deleteProfileFromCurrentReport().subscribe((res) => {
       this.goBack();
-      alert(this.translateService.instant('profileDeletedSuccessfully'));
+      this.toastService.showError(this.translateService.instant('profileDeletedSuccessfully'));
     });
   }
 
   removeContent() {
     this.reportFacade.deleteContentFromCurrentReport().subscribe((res) => {
       this.goBack();
-      alert(this.translateService.instant('contentDeletedSuccessfully'));
+      this.toastService.showError(this.translateService.instant('contentDeletedSuccessfully'));
     });
   }
 }

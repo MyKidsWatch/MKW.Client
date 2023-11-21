@@ -8,6 +8,7 @@ import { ChildDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { Location } from '@angular/common';
 import { AgeRangeData } from '../../model/age-range.model';
 import { TranslateService } from '@ngx-translate/core';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-edit-children',
@@ -31,7 +32,8 @@ export class EditChildrenComponent implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private ageRangeService: AgeRangeService,
     private location: Location,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -70,11 +72,11 @@ export class EditChildrenComponent implements OnInit, AfterViewInit {
   deleteChild() {
     this.childService.deleteChild(this.childId!).pipe(take(1)).subscribe({
       next: () => {
-        alert("Criança excluída com sucesso");
+        this.toastService.showSuccess(this.translateService.instant('childDeleted'));
         this.location.back();
       },
       error: () => {
-        alert(this.translateService.instant('genericError'));
+        this.toastService.showError(this.translateService.instant('genericError'));
       }
     })
   }
@@ -85,11 +87,11 @@ export class EditChildrenComponent implements OnInit, AfterViewInit {
 
     this.childService.updateChild(this.childDto!).pipe(take(1)).subscribe({
       next: () => {
-        alert("Criança atualizada com sucesso");
+        this.toastService.showSuccess(this.translateService.instant('childEdited'));
         this.location.back();
       },
       error: () => {
-        alert(this.translateService.instant('genericError'));
+        this.toastService.showError(this.translateService.instant('genericError'));
       }
     })
   }

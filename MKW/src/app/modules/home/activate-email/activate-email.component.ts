@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { take, tap } from 'rxjs';
 import { SplashScreenService } from 'src/app/core/services/splash-screen.service';
+import { ToastService } from 'src/app/core/services/toast.service';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 
 @Component({
@@ -20,7 +19,8 @@ export class ActivateEmailComponent  implements OnInit {
     private splashScreenService: SplashScreenService, 
     private userFacade: UserFacade, 
     private router: Router,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -54,7 +54,7 @@ export class ActivateEmailComponent  implements OnInit {
         this.isUserEmailVerified = true;
       },
       error: (err) =>{
-        alert(this.translateService.instant('emailSendingError'));
+        this.toastService.showError(this.translateService.instant('emailSendingError'));
       }
     })
   }

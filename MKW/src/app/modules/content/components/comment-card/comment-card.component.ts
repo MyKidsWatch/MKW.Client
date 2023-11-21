@@ -8,6 +8,7 @@ import { EditCommentModalComponent } from '../edit-comment-modal/edit-comment-mo
 import { take } from 'rxjs';
 import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
 import { TranslateService } from '@ngx-translate/core';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-comment-card',
@@ -97,7 +98,8 @@ export class CommentCardComponent implements OnInit {
     private store: Store,
     private commentFacade: CommentFacade,
     private modalController: ModalController,
-    private translateService : TranslateService
+    private translateService : TranslateService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -144,10 +146,10 @@ export class CommentCardComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          alert(this.translateService.instant('reportSuccess'));
+          this.toastService.showError(this.translateService.instant('reportSuccess'));
         },
         error: () => {
-          alert(this.translateService.instant('genericError'));
+          this.toastService.showError(this.translateService.instant('genericError'));
         }
       })
   }
