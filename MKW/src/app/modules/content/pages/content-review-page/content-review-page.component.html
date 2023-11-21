@@ -61,7 +61,7 @@
 
           <div class="award-button" (click)="openAwardModal()">
             <i class="material-icons award-button-icon">emoji_events</i>
-            Recompensar
+            {{ 'reward' | translate }}
           </div>
         </div>
       </div>
@@ -79,7 +79,7 @@
       <app-comment-card *ngFor="let comment of reviewComments" [commentModel]="comment"></app-comment-card>
 
       <ion-item>
-        <ion-input type="text" placeholder="Escreva seu comentário" [(ngModel)]="newComment"></ion-input>
+        <ion-input type="text" placeholder="{{ 'writeYourComment' | translate }}" [(ngModel)]="newComment"></ion-input>
         <button clear item-right (click)="addCommentToReview()"><i class="material-icons send-icon">send</i></button>
       </ion-item>
     </div>

@@ -8,8 +8,8 @@
     <div class="wallet">
       <img class="wallet-icon" src="assets/icon/wallet.png" alt="Wallet">
       <div class="wallet-text">
-        <p class="wallet-subtitle">Saldo atual</p>
-        <h2 class="wallet-title">{{this.userBalance ? this.userBalance : 0}} moedas</h2>
+        <p class="wallet-subtitle">{{ 'currentBalance' | translate }}</p>
+        <h2 class="wallet-title">{{this.userBalance ? this.userBalance : 0}} {{ 'coins' | translate }}</h2>
       </div>
     </div> 
 
@@ -21,7 +21,7 @@
       >
         <div class="award">
           <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
-          <label class="award-label">100 moedas</label>
+          <label class="award-label">100 {{ 'coins' | translate }}</label>
         </div>
         <label class="award-price">R$ 34,99</label>
       </div>
@@ -33,7 +33,7 @@
       >
         <div class="award">
           <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
-          <label class="award-label">50 moedas</label>
+          <label class="award-label">50 {{ 'coins' | translate }}</label>
         </div>
         <label class="award-price">R$ 19,99</label>
       </div>
@@ -45,14 +45,14 @@
       >
         <div class="award">
           <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
-          <label class="award-label">20 moedas</label>
+          <label class="award-label">20 {{ 'coins' | translate }}</label>
         </div>
         <label class="award-price">R$ 9,99</label>
       </div>
     </div>
 
     <button [disabled]="!this.amountUserIsBuying" (click)="initializeStripeCheckout()" class="submit-button">
-      <i class="material-icons">add</i>Comprar
+      <i class="material-icons">add</i>{{ 'buy' | translate }}
     </button>
   </main>
 
@@ -61,11 +61,11 @@
 
   <div class="success" *ngIf="this.fundsBoughtSuccessfully">
     <div class="information">
-      <h2>Fundos adicionados com sucesso</h2>
+      <h2>{{ 'fundsAddedSuccessfully' | translate }}</h2>
       <img src="assets/images/approve-email.png">
-      <p class="thanks-for-buying">Sua compra foi realizada com sucesso!</p>
-      <p class="thanks-for-buying">Seu novo saldo é de {{this.userBalance}} moedas</p>
-      <button (click)="cancel()">Voltar</button>
+      <p class="thanks-for-buying">{{ 'purchaseSuccessful' | translate }}</p>
+      <p class="thanks-for-buying">{{ 'newBalanceIs' | translate }} {{this.userBalance}} {{ 'coins' | translate }}</p>
+      <button (click)="cancel()">{{ 'goBack' | translate }}</button>
     </div>
   </div>
 </div>

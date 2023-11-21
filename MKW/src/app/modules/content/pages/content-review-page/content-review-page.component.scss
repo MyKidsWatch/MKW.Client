@@ -169,9 +169,12 @@
       .award-button {
         display: flex;
         align-items: center;
+        justify-content: center;
+        text-align: center;
         font-family: 'Poppins', sans-serif;
         font-size: .75rem;
         background-color: var(--mkw-color-primary);
+        min-width: 8rem;
         color: var(--mkw-color-light);
         
         padding: .35rem .75rem;

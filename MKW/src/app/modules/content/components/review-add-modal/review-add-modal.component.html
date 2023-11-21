@@ -1,4 +1,3 @@
-
 <div class="edit-review-container">
   <div (click)="cancel()" class="go-back">
     <i class="material-icons">arrow_back</i>
@@ -6,9 +5,9 @@
   </div>
 
   <div class="edit-review">
-    <h2>Adicionar análise</h2>
+    <h2>{{ 'addReview' | translate }}</h2>
 
-    <label class="mandatory">{{ 'profile.mandatoryField' | translate }}</label>
+    <label class="mandatory">{{ 'requiredField' | translate }}</label>
 
     <div class="movie-information">
       <img class="content-poster" [src]="contentPicturePath">
@@ -16,7 +15,7 @@
         <h3 class="content-title">{{contentName}}</h3>
         
         <div class="review-stars">
-          <p class="grade-label">Sua nota*:</p>
+          <p class="grade-label">{{ 'yourGrade' | translate }}*:</p>
           <ng-container class="review-stars-container" *ngFor="let star of [1, 2, 3, 4, 5]">
             <i 
               (click)="setStarValue(star)" 
@@ -31,11 +30,11 @@
     </div>
     <form [formGroup]="reviewForm" class="form-content">
       <div class="signup-form">
-        <ion-input placeholder="Título*" formControlName="reviewTitle"></ion-input>
-        <ion-textarea placeholder="Descrição*" [rows]="8" formControlName="reviewText"></ion-textarea>
+        <ion-input placeholder="{{ 'reviewTitle' | translate }}*" formControlName="reviewTitle"></ion-input>
+        <ion-textarea placeholder="{{ 'reviewDescription' | translate }}*" [rows]="8" formControlName="reviewText"></ion-textarea>
 
       </div>
     </form>
-    <button class="add-button" (click)="sendReview()"><i class="material-icons">add</i>Adicionar análise</button>
+    <button class="add-button" (click)="sendReview()"><i class="material-icons">add</i>{{ 'addReviewButton' | translate }}</button>
   </div>
 </div>
