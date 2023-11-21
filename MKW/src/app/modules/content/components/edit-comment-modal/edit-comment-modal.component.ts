@@ -11,8 +11,6 @@ export class EditCommentModalComponent  implements OnInit {
   public comment?: string;
   constructor(private modalController: ModalController) {}
 
-
-
   ngOnInit() {}
 
   cancel() {
