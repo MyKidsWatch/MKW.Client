@@ -146,7 +146,7 @@ export class CommentCardComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.toastService.showError(this.translateService.instant('reportSuccess'));
+          this.toastService.showSuccess(this.translateService.instant('reportSuccess'));
         },
         error: () => {
           this.toastService.showError(this.translateService.instant('genericError'));
