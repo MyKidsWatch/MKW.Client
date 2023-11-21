@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./report-list-item-card.component.scss'],
 })
 export class ReportListItemCardComponent implements OnInit {
-
   @Input() reportListItem?: ReportListItem;
+
   constructor(private reportFacade: ReportFacade, private router: Router) { }
   ngOnInit() { }
 
@@ -32,6 +32,5 @@ export class ReportListItemCardComponent implements OnInit {
   selectReport() {
     this.reportFacade.setCurrentReport(this.reportListItem!.reportId)
     this.router.navigate([`home/admin/report-overview`]);
-
   }
 }

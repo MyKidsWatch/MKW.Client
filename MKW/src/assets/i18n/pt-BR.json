@@ -177,5 +177,12 @@
   "fundsAddedSuccessfully": "Fundos adicionados com sucesso",
   "purchaseSuccessful": "Sua compra foi bem-sucedida!",
   "newBalanceIs": "Seu novo saldo é",
-  "goBack": "Voltar"
+  "goBack": "Voltar",
+  "reportDiscardedSuccessfully": "Denúncia descartada com sucesso!",
+  "profileDeletedSuccessfully": "Perfil excluído com sucesso!",
+  "contentDeletedSuccessfully": "Conteúdo excluído com sucesso!",
+  "genericError": "Houve um erro ao tentar realizar esta ação. Por favor, tente novamente mais tarde.",
+  "userOrPasswordIncorrect": "Nome de usuário ou senha incorretos",
+  "reportSuccess": "Denúncia enviada com sucesso, obrigado pelo seu feedback!",
+  "emailSendingError": "Houve um erro ao tentar enviar o e-mail. Por favor, verifique se o endereço de e-mail está correto e tente novamente."
 }

@@ -177,5 +177,12 @@
   "fundsAddedSuccessfully": "Funds added successfully",
   "purchaseSuccessful": "Your purchase was successful!",
   "newBalanceIs": "Your new balance is",
-  "goBack": "Go Back"
+  "goBack": "Go Back",
+  "reportDiscardedSuccessfully": "Report discarded successfully!",
+  "profileDeletedSuccessfully": "Profile deleted successfully!",
+  "contentDeletedSuccessfully": "Content deleted successfully!",
+  "genericError": "There was an error while trying to perform this action. Please try again later.",
+  "userOrPasswordIncorrect": "Username or password incorrect",
+  "reportSuccess": "Report sent successfully, thank you for your feedback!",
+  "emailSendingError": "There was an error while trying to send the email. Please check if the email address is correct and try again."
 }
