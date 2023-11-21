@@ -190,5 +190,6 @@
   "childAdded": "Criança adicionada com sucesso!",
   "childDeleted": "Criança excluída com sucesso!",
   "childEdited": "Criança editada com sucesso!",
-  "awardGiven": "Prêmio concedido com sucesso!"
+  "awardGiven": "Prêmio concedido com sucesso!",
+  "reviewAdded": "Análise adicionada com sucesso!"
 }

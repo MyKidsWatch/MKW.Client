@@ -190,5 +190,6 @@
   "childAdded": "Child added successfully!",
   "childDeleted": "Child deleted successfully!",
   "childEdited": "Child edited successfully!",
-  "awardGiven": "Award given successfully!"
+  "awardGiven": "Award given successfully!",
+  "reviewAdded": "Review added successfully!"
 }
