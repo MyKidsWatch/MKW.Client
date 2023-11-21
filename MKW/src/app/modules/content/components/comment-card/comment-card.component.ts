@@ -1,14 +1,21 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { IonInput, ModalController } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { IonInput, IonicModule, ModalController, ViewDidEnter } from '@ionic/angular';
+import { TranslateModule } from '@ngx-translate/core';
+import { EventEmitter } from '@angular/core';
+import { Content } from 'src/app/core/proxies/mkw-api.proxy';
 import { ContentReviewComment } from 'src/app/modules/content/models/content-review-page.model';
+import { FormsModule } from '@angular/forms';
 import { Store } from '@ngxs/store';
+import { UserState } from 'src/app/shared/store/user/user.state';
 import { CommentFacade } from 'src/app/shared/facades/comment.facade';
+import { ReportService } from 'src/app/core/services/report.service';
+import { ReportComment } from 'src/app/shared/store/comments/comment.actions';
 import { ReportCommentModalComponent } from '../report-comment-modal/report-comment-modal.component';
 import { EditCommentModalComponent } from '../edit-comment-modal/edit-comment-modal.component';
 import { take } from 'rxjs';
 import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
-import { TranslateService } from '@ngx-translate/core';
-import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-comment-card',
@@ -26,14 +33,14 @@ export class CommentCardComponent implements OnInit {
 
   private actionSheetOpNoEdit = [
     {
-      text: this.translateService.instant('delete'),
+      text: 'Deletar',
       role: 'destructive',
       data: {
         action: 'delete',
       }
     },
     {
-      text: this.translateService.instant('cancel'),
+      text: 'Cancelar',
       role: 'cancel',
       data: {
         action: 'cancel',
@@ -42,21 +49,21 @@ export class CommentCardComponent implements OnInit {
   ]
   private actionSheetOp = [
     {
-      text: this.translateService.instant('delete'),
+      text: 'Deletar',
       role: 'destructive',
       data: {
         action: 'delete',
       }
     },
     {
-      text: this.translateService.instant('edit'),
+      text: 'Editar',
       data: {
         action: 'edit',
       }
     },
 
     {
-      text: this.translateService.instant('cancel'),
+      text: 'Cancelar',
       role: 'cancel',
       data: {
         action: 'cancel',
@@ -66,13 +73,13 @@ export class CommentCardComponent implements OnInit {
 
   private actionSheetNotOp = [
     {
-      text: this.translateService.instant('report'),
+      text: 'Denunciar',
       data: {
         action: 'report',
       }
     },
     {
-      text: this.translateService.instant('cancel'),
+      text: 'Cancelar',
       role: 'cancel',
       data: {
         action: 'cancel',
@@ -97,10 +104,7 @@ export class CommentCardComponent implements OnInit {
   constructor(
     private store: Store,
     private commentFacade: CommentFacade,
-    private modalController: ModalController,
-    private translateService : TranslateService,
-    private toastService: ToastService
-  ) { }
+    private modalController: ModalController) { }
 
   ngOnInit() {
     this.currentUsername = this.store.selectSnapshot(UserSelectors.getUser)?.username;
@@ -146,10 +150,10 @@ export class CommentCardComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.toastService.showError(this.translateService.instant('reportSuccess'));
+          alert("Comentário denunciado com sucesso.");
         },
         error: () => {
-          this.toastService.showError(this.translateService.instant('genericError'));
+          alert("Erro ao denunciar comentário")
         }
       })
   }

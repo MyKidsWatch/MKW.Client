@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AddFundDto, OperationClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { switchMap } from 'rxjs/operators';
+import { RedirectToCheckoutClientOptions } from '@stripe/stripe-js';
 
 import { StripeService } from 'ngx-stripe';
 import { UserFacade } from '../../facades/user.facade';

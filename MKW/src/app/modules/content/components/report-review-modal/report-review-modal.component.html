@@ -5,7 +5,7 @@
   </div>
 
   <div class="content">
-    <h2 class="content-title">{{ 'selectReportReason' | translate }}</h2>
+    <h2 class="content-title">Selecione um motivo para essa denúncia</h2>
     <ion-radio-group class="report-reasons" [(ngModel)]="reportReasonId" (ionChange)="handleChange($event)">
       <ion-item class="reason-item" *ngFor="let reportReason of reportReasons">
         <ion-radio class="reason-radio" [value]="reportReason.id">
@@ -14,6 +14,6 @@
       </ion-item>
     </ion-radio-group>
 
-    <button class="submit-button" [disabled]="!reportReasonId" (click)="confirm()">{{ 'report' | translate }}</button>
+    <button class="submit-button" [disabled]="!reportReasonId" (click)="confirm()">Denunciar</button>
   </div>
 </div>

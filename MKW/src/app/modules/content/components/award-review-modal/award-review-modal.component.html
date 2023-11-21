@@ -8,8 +8,8 @@
     <div class="wallet">
       <img class="wallet-icon" src="assets/icon/wallet.png" alt="Wallet">
       <div class="wallet-text">
-        <h2 class="wallet-title">{{this.userBalance ? this.userBalance : 0}} {{ 'coins' | translate }}</h2>
-        <label class="add-funds" (click)="addFunds()">{{ 'addFunds' | translate }}</label>
+        <h2 class="wallet-title">{{this.userBalance ? this.userBalance : 0}} moedas</h2>
+        <label class="add-funds" (click)="addFunds()">Obter mais moedas</label>
       </div>
     </div>
     <div class="awards">
@@ -22,7 +22,7 @@
       >
         <div class="award gold-award">
           <img class="award-icon" src="assets/icon/GOLDEN_SHIELD.png">
-          <p class="award-label">{{ 'goldAward' | translate }}</p>
+          <p class="award-label">Prêmio de ouro</p>
         </div>
         <div class="award-price">
           <p class="award-value">100</p>
@@ -39,7 +39,7 @@
       >
         <div class="award silver-award">
           <img class="award-icon" src="assets/icon/SILVER_SHIELD.png">
-          <p class="award-label">{{ 'silverAward' | translate }}</p>
+          <p class="award-label">Prêmio de prata</p>
         </div>
         <div class="award-price">
           <p class="award-value">75</p>
@@ -56,7 +56,7 @@
       >
         <div class="award bronze-award">
           <img class="award-icon" src="assets/icon/BRONZE_SHIELD.png">
-          <p class="award-label">{{ 'bronzeAward' | translate }}</p>
+          <p class="award-label">Prêmio de bronze</p>
         </div>
         <div class="award-price">
           <p class="award-value">50</p>
@@ -69,7 +69,7 @@
   <footer>
     <button class="submit-button" (click)="confirm()" [disabled]="!(selectedAwardId || 0 > 0)">
       <i class="material-icons">add</i>
-      {{ 'reward' | translate }}
+      Recompensar
     </button>
   </footer>
 </div>

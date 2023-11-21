@@ -1,17 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ContentUtils } from 'src/app/core/Util/ContentUtils';
+import { MovieService } from 'src/app/core/services/movie.service';
+import { ContentCard } from 'src/app/shared/models/content-card.model';
 import { ContentReviewPage } from '../../models/content-review-page.model';
-import { Subscription, take,  } from 'rxjs';
+import { Observable, Subscription, catchError, take, tap } from 'rxjs';
+import { ReviewService } from 'src/app/core/services/review.service';
+import { AnswerCommentDto, CreateCommentDto, CreateReportDto, ICreateCommentDto, ReviewDetailsDtoBaseResponseDTO, UpdateCommentDto } from 'src/app/core/proxies/mkw-api.proxy';
+import { CommentService } from 'src/app/core/services/comment.service';
 import { ContentReviewComment } from "src/app/modules/content/models/content-review-page.model";
+import { ColdObservable } from 'rxjs/internal/testing/ColdObservable';
 import { CommentFacade } from 'src/app/shared/facades/comment.facade';
 import { ModalController } from '@ionic/angular';
 import { ReviewFacade } from 'src/app/shared/facades/review.facade';
 import { ReviewEditModalComponent } from '../../components/review-edit-modal/review-edit-modal.component';
+import { ReportReview } from 'src/app/shared/store/review/review.actions';
 import { ReportReviewModalComponent } from '../../components/report-review-modal/report-review-modal.component';
+import { Store } from '@ngxs/store';
+import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 import { AwardReviewModalComponent } from '../../components/award-review-modal/award-review-modal.component';
-import { TranslateService } from '@ngx-translate/core';
-import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-content-review-page',
@@ -19,6 +27,8 @@ import { ToastService } from 'src/app/core/services/toast.service';
   styleUrls: ['./content-review-page.component.scss'],
 })
 export class ContentReviewPageComponent implements OnInit {
+
+
   public reviewId?: number;
   public canAward: boolean = false;
 
@@ -62,10 +72,8 @@ export class ContentReviewPageComponent implements OnInit {
     private commentFacade: CommentFacade,
     private modalController: ModalController,
     private reviewFacade: ReviewFacade,
-    private userFacade: UserFacade,
-    private translateService: TranslateService,
-    private toastService: ToastService
-  ) { }
+    private userFacade: UserFacade) {
+  }
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -106,7 +114,7 @@ export class ContentReviewPageComponent implements OnInit {
           this.reviewComments = res;
         },
         error: (err) => {
-          this.toastService.showError(this.translateService.instant('genericError'));
+          alert("Erro buscando os comentários dessa análise")
         }
       });
   }
@@ -155,11 +163,14 @@ export class ContentReviewPageComponent implements OnInit {
 
     this.reviewFacade.deleteReview(this.reviewId!)
       .subscribe({
+        next: (res) => {
+
           this.userFacade.updateUserReviews();
-          this.toastService.showSuccess(this.translateService.instant('reviewDeleted'));
+          alert("Review excluída com sucesso");
+          this.goBack();
         },
         error: (err) => {
-          this.toastService.showError(this.translateService.instant('genericError'));
+          alert("Erro ao excluir review");
         }
       })
   }
@@ -179,10 +190,10 @@ export class ContentReviewPageComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.userFacade.updateUserReviews();
-          this.toastService.showSuccess(this.translateService.instant('reviewEdited'));
+          alert("Review editada com sucesso")
         },
         error: (err) => {
-          this.toastService.showError(this.translateService.instant('genericError'));
+          alert("Erro ao editar review");
         }
       })
   }
@@ -201,10 +212,10 @@ export class ContentReviewPageComponent implements OnInit {
     this.reviewFacade.reportReview(result.data, this.reviewId!, this.contentObject.reviewAuthor.creatorId)
       .subscribe({
         next: (res) => {
-          this.toastService.showSuccess(this.translateService.instant('reportSuccess'));
+          alert("Review denunciada com sucesso")
         },
         error: (err) => {
-          this.toastService.showError(this.translateService.instant('genericError'));
+          alert("Erro ao denunciar review");
         }
       })
   }
@@ -215,6 +226,7 @@ export class ContentReviewPageComponent implements OnInit {
 
     modal.present();
 
+
     let result = await modal.onWillDismiss();
 
     console.log(result);
@@ -224,10 +236,10 @@ export class ContentReviewPageComponent implements OnInit {
     this.reviewFacade.giveCurrentReviewAward(result.data!)
       .subscribe({
         next: (res) => {
-          this.toastService.showSuccess(this.translateService.instant('awardSuccess'));
+          alert("Award dado com sucesso!")
         },
         error: (err) => {
-          this.toastService.showError(this.translateService.instant('genericError'));
+          alert("Erro ao dar award!");
         }
       })
 
@@ -237,14 +249,14 @@ export class ContentReviewPageComponent implements OnInit {
 
   private actionSheetOpNotEditable = [
     {
-      text: this.translateService.instant('delete'),
+      text: 'Deletar',
       role: 'destructive',
       data: {
         action: 'delete',
       }
     },
     {
-      text: this.translateService.instant('cancel'),
+      text: 'Cancelar',
       role: 'cancel',
       data: {
         action: 'cancel',
@@ -254,21 +266,21 @@ export class ContentReviewPageComponent implements OnInit {
 
   private actionSheetOp = [
     {
-      text: this.translateService.instant('delete'),
+      text: 'Deletar',
       role: 'destructive',
       data: {
         action: 'delete',
       }
     },
     {
-      text: this.translateService.instant('edit'),
+      text: 'Editar',
       data: {
         action: 'edit',
       }
     },
 
     {
-      text: this.translateService.instant('cancel'),
+      text: 'Cancelar',
       role: 'cancel',
       data: {
         action: 'cancel',
@@ -278,13 +290,13 @@ export class ContentReviewPageComponent implements OnInit {
 
   private actionSheetNotOp = [
     {
-      text: this.translateService.instant('report'),
+      text: 'Denunciar',
       data: {
         action: 'report',
       }
     },
     {
-      text: this.translateService.instant('cancel'),
+      text: 'Cancelar',
       role: 'cancel',
       data: {
         action: 'cancel',

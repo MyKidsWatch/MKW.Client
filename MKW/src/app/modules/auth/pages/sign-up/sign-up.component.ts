@@ -7,8 +7,6 @@ import { lowerCaseValidator, matchFieldsValidator, numericValidator, unusedUserN
 import { unusedEmail } from 'src/app/core/validators/sign-up.validators';
 import { take } from 'rxjs';
 import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
-import { TranslateService } from '@ngx-translate/core';
-import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -23,8 +21,6 @@ export class SignUpComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private accountService: AccountService,
-    private translateService: TranslateService,
-    private toastService: ToastService,
     public loadingBarService: LoadingBarService
   ) { }
 
@@ -84,7 +80,7 @@ export class SignUpComponent implements OnInit {
         this.currentStep++;
       },
       error: (err) => {
-        this.toastService.showError(this.translateService.instant('genericError'));
+        alert("Erro durante a realização do cadastro");
       }
     })
   }

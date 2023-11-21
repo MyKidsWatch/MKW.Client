@@ -3751,15 +3751,10 @@ export class ReportClient {
     }
 
     /**
-     * @param language (optional) 
      * @return Success
      */
-    reason(language: string | undefined): Observable<ReportReasonDtoBaseResponseDTO> {
-        let url_ = this.baseUrl + "/v1/Report/Reason?";
-
-        if (language)
-            url_ += "language=" + encodeURIComponent("" + language) + "&";
-
+    reason(): Observable<ReportReasonDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Report/Reason";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: any = {
@@ -3821,15 +3816,10 @@ export class ReportClient {
     }
 
     /**
-     * @param language (optional)
      * @return Success
      */
-    status(language: string | undefined): Observable<ReportReasonDtoBaseResponseDTO> {
-        let url_ = this.baseUrl + "/v1/Report/Status?";
-
-        if (language)
-            url_ += "language=" + encodeURIComponent("" + language) + "&";
-
+    status(): Observable<ReportReasonDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Report/Status";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: any = {
@@ -3965,23 +3955,10 @@ export class ReportClient {
      * @param statusId (optional) 
      * @param orderBy (optional) 
      * @param orderByAscending (optional) 
-     * @param language
      * @return Success
      */
-    reportGet(
-        page: number | undefined, 
-        pageSize: number | undefined, 
-        reasonId: number | undefined, 
-        statusId: number | undefined,
-        orderBy: string | undefined, 
-        orderByAscending: boolean | undefined,
-        language: string | undefined
-    ): Observable<ReportDtoBaseResponseDTO> {
+    reportGet(page: number | undefined, pageSize: number | undefined, reasonId: number | undefined, statusId: number | undefined, orderBy: string | undefined, orderByAscending: boolean | undefined): Observable<ReportDtoBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Report?";
-
-        if (language)
-            url_ += "language=" + encodeURIComponent("" + language) + "&";
-
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
         else if (page !== undefined)
