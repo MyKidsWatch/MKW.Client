@@ -155,9 +155,8 @@ export class ContentReviewPageComponent implements OnInit {
 
     this.reviewFacade.deleteReview(this.reviewId!)
       .subscribe({
-        next: (res) => {
+          this.userFacade.updateUserReviews();
           this.toastService.showSuccess(this.translateService.instant('reviewDeleted'));
-          this.router.navigate(['home/feed']);
         },
         error: (err) => {
           this.toastService.showError(this.translateService.instant('genericError'));
@@ -179,6 +178,7 @@ export class ContentReviewPageComponent implements OnInit {
     this.reviewFacade.editReview(this.reviewId!, result.data.title, result.data.stars, result.data.text)
       .subscribe({
         next: (res) => {
+          this.userFacade.updateUserReviews();
           this.toastService.showSuccess(this.translateService.instant('reviewEdited'));
         },
         error: (err) => {

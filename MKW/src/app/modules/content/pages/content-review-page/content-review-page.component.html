@@ -3,47 +3,35 @@
     <ion-icon name="arrow-back-outline" class="go-back-button" color="primary" role="button" (click)="goBack()">
     </ion-icon>
 
-    <ion-icon 
-      name="ellipsis-vertical-outline" 
-      class="review-options-button" 
-      color="primary" 
-      role="button"
-      [id]="'click-trigger-'+ contentObject.reviewId"
-    ></ion-icon>
+    <ion-icon name="ellipsis-vertical-outline" class="review-options-button" color="primary" role="button"
+      [id]="'click-trigger-'+ contentObject.reviewId"></ion-icon>
 
-    <ion-action-sheet 
-      (didDismiss)="actionSheetEvent($event, contentObject.reviewId!)"
-      [trigger]="'click-trigger-'+ contentObject.reviewId" 
-      [buttons]="actionSheetButtons">
+    <ion-action-sheet (didDismiss)="actionSheetEvent($event, contentObject.reviewId!)"
+      [trigger]="'click-trigger-'+ contentObject.reviewId" [buttons]="actionSheetButtons">
     </ion-action-sheet>
 
-    <div 
-      class="content-poster"
-      style="background: linear-gradient(180deg, #f5f5f500 0%, #f5f5f500 52.92%, #f5f5f5 90%), url('{{  contentObject.reviewedContentInformation.picturePath }}') no-repeat center center fixed; background-size: cover;"
-    ></div>
+    <div class="content-poster"
+      style="background: linear-gradient(180deg, #f5f5f500 0%, #f5f5f500 52.92%, #f5f5f5 90%), url('{{  contentObject.reviewedContentInformation.picturePath }}') no-repeat center center fixed; background-size: cover;">
+    </div>
     <div class="content-info">
       <div class="content-title-container">
         <h1 class="content-title">{{ contentObject.reviewTitle }}</h1>
         <app-stars-rating [rating]="contentObject.reviewRating || 0" />
       </div>
 
-      <p
-        class="content-link" 
-        (click)="goToContentPage(contentObject.reviewedContentInformation.externalContentId, contentObject.reviewedContentInformation.platformId)"
-      >
+      <p class="content-link"
+        (click)="goToContentPage(contentObject.reviewedContentInformation.externalContentId, contentObject.reviewedContentInformation.platformId)">
         {{ contentObject.reviewedContentInformation.title }}
       </p>
 
       <div class="review-user-information">
         <div class="profile-information">
-          <img 
-            class="user-pfp" 
-            [src]="contentObject.reviewAuthor.profilePictureUrl || 'assets/icon/default.jpg'" 
-          />
+          <img class="user-pfp" [src]="contentObject.reviewAuthor.profilePictureUrl || 'assets/icon/default.jpg'" />
           <label class="username">{{ contentObject.reviewAuthor.userName }}</label>
         </div>
 
-        <label class="publish-timestamp">{{ contentObject.reviewCreationDate.toLocaleDateString() }}</label>
+        <label class="publish-timestamp" *ngIf="contentObject.reviewCreationDate">{{
+          contentObject.reviewCreationDate.toLocaleDateString() }}</label>
       </div>
 
       <div class="review-content">
@@ -59,7 +47,7 @@
               <img class='award-icon' src="assets/icon/GOLDEN_SHIELD.png">
               <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.goldenAwardCount}}</label>
             </div>
-            
+
             <div class="award silver-award">
               <img class='award-icon' src="assets/icon/SILVER_SHIELD.png">
               <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.silverAwardCount}}</label>
@@ -69,8 +57,8 @@
               <img class='award-icon' src="assets/icon/BRONZE_SHIELD.png">
               <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.bronzeAwardCount}}</label>
             </div>
-          </div>  
-        
+          </div>
+
           <div class="award-button" (click)="openAwardModal()">
             <i class="material-icons award-button-icon">emoji_events</i>
             {{ 'reward' | translate }}

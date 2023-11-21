@@ -68,7 +68,7 @@
 
     <div class="divider"></div>
 
-    <div class="profile-reviews" *ngIf="shouldShowReviews">
+    <div class="profile-reviews">
       <h3>{{ reviews.length }} {{ 'reviews' | translate }}</h3>
       <app-short-content-review-card *ngFor="let contentCard of reviews" [contentData]="contentCard">
       </app-short-content-review-card>

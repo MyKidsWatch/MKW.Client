@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext, getStoreMetadata } from "@ngxs/store";
-import { ChildInformation, TokenInfo, UserData } from "./user.model";
-import { ActivateUserEmail, AddChildToUser, LogUserOff, LoginUser, RefreshCurrentUserToken, RemoveUserChild, UpdateChildList, UpdateCurrentUserInformation, UpdateUserChild } from "./user.action";
+import { ChildInformation, TokenInfo, UserData, UserReview } from "./user.model";
+import { ActivateUserEmail, AddChildToUser, LogUserOff, LoginUser, RefreshCurrentUserToken, RemoveUserChild, UpdateChildList, UpdateCurrentUserInformation, UpdateUserChild, UpdateUserReviews } from "./user.action";
 import { Injectable } from '@angular/core';
 import { AuthService } from "src/app/core/services/auth.service";
 import { ILoginRequestDTO } from "src/app/modules/auth/models/login-request";
@@ -12,6 +12,8 @@ import { ChildDto, ConfirmAccountEmailDTO, CreateChildDto } from "src/app/core/p
 import { stat } from "fs";
 import { ChildService } from "src/app/core/services/child.service";
 import { TranslateService } from "@ngx-translate/core";
+import { ReviewService } from "src/app/core/services/review.service";
+import { ReviewAwardInformation, ReviewContentModel, ReviewDetailsModel, ReviewOwnerModel } from "../review/review.model";
 
 export class UserStateModel {
     user?: UserData;
@@ -32,7 +34,8 @@ export class UserState {
     constructor(
         private authService: AuthService,
         private accountService: AccountService,
-        private childService: ChildService) { }
+        private childService: ChildService,
+        private reviewService: ReviewService) { }
 
 
     @Action(LogUserOff)
@@ -100,7 +103,8 @@ export class UserState {
                     lastName: response.lastName!,
                     isAdmin: response.isAdminUser,
                     coinCount: response.associatedWithPerson!.balance!,
-                    childrenInformation: state.user?.childrenInformation || []
+                    childrenInformation: state.user?.childrenInformation || [],
+                    userReviews: state.user?.userReviews || [],
                 }
 
 
@@ -211,6 +215,63 @@ export class UserState {
                         el.genderId = genderId;
                     }
                 })
+                patchState({ user })
+            }));
+    }
+
+    @Action(UpdateUserReviews)
+    public updateUserReviews({ getState, patchState }: StateContext<UserStateModel>) {
+        let user = getState().user!;
+
+        return this.reviewService.getReviewByUserId(user.userId!)
+            .pipe(take(1))
+            .pipe(tap(res => {
+                let userReviews = res.content;
+                let stateUserReviews: UserReview[] = [];
+
+                userReviews?.forEach(reviewDTO => {
+                    let reviewDetails: ReviewDetailsModel = {
+                        id: reviewDTO.id!,
+                        creationDate: reviewDTO.createDate!,
+                        description: reviewDTO.text!,
+                        rating: reviewDTO.stars,
+                        title: reviewDTO.title!,
+                        isEdited: reviewDTO.edited!
+                    };
+
+                    let reviewContent: ReviewContentModel = {
+                        contentId: reviewDTO.content!.id!,
+                        externalContentId: reviewDTO.content!.externalId!,
+                        picturePath: reviewDTO.content!.imageUrl!,
+                        platformId: reviewDTO.content!.platformId!,
+                        title: reviewDTO.content!.name!
+                    };
+
+                    let reviewOwner: ReviewOwnerModel = {
+                        id: reviewDTO.person!.id!,
+                        userName: reviewDTO.person!.username!,
+                        profilePictureUrl: reviewDTO.person!.imageURL!,
+                    };
+
+                    let reviewAwards: ReviewAwardInformation = {
+                        bronzeAwards: reviewDTO.bronzeAwards!,
+                        goldenAwards: reviewDTO.goldenAwards!,
+                        silverAwards: reviewDTO.silverAwards!,
+                    }
+
+                    let userReview: UserReview = {
+                        reviewAwards,
+                        reviewContent,
+                        reviewDetails,
+                        reviewOwner,
+                        commentCount: reviewDTO.commentsQuantity!
+                    }
+
+                    stateUserReviews.push(userReview);
+                })
+
+                user.userReviews = stateUserReviews;
+
                 patchState({ user })
             }));
     }
