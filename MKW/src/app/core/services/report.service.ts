@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { CreateReportDto, ReportClient, ReportResponseDto } from '../proxies/mkw-api.proxy';
-import { TranslateService } from '@ngx-translate/core';
+import { CreateReportDto, CreateReviewDto, PlatformClient, ReportClient, ReportResponseDto, ReviewClient } from '../proxies/mkw-api.proxy';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReportService {
 
-  constructor(
-    private reportClient: ReportClient,
-    private translateService: TranslateService,
-  ) { }
+  constructor(private reportClient: ReportClient) {
+  }
+
 
   report(request: CreateReportDto) {
     let res = this.reportClient.reportPost(request);
@@ -18,13 +16,13 @@ export class ReportService {
   }
 
   getReportOptions() {
-    let res = this.reportClient.reason(this.translateService.currentLang);
+    let res = this.reportClient.reason();
     return res;
   }
 
 
   getReportFeed(page: number = 1, size: number = 10, reasonId?: number, statusId?: number, orderByAscending?: boolean) {
-    let res = this.reportClient.reportGet(page, size, reasonId, statusId, "CreateDate", orderByAscending, this.translateService.currentLang);
+    let res = this.reportClient.reportGet(page, size, reasonId, statusId, "CreateDate", orderByAscending);
     return res;
   }
 

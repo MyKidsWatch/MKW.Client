@@ -72,7 +72,7 @@
   
         .award-item {
           align-self: flex-end;
-          width: calc(100%);
+          width: calc(100% - 1rem);
           display: flex;
           justify-content: space-between;
           align-items: center;

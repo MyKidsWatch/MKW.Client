@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { Platform } from '@ionic/angular';
 import { take, tap } from 'rxjs';
 import { SplashScreenService } from 'src/app/core/services/splash-screen.service';
-import { ToastService } from 'src/app/core/services/toast.service';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 
 @Component({
@@ -12,18 +12,14 @@ import { UserFacade } from 'src/app/shared/facades/user.facade';
   styleUrls: ['./activate-email.component.scss'],
 })
 export class ActivateEmailComponent  implements OnInit {
+
+  
   public emailKeyCode?: string;
   public isUserEmailVerified: boolean = false;
-
-  constructor(
-    private splashScreenService: SplashScreenService, 
-    private userFacade: UserFacade, 
-    private router: Router,
-    private translateService: TranslateService,
-    private toastService: ToastService
-  ) { }
+  constructor(private splashScreenService: SplashScreenService, private userFacade: UserFacade, private router: Router) { }
 
   ngOnInit() {
+
     let userData = this.userFacade.getUserState();
 
     if(userData == undefined || !userData)
@@ -36,17 +32,21 @@ export class ActivateEmailComponent  implements OnInit {
   }
 
   ionViewDidEnter() {
+
     this.splashScreenService.stop();
   }
   
 
-  submitKeyCode() {
+  submitKeyCode()
+  {
     if(this.emailKeyCode)
       this.activeUserEmail();
   }
   
 
-  activeUserEmail() {
+  activeUserEmail()
+  {
+
     this.userFacade.activateUserEmail(this.emailKeyCode!)
     .pipe(take(1))
     .subscribe({
@@ -54,12 +54,13 @@ export class ActivateEmailComponent  implements OnInit {
         this.isUserEmailVerified = true;
       },
       error: (err) =>{
-        this.toastService.showError(this.translateService.instant('emailSendingError'));
+        alert("Erro ao confirmar seu e-mail, verifique se foi enviado o valor correto.");
       }
     })
   }
 
-  goToMainApplication() {
+  goToMainApplication()
+  {
     this.router.navigate(['home/feed']);
   }
 }

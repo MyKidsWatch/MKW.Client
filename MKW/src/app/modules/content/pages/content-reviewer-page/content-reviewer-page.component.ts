@@ -13,7 +13,6 @@ import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { KebabMenuItem } from 'src/app/shared/models/kebab-menu-item.model';
 import { ModalController } from '@ionic/angular';
 import { ReportProfileModalComponent } from '../../components/report-profile-modal/report-profile-modal.component';
-import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-content-reviewer-page',
@@ -47,7 +46,6 @@ export class ContentReviewerPageComponent implements OnInit {
     private route: ActivatedRoute,
     private modalController: ModalController,
     private translateService: TranslateService,
-    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -151,10 +149,10 @@ export class ContentReviewerPageComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (res: any) => {
-          this.toastService.showError('Perfil denunciado com sucesso');
+          alert('Perfil denunciado com sucesso');
         },
         error: (err: any) => {
-          this.toastService.showError(this.translateService.instant('genericError'));
+          alert('Erro ao denunciar perfil');
         },
       });
   }
