@@ -6,18 +6,23 @@ import { AccountService } from 'src/app/core/services/account.service';
 import { lowerCaseValidator, matchFieldsValidator, numericValidator, specialCharacterValidator, unusedEmail, uppercaseValidator } from 'src/app/core/validators/sign-up.validators';
 
 import { take } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss'],
 })
-export class ResetPasswordComponent  implements OnInit {
-
-  constructor(private formBuilder: FormBuilder, private router: Router, private accountService: AccountService) { }
+export class ResetPasswordComponent implements OnInit {
+  constructor(
+    private formBuilder: FormBuilder, 
+    private router: Router, 
+    private accountService: AccountService,
+    private translateService: TranslateService,
+  ) { }
 
   requestKeycodeForm: FormGroup = this.formBuilder.group({
-    email: ['', {validators: [Validators.required, Validators.email] }],
+    email: ['', { validators: [Validators.required, Validators.email] }],
     password: ['', [Validators.required, Validators.minLength(8), numericValidator, uppercaseValidator, lowerCaseValidator, specialCharacterValidator]],
     rePassword: ['', [Validators.required]],
     keycode: ['', [Validators.required]]
@@ -33,8 +38,8 @@ export class ResetPasswordComponent  implements OnInit {
   ngOnInit() {
     this.currentStep = 1;
   }
-  public previousPage()
-  {
+
+  public previousPage() {
     if (this.currentStep == 1) {
       this.router.navigate(['auth']);
       this.requestKeycodeForm.reset();
@@ -44,28 +49,25 @@ export class ResetPasswordComponent  implements OnInit {
     this.currentStep--;
   }
 
-  public requestKeycode()
-  {
-
+  public requestKeycode() {
     let request = new RequestKeycodeDTO();
     request.email = this.requestKeycodeForm.controls['email'].value;
     this.accountService.requestPasswordKeyCode(request)
-    .pipe(take(1))
-    .subscribe(
-      {
-        next: (res) =>{
-          this.currentStep++;
-        },
-        error: (err) => {
-            alert("Erro requisitando redefinição de senha");
+      .pipe(take(1))
+      .subscribe(
+        {
+          next: (res) => {
+            this.currentStep++;
+          },
+          error: (err) => {
+            alert(this.translateService.instant('genericError')); 
+          }
         }
-      }
-      
-    );
+
+      );
   }
 
-  public resetPassword()
-  {
+  public resetPassword() {
     let request = new ResetPasswordDTO();
 
     request.email = this.requestKeycodeForm.controls['email'].value;
@@ -74,29 +76,27 @@ export class ResetPasswordComponent  implements OnInit {
     request.keyCode = this.requestKeycodeForm.controls['keycode'].value;
 
     this.accountService.changePassword(request)
-    .pipe(take(1))
-    .subscribe(
-      {
-        next: (res) =>{
-          this.currentStep++;
-        },
-        error: (err) => {
-            alert("Erro durante redefinição de senha");
+      .pipe(take(1))
+      .subscribe(
+        {
+          next: (res) => {
+            this.currentStep++;
+          },
+          error: (err) => {
+            alert(this.translateService.instant('genericError'));
+          }
         }
-      }
-      
-    );;
+
+      );;
   }
 
-  public nextStep()
-  {
-    switch(this.currentStep)
-    {
+  public nextStep() {
+    switch (this.currentStep) {
       case 1:
         this.requestKeycode();
         break;
-      
-      case 2: 
+
+      case 2:
         this.resetPassword();
         break;
 
@@ -131,15 +131,13 @@ export class ResetPasswordComponent  implements OnInit {
     return isValid;
   }
 
-  
-  isRequestKeyCodeFormValid()
-  {
+
+  isRequestKeyCodeFormValid() {
     return this.requestKeycodeForm.controls['email'].valid;
   }
 
-  isChangePasswordFormValid()
-  {
-    
+  isChangePasswordFormValid() {
+
     return (
       this.requestKeycodeForm.controls['keycode'].valid &&
       this.requestKeycodeForm.controls['password'].valid &&

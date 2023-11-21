@@ -116,7 +116,7 @@ export class ContentReviewPageComponent implements OnInit {
           this.reviewComments = res;
         },
         error: (err) => {
-          alert("Erro buscando os comentários dessa análise")
+          alert(this.translateService.instant('genericError'));
         }
       });
   }
@@ -172,7 +172,7 @@ export class ContentReviewPageComponent implements OnInit {
           this.goBack();
         },
         error: (err) => {
-          alert("Erro ao excluir review");
+          alert(this.translateService.instant('genericError'));
         }
       })
   }
@@ -195,7 +195,7 @@ export class ContentReviewPageComponent implements OnInit {
           alert("Review editada com sucesso")
         },
         error: (err) => {
-          alert("Erro ao editar review");
+          alert(this.translateService.instant('genericError'));
         }
       })
   }
@@ -217,7 +217,7 @@ export class ContentReviewPageComponent implements OnInit {
           alert("Review denunciada com sucesso")
         },
         error: (err) => {
-          alert("Erro ao denunciar review");
+          alert(this.translateService.instant('genericError'));
         }
       })
   }
@@ -240,7 +240,7 @@ export class ContentReviewPageComponent implements OnInit {
           alert("Award dado com sucesso!")
         },
         error: (err) => {
-          alert("Erro ao dar award!");
+          alert(this.translateService.instant('genericError'));
         }
       })
 

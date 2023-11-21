@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 import { ReportService } from 'src/app/core/services/report.service';
 
@@ -10,7 +11,11 @@ import { ReportService } from 'src/app/core/services/report.service';
 })
 export class ReportCommentModalComponent  implements OnInit {
 
-  constructor(private modalController: ModalController, private reportService: ReportService) {}
+  constructor(
+    private modalController: ModalController, 
+    private reportService: ReportService,
+    private translateService: TranslateService
+  ) {}
 
   public reportReasons: ReportReasons[] = [];
   
@@ -27,7 +32,7 @@ export class ReportCommentModalComponent  implements OnInit {
         })
       },
       error: (err) =>{
-        alert("Não é possível realizar denuncias no momento");
+        alert(this.translateService.instant('genericError'));
         this.modalController.dismiss(null, 'cancel')
       }
     })

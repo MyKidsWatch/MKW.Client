@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateChildDto } from 'src/app/core/proxies/mkw-api.proxy';
-import { ChildService } from 'src/app/core/services/child.service';
 import { AgeRangeService } from 'src/app/core/services/age-range.service';
 import { Location } from '@angular/common';
-import { take } from 'rxjs';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 import { AgeRangeData } from '../../model/age-range.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-children',
@@ -25,7 +23,8 @@ export class AddChildrenComponent implements OnInit {
     private location: Location,
     private formBuilder: FormBuilder,
     private ageRangeService: AgeRangeService,
-    private userFacade: UserFacade
+    private userFacade: UserFacade,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
@@ -57,7 +56,7 @@ export class AddChildrenComponent implements OnInit {
           this.location.back();
         },
         error: (err) => {
-          alert("Erro durante o cadstro de sua criança, tente novamente mais tarde");
+          alert(this.translateService.instant('genericError'));
         }
       });
   }

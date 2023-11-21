@@ -152,7 +152,7 @@ export class ContentReviewerPageComponent implements OnInit {
           alert('Perfil denunciado com sucesso');
         },
         error: (err: any) => {
-          alert('Erro ao denunciar perfil');
+          alert(this.translateService.instant('genericError'));
         },
       });
   }

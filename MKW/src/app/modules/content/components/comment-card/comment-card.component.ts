@@ -144,10 +144,10 @@ export class CommentCardComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          alert("Comentário denunciado com sucesso.");
+          alert(this.translateService.instant('reportSuccess'));
         },
         error: () => {
-          alert("Erro ao denunciar comentário")
+          alert(this.translateService.instant('genericError'));
         }
       })
   }
