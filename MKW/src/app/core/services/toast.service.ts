@@ -17,6 +17,7 @@ export class ToastService {
         },
       ],
       color: type as 'success' | 'danger' | 'warning' | 'primary' | 'secondary' | 'tertiary' | 'dark' | 'medium' | 'light',
+      cssClass: 'toast-' + type,
       position: 'top',
     }).then(toast => toast.present());
   }
