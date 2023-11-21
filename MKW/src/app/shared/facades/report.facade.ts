@@ -1,67 +1,53 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { CommentClient, CreateReportDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { Store } from '@ngxs/store';
-import { CommentService } from 'src/app/core/services/comment.service';
-import { AddComment, AnswerComment, DeleteComment, EditComment, ReportComment, UpdateCommentList } from '../store/comments/comment.actions';
-import { ReportService } from 'src/app/core/services/report.service';
-import { CommentSelectors } from '../store/comments/comment.selectors';
-import { ActivateUserEmail, LogUserOff, LoginUser, RefreshCurrentUserToken, UpdateCurrentUserInformation } from '../store/user/user.action';
-import { UserSelectors } from '../store/user/user.selectors';
-import { TokenInfo, UserData } from '../store/user/user.model';
-import { UserStateModel } from '../store/user/user.state';
-import { ActivateEmailComponent } from 'src/app/modules/home/activate-email/activate-email.component';
-import { Observable } from 'rxjs';
 import { ReportSelectors } from '../store/report/report.selectors';
 import { RespondToCurrentReport, SetIndividualReport, SetReportList } from '../store/report/report.action';
 
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 
 export class ReportFacade {
+  constructor(private store: Store) { }
 
-    constructor(private store: Store) { }
+  setReportList(pageSize: number = 10,
+    pageIndex: number = 1,
+    reportReason?: number,
+    statusId?: number,
+    ascending?: boolean) {
+    return this.store.dispatch(new SetReportList(pageSize, pageIndex, reportReason, statusId, ascending));
+  }
 
+  setCurrentReport(reportId: number) {
+    return this.store.dispatch(new SetIndividualReport(reportId));
+  }
 
+  getReportList() {
+    return this.store.select(ReportSelectors.GetReportList);
+  }
 
-    setReportList(pageSize: number = 10,
-        pageIndex: number = 1,
-        reportReason?: number,
-        statusId?: number,
-        ascending?: boolean) {
-        return this.store.dispatch(new SetReportList(pageSize, pageIndex, reportReason, statusId, ascending));
-    }
+  getCurrentReport() {
+    return this.store.select(ReportSelectors.GetCurrentReport);
+  }
 
-    setCurrentReport(reportId: number) {
-        return this.store.dispatch(new SetIndividualReport(reportId));
-    }
+  getCurrentReportOverview() {
+    return this.store.select(ReportSelectors.GetReportOverview);
+  }
+  getPaginationData() {
+    return this.store.select(ReportSelectors.GetPaginationData)
+  }
 
-    getReportList() {
-        return this.store.select(ReportSelectors.GetReportList);
-    }
+  discardCurrentReport() {
+    return this.store.dispatch(new RespondToCurrentReport(3, false, false, false))
+  }
 
-    getCurrentReport() {
-        return this.store.select(ReportSelectors.GetCurrentReport);
-    }
+  deleteContentFromCurrentReport() {
+    return this.store.dispatch(new RespondToCurrentReport(2, true, true, false))
+  }
 
-    getCurrentReportOverview() {
-        return this.store.select(ReportSelectors.GetReportOverview);
-    }
-    getPaginationData() {
-        return this.store.select(ReportSelectors.GetPaginationData)
-    }
-
-    discardCurrentReport() {
-        return this.store.dispatch(new RespondToCurrentReport(3, false, false, false))
-    }
-
-    deleteContentFromCurrentReport() {
-        return this.store.dispatch(new RespondToCurrentReport(2, true, true, false))
-    }
-
-    deleteProfileFromCurrentReport() {
-        return this.store.dispatch(new RespondToCurrentReport(2, true, true, true))
-    }
+  deleteProfileFromCurrentReport() {
+    return this.store.dispatch(new RespondToCurrentReport(2, true, true, true))
+  }
 }

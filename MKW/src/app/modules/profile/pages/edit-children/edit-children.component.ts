@@ -7,6 +7,8 @@ import { concatMap, of, take } from 'rxjs';
 import { ChildDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { Location } from '@angular/common';
 import { AgeRangeData } from '../../model/age-range.model';
+import { TranslateService } from '@ngx-translate/core';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-edit-children',
@@ -29,7 +31,9 @@ export class EditChildrenComponent implements OnInit, AfterViewInit {
     private childService: ChildService,
     private formBuilder: FormBuilder,
     private ageRangeService: AgeRangeService,
-    private location: Location
+    private location: Location,
+    private translateService: TranslateService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -64,14 +68,15 @@ export class EditChildrenComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
 
   }
+
   deleteChild() {
     this.childService.deleteChild(this.childId!).pipe(take(1)).subscribe({
       next: () => {
-        alert("Criança excluída com sucesso");
+        this.toastService.showSuccess(this.translateService.instant('childDeleted'));
         this.location.back();
       },
       error: () => {
-        alert("Erro durante a exclusão de sua criança, tente novamente mais tarde");
+        this.toastService.showError(this.translateService.instant('genericError'));
       }
     })
   }
@@ -82,17 +87,13 @@ export class EditChildrenComponent implements OnInit, AfterViewInit {
 
     this.childService.updateChild(this.childDto!).pipe(take(1)).subscribe({
       next: () => {
-        alert("Criança atualizada com sucesso");
+        this.toastService.showSuccess(this.translateService.instant('childEdited'));
         this.location.back();
       },
       error: () => {
-        alert("Erro durante a atualização de sua criança, tente novamente mais tarde");
+        this.toastService.showError(this.translateService.instant('genericError'));
       }
     })
   }
-
-
-
-
 
 }

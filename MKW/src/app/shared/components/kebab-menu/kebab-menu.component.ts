@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { KebabMenuItem } from '../../models/kebab-menu-item.model';
 import { CommonModule } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-kebab-menu',
@@ -15,9 +16,15 @@ export class KebabMenuComponent  implements OnInit {
 
   public isOpen: boolean = false;
 
-  constructor() { }
+  constructor(private translateService: TranslateService) { }
 
   ngOnInit() {
+    this.items = this.items.map(item => {
+      item.label = this.translateService.instant(item.label);
+      
+      return item;
+    });
+
     document.addEventListener('click', (e) => {
       if (!this.isOpen) {
         return;
