@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 import { AgeRangeData } from '../../model/age-range.model';
 import { TranslateService } from '@ngx-translate/core';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-add-children',
@@ -24,7 +25,8 @@ export class AddChildrenComponent implements OnInit {
     private formBuilder: FormBuilder,
     private ageRangeService: AgeRangeService,
     private userFacade: UserFacade,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -56,7 +58,7 @@ export class AddChildrenComponent implements OnInit {
           this.location.back();
         },
         error: (err) => {
-          alert(this.translateService.instant('genericError'));
+          this.toastService.showError(this.translateService.instant('genericError'));
         }
       });
   }

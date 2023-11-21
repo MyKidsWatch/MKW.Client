@@ -184,5 +184,11 @@
   "genericError": "Houve um erro ao tentar realizar esta ação. Por favor, tente novamente mais tarde.",
   "userOrPasswordIncorrect": "Nome de usuário ou senha incorretos",
   "reportSuccess": "Denúncia enviada com sucesso, obrigado pelo seu feedback!",
-  "emailSendingError": "Houve um erro ao tentar enviar o e-mail. Por favor, verifique se o endereço de e-mail está correto e tente novamente."
+  "emailSendingError": "Houve um erro ao tentar enviar o e-mail. Por favor, verifique se o endereço de e-mail está correto e tente novamente.",
+  "reviewDeleted": "Análise excluída com sucesso!",
+  "reviewEdited": "Análise editada com sucesso!",
+  "childAdded": "Criança adicionada com sucesso!",
+  "childDeleted": "Criança excluída com sucesso!",
+  "childEdited": "Criança editada com sucesso!",
+  "awardGiven": "Prêmio concedido com sucesso!"
 }

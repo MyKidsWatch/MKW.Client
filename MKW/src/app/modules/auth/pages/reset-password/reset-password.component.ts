@@ -7,6 +7,7 @@ import { lowerCaseValidator, matchFieldsValidator, numericValidator, specialChar
 
 import { take } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -19,6 +20,7 @@ export class ResetPasswordComponent implements OnInit {
     private router: Router, 
     private accountService: AccountService,
     private translateService: TranslateService,
+    private toastService: ToastService
   ) { }
 
   requestKeycodeForm: FormGroup = this.formBuilder.group({
@@ -60,7 +62,7 @@ export class ResetPasswordComponent implements OnInit {
             this.currentStep++;
           },
           error: (err) => {
-            alert(this.translateService.instant('genericError')); 
+            this.toastService.showError(this.translateService.instant('genericError')); 
           }
         }
 
@@ -83,7 +85,7 @@ export class ResetPasswordComponent implements OnInit {
             this.currentStep++;
           },
           error: (err) => {
-            alert(this.translateService.instant('genericError'));
+            this.toastService.showError(this.translateService.instant('genericError'));
           }
         }
 

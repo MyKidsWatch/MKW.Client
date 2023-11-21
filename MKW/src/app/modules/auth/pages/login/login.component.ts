@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { AuthService } from 'src/app/core/services/auth.service';
 import { ILoginRequestDTO } from '../../models/login-request';
-import { error } from 'console';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { LoadingBarService } from 'src/app/core/services/loading-bar.service';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 import { switchMap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +14,6 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent  implements OnInit, OnDestroy {
-
   public isLoadingContent: boolean = false;
   loginForm = new FormGroup({
       credential: new FormControl(''),
@@ -23,9 +21,9 @@ export class LoginComponent  implements OnInit, OnDestroy {
   });
 
   constructor(
-    private authService: AuthService, 
     private router: Router, 
     private translateService: TranslateService,
+    private toastService: ToastService,
     public loadingBarService: LoadingBarService,
     public userFacade: UserFacade,
   ) { }
@@ -59,11 +57,11 @@ export class LoginComponent  implements OnInit, OnDestroy {
         },
         error: (err) => {
           if (err.status === 401) {
-            alert(this.translateService.instant('userOrPasswordIncorrect'));          
+            this.toastService.showError(this.translateService.instant('userOrPasswordIncorrect'));
             return;
           }
 
-          alert(this.translateService.instant('genericError'));          
+          this.toastService.showError(this.translateService.instant('genericError'));          
         }
       })
   }
