@@ -26,6 +26,7 @@ import { ChildResolver } from 'src/app/core/resolvers/child.resolver';
 import { AddChildModalComponent } from './components/add-child-modal/add-child-modal.component';
 import { EditChildModalComponent } from './components/edit-child-modal/edit-child-modal.component';
 import { UserReviewResolver } from 'src/app/core/resolvers/user-review.resolver';
+import { ChangeProfilePictureModalComponent } from './components/change-profile-picture-modal/change-profile-picture-modal.component';
 
 const childrenRoutes: Routes = [
   {
@@ -59,7 +60,6 @@ const routes: Routes = [
   }
 ];
 
-
 @NgModule({
   declarations: [
     AddChildrenComponent,
@@ -69,7 +69,8 @@ const routes: Routes = [
     ViewProfileComponent,
     ViewChildrenComponent,
     AddChildModalComponent,
-    EditChildModalComponent
+    EditChildModalComponent,
+    ChangeProfilePictureModalComponent,
   ],
   imports: [
     CommonModule,

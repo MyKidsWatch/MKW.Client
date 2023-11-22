@@ -3737,6 +3737,82 @@ export class ProfileClient {
         }
         return _observableOf(null as any);
     }
+
+     /**
+     * Updates the profile image name.
+     * @param imageName The new image name.
+     * @return Success
+     */
+     updateProfileImage(imageName: string): Observable<ObjectBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/profile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        console.log(imageName)
+
+        let options_: any = {
+            body: JSON.stringify({
+                imageName: imageName
+            }),
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json"
+            })
+        };
+
+        console.log(options_);
+
+        return this.http.request("patch", url_, options_).pipe(
+            _observableMergeMap((response_: any) => {
+                return this.processUpdateProfileImage(response_);
+            })
+        ).pipe(
+            _observableCatch((response_: any) => {
+                if (response_ instanceof HttpResponseBase) {
+                    try {
+                        return this.processUpdateProfileImage(response_ as any);
+                    } catch (e) {
+                        return _observableThrow(e) as any as Observable<ObjectBaseResponseDTO>;
+                    }
+                } else {
+                    return _observableThrow(response_) as any as Observable<ObjectBaseResponseDTO>;
+                }
+            })
+        );
+    }
+
+    protected processUpdateProfileImage(response: HttpResponseBase): Observable<ObjectBaseResponseDTO> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+                (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {};
+        if (response.headers) {
+            for (let key of response.headers.keys()) {
+                _headers[key] = response.headers.get(key);
+            }
+        }
+
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(
+                _observableMergeMap((_responseText: string) => {
+                    let result200: any = null;
+                    let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                    result200 = ObjectBaseResponseDTO.fromJS(resultData200);
+                    return _observableOf(result200);
+                })
+            );
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(
+                _observableMergeMap((_responseText: string) => {
+                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+                })
+            );
+        }
+
+        return _observableOf(null as any);
+    }
 }
 
 @Injectable()
@@ -3969,11 +4045,11 @@ export class ReportClient {
      * @return Success
      */
     reportGet(
-        page: number | undefined, 
-        pageSize: number | undefined, 
-        reasonId: number | undefined, 
+        page: number | undefined,
+        pageSize: number | undefined,
+        reasonId: number | undefined,
         statusId: number | undefined,
-        orderBy: string | undefined, 
+        orderBy: string | undefined,
         orderByAscending: boolean | undefined,
         language: string | undefined
     ): Observable<ReportDtoBaseResponseDTO> {
@@ -4275,6 +4351,7 @@ export class ReportClient {
         }
         return _observableOf(null as any);
     }
+
 }
 
 @Injectable()

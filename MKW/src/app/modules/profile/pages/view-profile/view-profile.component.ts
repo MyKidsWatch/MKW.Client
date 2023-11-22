@@ -4,19 +4,19 @@ import { UserFacade } from 'src/app/shared/facades/user.facade';
 import { UserData } from 'src/app/shared/store/user/user.model';
 import { take } from 'rxjs'
 import { ProfileModel } from 'src/app/modules/content/models/profile.model';
-import { ReadProfileDTO, ReadProfileDTOIEnumerableBaseResponseDTO, ReviewDetailsDto } from 'src/app/core/proxies/mkw-api.proxy';
+import { ReadProfileDTO, ReadProfileDTOIEnumerableBaseResponseDTO } from 'src/app/core/proxies/mkw-api.proxy';
 import { AccountUtils } from 'src/app/core/Util/AccountUtil';
 import { TranslateService } from '@ngx-translate/core';
 import { ProfileService } from 'src/app/core/services/profile.service';
 import { ContentReviewCard } from 'src/app/shared/models/content-review-card.model';
 import { KebabMenuItem } from 'src/app/shared/models/kebab-menu-item.model';
-import { ReviewService } from 'src/app/core/services/review.service';
-import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 import { ModalController } from '@ionic/angular';
 import { AddFundsModalComponent } from 'src/app/shared/components/add-funds-modal/add-funds-modal.component';
 import { ChildrenCard } from 'src/app/shared/models/children-card.model';
 import { AddChildModalComponent } from '../../components/add-child-modal/add-child-modal.component';
 import { EditChildModalComponent } from '../../components/edit-child-modal/edit-child-modal.component';
+import { ChangeProfilePictureModalComponent } from '../../components/change-profile-picture-modal/change-profile-picture-modal.component';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-view-profile',
@@ -46,6 +46,10 @@ export class ViewProfileComponent implements OnInit {
       callback: () => this.addFunds()
     },
     {
+      label: this.translateService.instant('profile.changeProfilePicture'),
+      callback: () => this.changeProfilePicture()
+    },
+    {
       label: this.translateService.instant('profile.logout'),
       callback: () => this.logOffUser(),
     },
@@ -55,9 +59,9 @@ export class ViewProfileComponent implements OnInit {
     private userFacade: UserFacade,
     private router: Router,
     private profileService: ProfileService,
-    private reviewService: ReviewService,
     private translateService: TranslateService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private toastService: ToastService
   ) { }
 
   ngOnInit() {
@@ -98,6 +102,37 @@ export class ViewProfileComponent implements OnInit {
     let result = await fundsModal.onWillDismiss();
   }
 
+  async changeProfilePicture() {
+    let changeProfilePictureModal = await this.modalController.create({ component: ChangeProfilePictureModalComponent });
+
+    changeProfilePictureModal.present();
+
+    let result = await changeProfilePictureModal.onWillDismiss();
+
+    if (result.role === 'cancel')
+      return;
+
+    if (result.role === 'save') {
+      const image = result.data;
+
+      if (!image) {
+        this.toastService.showError(this.translateService.instant('genericError'));
+        return;
+      }
+
+      this.profileService.updateProfileImage(image)
+        .pipe(take(1))
+        .subscribe({
+          next: (res: any) => {
+            this.profileData!.imageURL = image;
+            this.toastService.showSuccess(this.translateService.instant('profilePictureUpdated'));
+          },
+          error: (err: any) => {
+            this.toastService.showError(this.translateService.instant('genericError'));
+          }
+        });
+    }
+  }
 
   async addChild() {
     let addChildModal = await this.modalController.create(

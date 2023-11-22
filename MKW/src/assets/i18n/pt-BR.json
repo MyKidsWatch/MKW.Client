@@ -85,7 +85,8 @@
       "bronzeTitle": "Bronze com brilho próprio!",
       "bronzeDescription": "{{name}} tem {{bronzeAwards}} medalhas de bronze, {{goldenAwards}} de ouro e {{silverAwards}} de prata.",
       "my-bronzeDescription": "Você tem {{bronzeAwards}} medalhas de bronze, {{goldenAwards}} de ouro e {{silverAwards}} de prata."
-    }
+    },
+    "changeProfilePicture": "Alterar foto de perfil"
   },
   "content": {
     "rating": "Avaliação:",
@@ -191,5 +192,7 @@
   "childDeleted": "Criança excluída com sucesso!",
   "childEdited": "Criança editada com sucesso!",
   "awardGiven": "Prêmio concedido com sucesso!",
-  "reviewAdded": "Análise adicionada com sucesso!"
+  "reviewAdded": "Análise adicionada com sucesso!",
+  "selectProfilePicture": "Selecione uma foto de perfil",
+  "profilePictureUpdated": "Foto de perfil atualizada com sucesso!"
 }

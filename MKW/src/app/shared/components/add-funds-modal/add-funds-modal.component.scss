@@ -59,8 +59,6 @@
             color: var(--mkw-color-dark-medium);
           }
         }
-  
-        
       }
   
       .awards {
@@ -83,6 +81,7 @@
           &.selected {
             .award {
               transform: scale(1.1);
+              color: var(--mkw-color-primary);
             }
   
             .award-price {
