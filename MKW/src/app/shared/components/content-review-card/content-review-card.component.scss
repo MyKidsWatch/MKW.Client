@@ -99,7 +99,7 @@
       justify-content: space-between;
       align-items: flex-start;
       align-self: flex-start;
-      height: 53.5vw;
+      height: 54.5vw;
       width: 100%;
       
 
@@ -143,31 +143,30 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative;
+        top: .5rem;
 
         .awards {
           display: flex;
           flex-direction: row;
           align-items: center;
-          
           position: relative;
           left: -.25rem;
 
           .award-details {
             display: flex;
             align-items: center;
-            padding-right: .5rem;
+            margin-right: .5rem;
 
             .award-icon {
-              margin-right: unset;
               height: 1.75rem;
+              margin-right: .25rem;
             }
 
             .award-count {
               font-family: 'Poppins', sans-serif;
               font-weight: lighter;
               color: #000000A6;
-              position: relative;
-              left: -.05rem;
             }
           }
         }
@@ -179,18 +178,19 @@
           text-align: end;
           position: relative;
           left: .25rem;
+          bottom: .2rem;
+          color: #000000A6;
           
           .comment-count {
             font-family: 'Poppins', sans-serif;
             font-weight: lighter;
-            color: #000000A6;
             position: relative;
             left: .15rem;
           }
 
           .comment-icon {
             position: relative;
-            left: .15rem;
+            top: .15rem;
           }
 
         }
