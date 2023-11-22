@@ -25,7 +25,7 @@
       </p>
 
       <div class="review-user-information">
-        <div class="profile-information">
+        <div class="profile-information" [routerLink]="['../../reviewer/' + this.contentObject.reviewAuthor.userName]">
           <img class="user-pfp" [src]="contentObject.reviewAuthor.profilePictureUrl || 'assets/icon/default.jpg'" />
           <label class="username">{{ contentObject.reviewAuthor.userName }}</label>
         </div>
