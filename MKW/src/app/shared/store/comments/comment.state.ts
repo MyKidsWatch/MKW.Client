@@ -3,7 +3,7 @@ import { State, StateContext, Action } from '@ngxs/store';
 import { CommentModel, CommentStateModel } from './comment.model';
 import { CommentService } from 'src/app/core/services/comment.service';
 import { AddComment, AnswerComment, DeleteComment, EditComment, UpdateCommentList } from './comment.actions';
-import { AnswerCommentDto, CommentDetailsDto, CommentDetailsDtoBaseResponseDTO, CreateCommentDto, UpdateCommentDto } from 'src/app/core/proxies/mkw-api.proxy';
+import { AnswerCommentDto, CommentDetailsDtoBaseResponseDTO, CreateCommentDto, UpdateCommentDto } from 'src/app/core/proxies/mkw-api.proxy';
 
 import { catchError, tap } from 'rxjs';
 
@@ -19,9 +19,7 @@ const defaultCommentState: CommentStateModel = {
 
 @Injectable()
 export class CommentState {
-
     constructor(private commentService: CommentService) { }
-
 
     @Action(UpdateCommentList)
     UpdateCommentList({ getState, setState, patchState }: StateContext<CommentStateModel>, { reviewId }: UpdateCommentList) {
@@ -36,6 +34,7 @@ export class CommentState {
                             personId: comment.person!.id!,
                             id: comment.id!,
                             commentAuthor: comment.person!.username!,
+                            commentAuthorProfilePictureUrl: comment.person!.imageURL!,
                             commentText: comment.text!,
                             commentAnswers: [],
                             isEdited: comment.edited!
@@ -45,6 +44,7 @@ export class CommentState {
                             {
                                 id: answer.id,
                                 commentAuthor: answer.person!.username!,
+                                commentAuthorProfilePictureUrl: answer.person!.imageURL!,
                                 commentText: answer.text!,
                                 parentId: comment.id,
                                 isEdited: comment.edited!

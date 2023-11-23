@@ -24,7 +24,7 @@ export class CommentSelectors {
                 commentAuthor: {
                     creatorId: comment.personId,
                     userName: comment.commentAuthor,
-                    profilePictureUrl: 'assets/icon/default.jpg'
+                    profilePictureUrl: comment.commentAuthorProfilePictureUrl
                 },
                 commentId: comment.id,
                 commentText: comment.commentText,
@@ -37,7 +37,7 @@ export class CommentSelectors {
                     commentAuthor: {
                         creatorId: comment.personId,
                         userName: answer.commentAuthor,
-                        profilePictureUrl: 'assets/icon/default.jpg'
+                        profilePictureUrl: answer.commentAuthorProfilePictureUrl
                     },
                     commentId: answer.id,
                     commentText: answer.commentText,

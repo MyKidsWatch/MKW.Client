@@ -6,6 +6,7 @@ export interface CommentModel {
     parentId?: number;
     commentText: string;
     commentAuthor: string;
+    commentAuthorProfilePictureUrl?: string;
     commentAnswers?: CommentModel[];
     isEdited: boolean;
 }
