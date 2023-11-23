@@ -1,4 +1,4 @@
-<main *ngIf="this.contentData" class="content-card">
+<main *ngIf="this.contentData" class="content-card" (click)="redirectToContentPage(this.contentData.externalContentId!, this.contentData.platformId!)">
   <img 
     class="content-poster" 
     [class.square]="this.contentData.platformId === 2"
@@ -28,7 +28,7 @@
           <label class="rating-value">{{ this.contentData.averageRating }}</label>
         </span>
       </aside>
-      <nav (click)="redirectToContentPage(this.contentData.externalContentId!, this.contentData.platformId!)">
+      <nav>
         <label>{{ 'content.seeMore' | translate }}</label>
         <i class="material-icons">arrow_forward_ios</i>
       </nav>

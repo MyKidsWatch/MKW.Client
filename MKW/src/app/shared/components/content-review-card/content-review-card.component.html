@@ -1,8 +1,11 @@
-<main *ngIf="this.contentData" class="content-card">
+<main *ngIf="this.contentData" class="content-card"  (click)="redirectToContentReviewPage(this.contentData.reviewId!)">
 
   <header class="profile-header">
-    <div class="profile-information"
-      [routerLink]="['../../content/reviewer/' + this.contentData.reviewerInformation.reviewerName]">
+    <div 
+      class="profile-information"
+      [routerLink]="['../../content/reviewer/' + this.contentData.reviewerInformation.reviewerName]"
+      (click)="$event.stopPropagation()"
+      >
       <img class="user-pfp" [src]="contentData.reviewerInformation.reviewerPicturePath || 'assets/icon/default.jpg'" />
       <label class="user-name">{{ contentData.reviewerInformation.reviewerName }}</label>
     </div>
@@ -42,7 +45,7 @@
             <label class="award-count">{{ this.contentData.reviewAwardInformation.reviewBronzeAwardCount}}</label>
           </div>
         </aside>
-        <nav class="comments-and-link" (click)="redirectToContentReviewPage(this.contentData.reviewId!)">
+        <nav class="comments-and-link">
           <i class="material-icons comment-icon">message</i>
           <label class="comment-count">{{ this.contentData.reviewCommentCount }}</label>
           <i class="material-icons arrow-icon">arrow_forward_ios</i>
