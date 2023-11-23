@@ -74,7 +74,7 @@ export class ContentReviewPageComponent implements OnInit {
 
           this.contentObject = res;
           this.loading = false;
-          this.reviewId = res.reviewId;
+          this.reviewId = res.reviewId; this.reviewId = res.reviewId
           let username = this.userFacade.getUserState()?.username!;
 
           let isOp = username == this.contentObject.reviewAuthor.userName;

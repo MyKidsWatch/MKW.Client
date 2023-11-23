@@ -81,8 +81,8 @@ export class CommentState {
                         id: response.id!,
                         commentText: response.text!,
                         commentAuthor: response.person!.username!,
-                        isEdited: response.edited!
-
+                        isEdited: response.edited!,
+                        commentAuthorProfilePictureUrl: response.person!.imageURL!
                     }
 
                     commentState.comments.push(newComment);
@@ -174,7 +174,8 @@ export class CommentState {
                                 commentAuthor: response.person!.username!,
                                 commentText: response.text!,
                                 parentId: commentId,
-                                isEdited: response.edited!
+                                isEdited: response.edited!,
+                                commentAuthorProfilePictureUrl: response.person!.imageURL!
                             };
                             comment.commentAnswers.push(newAnswer);
                         }
