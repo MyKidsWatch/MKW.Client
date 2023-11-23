@@ -91,6 +91,9 @@ export class SignUpComponent implements OnInit {
   public nextStep(currentStep: number) {
 
     switch (currentStep) {
+      case 1:
+        this.currentStep = 2;
+        break;
       case 2:
         this.submitForm();
         break;
@@ -98,9 +101,6 @@ export class SignUpComponent implements OnInit {
         this.router.navigate(['auth']);
         this.registrationForm.reset();
         this.currentStep = 1;
-        break;
-      default:
-        this.currentStep++;
         break;
     }
   }
