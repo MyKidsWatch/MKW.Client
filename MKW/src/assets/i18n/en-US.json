@@ -85,7 +85,8 @@
       "bronzeTitle": "Bronze with its own shine!",
       "bronzeDescription": "{{name}} has {{bronzeAwards}} bronze medals, {{goldenAwards}} gold medals, and {{silverAwards}} silver medals.",
       "my-bronzeDescription": "You have {{bronzeAwards}} bronze medals, {{goldenAwards}} gold medals, and {{silverAwards}} silver medals."
-    }
+    },
+    "changeProfilePicture": "Change profile picture"
   },
   "content": {
     "rating": "Rating:",
@@ -191,5 +192,7 @@
   "childDeleted": "Child deleted successfully!",
   "childEdited": "Child edited successfully!",
   "awardGiven": "Award given successfully!",
-  "reviewAdded": "Review added successfully!"
+  "reviewAdded": "Review added successfully!",
+  "selectProfilePicture": "Select your profile picture",
+  "profilePictureUpdated": "Profile picture updated successfully!"
 }

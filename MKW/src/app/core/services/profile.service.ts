@@ -8,4 +8,5 @@ export class ProfileService {
   constructor(private profileClient: ProfileClient) { }
 
   getProfile = (userName: string) => this.profileClient.search(userName);
+  updateProfileImage = (imagePath: string) => this.profileClient.updateProfileImage(imagePath);
 }

@@ -1,12 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { take } from 'rxjs';
-import { CreateReviewDto, ICreateReviewDto } from 'src/app/core/proxies/mkw-api.proxy';
-import { ReportService } from 'src/app/core/services/report.service';
-import { ReviewService } from 'src/app/core/services/review.service';
-import { ReviewFacade } from 'src/app/shared/facades/review.facade';
+import { ICreateReviewDto } from 'src/app/core/proxies/mkw-api.proxy';
 import { ContentInformation, ContentReviewPage } from '../../models/content-review-page.model';
 
 @Component({

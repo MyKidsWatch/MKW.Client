@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="go-back" (click)="cancel()">
+    <i class="material-icons">arrow_back</i>
+    <p>{{ 'return' | translate }}</p>
+  </div>
+  <div class="content">
+    <h2 class="page-title">{{ 'selectProfilePicture' | translate }}</h2>
+
+    <div class="image-grid">
+      <img 
+        *ngFor="let image of profilePictures" 
+        alt="Profile Picture" 
+        src="{{ image }}" 
+        class="profile-picture"
+        [class.selected]="image === selectedProfilePicture" 
+        (click)="selectProfilePicture(image)"
+      >
+    </div>
+
+    <button class="submit-button" (click)="saveProfilePictureChanges()"><i class="material-icons">save</i>{{'saveChanges' | translate }}</button>
+  </div>
+
+</div>

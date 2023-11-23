@@ -85,7 +85,6 @@ const parentRoute: Routes = [
     RouterModule,
     RouterModule.forChild(parentRoute),
     HeaderBackComponent,
-    ShortContentReviewCardComponent,
     KebabMenuComponent,
     NgxsModule.forFeature([CommentState, ReviewState]),
     ShortContentReviewCardComponent,
@@ -107,7 +106,6 @@ const parentRoute: Routes = [
     ReviewResolver,
     ProfileClient,
     ProfileService,
-
   ]
 })
 

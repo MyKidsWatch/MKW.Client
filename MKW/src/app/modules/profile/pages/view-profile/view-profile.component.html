@@ -1,7 +1,12 @@
 <ion-content>
   <div class="content">
     <div class="profile-header">
-      <img alt="Profile picture" class="profile-picture" [src]="profileData?.imageURL || 'assets/icon/default.jpg'">
+      <img 
+        alt="Profile picture" 
+        class="profile-picture" 
+        [src]="profileData?.imageURL || 'assets/icon/default.jpg'"
+        (click)="changeProfilePicture()"
+      >
       <div class="profile-info">
         <h2 class="profile-name">{{ profileData?.name }}</h2>
         <p class="profile-username">&#64;{{ profileData?.username }}</p>
@@ -9,7 +14,7 @@
       <app-kebab-menu [items]="menuItems"></app-kebab-menu>
     </div>
 
-    <div class="profile-balance">
+    <div class="profile-balance" (click)="addFunds()">
       <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
       <p class="coins-balance"> {{ coinCount }} {{ 'coins' | translate }}</p>
     </div>
