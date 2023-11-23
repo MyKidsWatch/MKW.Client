@@ -151,7 +151,7 @@ export class ContentReviewerPageComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (res: any) => {
-          this.toastService.showError('Perfil denunciado com sucesso');
+          this.toastService.showSuccess(this.translateService.instant('reportSuccess'));
         },
         error: (err: any) => {
           this.toastService.showError(this.translateService.instant('genericError'));
