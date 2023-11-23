@@ -26,7 +26,7 @@
     "female": "Feminino",
     "nonBinary": "Não binário",
     "userName": "Nome de usuário",
-    "userNameRequired": "Nome de usuário é obrigatório precisa ter no mínimo 6 caracteres",
+    "userNameRequired": "Nome de usuário é obrigatório precisa ter no mínimo 6 caracteres e um máximo de 20 caracteres",
     "userNameTaken": "Nome de usuário está em uso",
     "email": "E-mail",
     "emailRequired": "Email é obrigatório e deve estar em formado válido",

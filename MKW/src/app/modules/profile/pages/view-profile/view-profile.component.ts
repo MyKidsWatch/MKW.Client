@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 import { UserData } from 'src/app/shared/store/user/user.model';
-import { take, catchError, switchMap } from 'rxjs'
+import { take, catchError, switchMap, finalize } from 'rxjs'
 import { ProfileModel } from 'src/app/modules/content/models/profile.model';
 import { ReadProfileDTO, ReadProfileDTOIEnumerableBaseResponseDTO } from 'src/app/core/proxies/mkw-api.proxy';
 import { AccountUtils } from 'src/app/core/Util/AccountUtil';
@@ -66,11 +66,14 @@ export class ViewProfileComponent implements OnInit {
 
   handleRefresh(event: any) {
 
-    this.userFacade.updateUserChildren();
-    this.userFacade.updateUserReviews();
-    this.userFacade.updateUserInformation();
-
-    event.target.complete;
+    this.userFacade.updateUserChildren()
+      .pipe(switchMap(res => this.userFacade.updateUserReviews()))
+      .pipe(switchMap(res => this.userFacade.updateUserInformation()))
+      .pipe(finalize(() => {
+        event.target.complete();
+      })).subscribe(res => {
+        event.target.complete();
+      });
   }
   ngOnInit() {
     this.userData = this.userFacade.getUserState();

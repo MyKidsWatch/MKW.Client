@@ -18,7 +18,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 export class SignUpComponent implements OnInit {
   public isLoadingContent: boolean = false;
 
-  
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -29,7 +29,7 @@ export class SignUpComponent implements OnInit {
   ) { }
 
   registrationForm: FormGroup = this.formBuilder.group({
-    userName: ['', { validators: [Validators.required, Validators.minLength(6)], asyncValidators: [unusedUserName(this.accountService)], updateOn: 'blur' }],
+    userName: ['', { validators: [Validators.required, Validators.minLength(6), Validators.maxLength(20)], asyncValidators: [unusedUserName(this.accountService)], updateOn: 'blur' }],
     password: ['', [Validators.required, Validators.minLength(8), numericValidator, uppercaseValidator, lowerCaseValidator, specialCharacterValidator]],
     rePassword: ['', [Validators.required]],
     firstName: ['', [Validators.required]],
@@ -47,11 +47,10 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit() {
     this.currentStep = 1;
-    this.setLoadingBar();   
+    this.setLoadingBar();
   }
-  setLoadingBar()
-  {
-    this.loadingBarService.getLoadingBar().subscribe((response) =>{
+  setLoadingBar() {
+    this.loadingBarService.getLoadingBar().subscribe((response) => {
       this.isLoadingContent = response as boolean;
     })
   }
@@ -78,15 +77,15 @@ export class SignUpComponent implements OnInit {
 
   submitForm() {
     this.registerAccount()
-    .pipe(take(1))
-    .subscribe({
-      next: (res) => {
-        this.currentStep++;
-      },
-      error: (err) => {
-        this.toastService.showError(this.translateService.instant('genericError'));
-      }
-    })
+      .pipe(take(1))
+      .subscribe({
+        next: (res) => {
+          this.currentStep++;
+        },
+        error: (err) => {
+          this.toastService.showError(this.translateService.instant('genericError'));
+        }
+      })
   }
 
   public nextStep() {
