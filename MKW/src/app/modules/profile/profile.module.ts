@@ -54,7 +54,7 @@ const routes: Routes = [
   {
     path: '',
     component: ProfileComponent,
-    resolve: [ProfileResolver, ChildResolver, UserReviewResolver],
+    resolve: [ProfileResolver, ChildResolver],
     children: childrenRoutes
   }
 ];

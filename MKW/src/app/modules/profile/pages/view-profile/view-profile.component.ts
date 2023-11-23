@@ -62,7 +62,7 @@ export class ViewProfileComponent implements OnInit {
 
   ngOnInit() {
     this.userData = this.userFacade.getUserState();
-
+    this.userFacade.updateUserReviews();
     this.userFacade.getUserCurrentCoinCount().subscribe(res => { this.coinCount = res });
 
     this.userFacade.getUserReviews().subscribe(res => {
