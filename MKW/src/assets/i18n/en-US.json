@@ -126,6 +126,7 @@
   "coins": "coins",
   "status": "Status",
   "author": "Author",
+  "reported-person": "Reported person",
   "report-list": "Report List",
   "report-type": "Report Type",
   "all": "All",
