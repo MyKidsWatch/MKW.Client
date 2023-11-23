@@ -107,7 +107,7 @@ export class ViewProfileComponent implements OnInit {
 
     this.userFacade.getUserChildrenCards(this.translateService).subscribe(res => this.childrenCard = res);
     this.userFacade.updateUserReviews().pipe(catchError(res => {
-      console.log("Erro buscando as reviews")
+      this.toastService.showError(this.translateService.instant('genericError'));
       return res;
     }));
   }
@@ -121,7 +121,12 @@ export class ViewProfileComponent implements OnInit {
   }
 
   async changeProfilePicture() {
-    let changeProfilePictureModal = await this.modalController.create({ component: ChangeProfilePictureModalComponent });
+    let changeProfilePictureModal = await this.modalController.create({ 
+      component: ChangeProfilePictureModalComponent,
+      componentProps: {
+        currentProfilePicture: this.profileData?.imageURL || null
+      }
+    });
 
     changeProfilePictureModal.present();
 

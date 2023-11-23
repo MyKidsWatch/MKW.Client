@@ -1,10 +1,13 @@
 <main *ngIf="this.contentData" class="short-review-card">
   <div class="poster-and-rating">
-    <img class="review-poster"
+    <img 
+      class="review-poster"
       [src]="this.contentData.reviewContentInformation.contentPosterPath || '../../../../assets/images/no-photo.png'"
-      alt="Content's poster">
+      alt="Content's poster"
+      [class.square]="this.contentData.platformId === 2"
+    >
     <ion-chip class="rating">
-      <i class="material-icons grade-icon">grade</i>
+    <i class="material-icons grade-icon">grade</i>
       <ion-label>{{ this.contentData.reviewRating }}</ion-label>
     </ion-chip>
   </div>
