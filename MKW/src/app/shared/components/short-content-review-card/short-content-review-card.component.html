@@ -15,11 +15,33 @@
       </p>
     </div>
     <p class="review-description">{{ this.contentData.reviewBody }}</p>
-    <button class="comments-button" (click)="redirectToContentReviewPage(this.contentData.reviewId!)">
-      <i class="material-icons comments">message</i>
-      <label>{{ this.contentData.reviewCommentCount }}</label>
-      <i class="material-icons arrow">arrow_forward_ios</i>
-    </button>
+
+    <div class="review-content-footer">
+      <aside class="awards">
+        <div class="award-details"
+          *ngIf="this.contentData.reviewAwardInformation && this.contentData.reviewAwardInformation.reviewGoldAwardCount > 0">
+          <img class="award-icon" src="assets/icon/GOLDEN_SHIELD.png">
+          <label class="award-count">{{ this.contentData.reviewAwardInformation.reviewGoldAwardCount }}</label>
+        </div>
+        <div class="award-details"
+          *ngIf="this.contentData.reviewAwardInformation && this.contentData.reviewAwardInformation.reviewSilverAwardCount > 0">
+          <img class="award-icon" src="assets/icon/SILVER_SHIELD.png">
+          <label class="award-count">{{ this.contentData.reviewAwardInformation.reviewSilverAwardCount}}</label>
+        </div>
+        <div class="award-details"
+          *ngIf="this.contentData.reviewAwardInformation && this.contentData.reviewAwardInformation.reviewBronzeAwardCount > 0">
+          <img class="award-icon" src="assets/icon/BRONZE_SHIELD.png">
+          <label class="award-count">{{ this.contentData.reviewAwardInformation.reviewBronzeAwardCount}}</label>
+        </div>
+      </aside>
+
+      <button class="comments-button" (click)="redirectToContentReviewPage(this.contentData.reviewId!)">
+        <i class="material-icons comments">message</i>
+        <label>{{ this.contentData.reviewCommentCount }}</label>
+        <i class="material-icons arrow">arrow_forward_ios</i>
+      </button>
+    </div>
+
   </div>
 
 </main>
