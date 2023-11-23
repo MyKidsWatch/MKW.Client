@@ -3738,79 +3738,73 @@ export class ProfileClient {
         return _observableOf(null as any);
     }
 
-     /**
-     * Updates the profile image name.
-     * @param imageName The new image name.
+    /**
+     * @param body (optional) 
      * @return Success
      */
-     updateProfileImage(imageName: string): Observable<ObjectBaseResponseDTO> {
-        let url_ = this.baseUrl + "/v1/profile";
+    profile(body: UpdateProfilePictureDto | undefined): Observable<ReadProfileDTOBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Profile";
         url_ = url_.replace(/[?&]$/, "");
 
-        console.log(imageName)
+        const content_ = JSON.stringify(body);
 
         let options_: any = {
-            body: JSON.stringify({
-                imageName: imageName
-            }),
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
-        console.log(options_);
-
-        return this.http.request("patch", url_, options_).pipe(
-            _observableMergeMap((response_: any) => {
-                return this.processUpdateProfileImage(response_);
-            })
-        ).pipe(
-            _observableCatch((response_: any) => {
-                if (response_ instanceof HttpResponseBase) {
-                    try {
-                        return this.processUpdateProfileImage(response_ as any);
-                    } catch (e) {
-                        return _observableThrow(e) as any as Observable<ObjectBaseResponseDTO>;
-                    }
-                } else {
-                    return _observableThrow(response_) as any as Observable<ObjectBaseResponseDTO>;
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processProfile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processProfile(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ReadProfileDTOBaseResponseDTO>;
                 }
-            })
-        );
+            } else
+                return _observableThrow(response_) as any as Observable<ReadProfileDTOBaseResponseDTO>;
+        }));
     }
 
-    protected processUpdateProfileImage(response: HttpResponseBase): Observable<ObjectBaseResponseDTO> {
+    protected processProfile(response: HttpResponseBase): Observable<ReadProfileDTOBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
                 (response as any).error instanceof Blob ? (response as any).error : undefined;
 
-        let _headers: any = {};
-        if (response.headers) {
-            for (let key of response.headers.keys()) {
-                _headers[key] = response.headers.get(key);
-            }
-        }
-
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } }
         if (status === 200) {
-            return blobToText(responseBlob).pipe(
-                _observableMergeMap((_responseText: string) => {
-                    let result200: any = null;
-                    let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                    result200 = ObjectBaseResponseDTO.fromJS(resultData200);
-                    return _observableOf(result200);
-                })
-            );
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = ReadProfileDTOBaseResponseDTO.fromJS(resultData200);
+                return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result404: any = null;
+                let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result404 = ObjectBaseResponseDTO.fromJS(resultData404);
+                return throwException("Not Found", status, _responseText, _headers, result404);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                let result500: any = null;
+                let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result500 = ObjectBaseResponseDTO.fromJS(resultData500);
+                return throwException("Server Error", status, _responseText, _headers, result500);
+            }));
         } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(
-                _observableMergeMap((_responseText: string) => {
-                    return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-                })
-            );
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
         }
-
         return _observableOf(null as any);
     }
 }
@@ -3832,10 +3826,10 @@ export class ReportClient {
      */
     reason(language: string | undefined): Observable<ReportReasonDtoBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Report/Reason?";
-
-        if (language)
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
             url_ += "language=" + encodeURIComponent("" + language) + "&";
-
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: any = {
@@ -3897,15 +3891,15 @@ export class ReportClient {
     }
 
     /**
-     * @param language (optional)
+     * @param language (optional) 
      * @return Success
      */
     status(language: string | undefined): Observable<ReportReasonDtoBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Report/Status?";
-
-        if (language)
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
             url_ += "language=" + encodeURIComponent("" + language) + "&";
-
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: any = {
@@ -3967,13 +3961,18 @@ export class ReportClient {
     }
 
     /**
+     * @param language (optional) 
      * @return Success
      */
-    id(reasonId: number): Observable<ReportReasonDtoBaseResponseDTO> {
-        let url_ = this.baseUrl + "/v1/Report/Reason/id/{reasonId}";
+    id(reasonId: number, language: string | undefined): Observable<ReportReasonDtoBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Report/Reason/id/{reasonId}?";
         if (reasonId === undefined || reasonId === null)
             throw new Error("The parameter 'reasonId' must be defined.");
         url_ = url_.replace("{reasonId}", encodeURIComponent("" + reasonId));
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: any = {
@@ -4041,23 +4040,11 @@ export class ReportClient {
      * @param statusId (optional) 
      * @param orderBy (optional) 
      * @param orderByAscending (optional) 
-     * @param language
+     * @param language (optional) 
      * @return Success
      */
-    reportGet(
-        page: number | undefined,
-        pageSize: number | undefined,
-        reasonId: number | undefined,
-        statusId: number | undefined,
-        orderBy: string | undefined,
-        orderByAscending: boolean | undefined,
-        language: string | undefined
-    ): Observable<ReportDtoBaseResponseDTO> {
+    reportGet(page: number | undefined, pageSize: number | undefined, reasonId: number | undefined, statusId: number | undefined, orderBy: string | undefined, orderByAscending: boolean | undefined, language: string | undefined): Observable<ReportDtoBaseResponseDTO> {
         let url_ = this.baseUrl + "/v1/Report?";
-
-        if (language)
-            url_ += "language=" + encodeURIComponent("" + language) + "&";
-
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
         else if (page !== undefined)
@@ -4082,6 +4069,10 @@ export class ReportClient {
             throw new Error("The parameter 'orderByAscending' cannot be null.");
         else if (orderByAscending !== undefined)
             url_ += "orderByAscending=" + encodeURIComponent("" + orderByAscending) + "&";
+        if (language === null)
+            throw new Error("The parameter 'language' cannot be null.");
+        else if (language !== undefined)
+            url_ += "language=" + encodeURIComponent("" + language) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: any = {
@@ -4351,7 +4342,6 @@ export class ReportClient {
         }
         return _observableOf(null as any);
     }
-
 }
 
 @Injectable()
@@ -12248,6 +12238,7 @@ export class ReviewDto implements IReviewDto {
     userId?: number | null;
     contentId?: number | null;
     externalContentId?: string | null;
+    platformId?: number;
     user?: ReadPersonDTO;
 
     constructor(data?: IReviewDto) {
@@ -12269,6 +12260,7 @@ export class ReviewDto implements IReviewDto {
             this.userId = _data["userId"] !== undefined ? _data["userId"] : <any>null;
             this.contentId = _data["contentId"] !== undefined ? _data["contentId"] : <any>null;
             this.externalContentId = _data["externalContentId"] !== undefined ? _data["externalContentId"] : <any>null;
+            this.platformId = _data["platformId"] !== undefined ? _data["platformId"] : <any>null;
             this.user = _data["user"] ? ReadPersonDTO.fromJS(_data["user"]) : <any>null;
         }
     }
@@ -12290,6 +12282,7 @@ export class ReviewDto implements IReviewDto {
         data["userId"] = this.userId !== undefined ? this.userId : <any>null;
         data["contentId"] = this.contentId !== undefined ? this.contentId : <any>null;
         data["externalContentId"] = this.externalContentId !== undefined ? this.externalContentId : <any>null;
+        data["platformId"] = this.platformId !== undefined ? this.platformId : <any>null;
         data["user"] = this.user ? this.user.toJSON() : <any>null;
         return data;
     }
@@ -12304,6 +12297,7 @@ export interface IReviewDto {
     userId?: number | null;
     contentId?: number | null;
     externalContentId?: string | null;
+    platformId?: number;
     user?: ReadPersonDTO;
 }
 
@@ -13243,6 +13237,42 @@ export class UpdateCommentDto implements IUpdateCommentDto {
 export interface IUpdateCommentDto {
     commentId?: number;
     text?: string | null;
+}
+
+export class UpdateProfilePictureDto implements IUpdateProfilePictureDto {
+    imageName?: string | null;
+
+    constructor(data?: IUpdateProfilePictureDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.imageName = _data["imageName"] !== undefined ? _data["imageName"] : <any>null;
+        }
+    }
+
+    static fromJS(data: any): UpdateProfilePictureDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateProfilePictureDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["imageName"] = this.imageName !== undefined ? this.imageName : <any>null;
+        return data;
+    }
+}
+
+export interface IUpdateProfilePictureDto {
+    imageName?: string | null;
 }
 
 export class UpdateReportStatusDto implements IUpdateReportStatusDto {

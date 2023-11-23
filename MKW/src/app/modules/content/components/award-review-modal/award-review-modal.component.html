@@ -13,53 +13,38 @@
       </div>
     </div>
     <div class="awards">
-      <button 
-        (click)="selectAward(1, 100)" 
-        class="award-item"
-        [class.selected]="selectedAwardId === 1"
-        [class.unavailable]="!userBalance || userBalance < 100" 
-        [disabled]="!userBalance || userBalance < 100"
-      >
+      <button (click)="selectAward(1, 40)" class="award-item" [class.selected]="selectedAwardId === 1"
+        [class.unavailable]="!userBalance || userBalance < 40" [disabled]="!userBalance || userBalance < 40">
         <div class="award gold-award">
           <img class="award-icon" src="assets/icon/GOLDEN_SHIELD.png">
           <p class="award-label">{{ 'goldAward' | translate }}</p>
         </div>
         <div class="award-price">
-          <p class="award-value">100</p>
+          <p class="award-value">40</p>
           <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
         </div>
       </button>
 
-      <button 
-        (click)="selectAward(2, 75)" 
-        class="award-item"
-        [class.selected]="selectedAwardId === 2"
-        [class.unavailable]="!userBalance || userBalance < 75" 
-        [disabled]="!userBalance || userBalance < 75"
-      >
+      <button (click)="selectAward(2, 20)" class="award-item" [class.selected]="selectedAwardId === 2"
+        [class.unavailable]="!userBalance || userBalance < 20" [disabled]="!userBalance || userBalance < 20">
         <div class="award silver-award">
           <img class="award-icon" src="assets/icon/SILVER_SHIELD.png">
           <p class="award-label">{{ 'silverAward' | translate }}</p>
         </div>
         <div class="award-price">
-          <p class="award-value">75</p>
+          <p class="award-value">20</p>
           <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
         </div>
       </button>
 
-      <button 
-        (click)="selectAward(3, 50)" 
-        class="award-item"
-        [class.selected]="selectedAwardId === 3"
-        [class.unavailable]="!userBalance || userBalance < 50" 
-        [disabled]="!userBalance || userBalance < 50"
-      >
+      <button (click)="selectAward(3, 10)" class="award-item" [class.selected]="selectedAwardId === 3"
+        [class.unavailable]="!userBalance || userBalance < 10" [disabled]="!userBalance || userBalance < 10">
         <div class="award bronze-award">
           <img class="award-icon" src="assets/icon/BRONZE_SHIELD.png">
           <p class="award-label">{{ 'bronzeAward' | translate }}</p>
         </div>
         <div class="award-price">
-          <p class="award-value">50</p>
+          <p class="award-value">10</p>
           <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
         </div>
       </button>

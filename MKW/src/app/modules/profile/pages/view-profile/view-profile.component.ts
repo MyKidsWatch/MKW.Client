@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserFacade } from 'src/app/shared/facades/user.facade';
 import { UserData } from 'src/app/shared/store/user/user.model';
-import { take } from 'rxjs'
+import { take, catchError, switchMap } from 'rxjs'
 import { ProfileModel } from 'src/app/modules/content/models/profile.model';
 import { ReadProfileDTO, ReadProfileDTOIEnumerableBaseResponseDTO } from 'src/app/core/proxies/mkw-api.proxy';
 import { AccountUtils } from 'src/app/core/Util/AccountUtil';
@@ -64,9 +64,23 @@ export class ViewProfileComponent implements OnInit {
     private toastService: ToastService
   ) { }
 
+  handleRefresh(event: any) {
+
+    this.userFacade.updateUserChildren()
+      .pipe(switchMap(res => this.userFacade.updateUserReviews()))
+      .pipe(switchMap(res => this.userFacade.updateUserInformation()))
+      .pipe(switchMap(res => {
+        event.target.complete;
+        return res;
+      }))
+      .pipe(catchError(res => {
+        event.target.complete;
+        return res;
+      }));
+  }
   ngOnInit() {
     this.userData = this.userFacade.getUserState();
-    this.userFacade.updateUserReviews();
+
     this.userFacade.getUserCurrentCoinCount().subscribe(res => { this.coinCount = res });
 
     this.userFacade.getUserReviews().subscribe(res => {
@@ -88,10 +102,14 @@ export class ViewProfileComponent implements OnInit {
       });
 
     this.userFacade.getUserReviewsContentCard().subscribe(res => {
-      console.log(res);
       this.reviews = res
     });
+
     this.userFacade.getUserChildrenCards(this.translateService).subscribe(res => this.childrenCard = res);
+    this.userFacade.updateUserReviews().pipe(catchError(res => {
+      console.log("Erro buscando as reviews")
+      return res;
+    }));
   }
 
   async addFunds() {
