@@ -3742,8 +3742,8 @@ export class ProfileClient {
      * @param body (optional) 
      * @return Success
      */
-    profile(body: UpdateProfilePictureDto | undefined): Observable<ReadProfileDTOBaseResponseDTO> {
-        let url_ = this.baseUrl + "/v1/Profile";
+    picture(body: UpdateProfilePictureDto | undefined): Observable<ReadProfileDTOBaseResponseDTO> {
+        let url_ = this.baseUrl + "/v1/Profile/picture";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -3759,11 +3759,11 @@ export class ProfileClient {
         };
 
         return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_: any) => {
-            return this.processProfile(response_);
+            return this.processPicture(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processProfile(response_ as any);
+                    return this.processPicture(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<ReadProfileDTOBaseResponseDTO>;
                 }
@@ -3772,7 +3772,7 @@ export class ProfileClient {
         }));
     }
 
-    protected processProfile(response: HttpResponseBase): Observable<ReadProfileDTOBaseResponseDTO> {
+    protected processPicture(response: HttpResponseBase): Observable<ReadProfileDTOBaseResponseDTO> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4873,6 +4873,7 @@ export class ReviewClient {
 
 export class AddFundDto implements IAddFundDto {
     coins?: number;
+    language?: string | null;
 
     constructor(data?: IAddFundDto) {
         if (data) {
@@ -4886,6 +4887,7 @@ export class AddFundDto implements IAddFundDto {
     init(_data?: any) {
         if (_data) {
             this.coins = _data["coins"] !== undefined ? _data["coins"] : <any>null;
+            this.language = _data["language"] !== undefined ? _data["language"] : <any>null;
         }
     }
 
@@ -4899,12 +4901,14 @@ export class AddFundDto implements IAddFundDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["coins"] = this.coins !== undefined ? this.coins : <any>null;
+        data["language"] = this.language !== undefined ? this.language : <any>null;
         return data;
     }
 }
 
 export interface IAddFundDto {
     coins?: number;
+    language?: string | null;
 }
 
 export class AddUserToRoleDTO implements IAddUserToRoleDTO {

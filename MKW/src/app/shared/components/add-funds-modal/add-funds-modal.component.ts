@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IonicModule, ModalController } from '@ionic/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AddFundDto, OperationClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { switchMap } from 'rxjs/operators';
@@ -33,6 +33,7 @@ export class AddFundsModalComponent implements OnInit, OnDestroy {
   private stripe: any;
   private internalCheckout: any;
   private operationId?: number;
+  private language: string;
 
   public isBuyingFunds: boolean = false;
   public fundsBoughtSuccessfully: boolean = false;
@@ -45,10 +46,16 @@ export class AddFundsModalComponent implements OnInit, OnDestroy {
   constructor(
     private modalController: ModalController,
     private operationService: OperationService,
-    private userFacade: UserFacade) { }
+    private userFacade: UserFacade,
+    private translateService: TranslateService) {
+    this.language = this.translateService.currentLang == 'pt-BR' ? 'pt-BR' : 'en-US';
+    console.log(this.language)
+  }
 
   ngOnInit(): void {
 
+
+    console.log()
     this.observeCointCount();
     // Include the Stripe JavaScript library
     const script = document.createElement('script');
@@ -63,6 +70,17 @@ export class AddFundsModalComponent implements OnInit, OnDestroy {
       this.internalCheckout.destroy('#checkout');
       this.internalCheckout = undefined;
     }
+  }
+
+
+
+  getPrices(price: number) {
+    if (price == 100)
+      return this.language == 'pt-BR' ? 'R$ 34,99' : '$ 6,99';
+    else if (price == 50)
+      return this.language == 'pt-BR' ? 'R$ 19,99' : '$ 3,99';
+    else
+      return this.language == 'pt-BR' ? 'R$ 9,99' : '$ 1,99';
   }
 
   observeCointCount() {
@@ -84,7 +102,7 @@ export class AddFundsModalComponent implements OnInit, OnDestroy {
       return;
 
     this.isBuyingFunds = true;
-    this.operationService.addFunds(new AddFundDto({ coins: this.amountUserIsBuying! }))
+    this.operationService.addFunds(new AddFundDto({ coins: this.amountUserIsBuying!, language: this.language }))
       .subscribe((async (res) => {
 
         let checkoutUrl = res.content![0].checkoutUrl;
@@ -104,12 +122,12 @@ export class AddFundsModalComponent implements OnInit, OnDestroy {
           new ResizeObserver(() => {
             if (element.style.height != '100%')
               element.style.position = 'absolute';
-              element.style.top = '0';
-              element.style.left = '0';
-              element.style.width = '100%';
-              element.style.height = '100%';
-              element.style.zIndex = '999';
-              element.style.margin = 'auto';
+            element.style.top = '0';
+            element.style.left = '0';
+            element.style.width = '100%';
+            element.style.height = '100%';
+            element.style.zIndex = '999';
+            element.style.margin = 'auto';
           }).observe(element)
         })
       }));

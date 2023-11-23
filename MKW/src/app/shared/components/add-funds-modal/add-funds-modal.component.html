@@ -3,51 +3,39 @@
     <i class="material-icons">arrow_back</i>
     <p>{{ 'return' | translate }}</p>
   </div>
-  
-  <main class="content"  *ngIf="!isBuyingFunds && !fundsBoughtSuccessfully">    
+
+  <main class="content" *ngIf="!isBuyingFunds && !fundsBoughtSuccessfully">
     <div class="wallet">
       <img class="wallet-icon" src="assets/icon/wallet.png" alt="Wallet">
       <div class="wallet-text">
         <p class="wallet-subtitle">{{ 'currentBalance' | translate }}</p>
         <h2 class="wallet-title">{{this.userBalance ? this.userBalance : 0}} {{ 'coins' | translate }}</h2>
       </div>
-    </div> 
+    </div>
 
     <div class="awards">
-      <div 
-        (click)="selectAmountToBuy(100)" 
-        [class.selected]="amountUserIsBuying === 100" 
-        class="award-item"
-      >
+      <div (click)="selectAmountToBuy(100)" [class.selected]="amountUserIsBuying === 100" class="award-item">
         <div class="award">
           <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
           <label class="award-label">100 {{ 'coins' | translate }}</label>
         </div>
-        <label class="award-price">R$ 34,99</label>
+        <label class="award-price">{{getPrices(100)}}</label>
       </div>
 
-      <div 
-        (click)="selectAmountToBuy(50)" 
-        [class.selected]="amountUserIsBuying === 50" 
-        class="award-item"
-      >
+      <div (click)="selectAmountToBuy(50)" [class.selected]="amountUserIsBuying === 50" class="award-item">
         <div class="award">
           <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
           <label class="award-label">50 {{ 'coins' | translate }}</label>
         </div>
-        <label class="award-price">R$ 19,99</label>
+        <label class="award-price">{{getPrices(50)}}</label>
       </div>
 
-      <div 
-        (click)="selectAmountToBuy(20)" 
-        [class.selected]="amountUserIsBuying === 20" 
-        class="award-item"
-      >
+      <div (click)="selectAmountToBuy(20)" [class.selected]="amountUserIsBuying === 20" class="award-item">
         <div class="award">
           <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
           <label class="award-label">20 {{ 'coins' | translate }}</label>
         </div>
-        <label class="award-price">R$ 9,99</label>
+        <label class="award-price">{{getPrices(20)}}</label>
       </div>
     </div>
 
