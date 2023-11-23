@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -7,6 +7,8 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./change-profile-picture-modal.component.scss'],
 })
 export class ChangeProfilePictureModalComponent  implements OnInit {
+  @Input() currentProfilePicture: string | null = null;
+
   public profilePictures: string[] = [
     "assets/icon/default.jpg",
     "assets/images/preset-profile-pictures/propic01.png",
@@ -20,11 +22,13 @@ export class ChangeProfilePictureModalComponent  implements OnInit {
     "assets/images/preset-profile-pictures/propic09.png",
   ];	
 
-  public selectedProfilePicture: string | null = this.profilePictures[0];
+  public selectedProfilePicture: string | null = null;
 
   constructor(private modalController: ModalController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.selectedProfilePicture = this.profilePictures.filter(picture => picture === this.currentProfilePicture)[0] || this.profilePictures[0];
+  }
 
   cancel() {
     this.modalController.dismiss(null, 'cancel');
