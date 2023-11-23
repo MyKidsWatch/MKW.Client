@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ReportListItem } from '../../model/report-list-item.model';
 import { ReportFacade } from 'src/app/shared/facades/report.facade';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-report-list-item-card',
@@ -10,8 +11,13 @@ import { Router } from '@angular/router';
 })
 export class ReportListItemCardComponent implements OnInit {
   @Input() reportListItem?: ReportListItem;
+  public dateFormat: string;
 
-  constructor(private reportFacade: ReportFacade, private router: Router) { }
+  constructor(private reportFacade: ReportFacade, private router: Router, private translateService: TranslateService) {
+    let currentLanguage = this.translateService.currentLang;
+
+    this.dateFormat = currentLanguage === 'pt-BR' ? 'dd/MM/yyyy' : 'MM/dd/yyyy';
+  }
   ngOnInit() { }
 
   mapStatusToDot(status: number | undefined) {
