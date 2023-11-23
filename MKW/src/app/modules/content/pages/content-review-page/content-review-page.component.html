@@ -43,19 +43,19 @@
       <div class="awards">
         <div class="review-awards" *ngIf="canAward">
           <div class="award-count">
-            <div class="award gold-award">
+            <div class="award gold-award" *ngIf="this.contentObject.reviewAwardInformation.goldenAwardCount > 0">
               <img class='award-icon' src="assets/icon/GOLDEN_SHIELD.png">
-              <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.goldenAwardCount}}</label>
+              <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.goldenAwardCount }}</label>
             </div>
 
-            <div class="award silver-award">
+            <div class="award silver-award" *ngIf="this.contentObject.reviewAwardInformation.silverAwardCount > 0">
               <img class='award-icon' src="assets/icon/SILVER_SHIELD.png">
-              <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.silverAwardCount}}</label>
+              <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.silverAwardCount }}</label>
             </div>
 
-            <div class="award bronze-award">
+            <div class="award bronze-award" *ngIf="this.contentObject.reviewAwardInformation.bronzeAwardCount > 0">
               <img class='award-icon' src="assets/icon/BRONZE_SHIELD.png">
-              <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.bronzeAwardCount}}</label>
+              <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.bronzeAwardCount }}</label>
             </div>
           </div>
 
