@@ -194,5 +194,6 @@
   "awardGiven": "Prêmio concedido com sucesso!",
   "reviewAdded": "Análise adicionada com sucesso!",
   "selectProfilePicture": "Selecione uma foto de perfil",
-  "profilePictureUpdated": "Foto de perfil atualizada com sucesso!"
+  "profilePictureUpdated": "Foto de perfil atualizada com sucesso!",
+  "awardSuccess": "Prêmio concedido com sucesso!"
 }

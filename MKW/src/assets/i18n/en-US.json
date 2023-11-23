@@ -194,5 +194,6 @@
   "awardGiven": "Award given successfully!",
   "reviewAdded": "Review added successfully!",
   "selectProfilePicture": "Select your profile picture",
-  "profilePictureUpdated": "Profile picture updated successfully!"
+  "profilePictureUpdated": "Profile picture updated successfully!",
+  "awardSuccess": "Award given successfully!"
 }
