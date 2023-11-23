@@ -1,20 +1,17 @@
 <main *ngIf="this.contentData" class="short-review-card">
   <div class="poster-and-rating">
-    <img 
-      class="review-poster"
+    <img class="review-poster"
       [src]="this.contentData.reviewContentInformation.contentPosterPath || '../../../../assets/images/no-photo.png'"
-      alt="Content's poster"
-      [class.square]="this.contentData.platformId === 2"
-    >
+      alt="Content's poster" [class.square]="this.contentData.platformId === 2">
     <ion-chip class="rating">
-    <i class="material-icons grade-icon">grade</i>
+      <i class="material-icons grade-icon">grade</i>
       <ion-label>{{ this.contentData.reviewRating }}</ion-label>
     </ion-chip>
   </div>
   <div class="review-info">
     <div class="review-info-header">
       <h4 class="review-title">{{ this.contentData.reviewTitle }}</h4>
-      <p class="timestamp" *ngIf="contentData.reviewPublishDate">{{ contentData.reviewPublishDate | date: 'shortDate' }}
+      <p class="timestamp" *ngIf="contentData.reviewPublishDate">{{ contentData.reviewPublishDate | date: dateFormat }}
       </p>
     </div>
     <p class="review-description">{{ this.contentData.reviewBody }}</p>
