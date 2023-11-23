@@ -44,7 +44,10 @@
       <i class="material-icons">arrow_back</i>
     </button>
 
-    <label class="pagination-label">{{ 'pagination' | translate:{ pages: paginationData?.currentPage, totalPages: paginationData?.pageCount } }}</label>
+    <label
+      *ngIf="paginationData?.currentPage! > 0 && paginationData?.pageCount! > 0" 
+      class="pagination-label">{{ 'pagination' | translate:{ pages: paginationData?.currentPage, totalPages: paginationData?.pageCount } }}
+    </label>
     <button [disabled]="!paginationData?.hasNextPage" [ngClass]="paginationData?.hasNextPage ? '' : 'disabled'"
       (click)="nextPage()">
       <i class="material-icons">arrow_forward</i>

@@ -31,21 +31,21 @@ export class ReportOverviewComponent implements OnInit {
   discardReport() {
     this.reportFacade.discardCurrentReport().subscribe((res) => {
       this.goBack();
-      this.toastService.showError(this.translateService.instant('reportDiscardedSuccessfully'));
+      this.toastService.showSuccess(this.translateService.instant('reportDiscardedSuccessfully'));
     });
   }
 
   removeProfile() {
     this.reportFacade.deleteProfileFromCurrentReport().subscribe((res) => {
       this.goBack();
-      this.toastService.showError(this.translateService.instant('profileDeletedSuccessfully'));
+      this.toastService.showSuccess(this.translateService.instant('profileDeletedSuccessfully'));
     });
   }
 
   removeContent() {
     this.reportFacade.deleteContentFromCurrentReport().subscribe((res) => {
       this.goBack();
-      this.toastService.showError(this.translateService.instant('contentDeletedSuccessfully'));
+      this.toastService.showSuccess(this.translateService.instant('contentDeletedSuccessfully'));
     });
   }
 }
