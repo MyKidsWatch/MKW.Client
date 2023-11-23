@@ -70,8 +70,7 @@ export class ReportSelectors{
 
 
 
-    private static getReportText(report: ReportObject) : string
-    {
+    private static getReportText(report: ReportObject) : string {
         let reportText = "";
 
         if(report.reportReview)

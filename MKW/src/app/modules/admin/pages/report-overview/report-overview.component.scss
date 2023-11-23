@@ -42,8 +42,9 @@
         font-weight: medium;
         color: var(--mkw-color-dark-medium);
 
-        &.person {
+        &.reported-person {
           text-decoration: underline;
+          color: var(--mkw-color-primary)
         }
       }
     }
