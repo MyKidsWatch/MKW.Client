@@ -9,8 +9,6 @@ import { ReportPaginationInformation } from 'src/app/shared/store/report/report.
   styleUrls: ['./admin-feed.component.scss'],
 })
 export class AdminFeedComponent implements OnInit {
-
-
   private pageSize: number = 10;
   private pageIndex: number = 1;
   public selectedReportType?: number;

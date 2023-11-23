@@ -20,11 +20,9 @@
     <div class="filter-list">
       <ion-text class="filter-title">{{ 'status' | translate }}</ion-text>
       <ion-chip (click)="selectReportStatus()" [ngClass]="selectedReportStatus ? 'not-selected' : ''">{{ 'all' | translate }}</ion-chip>
-      <ion-chip (click)="selectReportStatus(1)" [ngClass]="selectedReportStatus != 1 ? 'not-selected' : ''">{{ 'all' | translate }}</ion-chip>
-      <ion-chip (click)="selectReportStatus(2)"
-        [ngClass]="selectedReportStatus != 2 ? 'not-selected' : ''">{{ 'analyzed' | translate }}</ion-chip>
-      <ion-chip (click)="selectReportStatus(3)"
-        [ngClass]="selectedReportStatus != 3 ? 'not-selected' : ''">{{ 'discarded' | translate }}</ion-chip>
+      <ion-chip (click)="selectReportStatus(1)" [ngClass]="selectedReportStatus != 1 ? 'not-selected' : ''">{{ 'pending-analysis' | translate }}</ion-chip>
+      <ion-chip (click)="selectReportStatus(2)" [ngClass]="selectedReportStatus != 2 ? 'not-selected' : ''">{{ 'analyzed' | translate }}</ion-chip>
+      <ion-chip (click)="selectReportStatus(3)" [ngClass]="selectedReportStatus != 3 ? 'not-selected' : ''">{{ 'discarded' | translate }}</ion-chip>
     </div>
 
     <div class="filter-list">
