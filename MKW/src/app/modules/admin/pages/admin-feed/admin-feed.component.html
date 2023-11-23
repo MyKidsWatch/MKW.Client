@@ -1,0 +1,55 @@
+
+
+<div class="container">
+  <div class="header">
+    <div class="header-items">
+      <label class="header-item underlined">{{ 'report-list' | translate }}</label>
+    </div>
+  </div>
+
+  <div class="filters">    
+    <div class="filter-list">
+      <ion-text class="filter-title">{{ 'report-type' | translate }}</ion-text>
+      <ion-chip (click)="selectReportType()" [ngClass]="selectedReportType ? 'not-selected' : ''">{{ 'all' | translate }}</ion-chip>
+      <ion-chip (click)="selectReportType(1)" [ngClass]="selectedReportType != 1 ? 'not-selected' : ''">{{ 'hate-speech' | translate }}</ion-chip>
+      <ion-chip (click)="selectReportType(2)" [ngClass]="selectedReportType != 2 ? 'not-selected' : ''">{{ 'harassment' | translate }}</ion-chip>
+      <ion-chip (click)="selectReportType(3)" [ngClass]="selectedReportType != 3 ? 'not-selected' : ''">{{ 'sexual-content' | translate }}</ion-chip>
+      <ion-chip (click)="selectReportType(4)" [ngClass]="selectedReportType != 4 ? 'not-selected' : ''">{{ 'others' | translate }}</ion-chip>
+    </div>
+
+    <div class="filter-list">
+      <ion-text class="filter-title">{{ 'status' | translate }}</ion-text>
+      <ion-chip (click)="selectReportStatus()" [ngClass]="selectedReportStatus ? 'not-selected' : ''">{{ 'all' | translate }}</ion-chip>
+      <ion-chip (click)="selectReportStatus(1)" [ngClass]="selectedReportStatus != 1 ? 'not-selected' : ''">{{ 'pending-analysis' | translate }}</ion-chip>
+      <ion-chip (click)="selectReportStatus(2)" [ngClass]="selectedReportStatus != 2 ? 'not-selected' : ''">{{ 'analyzed' | translate }}</ion-chip>
+      <ion-chip (click)="selectReportStatus(3)" [ngClass]="selectedReportStatus != 3 ? 'not-selected' : ''">{{ 'discarded' | translate }}</ion-chip>
+    </div>
+
+    <div class="filter-list">
+      <ion-text class="filter-title">{{ 'sort-by' | translate }}</ion-text>
+      <ion-chip (click)="selectIsAscending(true)" [ngClass]="isAscending ? '' : 'not-selected'">{{ 'most-recent' | translate }}</ion-chip>
+      <ion-chip (click)="selectIsAscending(false)" [ngClass]="isAscending ? 'not-selected' : ''">{{ 'oldest' | translate }}</ion-chip>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <app-report-list class="report-list"></app-report-list>
+
+  <footer>
+    <button [disabled]="!paginationData?.hasPrevPage" [ngClass]="paginationData?.hasPrevPage ? '' : 'disabled'"
+      (click)="previousPage()">
+      <i class="material-icons">arrow_back</i>
+    </button>
+
+    <label
+      *ngIf="paginationData?.currentPage! > 0 && paginationData?.pageCount! > 0" 
+      class="pagination-label">{{ 'pagination' | translate:{ pages: paginationData?.currentPage, totalPages: paginationData?.pageCount } }}
+    </label>
+    <button [disabled]="!paginationData?.hasNextPage" [ngClass]="paginationData?.hasNextPage ? '' : 'disabled'"
+      (click)="nextPage()">
+      <i class="material-icons">arrow_forward</i>
+    </button>
+  </footer>
+
+</div>

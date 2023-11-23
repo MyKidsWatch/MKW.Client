@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-progress-bar *ngIf="isLoadingContent" type="indeterminate"></ion-progress-bar>
+  <div class="header-items">
+    <label class="header-item" routerLink="../review-feed">{{ 'feedComponent.forYourChildren' | translate }}</label>
+    <label class="header-item underlined " >{{ 'feedComponent.trending' | translate }}</label>
+  </div>
+</ion-header>
+
+<ion-content *ngIf="showContent" >
+  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <app-content-card *ngFor="let contentCard of contentCards" [contentData]="contentCard"></app-content-card>
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+
+<ion-content *ngIf="!showContent">
+
+  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="no-content" *ngIf="!showContent">
+    <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <article class="">
+      <h2>{{ 'feedComponent.noRecommendations' | translate }}</h2>
+      <label class="paragraph">{{ 'feedComponent.addChildrenText' | translate }}</label>
+      <button routerLink='../../profile/'>{{ 'feedComponent.addChildren' | translate }}</button>
+    </article>
+    
+    <footer>
+      <img src="assets/images/logging-off.png">
+    </footer>
+  </div>
+</ion-content>

@@ -3,8 +3,10 @@ import { MovieService } from 'src/app/core/services/movie.service';
 import { ContentCardComponent } from 'src/app/shared/components/content-card/content-card.component';
 import { take, pipe, Observable, elementAt } from 'rxjs';
 import { ContentCard } from 'src/app/shared/models/content-card.model';
-import { ObjectBaseResponseDTO } from 'src/app/core/proxies/mkw-api.proxy';
+import { ContentListItemDTO, ContentListItemDTOBaseResponseDTO, ObjectBaseResponseDTO } from 'src/app/core/proxies/mkw-api.proxy';
 import { ContentUtils } from 'src/app/core/Util/ContentUtils';
+import { ContentService } from 'src/app/core/services/content.service';
+import { nextTick } from 'process';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -13,7 +15,7 @@ import { ContentUtils } from 'src/app/core/Util/ContentUtils';
 export class SearchComponent  implements OnInit {
 
   public contentCards: ContentCard[] = [];
-  constructor(private movieService: MovieService) { }
+  constructor(private movieService: MovieService, private contentService: ContentService) { }
 
   ngOnInit() {}
 
@@ -24,15 +26,15 @@ export class SearchComponent  implements OnInit {
 
       if(text.length >= 3)
       {
-          this.movieService.getMovieListByName(text).pipe(take(1))
-          .subscribe({
-            next: (response) =>{
-              this.transformResponseIntoContentCards(response);
-            },
-            error: (err) =>{
-                console.log()
-            }
-          })
+        this.contentService.searchContentByName(text, undefined).pipe(take(1))
+        .subscribe({
+          next: (response) =>{
+            this.transformResponseIntoContentCards(response)
+          },
+          error: (err) =>{
+            console.log(err)
+          }
+        })
       }
       else if(text.length == 0)
       {
@@ -40,13 +42,16 @@ export class SearchComponent  implements OnInit {
       }
   }
 
-  transformResponseIntoContentCards(response: ObjectBaseResponseDTO)
-  { 
-      this.contentCards = [];
-      let content = response.content![0];
-      content.results.forEach((element: any) =>{
-          this.contentCards.push(ContentUtils.TMDBToContentCard(element));
-      })
+  transformResponseIntoContentCards(response: ContentListItemDTOBaseResponseDTO){
+
+    this.contentCards = [];
+    
+    response.content?.forEach(element =>{
+        let contentCard = ContentUtils.ContentDTOResponseToContentCard(element);
+        if(contentCard != null)
+          this.contentCards.push(contentCard);
+    });
+
   }
 
 }

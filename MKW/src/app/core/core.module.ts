@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { MovieClient, PlatformClient } from './proxies/mkw-api.proxy';
+import { CommentClient, MovieClient, PlatformClient } from './proxies/mkw-api.proxy';
 import { InjectionToken } from '@angular/core';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';

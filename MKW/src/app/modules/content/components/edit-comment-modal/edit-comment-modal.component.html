@@ -1,0 +1,16 @@
+<div class="container">
+  <div (click)="cancel()" class="go-back">
+    <i class="material-icons">arrow_back</i>
+    <p>{{ 'return' | translate }}</p>
+  </div>
+
+  <div class="content">
+    <h2 class="content-title">{{ 'editComment' | translate }}</h2>
+    <ion-item class="input-group">
+      <ion-label class="input-label" position="stacked">{{ 'enterYourComment' | translate }}</ion-label>
+      <ion-input class="input" type="text" placeholder="{{ 'enterYourNewComment' | translate }}" [(ngModel)]="comment"></ion-input>
+    </ion-item>
+
+    <button class="submit-button" (click)="confirm()"><i class="material-icons">save</i>{{ 'saveChanges' | translate }}</button>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="container">
+  <div (click)="cancel()" class="go-back">
+    <i class="material-icons">arrow_back</i>
+    <p>{{ 'return' | translate }}</p>
+  </div>
+
+  <main class="content">
+    <div class="wallet">
+      <img class="wallet-icon" src="assets/icon/wallet.png" alt="Wallet">
+      <div class="wallet-text">
+        <h2 class="wallet-title">{{this.userBalance ? this.userBalance : 0}} {{ 'coins' | translate }}</h2>
+        <label class="add-funds" (click)="addFunds()">{{ 'addFunds' | translate }}</label>
+      </div>
+    </div>
+    <div class="awards">
+      <button (click)="selectAward(1, 40)" class="award-item" [class.selected]="selectedAwardId === 1"
+        [class.unavailable]="!userBalance || userBalance < 40" [disabled]="!userBalance || userBalance < 40">
+        <div class="award gold-award">
+          <img class="award-icon" src="assets/icon/GOLDEN_SHIELD.png">
+          <p class="award-label">{{ 'goldAward' | translate }}</p>
+        </div>
+        <div class="award-price">
+          <p class="award-value">40</p>
+          <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
+        </div>
+      </button>
+
+      <button (click)="selectAward(2, 20)" class="award-item" [class.selected]="selectedAwardId === 2"
+        [class.unavailable]="!userBalance || userBalance < 20" [disabled]="!userBalance || userBalance < 20">
+        <div class="award silver-award">
+          <img class="award-icon" src="assets/icon/SILVER_SHIELD.png">
+          <p class="award-label">{{ 'silverAward' | translate }}</p>
+        </div>
+        <div class="award-price">
+          <p class="award-value">20</p>
+          <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
+        </div>
+      </button>
+
+      <button (click)="selectAward(3, 10)" class="award-item" [class.selected]="selectedAwardId === 3"
+        [class.unavailable]="!userBalance || userBalance < 10" [disabled]="!userBalance || userBalance < 10">
+        <div class="award bronze-award">
+          <img class="award-icon" src="assets/icon/BRONZE_SHIELD.png">
+          <p class="award-label">{{ 'bronzeAward' | translate }}</p>
+        </div>
+        <div class="award-price">
+          <p class="award-value">10</p>
+          <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
+        </div>
+      </button>
+
+    </div>
+  </main>
+  <footer>
+    <button class="submit-button" (click)="confirm()" [disabled]="!(selectedAwardId || 0 > 0)">
+      <i class="material-icons">add</i>
+      {{ 'reward' | translate }}
+    </button>
+  </footer>
+</div>

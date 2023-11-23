@@ -1,0 +1,87 @@
+<ion-content *ngIf="!loading">
+  <div class="content-container">
+    <ion-icon name="arrow-back-outline" class="go-back-button" color="primary" role="button" (click)="goBack()">
+    </ion-icon>
+
+    <ion-icon name="ellipsis-vertical-outline" class="review-options-button" color="primary" role="button"
+      [id]="'click-trigger-'+ contentObject.reviewId"></ion-icon>
+
+    <ion-action-sheet (didDismiss)="actionSheetEvent($event, contentObject.reviewId!)" [trigger]="'click-trigger-'+ contentObject.reviewId" [buttons]="actionSheetButtons">
+    </ion-action-sheet>
+
+    <div 
+      class="content-poster"
+      [class.square]="contentObject.reviewedContentInformation.platformId === 2"
+      style="background: linear-gradient(180deg, #f5f5f500 0%, #f5f5f500 52.92%, #f5f5f5 90%), url('{{  contentObject.reviewedContentInformation.picturePath }}') no-repeat center center fixed; background-size: cover;">
+    </div>
+    <div class="content-info">
+      <div class="content-title-container">
+        <h1 class="content-title">{{ contentObject.reviewTitle }}</h1>
+        <app-stars-rating [rating]="contentObject.reviewRating || 0" />
+      </div>
+
+      <p class="content-link"
+        (click)="goToContentPage(contentObject.reviewedContentInformation.externalContentId, contentObject.reviewedContentInformation.platformId)">
+        {{ contentObject.reviewedContentInformation.title }}
+      </p>
+
+      <div class="review-user-information">
+        <div class="profile-information" [routerLink]="['../../reviewer/' + this.contentObject.reviewAuthor.userName]">
+          <img class="user-pfp" [src]="contentObject.reviewAuthor.profilePictureUrl || 'assets/icon/default.jpg'" />
+          <label class="username">{{ contentObject.reviewAuthor.userName }}</label>
+        </div>
+
+        <label class="publish-timestamp" *ngIf="contentObject.reviewCreationDate">{{ contentObject.reviewCreationDate.toLocaleDateString() }}</label>
+      </div>
+
+      <div class="review-content">
+        <p class="review-text">
+          {{contentObject.reviewDescription}}
+        </p>
+      </div>
+
+      <div class="awards">
+        <div class="review-awards" *ngIf="canAward">
+          <div class="award-count">
+            <div class="award gold-award" *ngIf="this.contentObject.reviewAwardInformation.goldenAwardCount > 0">
+              <img class='award-icon' src="assets/icon/GOLDEN_SHIELD.png">
+              <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.goldenAwardCount }}</label>
+            </div>
+
+            <div class="award silver-award" *ngIf="this.contentObject.reviewAwardInformation.silverAwardCount > 0">
+              <img class='award-icon' src="assets/icon/SILVER_SHIELD.png">
+              <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.silverAwardCount }}</label>
+            </div>
+
+            <div class="award bronze-award" *ngIf="this.contentObject.reviewAwardInformation.bronzeAwardCount > 0">
+              <img class='award-icon' src="assets/icon/BRONZE_SHIELD.png">
+              <label class="award-count-value">{{ this.contentObject.reviewAwardInformation.bronzeAwardCount }}</label>
+            </div>
+          </div>
+
+          <div class="award-button" (click)="openAwardModal()">
+            <i class="material-icons award-button-icon">emoji_events</i>
+            {{ 'reward' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="review-comments">
+      <div class="comment-information">
+        <i class="material-icons">comment</i>
+        <label>{{reviewComments.length}} commments</label>
+      </div>
+
+      <div class="divider"></div>
+
+      <app-comment-card *ngFor="let comment of reviewComments" [commentModel]="comment"></app-comment-card>
+
+      <ion-item>
+        <ion-input type="text" placeholder="{{ 'writeYourComment' | translate }}" [(ngModel)]="newComment"></ion-input>
+        <button clear item-right (click)="addCommentToReview()"><i class="material-icons send-icon">send</i></button>
+      </ion-item>
+    </div>
+  </div>
+</ion-content>

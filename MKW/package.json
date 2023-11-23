@@ -33,8 +33,10 @@
     "@ngxs/logger-plugin": "^3.8.0",
     "@ngxs/storage-plugin": "^3.8.0",
     "@ngxs/store": "^3.8.0",
+    "@stripe/stripe-js": "^1.54.2",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "ionicons": "^7.0.0",
+    "ngx-stripe": "^15.7.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
@@ -50,6 +52,7 @@
     "@angular/compiler": "^15.0.0",
     "@angular/compiler-cli": "^15.0.0",
     "@angular/language-service": "^15.0.0",
+    "@capacitor/assets": "^3.0.1",
     "@capacitor/cli": "4.8.0",
     "@ionic/angular-toolkit": "^9.0.0",
     "@types/jasmine": "~4.0.0",

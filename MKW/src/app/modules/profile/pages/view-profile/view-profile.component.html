@@ -1,19 +1,82 @@
-<header class="profile-header">
-  <i class="material-icons">account_circle</i>
-  <div>
-    <h3>{{userData!.firstName}} {{userData!.lastName}}</h3>
-  </div>
-</header>
+<ion-content>
+  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-<main>
-  <label class="what-to-do">{{ 'profile.whatToDo' | translate }}</label>
-  <aside class="menu">
-      <!-- <label routerLink="edit-profile">Editar Perfil <i class="material-icons">edit</i></label> -->
-      <label class=menu-item routerLink="children">
-        {{ 'profile.editChildren' | translate }} <i class="material-icons">supervisor_account</i>
-      </label>
-  </aside>
-</main>
-<footer>
-  <label class="menu-item logout-item" (click)="logOffUser()">{{ 'profile.logout' | translate }} <i class="material-icons">logout</i></label>
-</footer>
+  <div class="content">
+    <div class="profile-header">
+      <img alt="Profile picture" class="profile-picture" [src]="profileData?.imageURL || 'assets/icon/default.jpg'"
+        (click)="changeProfilePicture()">
+      <div class="profile-info">
+        <h2 class="profile-name">{{ profileData?.name }}</h2>
+        <p class="profile-username">&#64;{{ profileData?.username }}</p>
+      </div>
+      <app-kebab-menu [items]="menuItems"></app-kebab-menu>
+    </div>
+
+    <div class="profile-balance" (click)="addFunds()">
+      <img alt="Coins" src="assets/icon/coins.png" class="coins-icon">
+      <p class="coins-balance"> {{ coinCount }} {{ 'coins' | translate }}</p>
+    </div>
+
+    <div *ngIf="shouldShowAwards">
+      <div *ngIf="goldenAwards >= silverAwards && goldenAwards >= bronzeAwards" class="profile-awards awards-gold">
+        <img alt="awards" class="awards-img" src="assets/images/awards-gold-first.png">
+        <div class="awards-text">
+          <h3 class="awards-title">{{ 'profile.awards.goldenTitle' | translate}}</h3>
+          <p class="awards-description">{{ 'profile.awards.my-goldenDescription' | translate: {name: profileData?.name,
+            goldenAwards, silverAwards, bronzeAwards} }}</p>
+        </div>
+      </div>
+      <div *ngIf="silverAwards >= goldenAwards && silverAwards >= bronzeAwards && goldenAwards < silverAwards"
+        class="profile-awards awards-silver">
+        <img alt="awards" class="awards-img" src="assets/images/awards-silver-first.png">
+        <div class="awards-text">
+          <h3 class="awards-title">{{ 'profile.awards.silverTitle' | translate}}</h3>
+          <p class="awards-description">{{ 'profile.awards.my-silverDescription' | translate: {name: profileData?.name,
+            goldenAwards, silverAwards, bronzeAwards} }}</p>
+        </div>
+      </div>
+      <div
+        *ngIf="bronzeAwards >= goldenAwards && bronzeAwards >= silverAwards && goldenAwards < bronzeAwards && silverAwards < bronzeAwards"
+        class="profile-awards awards-bronze">
+        <img alt="awards" class="awards-img" src="assets/images/awards-bronze-first.png">
+        <div class="awards-text">
+          <h3 class="awards-title">{{ 'profile.awards.bronzeTitle' | translate}}</h3>
+          <p class="awards-description">{{ 'profile.awards.my-bronzeDescription' | translate: {name: profileData?.name,
+            goldenAwards, silverAwards, bronzeAwards} }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="profile-children">
+      <h3>{{ 'profile.myChildren' | translate }}</h3>
+      <div class="children">
+        <div class="child-chip" *ngFor="let child of childrenCard"
+          (click)="editChild(child.id, child.ageRangeId, child.genderId)">
+          <div [ngClass]="'child-icon ' + child.gender">
+            <i class="material-icons">child_care</i>
+          </div>
+          <p>{{ child.gender! | translate }} {{ 'of' | translate}} {{ child.ageRange }}</p>
+        </div>
+        <div class="child-chip" (click)="addChild()">
+          <div class="child-icon add">
+            <i class="material-icons">add</i>
+          </div>
+          <p>{{ 'profile.addChildTitle' | translate }}</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="profile-reviews">
+      <h3>{{ reviews.length }} {{ 'reviews' | translate }}</h3>
+      <app-short-content-review-card *ngFor="let contentCard of reviews" [contentData]="contentCard">
+      </app-short-content-review-card>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,40 @@
+<div class="edit-review-container">
+  <div (click)="cancel()" class="go-back">
+    <i class="material-icons">arrow_back</i>
+    <p>{{ 'return' | translate }}</p>
+  </div>
+
+  <div class="edit-review">
+    <h2>{{ 'editReview' | translate }}</h2>
+
+    <label class="mandatory">{{ 'profile.mandatoryField' | translate }}</label>
+
+    <div class="movie-information">
+      <img class="content-poster" [src]="contentInformation?.picturePath">
+      <div class="movie-title-and-stars">
+        <h3 class="content-title">{{contentInformation?.title}}</h3>
+        
+        <div class="review-stars">
+          <p class="grade-label">{{ 'yourGrade' | translate }}*:</p>
+          <ng-container class="review-stars-container" *ngFor="let star of [1, 2, 3, 4, 5]">
+            <i 
+              (click)="setStarValue(star)" 
+              class="material-icons star" 
+              [class.marked]="isStarMarked(star)" 
+              [class.not-marked]="!isStarMarked(star)">
+              {{ isStarMarked(star) ? 'star' : 'star_outline' }}
+            </i>
+          </ng-container>
+      </div>
+      </div>
+    </div>
+    <form [formGroup]="reviewForm" class="form-content">
+      <div class="signup-form">
+        <ion-input placeholder="{{ 'reviewTitle' | translate }}*" formControlName="reviewTitle"></ion-input>
+        <ion-textarea placeholder="{{ 'reviewDescription' | translate }}*" [rows]="8" formControlName="reviewText"></ion-textarea>
+
+      </div>
+    </form>
+    <button class="add-button" (click)="sendReview()"><i class="material-icons">save</i>{{ 'saveChanges' | translate }}</button>
+  </div>
+</div>

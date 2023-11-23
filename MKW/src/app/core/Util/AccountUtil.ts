@@ -1,47 +1,45 @@
 import { AgeRangeService } from "../services/age-range.service";
+import { TranslateService } from "@ngx-translate/core";
 
 export class AccountUtils {
-
-
-    static getGenderString(genderNumber?: number) : string | undefined
-    {
+    static getGenderString(genderNumber?: number): string | undefined {
         let gender;
 
-        switch(genderNumber)
-        {
+        switch (genderNumber) {
             case 1:
                 gender = 'boy'
-                break;  
+                break;
             case 2:
                 gender = 'girl'
+                break;
+            default:
+                gender = 'child'
                 break;
         }
 
         return gender;
     }
 
-    static getAgeRangeString(ageRangeId?: number)
-    {
+    static getAgeRangeString(ageRangeId?: number, translateService?: TranslateService) {
         let ageRangeString = '';
-        switch(ageRangeId)
-        {
+        switch (ageRangeId) {
             case 1:
-                ageRangeString = '0 a 2 anos'
+                ageRangeString = '0 ' + translateService?.instant('to') + ' 2 ' + translateService?.instant('profile.yearsOld')
                 break;
             case 2:
-                ageRangeString = '3 a 5 anos'
+                ageRangeString = '3 ' + translateService?.instant('to') + ' 5 ' + translateService?.instant('profile.yearsOld')
                 break;
             case 3:
-                ageRangeString = '6 a 8 anos'
+                ageRangeString = '6 ' + translateService?.instant('to') + ' 8 ' + translateService?.instant('profile.yearsOld')
                 break;
             case 4:
-                ageRangeString = '9 a 11 anos'
+                ageRangeString = '9 ' + translateService?.instant('to') + ' 11 ' + translateService?.instant('profile.yearsOld')
                 break;
             case 5:
-                ageRangeString = '12 a 14 anos'
+                ageRangeString = '12 ' + translateService?.instant('to') + ' 14 ' + translateService?.instant('profile.yearsOld')
                 break;
             case 6:
-                ageRangeString = '15 a 17 anos'
+                ageRangeString = '15 ' + translateService?.instant('to') + ' 17 ' + translateService?.instant('profile.yearsOld')
                 break;
         }
 
@@ -49,5 +47,30 @@ export class AccountUtils {
 
     }
 
+    static getAgeRangeStringSimplified(ageRangeId?: number, translateService?: TranslateService) {
+        let ageRangeString = '';
+        switch (ageRangeId) {
+            case 1:
+                ageRangeString = '0 - 2 '
+                break;
+            case 2:
+                ageRangeString = '3 - 5 '
+                break;
+            case 3:
+                ageRangeString = '6 - 8 '
+                break;
+            case 4:
+                ageRangeString = '9 - 11 '
+                break;
+            case 5:
+                ageRangeString = '12 - 14 '
+                break;
+            case 6:
+                ageRangeString = '15 - 17 '
+                break;
+        }
 
+        return ageRangeString;
+
+    }
 }

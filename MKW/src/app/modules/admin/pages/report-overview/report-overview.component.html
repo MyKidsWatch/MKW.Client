@@ -1,0 +1,36 @@
+<div class="container" *ngIf="reportOverview">
+  <div (click)="goBack()" class="go-back">
+    <i class="material-icons">arrow_back</i>
+    <p>{{ 'return' | translate }}</p>
+  </div>
+
+  <main class="content">
+    <h2 class="content-title">{{reportOverview.reportType}} - {{reportOverview.reportReason}}</h2>
+    <div class="report-detail">
+      <label>{{ 'status' | translate }}:</label>
+      <span>{{reportOverview.reportStatus}}</span>
+    </div>
+    <div class="report-detail">
+      <label>{{ 'reported-person' | translate }}:</label>
+      <span class="reported-person" [routerLink]="'../../../home/content/reviewer/' + reportOverview.reportedPerson">&#64;{{reportOverview.reportedPerson}}</span>
+    </div>
+    <div class="report-content-wrapper" *ngIf="this.reportOverview.reportType !== 'Profile' && this.reportOverview.reportType !== 'Perfil'">
+      <p class="report-label">{{ 'reported-content' | translate }}:</p>
+      <p class="report-content">"{{reportOverview.reportText}}"</p>
+    </div>
+  </main>
+
+  <div class="footer">
+    <button class="submit-button danger outlined" (click)="removeContent()" *ngIf="this.reportOverview.reportType !== 'Profile' && this.reportOverview.reportType !== 'Perfil'">
+      {{ 'delete' | translate }} {{reportOverview.reportType}}
+    </button>
+
+    <button class="submit-button danger outlined" (click)="removeProfile()">
+      {{ 'delete-profile' | translate }}
+    </button>
+
+    <button class="submit-button" (click)="discardReport()">
+      {{ 'discard-report' | translate }}
+    </button>
+  </div>
+</div>

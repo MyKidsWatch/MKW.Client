@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SplashScreenService } from 'src/app/core/services/splash-screen.service';
 
 @Component({
   selector: 'app-auth',
@@ -7,8 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private splashScreenService: SplashScreenService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+    this.splashScreenService.stop();
+  }
 
 }

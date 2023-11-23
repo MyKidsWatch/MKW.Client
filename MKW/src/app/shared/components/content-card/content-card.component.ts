@@ -3,7 +3,7 @@ import { ContentCard } from '../../models/content-card.model';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-content-card',
@@ -12,21 +12,21 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, IonicModule, TranslateModule, RouterModule]
 })
-export class ContentCardComponent  implements OnInit {
-
+export class ContentCardComponent implements OnInit {
   @Input() contentData?: ContentCard;
 
-  constructor() { 
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
-    
 
   }
 
-  isValidDate()
-  {
-      return this.contentData?.releaseDate instanceof Date && !isNaN(this.contentData.releaseDate.valueOf());
+  redirectToContentPage(externalContentId: string, platformId: number) {
+    this.router.navigate([`home/content/feed`, externalContentId, platformId]);
   }
 
+  isValidDate() {
+    return this.contentData?.releaseDate instanceof Date && !isNaN(this.contentData.releaseDate.valueOf());
+  }
 }

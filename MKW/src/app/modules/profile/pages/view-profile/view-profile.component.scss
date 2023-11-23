@@ -1,87 +1,223 @@
-.profile-header {
-  display: flex;
-  flex-direction: row;
-  min-height: 30%;
-  background: var(--mkw-color-primary);
-  color: var(--mkw-color-light);
-  align-items: center;
-  justify-content: flex-start;
+ion-header {
+  border: unset;
   padding: 0 4.4%;
 
-
-  i {
-    font-size: 8rem;  
-  }
-
-  div {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: baseline;
-    align-content: center;
-
-    h3 {
-      margin: 0;
-    }
+  &::after {
+    display: none;
   }
 }
 
-main {
-  padding: 0 4.4%;
-  min-height: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  font-size: 1.3rem;
-  justify-self: flex-start;
+.divider {
+  width: 100%;
+  border-bottom: 3px solid #e2e2e2;
+  margin: 1rem 0;
+}
 
-  .what-to-do {
-    color: var(--mkw-color-primary);
-    text-align: center;
+.content {
+  width: 100%;
+  padding: 0 4.4% !important;
+
+  .profile-header {
     width: 100%;
-    font-weight: bolder;
     margin: 1rem 0;
-  }
-
-  aside {
-    margin-top: 40px;
+    position: relative;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
 
-    label {
-      display: flex;
-      align-items: center;
-      color: #444444;
-      padding: 4px;
-      margin: 8px 0;
+    .profile-picture {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      ;
+    }
 
-      i {
-        margin-left: 10px;
-        font-size: 3rem;
+    .profile-info {
+      margin: 0 .75rem;
+      margin-top: -.5rem;
+      flex-grow: 2;
+
+      .profile-name {
+        font-size: 1.1rem;
+        font-family: Poppins;
+        font-weight: bold;
+        word-wrap: break-word;
+        line-height: 1;
+      }
+
+      .profile-username {
+        color: var(--mkw-color-dark-medium);
+        word-wrap: break-word;
+        line-height: 1;
+        margin-top: -.3rem;
+        line-break: anywhere;
+      }
+    }
+
+    button {
+      width: 20px;
+      height: 20px;
+      right: 10px;
+      top: 19px;
+      border: none;
+      background: none;
+      cursor: pointer;
+
+      img {
+        width: 100%;
+        height: 100%;
       }
     }
   }
-}
 
-footer {
-  margin: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  font-size: 1.3em;
-  border-top: 2px solid #ddd;
-  padding-top: 1.5rem;
-
-  label {
+  .profile-balance {
+    width: 100%;
+    margin: .25rem 0;
+    position: relative;
     display: flex;
     align-items: center;
-    color: var(--mkw-color-danger);
-    padding: 4px;
-    margin: 8px 0;
 
-    i {
-      margin-left: 10px;
+    .coins-icon {
+      height: 3rem;
+      width: 3rem;
+    }
+
+    .coins-balance {
+      font-size: 1rem;
+    }
+  }
+
+  .awards-gold {
+    background: #FFE44D;
+  }
+
+  .awards-silver {
+    background: #00000025;
+  }
+
+  .awards-bronze {
+    background: #D5A473;
+  }
+
+  .profile-awards {
+    width: 100%;
+    padding: .5rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 15px;
+    height: 6rem;
+
+    .awards-img {
+      margin-right: .75rem;
+    }
+
+    .awards-title {
+      font-size: 1rem;
+      font-weight: bold;
+      line-height: 1;
+      margin: unset;
+      margin-bottom: .25rem;
+    }
+
+    .awards-description {
+      margin: unset;
+      font-family: 'Poppins', sans-serif;
+      font-size: .8rem;
+      width: 90%;
+      line-height: 1;
+    }
+
+
+  }
+
+  .profile-children {
+    h3 {
+      font-family: Poppins;
+      text-align: center;
+      color: #00000085;
+      font-size: .85rem;
+      font-weight: 500;
+    }
+
+    .children {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      overflow-x: auto;
+      -ms-overflow-style: none;  
+      scrollbar-width: none;
+
+      .child-chip {
+        max-width: 3rem;
+        margin: 0 .5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        p {
+          font-family: Poppins;
+          font-size: .6rem;
+          line-height: 1.2;
+          margin: unset;
+          margin-top: .5rem;
+          text-align: center;
+        }
+
+        .child-icon {
+          border-radius: 50%;
+          background: var(--mkw-color-warning);
+          width: 3.5rem;
+          height: 3.5rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          &.boy {
+            color: var(--mkw-color-light);
+            background: var(--mkw-color-primary);
+
+            i {
+              color: var(--mkw-color-light) !important;
+            }
+          }
+
+          &.add {
+            color: var(--mkw-color-light);
+            background: var(--mkw-color-secondary);
+
+            i {
+              color: var(--mkw-color-light) !important;
+            }
+          }
+
+          &.girl {
+            color: var(--mkw-color-light);
+            background: var(--mkw-color-purple);
+
+            i {
+              color: var(--mkw-color-light) !important;
+            }
+          }
+
+          i {
+            font-size: 2.5rem;
+            color: var(--mkw-color-dark-medium);
+          }
+        }
+
+
+
+
+      }
+    }
+  }
+
+  .profile-reviews {
+    h3 {
+      font-family: Poppins;
+      text-align: center;
+      color: #00000085;
+      font-size: .85rem;
+      font-weight: 500;
     }
   }
 }

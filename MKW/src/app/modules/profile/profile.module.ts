@@ -11,23 +11,32 @@ import { HeaderBackComponent } from 'src/app/shared/components/header-back/heade
 import { AddChildrenComponent } from './pages/add-children/add-children.component';
 import { EditChildrenComponent } from './pages/edit-children/edit-children.component';
 import { ChildrenCardComponent } from 'src/app/shared/components/children-card/children-card.component';
-import { AccountClient, AgeRangeClient, ChildClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { AccountClient, AgeRangeClient, ChildClient, ReviewClient } from 'src/app/core/proxies/mkw-api.proxy';
 import { ChildService } from 'src/app/core/services/child.service';
 import { AgeRangeService } from 'src/app/core/services/age-range.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { ProfileResolver } from 'src/app/core/resolvers/profile.resolver';
+import { ProfileClient } from 'src/app/core/proxies/mkw-api.proxy';
+import { ProfileService } from 'src/app/core/services/profile.service';
 import { AccountService } from 'src/app/core/services/account.service';
+import { ReviewService } from 'src/app/core/services/review.service';
+import { ShortContentReviewCardComponent } from 'src/app/shared/components/short-content-review-card/short-content-review-card.component';
+import { KebabMenuComponent } from 'src/app/shared/components/kebab-menu/kebab-menu.component';
+import { ChildResolver } from 'src/app/core/resolvers/child.resolver';
+import { AddChildModalComponent } from './components/add-child-modal/add-child-modal.component';
+import { EditChildModalComponent } from './components/edit-child-modal/edit-child-modal.component';
+import { UserReviewResolver } from 'src/app/core/resolvers/user-review.resolver';
+import { ChangeProfilePictureModalComponent } from './components/change-profile-picture-modal/change-profile-picture-modal.component';
 
 const childrenRoutes: Routes = [
   {
-      path: '',
-      component: ViewProfileComponent,
-      canActivate: []
+    path: '',
+    component: ViewProfileComponent,
+    canActivate: []
   },
   {
     path: 'children',
     component: ViewChildrenComponent,
-
   },
   {
     path: 'add-children',
@@ -42,15 +51,14 @@ const childrenRoutes: Routes = [
     component: EditProfileComponent
   }
 ]
-export const routes: Routes = [
+const routes: Routes = [
   {
-      path: '',
-      component: ProfileComponent,
-      resolve: [ProfileResolver],
-      children: childrenRoutes
+    path: '',
+    component: ProfileComponent,
+    resolve: [ProfileResolver, ChildResolver],
+    children: childrenRoutes
   }
 ];
-
 
 @NgModule({
   declarations: [
@@ -59,7 +67,10 @@ export const routes: Routes = [
     EditProfileComponent,
     ProfileComponent,
     ViewProfileComponent,
-    ViewChildrenComponent
+    ViewChildrenComponent,
+    AddChildModalComponent,
+    EditChildModalComponent,
+    ChangeProfilePictureModalComponent,
   ],
   imports: [
     CommonModule,
@@ -69,8 +80,9 @@ export const routes: Routes = [
     RouterModule,
     RouterModule.forChild(routes),
     HeaderBackComponent,
-    ChildrenCardComponent
-    
+    ChildrenCardComponent,
+    ShortContentReviewCardComponent,
+    KebabMenuComponent,
   ],
   providers: [
     ProfileResolver,
@@ -79,7 +91,11 @@ export const routes: Routes = [
     ChildClient,
     ChildService,
     AgeRangeClient,
-    AgeRangeService
+    AgeRangeService,
+    ProfileClient,
+    ProfileService,
+    ReviewClient,
+    ReviewService,
   ]
 })
 export class ProfileModule { }

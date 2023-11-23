@@ -7,8 +7,9 @@
       <label class="mandatory">{{ 'profile.mandatoryField' | translate }}</label>
       <div class="signup-form">
         <ion-select [placeholder]="'profile.ageRangePlaceholder' | translate" formControlName="ageRange">
-          <ion-select-option *ngFor="let ageRange of ageRanges" [value]="ageRange.id">{{ageRange.initialAge}} a
-            {{ageRange.finalAge}} {{ 'profile.yearsOld' | translate }}</ion-select-option>
+          <ion-select-option *ngFor="let ageRange of ageRanges" [value]="ageRange.id">
+            {{ageRange.initialAge}} {{ 'profile.to' | translate }} {{ageRange.finalAge}} {{ 'profile.yearsOld' | translate }}
+          </ion-select-option>
         </ion-select>
 
         <ion-select [placeholder]="'profile.genderPlaceholder' | translate" formControlName="gender">

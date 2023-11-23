@@ -3,32 +3,40 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { UserState } from 'src/app/shared/store/state/user.state';
+import { UserState } from 'src/app/shared/store/user/user.state';
+import { Router } from '@angular/router';
+import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
+import { UserFacade } from 'src/app/shared/facades/user.facade';
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
 
-  constructor(private store: Store) {}
+  constructor(private router: Router, private userFacade: UserFacade) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    if(request.url.includes('assets'))
-      return next.handle(request);
+    if(!request.url.includes('Authentication/refresh'))
+        return next.handle(request);
 
-    if(request.url.includes('Authentication/refresh'))
-    {
-        let tokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
-        let headers = request.headers.append('Authorization', 'Bearer ' + tokenInfo?.refreshToken)
-        request = request.clone({headers});
-        return next.handle(request)
-    }
-    else
-    {
-      return next.handle(request);
-    }
+    let tokenInfo = this.userFacade.getUserToken();
+    let headers = request.headers.append('Authorization', 'Bearer ' + tokenInfo?.refreshToken)
+    request = request.clone({headers});
+
+    return next.handle(request).pipe(
+      catchError((error) => {
+
+        this.userFacade.logOffUser();
+        this.router.navigateByUrl('auth'); 
+        
+        throw throwError(error);
+      })
+    );    
+
+    
   }
 }

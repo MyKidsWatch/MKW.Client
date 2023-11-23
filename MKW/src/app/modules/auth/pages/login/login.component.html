@@ -9,6 +9,7 @@
   <form class="login-form" [formGroup]="loginForm">
     <ion-input type="text" formControlName="credential" placeholder="{{ 'login.credentialPlaceholder' | translate }}"></ion-input>
     <ion-input type="password" formControlName="password" placeholder="{{ 'login.passwordPlaceholder' | translate }}"></ion-input>
+    <label class="reset-password"><ion-router-link routerLink="reset-password" class="reset-password bold">{{ 'login.forgotPassword' | translate }}</ion-router-link></label>
   </form>
 
   <div class="login">

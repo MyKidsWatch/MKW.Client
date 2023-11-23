@@ -7,45 +7,42 @@ import {
 } from '@angular/common/http';
 import { Observable, concatMap, map, of, switchMap, take } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { UserState } from 'src/app/shared/store/state/user.state';
+import { UserState } from 'src/app/shared/store/user/user.state';
 import { AuthService } from '../services/auth.service';
+import { UserSelectors } from 'src/app/shared/store/user/user.selectors';
+import { UserFacade } from 'src/app/shared/facades/user.facade';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
-  constructor(private store: Store, private authService: AuthService) {}
+  constructor(private userFacade: UserFacade) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    if(request.url.includes('assets'))
+    let routesToSkip = ['assets', 'Authentication', 'register'];
+
+    if(routesToSkip.some(x => request.url.includes(x)))
       return next.handle(request);
 
-    if(!request.url.includes('Authentication') && !request.url.includes('register'))
-    {
-        return this.store.select(UserState.getTokenInfo).pipe(take(1)).pipe(concatMap(tokenInfo =>{
-            
-            if(tokenInfo && tokenInfo.expiresAt && new Date(tokenInfo.expiresAt).getTime() <= Date.now())
-            { 
-              return this.authService.refresh().pipe(switchMap(response =>{
-                const updatedTokenInfo = this.store.selectSnapshot(UserState.getTokenInfo);
-                  let headers = request.headers.append('Authorization', 'Bearer ' + updatedTokenInfo?.accessToken)
-                  request = request.clone({headers});
-                  return next.handle(request)
-                }))
-            }
-            else
-            {
-              let headers = request.headers.append('Authorization', 'Bearer ' + tokenInfo?.accessToken)
-              request = request.clone({headers});
-              return next.handle(request);
-            }
-        }));        
-    }
-    else
-    {
-      return next.handle(request);
-    }
+    let tokenInfo = this.userFacade.getUserToken();
+
+    if(tokenInfo && tokenInfo.expiresAt && new Date(tokenInfo.expiresAt).getTime() <= Date.now())
+      return this.refreshUserToken(request, next);
+
+    let headers = request.headers.append('Authorization', 'Bearer ' + tokenInfo?.accessToken)
+    request = request.clone({headers});
     
+    return next.handle(request);
+  }
 
+
+  refreshUserToken(request: HttpRequest<unknown>, next: HttpHandler)
+  {
+    return this.userFacade.refreshUserToken().pipe(switchMap(() =>{
+      const updatedTokenInfo = this.userFacade.getUserToken();
+      let headers = request.headers.append('Authorization', 'Bearer ' + updatedTokenInfo?.accessToken)
+      request = request.clone({headers});
+      return next.handle(request)
+    }))
   }
 }

@@ -1,0 +1,75 @@
+.report-card {
+  padding: .75rem 0;
+  margin-bottom: .5rem 0;
+  border-bottom: 2px solid #e2e2e2;
+  width: 100%;
+
+  .report-header {
+    display: flex;
+    width: 100%;
+
+    .report-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: .8rem;
+      margin: unset;
+      padding: unset;
+      line-height: 1;
+      margin-bottom: .25rem;
+    }
+
+    .date {
+      justify-self: flex-end;
+      margin: unset;
+      margin-left: auto;
+      text-align: right;
+      line-height: 1
+    }
+  }
+
+  .report-content {
+    font-family: 'Poppins', sans-serif;
+
+    .report-detail {
+      font-family: inherit;
+      line-height: 1;
+      padding-left: 1.5rem;
+
+      label {  
+        font-family: inherit;
+        font-size: .8rem;
+        font-weight: lighter;
+        color: var(--mkw-color-dark-medium);
+        margin-right: .25rem;
+      }
+
+      span {
+        font-family: inherit;
+        font-size: .8rem;
+        font-weight: medium;
+        color: var(--mkw-color-dark-medium);
+      
+      }
+    }
+  }
+
+  .dot {
+    display: block;
+    font-size: 1rem;
+    align-self: start;
+    margin: unset;
+    margin-right: .5rem;
+  }
+  
+  .dot-normal {
+    color: green;
+  }
+  .dot-warning{
+    color: var(--mkw-color-warning);
+  }
+  .dot-error{
+    color: var(--mkw-color-danger);;
+  }
+  .dot-unavailable{
+    color: gray;
+  }
+}
