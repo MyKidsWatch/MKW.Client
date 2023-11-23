@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentReviewPage } from '../../models/content-review-page.model';
-import { Subscription, take,  } from 'rxjs';
+import { Subscription, take, } from 'rxjs';
 import { ContentReviewComment } from "src/app/modules/content/models/content-review-page.model";
 import { CommentFacade } from 'src/app/shared/facades/comment.facade';
 import { ModalController } from '@ionic/angular';
@@ -68,11 +68,6 @@ export class ContentReviewPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.reviewId = id;
-
-    this.reviewFacade.setCurrentReview(this.reviewId);
-    this.commentFacade.setReviewComments(this.reviewId);
 
     this.reviewSubscription = this.reviewFacade.getCurrentReviewViewModel()
       .subscribe({

@@ -35,6 +35,7 @@ import { ShortContentReviewCardComponent } from 'src/app/shared/components/short
 import { KebabMenuComponent } from 'src/app/shared/components/kebab-menu/kebab-menu.component';
 import { AwardService } from 'src/app/core/services/award.service';
 import { ChildService } from 'src/app/core/services/child.service';
+import { CommentResolver } from 'src/app/core/resolvers/comment.resolver';
 
 const routes: Routes = [
   {
@@ -44,7 +45,7 @@ const routes: Routes = [
   {
     path: 'review/:id',
     component: ContentReviewPageComponent,
-    resolve: [ReviewResolver]
+    resolve: [ReviewResolver, CommentResolver]
   },
   {
     path: 'reviewer/:username',
@@ -104,6 +105,7 @@ const parentRoute: Routes = [
     ReportClient,
     ReportService,
     ReviewResolver,
+    CommentResolver,
     ProfileClient,
     ProfileService,
   ]
