@@ -66,17 +66,11 @@ export class ViewProfileComponent implements OnInit {
 
   handleRefresh(event: any) {
 
-    this.userFacade.updateUserChildren()
-      .pipe(switchMap(res => this.userFacade.updateUserReviews()))
-      .pipe(switchMap(res => this.userFacade.updateUserInformation()))
-      .pipe(switchMap(res => {
-        event.target.complete;
-        return res;
-      }))
-      .pipe(catchError(res => {
-        event.target.complete;
-        return res;
-      }));
+    this.userFacade.updateUserChildren();
+    this.userFacade.updateUserReviews();
+    this.userFacade.updateUserInformation();
+
+    event.target.complete;
   }
   ngOnInit() {
     this.userData = this.userFacade.getUserState();
@@ -121,7 +115,7 @@ export class ViewProfileComponent implements OnInit {
   }
 
   async changeProfilePicture() {
-    let changeProfilePictureModal = await this.modalController.create({ 
+    let changeProfilePictureModal = await this.modalController.create({
       component: ChangeProfilePictureModalComponent,
       componentProps: {
         currentProfilePicture: this.profileData?.imageURL || null
