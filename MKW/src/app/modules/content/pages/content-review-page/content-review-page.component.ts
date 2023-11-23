@@ -68,14 +68,13 @@ export class ContentReviewPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.reviewSubscription = this.reviewFacade.getCurrentReviewViewModel()
       .subscribe({
         next: (res: ContentReviewPage) => {
 
           this.contentObject = res;
           this.loading = false;
-
+          this.reviewId = res.reviewId;
           let username = this.userFacade.getUserState()?.username!;
 
           let isOp = username == this.contentObject.reviewAuthor.userName;
