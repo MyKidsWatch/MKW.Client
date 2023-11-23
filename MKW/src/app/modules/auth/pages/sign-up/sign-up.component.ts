@@ -88,8 +88,9 @@ export class SignUpComponent implements OnInit {
       })
   }
 
-  public nextStep() {
-    switch (this.currentStep) {
+  public nextStep(currentStep: number) {
+
+    switch (currentStep) {
       case 2:
         this.submitForm();
         break;
