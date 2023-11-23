@@ -122,10 +122,10 @@ export class AddFundsModalComponent implements OnInit, OnDestroy {
           new ResizeObserver(() => {
             if (element.style.height != '100%')
               element.style.position = 'absolute';
-            element.style.top = '0';
+            element.style.bottom = '0';
             element.style.left = '0';
             element.style.width = '100%';
-            element.style.height = '100%';
+            element.style.height = '95%';
             element.style.zIndex = '999';
             element.style.margin = 'auto';
           }).observe(element)
