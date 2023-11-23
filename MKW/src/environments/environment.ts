@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://mykidswatch.azurewebsites.net/'
+  apiBaseUrl: 'https://mykidswatch.azurewebsites.net'
 };
 
 /*

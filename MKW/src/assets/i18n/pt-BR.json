@@ -126,6 +126,7 @@
   "coins": "moedas",
   "status": "Status",
   "author": "Autor",
+  "reported-person": "Pessoa denunciada",
   "report-list": "Lista de denúncias",
   "report-type": "Tipo de denúncia:",
   "all": "Todos",

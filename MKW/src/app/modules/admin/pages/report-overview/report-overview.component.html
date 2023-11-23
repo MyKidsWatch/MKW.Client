@@ -11,8 +11,8 @@
       <span>{{reportOverview.reportStatus}}</span>
     </div>
     <div class="report-detail">
-      <label>{{ 'author' | translate }}:</label>
-      <span>{{reportOverview.reportedPerson}}</span>
+      <label>{{ 'reported-person' | translate }}:</label>
+      <span class="person" [routerLink]="'../../../home/content/reviewer/' + reportOverview.reportedPerson">&#64;{{reportOverview.reportedPerson}}</span>
     </div>
     <div class="report-content-wrapper">
       <p class="report-label">{{ 'reported-content' | translate }}:</p>
@@ -21,7 +21,7 @@
   </main>
 
   <div class="footer">
-    <button class="submit-button danger outlined" (click)="removeContent()" *ngIf="this.reportOverview.reportType !== 'Profile'">
+    <button class="submit-button danger outlined" (click)="removeContent()" *ngIf="this.reportOverview.reportType !== 'Person'">
       {{ 'delete' | translate }} {{reportOverview.reportType}}
     </button>
 

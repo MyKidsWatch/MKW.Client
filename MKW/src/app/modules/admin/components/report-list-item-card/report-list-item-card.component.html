@@ -1,22 +1,21 @@
 <div class="report-card" *ngIf="reportListItem" (click)="selectReport()">
   <div class="report-content">
     <div class="report-header">
-      <i slot="start" class="material-icons"
-        [ngClass]="'dot ' + mapStatusToDot(reportListItem.reportStatusId)">report</i>
+      <i slot="start" class="material-icons" [ngClass]="'dot ' + mapStatusToDot(reportListItem.reportStatusId)">report</i>
       <h3 class="report-title">
         {{reportListItem.reportType}} - {{reportListItem.reportReason}}
       </h3>
       <ion-label class="date">
-        <ion-note>{{ reportListItem.reportDate | date: dateFormat }}</ion-note>
+        <ion-note>{{ reportListItem.reportDate | date: 'shortDate' }}</ion-note>
       </ion-label>
     </div>
     <div class="report-detail">
-      <label>Status:</label>
+      <label>{{'status' | translate}}:</label>
       <span>{{reportListItem.reportStatus}}</span>
     </div>
     <div class="report-detail">
-      <label>Autor:</label>
-      <span>{{reportListItem.reportAuthor}}</span>
+      <label>{{'reported-person' | translate}}:</label>
+      <span>&#64;{{reportListItem.reportAuthor}}</span>
     </div>
     <label class="report-preview" *ngIf="reportListItem.reportPreview">"{{reportListItem.reportPreview}}"</label>
   </div>

@@ -42,6 +42,9 @@
         font-weight: medium;
         color: var(--mkw-color-dark-medium);
 
+        &.person {
+          text-decoration: underline;
+        }
       }
     }
 
